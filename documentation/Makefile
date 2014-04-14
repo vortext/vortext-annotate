@@ -1,10 +1,14 @@
-DIAGRAMS=$(wildcard diagrams/*.uml)
-IMAGES = $(patsubst %.uml,%.eps,$(DIAGRAMS))
 STYLES=../../styles/springer-lncs/
+
+DIAGRAMS=$(wildcard */*.uml)
+EPS=$(wildcard */*.eps)
+
+IMAGES = $(patsubst %.uml,%.eps,$(DIAGRAMS))
+PDF_IMAGES = $(patsubst %.eps,%.pdf,$(EPS))
 
 TARGET=paper.pdf
 
-LL=latexmk -bibtex -pdf -latexoption=-shell-escape -f
+LL=latexmk -bibtex -pdf -latexoption=-shell-escape
 CLEAN=latexmk -C
 
 all: revision.tex $(TARGET)
@@ -23,10 +27,10 @@ revision.tex:
 $(TARGET): $(TARGET:%.pdf=%.tex) $(SRC)
 	BSTINPUTS=$(STYLES) TEXINPUTS=$(STYLES): $(LL) $<
 
-$(TARGET): $(IMAGES)
+$(TARGET): $(IMAGES) $(PDF_IMAGES)
 
-images/%.pdf: images/%.eps
+%.pdf: %.eps
 	ps2pdf -dEPSCrop $< $@
 
-diagrams/%.eps: diagrams/%.uml
+%.eps: %.uml
 	plantuml -teps $< $@
