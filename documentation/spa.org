@@ -92,4 +92,7 @@ Spá allows the results of sentence extractions to be visualized within the PDF 
   To increase the generality of the tool work is being done to support a consumer/producer protocol for the pipelines, allowing developers to quickly plug in new systems.
   Furthermore, work is being done on allowing users to save selected annotations, possibly embedded within the document itself, for sharing and off-line use.
 
+*** Acknowledgments
+     Part of this research was funded from the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 261433 (Biobank Standardisation and Harmonisation for Research Excellence in the European Union - BioSHaRE-EU)
+
 #+BIBLIOGRAPHY: references splncs option:-noabstract option:-nokeywords option:-unicode option:-dl limit:t
