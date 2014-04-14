@@ -1,5 +1,6 @@
 DIAGRAMS=$(wildcard diagrams/*.uml)
 IMAGES = $(patsubst %.uml,%.eps,$(DIAGRAMS))
+STYLES=../../styles/springer-lncs/
 
 TARGET=paper.pdf
 
@@ -20,7 +21,7 @@ revision.tex:
 	echo "\\\\newcommand{\\\\revision}{`git log -1 --format=\"%h\"`}" >> revision.tex
 
 $(TARGET): $(TARGET:%.pdf=%.tex) $(SRC)
-	$(LL) $<
+	BSTINPUTS=$(STYLES) TEXINPUTS=$(STYLES): $(LL) $<
 
 $(TARGET): $(IMAGES)
 
