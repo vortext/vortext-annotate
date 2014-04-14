@@ -1,0 +1,24 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+actor user
+user -> viewer: load file
+viewer -> pdf.js
+
+pdf.js -> viewer: render on <canvas>
+pdf.js -> pdf.js: textNodes extraction
+
+viewer --> server.py: HTTP POST request with textNodes
+activate server.py
+
+pdf.js -> viewer: render textNodes as overlay
+
+user <- viewer: display
+server.py -> pipelines
+pipelines -> server.py
+
+server.py --> viewer: HTTP POST response with annotated textNodes
+deactivate server.py
+
+viewer -> user: update display
+@enduml
