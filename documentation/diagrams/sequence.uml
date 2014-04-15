@@ -14,8 +14,8 @@ activate server
 pdf.js -> viewer: render textNodes as overlay
 
 user <- viewer: display
-server -> pipelines
-pipelines -> server
+server -> topologies
+topologies -> server
 
 server --> viewer: HTTP POST response with predictions
 deactivate server
