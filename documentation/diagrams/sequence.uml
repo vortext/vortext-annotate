@@ -8,17 +8,17 @@ viewer -> pdf.js
 pdf.js -> viewer: render on <canvas>
 pdf.js -> pdf.js: textNodes extraction
 
-viewer --> server.py: HTTP POST request with textNodes
-activate server.py
+viewer --> server: HTTP POST request with textNodes
+activate server
 
 pdf.js -> viewer: render textNodes as overlay
 
 user <- viewer: display
-server.py -> pipelines
-pipelines -> server.py
+server -> pipelines
+pipelines -> server
 
-server.py --> viewer: HTTP POST response with annotated textNodes
-deactivate server.py
+server --> viewer: HTTP POST response with predictions
+deactivate server
 
 viewer -> user: update display
 @enduml
