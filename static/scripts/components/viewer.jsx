@@ -72,11 +72,11 @@ define(['react', 'underscore','Q', 'jQuery'], function(React, _, Q, $) {
 
             nodeClassName = nodeClassName + " " + className;
 
-            return(<div style={{display: "inline"}} key={key + i}>
+            return(<span key={key + i}>
                     <span className="pre">{text.slice(start, left)}</span>
                     <span className={className + " annotated"}>{text.slice(left, right)}</span>
                     <span className="post">{text.slice(right, end)}</span>
-                   </div>);
+                   </span>);
           });
           return(
               <div style={o.style}

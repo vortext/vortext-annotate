@@ -137,19 +137,19 @@ canvas {
     color: #444;
     background-color: #e5e5e5;
 
-    -webkit-transition-property: background-color, border-color, box-shadow;
+    -webkit-transition-property:  border-color, box-shadow;
     -webkit-transition-duration: 300ms;
     -webkit-transition-timing-function: ease-out;
-    transition-property: background-color, border-color, box-shadow;
+    transition-property:  border-color, box-shadow;
     transition-duration: 300ms;
     transition-timing-function: ease-out;
 }
 
 .block h4 a:hover {
     background-color: #d9d9d9;
-   -moz-box-shadow:    inset 0 0 10px rgba(0,0,0,0.2);
-   -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
-   box-shadow:         inset 0 0 10px rgba(0,0,0,0.2);
+   -moz-box-shadow:    inset 0 0 10px rgba(0,0,0,0.3);
+   -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+   box-shadow:         inset 0 0 10px rgba(0,0,0,0.3);
 }
 
 .block .content {
