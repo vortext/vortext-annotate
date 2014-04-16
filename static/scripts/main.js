@@ -74,7 +74,7 @@ define(function (require) {
 
   appState.on("update:minimap", _.debounce(function(e, obj) {
     minimap.forceUpdate();
-  }, 50, true));
+  }, 100));
 
 
 
