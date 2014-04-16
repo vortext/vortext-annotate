@@ -35,9 +35,8 @@ nbproject
 *.fdb_latexmk
 *.fls
 *.pyc
-*_beta.py
+*.out
 CNLP.INI
-confused.txt
 pmccorpusdownload.py
 data/*
 testdata/
