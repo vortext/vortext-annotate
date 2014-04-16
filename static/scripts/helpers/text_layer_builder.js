@@ -30,14 +30,6 @@ var TextLayerBuilder = function textLayerBuilder(options) {
   this.layoutDone = false;
   this.divContentDone = false;
 
-  if(typeof PDFFindController === 'undefined') {
-      window.PDFFindController = null;
-  }
-
-  if(typeof this.lastScrollSource === 'undefined') {
-      this.lastScrollSource = null;
-  }
-
   this.beginLayout = function textLayerBuilderBeginLayout() {
     this.textDivs = [];
     this.renderingDone = false;
@@ -57,12 +49,7 @@ var TextLayerBuilder = function textLayerBuilder(options) {
   this.renderLayer = function textLayerBuilderRenderLayer() {
     var textDivs = this.textDivs;
     var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
-
-    // No point in rendering so many divs as it'd make the browser unusable
-    // even after the divs are rendered
-    var MAX_TEXT_DIVS_TO_RENDER = 100000;
-    if (textDivs.length > MAX_TEXT_DIVS_TO_RENDER) return;
+    var ctx = canvas.getContext('2d', {alpha: false});
 
     for (var i = 0, ii = textDivs.length; i < ii; i++) {
       var textDiv = textDivs[i];
@@ -72,15 +59,15 @@ var TextLayerBuilder = function textLayerBuilder(options) {
       if (width <= 0) {
         textDiv.isWhitespace = true;
         continue;
+      } else {
+        var textScale = textDiv.canvasWidth / width;
+        var rotation = textDiv.angle;
+        var transform = 'scale(' + textScale + ', 1)';
+        transform = 'rotate(' + rotation + 'deg) ' + transform;
+
+        CustomStyle.setProp('transform', textDiv, transform);
+        CustomStyle.setProp('transformOrigin', textDiv, "0% 0%");
       }
-
-      var textScale = textDiv.canvasWidth / width;
-      var rotation = textDiv.angle;
-      var transform = 'scale(' + textScale + ', 1)';
-      transform = 'rotate(' + rotation + 'deg) ' + transform;
-
-      CustomStyle.setProp('transform', textDiv, transform);
-      CustomStyle.setProp('transformOrigin', textDiv, "0% 0%");
     }
 
     this.renderingDone = true;
@@ -117,8 +104,9 @@ var TextLayerBuilder = function textLayerBuilder(options) {
   this.insertDivContent = function textLayerUpdateTextContent() {
     // Only set the content of the divs once layout has finished, the content
     // for the divs is available and content is not yet set on the divs.
-    if (!this.layoutDone || this.divContentDone || !this.textContent)
+    if (!this.layoutDone || this.divContentDone || !this.textContent) {
       return;
+    }
 
     this.divContentDone = true;
 
@@ -149,7 +137,6 @@ var TextLayerBuilder = function textLayerBuilder(options) {
 
   this.setTextContent = function textLayerBuilderSetTextContent(textContent) {
     this.textContent = textContent;
-    this.insertDivContent();
   };
 
   this.convertMatches = function textLayerBuilderConvertMatches(matches) {
