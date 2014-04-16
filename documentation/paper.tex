@@ -2,6 +2,7 @@
 \documentclass[runningheads,a4paper]{llncs}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[protrusion=true,expansion=true]{microtype}
 \usepackage{fixltx2e}
 \usepackage{graphicx}
 \usepackage{float}
@@ -35,7 +36,7 @@
 
 \input{revision}
 \author{Kuiper, J\inst{1}. \and Marshall, I.J.\inst{2} \and Wallace, B.C.\inst{3} \and Swertz, M.A.\inst{1}}
-\date{\today}
+\date{\texttt{revision: \revision, date: \revisiondate}}
 \title{Spá: a web-based viewer for text mining in Evidence Based Medicine}
 
 
@@ -48,9 +49,6 @@ Machine learning provides a potential means of mitigating this burden by automat
 But, for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
 To this end, we present an web-based tool called Spá\footnote{available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}} that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
 More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
-\\
-\\
-\texttt{revision: \revision, date: \revisiondate}
 \end{abstract}
 
 \acresetall
@@ -115,7 +113,7 @@ Spá relies on Mozilla pdf.js\footnote{\url{http://mozilla.github.io/pdf.js}} fo
 The results of the text extraction are processed server-side by a variety of processing topologies, as outlined in figure \ref{fig:sequence}.
 Results, which could come from complicated machine learning systems, are communicated back to the browser and displayed using React components\footnote{\url{http://facebook.github.io/react}}.
 
-For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by \href{http://substance.io/}{substance.io}, that acts as a mini-map is projected to show where it resides within the document.
+For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by \href{http://substance.io/}{substance.io}\footnote{\url{http://substance.io/beta/}}, that acts as a mini-map is projected to show where it resides within the document.
 The user can interactively activate and inspect specific results.
 
 \section{Conclusion \& Future work}
