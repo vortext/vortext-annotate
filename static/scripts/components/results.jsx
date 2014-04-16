@@ -12,7 +12,6 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
       var result = this.props.result;
       var document = result.get("document");
 
-      console.log(Marked(document));
       return(<div className="block">
                <h4>
                  <a onClick={this.toggleActivate} className={result.get("active") ? result.id + "_header" : ""}>

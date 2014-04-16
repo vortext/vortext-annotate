@@ -177,7 +177,8 @@ class RiskOfBiasPipeline(Pipeline):
             # change the -1s to 0s for now (TODO: improve on this)
             # done because the viewer has three classes, and we're only predicting two here
             document_prediction = "positive" if doc_model.predict(X_doc)[0] == 1 else "unknown"
-            domain_row["document"] = "**Overall risk of bias prediction**: %s <br> **Supporting sentences**: %s" % (document_prediction, len(domain_row["annotations"]) or "*none*")
+            template_text = "**Overall risk of bias prediction**: %s <br> **Supporting sentences**: %s"
+            domain_row["document"] = template_text % (document_prediction, len(domain_row["annotations"]) or "*none*")
 
             output.append(domain_row)
 

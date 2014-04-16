@@ -2,6 +2,9 @@
 define(['backbone', 'PDFJS'], function(Backbone, PDFJS) {
   'use strict';
   PDFJS.workerSrc = 'static/scripts/vendor/pdfjs/pdf.worker.js';
+  PDFJS.cMapUrl = 'static/scripts/vendor/pdfjs/cmaps/';
+  PDFJS.cMapPacked = true;
+  PDFJS.disableWebGL = false;
 
   var AppState = Backbone.Model.extend({
     initialize: function() {

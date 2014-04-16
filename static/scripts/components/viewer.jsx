@@ -139,15 +139,16 @@ define(['react', 'underscore','Q', 'jQuery'], function(React, _, Q, $) {
         CustomStyle.setProp('transform' , textLayerDiv, cssScale);
         CustomStyle.setProp('transformOrigin' , textLayerDiv, '0% 0%');
       }
-
-      var textLayerBuilder = new TextLayerBuilder();
-      textLayerBuilder.setTextContent(content);
-
       var renderContext = {
         canvasContext: ctx,
         viewport: viewport,
-        textLayer: textLayerBuilder
+        pageIdx: page.pageInfo.pageIdx
       };
+
+      var textLayerBuilder = new TextLayerBuilder(renderContext);
+      textLayerBuilder.setTextContent(content);
+
+      renderContext = _.extend(renderContext, {textLayerBuilder: textLayerBuilder});
 
       // from http://stackoverflow.com/questions/12693207/how-to-know-if-pdf-js-has-finished-rendering
       var pageRendering = page.render(renderContext);

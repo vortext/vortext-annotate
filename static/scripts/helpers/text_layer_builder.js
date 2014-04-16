@@ -29,16 +29,10 @@
 var TextLayerBuilder = function textLayerBuilder(options) {
   this.layoutDone = false;
   this.divContentDone = false;
+  this.textDivs = [];
 
-  this.beginLayout = function textLayerBuilderBeginLayout() {
-    this.textDivs = [];
-    this.renderingDone = false;
-  };
-
-  this.endLayout = function textLayerBuilderEndLayout() {
-    this.layoutDone = true;
-    this.insertDivContent();
-  };
+  this.viewport = options.viewport;
+  this.pageIdx = options.pageIndex;
 
   this.setupRenderLayoutTimer = function textLayerSetupRenderLayoutTimer() {
     // Rendering is done in React, so we don't care here.
@@ -53,6 +47,9 @@ var TextLayerBuilder = function textLayerBuilder(options) {
 
     for (var i = 0, ii = textDivs.length; i < ii; i++) {
       var textDiv = textDivs[i];
+      if ('isWhitespace' in textDiv) {
+        continue;
+      }
 
       ctx.font = textDiv.style.fontSize + ' ' + textDiv.style.fontFamily;
       var width = ctx.measureText(textDiv.textContent).width;
@@ -77,66 +74,56 @@ var TextLayerBuilder = function textLayerBuilder(options) {
     return this.textDivs;
   };
 
-  this.appendText = function textLayerBuilderAppendText(geom) {
-    // vScale and hScale already contain the scaling to pixel units
-    var fontHeight = geom.fontSize * Math.abs(geom.vScale);
-    var fontAscent = geom.ascent ? geom.ascent * fontHeight :
-          geom.descent ? (1 + geom.descent) * fontHeight : fontHeight;
+  this.appendText = function textLayerBuilderAppendText(geom, styles) {
+    var style = styles[geom.fontName];
 
-    var style = {
-      fontSize: fontHeight + "px",
-      fontFamily: geom.fontFamily,
-      left:  (geom.x + (fontAscent * Math.sin(geom.angle))) + 'px',
-      top:  (geom.y - (fontAscent * Math.cos(geom.angle))) + 'px'
-    };
-
-    var textElement = {
-      canvasWidth:  geom.canvasWidth * Math.abs(geom.hScale),
-      fontName: geom.fontName,
-      angle:  geom.angle * (180 / Math.PI),
-      style: style
-    };
-
-    // The content of the div is set in the `setTextContent` function.
-    this.textDivs.push(textElement);
-  };
-
-  this.insertDivContent = function textLayerUpdateTextContent() {
-    // Only set the content of the divs once layout has finished, the content
-    // for the divs is available and content is not yet set on the divs.
-    if (!this.layoutDone || this.divContentDone || !this.textContent) {
+    if (!/\S/.test(geom.str)) {
+      this.textDivs.push({isWhitespace: true});
       return;
     }
 
-    this.divContentDone = true;
+    var tx = PDFJS.Util.transform(this.viewport.transform, geom.transform);
+    var angle = Math.atan2(tx[1], tx[0]);
+    if (style.vertical) {
+      angle += Math.PI / 2;
+    }
+    var fontHeight = Math.sqrt((tx[2] * tx[2]) + (tx[3] * tx[3]));
+    var fontAscent = (style.ascent ? style.ascent * fontHeight :
+      (style.descent ? (1 + style.descent) * fontHeight : fontHeight));
 
-    var textDivs = this.textDivs;
-    var bidiTexts = this.textContent;
+    var fragmentStyles = {
+      fontSize: fontHeight + "px",
+      fontFamily: style.fontFamily,
+      left: (tx[4] + (fontAscent * Math.sin(angle))) + 'px',
+      top: (tx[5] - (fontAscent * Math.cos(angle))) + 'px'
+    };
 
-    for (var i = 0; i < bidiTexts.length; i++) {
-      var bidiText = bidiTexts[i];
-      var textDiv = textDivs[i];
-      if (!/\S/.test(bidiText.str)) {
-        textDiv.isWhitespace = true;
-        continue;
-      }
+    var textElement = {
+      fontNam:  geom.fontName,
+      angle:  angle * (180 / Math.PI),
+      style: fragmentStyles,
+      textContent: geom.str
+    };
 
-      textDiv.textContent = bidiText.str;
-      // TODO refactor text layer to use text content position
-      /**
-       * var arr = this.viewport.convertToViewportPoint(bidiText.x, bidiText.y);
-       * textDiv.style.left = arr[0] + 'px';
-       * textDiv.style.top = arr[1] + 'px';
-       */
-      // bidiText.dir may be 'ttb' for vertical texts.
-      textDiv.dir = bidiText.dir;
+    if (style.vertical) {
+      textElement.canvasWidth = geom.height * this.viewport.scale;
+    } else {
+      textElement.canvasWidth = geom.width * this.viewport.scale;
     }
 
-    this.setupRenderLayoutTimer();
+    this.textDivs.push(textElement);
   };
 
   this.setTextContent = function textLayerBuilderSetTextContent(textContent) {
     this.textContent = textContent;
+
+    var textItems = textContent.items;
+    for (var i = 0; i < textItems.length; i++) {
+      this.appendText(textItems[i], textContent.styles);
+    }
+    this.divContentDone = true;
+
+    this.setupRenderLayoutTimer();
   };
 
   this.convertMatches = function textLayerBuilderConvertMatches(matches) {

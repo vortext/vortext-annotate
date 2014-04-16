@@ -57,7 +57,7 @@ class Pipeline(object):
 
         for idx, page in enumerate(pages):
             if page is not None:
-                textNodes = [node["str"].encode("utf8") for node in page]
+                textNodes = [node["str"].encode("utf8") for node in page["items"]]
 
                 total = 0
                 ranges = []
