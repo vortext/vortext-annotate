@@ -12,6 +12,7 @@ require.config({
     'underscore': 'vendor/underscore',
     'Q': 'vendor/q',
     'react': 'vendor/react',
+    'marked': 'vendor/marked',
     'JSXTransformer': 'vendor/JSXTransformer',
     'backbone': 'vendor/backbone',
     'PDFJS': 'vendor/pdfjs/pdf'

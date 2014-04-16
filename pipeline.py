@@ -92,7 +92,10 @@ class SampleSizePipeline(Pipeline):
             matched_span = []
 
 
-        ss_row = {"name": "Sample Size"}
+        ss_row = {
+            "name": "Sample Size",
+            "document": "**Predicted sample size:** %s" % (predicted)
+        }
         ss_row["annotations"] = [{"span": matched_span,  "sentence": predicted, "label": 1}]
 
         return [ss_row]
@@ -173,7 +176,8 @@ class RiskOfBiasPipeline(Pipeline):
 
             # change the -1s to 0s for now (TODO: improve on this)
             # done because the viewer has three classes, and we're only predicting two here
-            domain_row["document"] = 1 if doc_model.predict(X_doc)[0] == 1 else 0
+            document_prediction = "positive" if doc_model.predict(X_doc)[0] == 1 else "unknown"
+            domain_row["document"] = "**Overall risk of bias prediction**: %s <br> **Supporting sentences**: %s" % (document_prediction, len(domain_row["annotations"]) or "*none*")
 
             output.append(domain_row)
 

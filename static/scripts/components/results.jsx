@@ -1,39 +1,8 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2 -*- */
-define(['jQuery', 'underscore', 'react'], function($, _, React) {
+define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked) {
   'use strict';
 
-  var succinct = function(str, options){
-    // kindly from https://github.com/micjamking/Succinct
-    var defaults = {
-      size: 240,
-      omission: '…',
-      ignore: true
-    };
-    options = $.extend(defaults, options);
-
-    var textDefault,
-        textTruncated,
-        regex = /[!-\/:-@\[-`{-~]$/;
-
-    textDefault = str;
-
-    if (textDefault.length > options.size) {
-      textTruncated = $.trim(textDefault).
-        substring(0, options.size).
-        split(' ').
-        slice(0, -1).
-        join(' ');
-
-      if (options.ignore) {
-        textTruncated = textTruncated.replace( regex , '' );
-      }
-      return textTruncated + options.omission;
-    }
-    return textDefault;
-  };
-
   var Block = React.createClass({
-    levels: ['negative', 'unknown', 'positive'],
     toggleActivate: function(e) {
       var result = this.props.result;
       var isActive = !result.get("active");
@@ -41,21 +10,9 @@ define(['jQuery', 'underscore', 'react'], function($, _, React) {
     },
     render: function() {
       var result = this.props.result;
-      var annotations = result.get("annotations").map(function(annotation, idx) {
-        if(annotation.sentence) {
-          return (<li key={idx}>{succinct(annotation.sentence, 180)}</li>);
-        } else {
-          return "";
-        }
-      });
-
-      var overall = "";
       var document = result.get("document");
-      if(!_.isNull(document)) {
-        overall =
-          <span><span className="head">overall assesment: </span>{this.levels[document + 1]}</span>;
-      }
 
+      console.log(Marked(document));
       return(<div className="block">
                <h4>
                  <a onClick={this.toggleActivate} className={result.get("active") ? result.id + "_header" : ""}>
@@ -63,10 +20,7 @@ define(['jQuery', 'underscore', 'react'], function($, _, React) {
                  </a>
                </h4>
                <div className="content">
-                 <div className="document">
-                   {overall}
-                 </div>
-                 <ul>{annotations}</ul>
+                 <div className="document" dangerouslySetInnerHTML={{__html: Marked(document)}} />
                </div>
              </div>);
     }
