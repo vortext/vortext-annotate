@@ -72,6 +72,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
           className: node.className
         };
       });
+
       var sortedByPosition = _.sortBy(nodes, function(n) { return n.position; });
       for(var i = 0; i < sortedByPosition.length; i++) {
         var node = sortedByPosition[i];
