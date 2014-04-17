@@ -1,5 +1,5 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['react', 'underscore','Q', 'jQuery'], function(React, _, Q, $) {
+define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], function(React, _, Q, $, TextLayerBuilder) {
   'use strict';
 
   var TextLayer = React.createClass({
@@ -135,9 +135,6 @@ define(['react', 'underscore','Q', 'jQuery'], function(React, _, Q, $) {
 
       if (outputScale.scaled) {
         ctx.scale(outputScale.sx, outputScale.sy);
-        var cssScale = 'scale(' + (1 / outputScale.sx) + ', ' + (1 / outputScale.sy) + ')';
-        CustomStyle.setProp('transform' , textLayerDiv, cssScale);
-        CustomStyle.setProp('transformOrigin' , textLayerDiv, '0% 0%');
       }
       var renderContext = {
         canvasContext: ctx,

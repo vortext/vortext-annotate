@@ -26,7 +26,7 @@ require.config({
       exports: "Backbone" },
     'PDFJS': {
       exports: 'PDFJS',
-      deps: ['vendor/pdfjs/compatibility', 'vendor/pdfjs/ui_utils', 'helpers/text_layer_builder'] }
+      deps: ['vendor/pdfjs/compatibility', 'vendor/pdfjs/ui_utils'] }
   }
 });
 
@@ -76,7 +76,4 @@ define(function (require) {
   appState.on("update:minimap", _.debounce(function(e, obj) {
     minimap.forceUpdate();
   }, 150, true));
-
-
-
 });
