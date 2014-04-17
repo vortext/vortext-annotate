@@ -27,59 +27,13 @@
  * text that is being searched for.
  */
 var TextLayerBuilder = function textLayerBuilder(options) {
-  this.layoutDone = false;
-  this.divContentDone = false;
-  this.textDivs = [];
-
   this.viewport = options.viewport;
-  this.pageIdx = options.pageIndex;
 
-  this.setupRenderLayoutTimer = function textLayerSetupRenderLayoutTimer() {
-    // Rendering is done in React, so we don't care here.
-    // Original implementation delayed painting if the user was scrolling
-    this.renderLayer();
-  };
-
-  this.renderLayer = function textLayerBuilderRenderLayer() {
-    var textDivs = this.textDivs;
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d', {alpha: false});
-
-    for (var i = 0, ii = textDivs.length; i < ii; i++) {
-      var textDiv = textDivs[i];
-      if ('isWhitespace' in textDiv) {
-        continue;
-      }
-
-      ctx.font = textDiv.style.fontSize + ' ' + textDiv.style.fontFamily;
-      var width = ctx.measureText(textDiv.textContent).width;
-      if (width <= 0) {
-        textDiv.isWhitespace = true;
-        continue;
-      } else {
-        var textScale = textDiv.canvasWidth / width;
-        var rotation = textDiv.angle;
-        var transform = 'scale(' + textScale + ', 1)';
-        transform = 'rotate(' + rotation + 'deg) ' + transform;
-
-        CustomStyle.setProp('transform', textDiv, transform);
-        CustomStyle.setProp('transformOrigin', textDiv, "0% 0%");
-      }
-    }
-
-    this.renderingDone = true;
-  };
-
-  this.getRenderedElements = function() {
-    return this.textDivs;
-  };
-
-  this.appendText = function textLayerBuilderAppendText(geom, styles) {
+  this.createElement = function(geom, styles) {
     var style = styles[geom.fontName];
 
     if (!/\S/.test(geom.str)) {
-      this.textDivs.push({isWhitespace: true});
-      return;
+      return {isWhitespace: true};
     }
 
     var tx = PDFJS.Util.transform(this.viewport.transform, geom.transform);
@@ -111,33 +65,36 @@ var TextLayerBuilder = function textLayerBuilder(options) {
       textElement.canvasWidth = geom.width * this.viewport.scale;
     }
 
-    this.textDivs.push(textElement);
+    return textElement;
   };
 
-  this.setTextContent = function textLayerBuilderSetTextContent(textContent) {
-    this.textContent = textContent;
-
+  this.getTextContent = function(textContent) {
     var textItems = textContent.items;
+    var textElements = [];
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d', {alpha: false});
+
     for (var i = 0; i < textItems.length; i++) {
-      this.appendText(textItems[i], textContent.styles);
-    }
-    this.divContentDone = true;
+      var textElement = this.createElement(textItems[i], textContent.styles);
+      if(!textElement.isWhitespace) {
+        ctx.font = textElement.style.fontSize + ' ' + textElement.style.fontFamily;
+        var width = ctx.measureText(textElement.textContent).width;
+        if (width <= 0) {
+          textElement.isWhitespace = true;
+        } else {
+          var textScale = textElement.canvasWidth / width;
+          var rotation = textElement.angle;
+          var transform = 'scale(' + textScale + ', 1)';
+          transform = 'rotate(' + rotation + 'deg) ' + transform;
 
-    this.setupRenderLayoutTimer();
+          CustomStyle.setProp('transform', textElement, transform);
+          CustomStyle.setProp('transformOrigin', textElement, "0% 0%");
+        }
+      }
+      textElements.push(textElement);
+    };
+
+    return textElements;
   };
 
-  this.convertMatches = function textLayerBuilderConvertMatches(matches) {
-    // NOT IMPLEMENTED
-    return;
-  };
-
-  this.renderMatches = function textLayerBuilder_renderMatches(matches) {
-    // NOT IMPLEMENTED
-    return;
-  };
-
-  this.updateMatches = function textLayerUpdateMatches() {
-    // NOT IMPLEMENTED
-    return;
-  };
 };

@@ -110,7 +110,7 @@ define(['react', 'underscore','Q', 'jQuery'], function(React, _, Q, $) {
 
       var canvas = this.refs.canvas.getDOMNode();
       var textLayerDiv = this.refs.textLayer.getDOMNode();
-      var ctx = canvas.getContext("2d");
+      var ctx = canvas.getContext("2d", {alpha: false});
 
       var SCROLLBAR_PADDING = 0;
       var viewport = page.getViewport(1.0);
@@ -141,22 +141,13 @@ define(['react', 'underscore','Q', 'jQuery'], function(React, _, Q, $) {
       }
       var renderContext = {
         canvasContext: ctx,
-        viewport: viewport,
-        pageIdx: page.pageInfo.pageIdx
+        viewport: viewport
       };
 
       var textLayerBuilder = new TextLayerBuilder(renderContext);
-      textLayerBuilder.setTextContent(content);
+      self.setState({content: textLayerBuilder.getTextContent(content)});
 
-      renderContext = _.extend(renderContext, {textLayerBuilder: textLayerBuilder});
-
-      // from http://stackoverflow.com/questions/12693207/how-to-know-if-pdf-js-has-finished-rendering
-      var pageRendering = page.render(renderContext);
-      var completeCallback = pageRendering.internalRenderTask.callback;
-      pageRendering.internalRenderTask.callback = function(error) {
-        completeCallback.call(this, error);
-        self.setState({content: textLayerBuilder.getRenderedElements()});
-      };
+      page.render(renderContext);
     },
     shouldRepaint: function(other) {
       return other.fingerprint !== this.props.fingerprint;

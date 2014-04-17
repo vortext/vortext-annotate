@@ -53,6 +53,7 @@ define(function (require) {
 
   appState.on("change:pdf", function(e, pdf) {
     viewer.setProps({pdf: pdf});
+    resultsState.reset();
   });
 
   var Results = require("jsx!components/results");
@@ -74,7 +75,7 @@ define(function (require) {
 
   appState.on("update:minimap", _.debounce(function(e, obj) {
     minimap.forceUpdate();
-  }, 100));
+  }, 150, true));
 
 
 
