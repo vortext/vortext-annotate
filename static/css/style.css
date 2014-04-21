@@ -121,8 +121,8 @@ canvas {
 
 .block h4 a {
     font-family: 'Montserrat', 'Source Sans Pro', sans-serif;
+    text-shadow: text-shadow: 1px 1px 1px #fff;
     display: block;
-    font-weight: 400;
     min-height: 60px;
     line-height: 21px;
     font-size: 16px;
