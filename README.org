@@ -1,6 +1,40 @@
-From the Old Norse word spá or spæ referring to prophesying and which is cognate with the present English word "spy," continuing Proto-Germanic *spah- and the Proto-Indo-European root *(s)peḱ (to see, to observe) --- [[http://en.wikipedia.org/wiki/V%C3%B6lva][vǫlva (wikipedia)]]
+#+BEGIN_HTML
+<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/documentation/images/logo.png" alt="logo" align="right" width="250" />
+#+END_HTML
 
-Spá is a Mozilla PDF.js based viewer for multi-class machine learning tasks.
+#+BEGIN_QUOTE
+From the Old Norse word spá or spæ referring to prophesying and which is cognate with the present English word "spy," continuing Proto-Germanic *spah- and the Proto-Indo-European root *(s)peḱ (to see, to observe) --- [[http://en.wikipedia.org/wiki/V%C3%B6lva][vǫlva (wikipedia)]]
+#+END_QUOTE
+
+* Introduction
+Unstructured PDF documents remain the main vehicle for dissemination of scientific findings.
+Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
+Evidence-based medicine provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
+Machine learning provides a potential means of mitigating this burden by automating extraction.
+But, for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
+To this end, we present an web-based tool called Spá that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
+More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
+
+* Technical overview
+Spá relies on [[http://mozilla.github.io/pdf.js][Mozilla PDF.js]] for visualization of the document and text extraction.
+The results of the text extraction are processed server-side.
+Results are communicated back to the browser and displayed using [[http://facebook.github.io/react][React]].
+
+For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by [[http://substance.io/beta/][substance.io]], that acts as a mini-map is projected to show where it resides within the document.
+The user can interactively activate and inspect specific results.
+
+* Development prerequisites
+  - Python >= 2.7 (for packages see [[https://github.com/joelkuiper/spa/blob/master/requirements.txt][requirements.txt]])
+  - For minified deployment [[https://github.com/jrburke/r.js][r.js]]
+
+* Future work
+See [[https://github.com/joelkuiper/spa/issues][ideas issues]]
+
+* Contributing
+Currently this is a research object.
+The API and organizational structure are subject to change.
+Comments and suggestions are much appreciated.
+For code contributions: fork, branch, and send a detailed pull request.
 
 * LICENSE
 Spa is open source, and licensed under [[http://gplv3.fsf.org/][GPLv3]]. See [[https://github.com/joelkuiper/spa/blob/master/LICENSE.md][LICENSE.md]] for more information.
