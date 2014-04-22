@@ -1,5 +1,5 @@
 #+BEGIN_HTML
-<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/documentation/images/logo.jpg" alt="logo" align="right" width="250" />
+<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/documentation/images/logo.jpg" alt="logo" align="right" height="175" />
 #+END_HTML
 
 #+BEGIN_QUOTE
@@ -15,6 +15,9 @@ But, for automated approaches to be useful to end-users, we need tools that allo
 To this end, we present an web-based tool called Spá that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
 More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
 
+* Example
+You can try the visualizer at [[http://spa.clinici.co]] and use one of the Randomized Clinical Trials from the [[https://github.com/joelkuiper/spa/tree/master/examples][examples]] folder.
+
 * Technical overview
 Spá relies on [[http://mozilla.github.io/pdf.js][Mozilla PDF.js]] for visualization of the document and text extraction.
 The results of the text extraction are processed server-side.
@@ -28,7 +31,7 @@ The user can interactively activate and inspect specific results.
   - For minified deployment [[https://github.com/jrburke/r.js][r.js]]
 
 * Future work
-See [[https://github.com/joelkuiper/spa/issues][ideas issues]]
+See [[https://github.com/joelkuiper/spa/issues?labels=ideas&page=1&state=open][ideas]] or the other issues.
 
 * Contributing
 Currently this is a research object.
