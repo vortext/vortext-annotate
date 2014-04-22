@@ -1,5 +1,5 @@
 #+BEGIN_HTML
-<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/documentation/images/logo.png" alt="logo" align="right" width="250" />
+<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/documentation/images/logo.jpg" alt="logo" align="right" width="250" />
 #+END_HTML
 
 #+BEGIN_QUOTE
