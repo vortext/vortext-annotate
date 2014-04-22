@@ -31,7 +31,7 @@ The user can interactively activate and inspect specific results.
   - For minified deployment [[https://github.com/jrburke/r.js][r.js]]
 
 * Future work
-See [[https://github.com/joelkuiper/spa/issues?labels=ideas&page=1&state=open][ideas]] or the other issues.
+See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
 * Contributing
 Currently this is a research object.
