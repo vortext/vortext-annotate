@@ -104,8 +104,9 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       var pdfInfo = model.get("pdf").pdfInfo;
       if(!pdfInfo)  { return <div className="minimap no-pdf" />; }
 
-      var fingerprint = pdfInfo.fingerprint;
-      var numPages =  pdfInfo.numPages;
+      var fingerprint = pdfInfo.fingerprint,
+          numPages =  pdfInfo.numPages;
+
       var nodesPerPage = model.get("minimap");
 
       var pages = [];
@@ -133,11 +134,10 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
           };
           return(<div key={idx} className={"text-segment " + segment.className} style={style} />);
         });
-        var key = fingerprint + idx;
-        return <div className="minimap-node" key={key} style={style}>{textSegments}</div>;
+        return <div className="minimap-node" key={idx} style={style}>{textSegments}</div>;
       });
 
-      return(<div className="minimap">
+      return(<div className="minimap" key={fingerprint}>
              <VisibleArea height={this.state.panelHeight / factor} target={this.props.target} factor={factor} />
              {pageElements}
              </div>);
