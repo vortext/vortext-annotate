@@ -51,11 +51,6 @@ define(function (require) {
     document.getElementById("viewer")
   );
 
-  appState.on("change:pdf", function(e, pdf) {
-    viewer.setProps({pdf: pdf});
-    resultsState.reset();
-  });
-
   var Results = require("jsx!components/results");
   var results = React.renderComponent(
     Results({results: resultsState}),
@@ -68,12 +63,21 @@ define(function (require) {
   });
 
   var Minimap = require("jsx!components/minimap");
+
+  var target = "#viewer .viewer";
   var minimap = React.renderComponent(
-    Minimap({model: appState, target: "#viewer .viewer"}),
+    Minimap({model: appState, target: target }),
     document.getElementById("minimap")
   );
 
   appState.on("update:minimap", _.debounce(function(e, obj) {
     minimap.forceUpdate();
   }, 150, true));
+
+  var $ = require("jQuery");
+  appState.on("change:pdf", function(e, pdf) {
+    $(target).scrollTop(0);
+    viewer.setProps({pdf: pdf});
+    resultsState.reset();
+  });
 });
