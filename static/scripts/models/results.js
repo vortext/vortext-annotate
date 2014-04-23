@@ -6,6 +6,7 @@ define(['backbone', 'helpers/annotator'], function(Backbone, Annotator) {
     defaults: {
       id: "",
       document: null,
+      color: null,
       name: "",
       active: false,
       annotations: []

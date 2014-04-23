@@ -64,15 +64,17 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
     projectTextNodes: function(textNodes, factor) {
       // The basic idea here is using a sweepline to
       // project the 2D structure of the PDF onto a 1D minimap
-      var segments = [];
       var nodes = _.map(textNodes, function(node) {
+        var $node = $(node);
         return {
           height: node.clientHeight / factor,
-          position: $(node).position().top / factor,
-          className: node.className
+          position: $node.position().top / factor,
+          color:  node.dataset.color,
+          annotations: node.dataset.annotations
         };
       });
 
+      var segments = [];
       var sortedByPosition = _.sortBy(nodes, function(n) { return n.position; });
       for(var i = 0; i < sortedByPosition.length; i++) {
         var node = sortedByPosition[i];
@@ -86,10 +88,13 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
           prevSegment = segments.pop();
           var nextHeight =  prevSegment.height +
                 ((node.height + node.position) - (prevSegment.height + prevSegment.position));
+          var nextColor = prevSegment.color ? prevSegment.color : node.color;
+
           var nextSegment = {
+            height: nextHeight,
             position: prevSegment.position,
-            height: nextHeight, // overlapping height
-            className: prevSegment.className + " " + node.className
+            color: nextColor,
+            annotations: _.union(node.annotations, prevSegment.annotations)
           };
           segments.push(nextSegment);
         } else {
@@ -107,7 +112,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       var fingerprint = pdfInfo.fingerprint,
           numPages =  pdfInfo.numPages;
 
-      var nodesPerPage = model.get("minimap");
+      var nodesPerPage = model.get("textNodes");
 
       var pages = [];
       for(var i = 0; i < nodesPerPage.length; i++) {
@@ -132,7 +137,10 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
             "top": Math.ceil(segment.position) + "px",
             "height": Math.ceil(segment.height) + "px"
           };
-          return(<div key={idx} className={"text-segment " + segment.className} style={style} />);
+          if(segment.color) {
+            style.backgroundColor = "rgb(" + segment.color + ")";
+          }
+          return(<div key={idx} className="text-segment" style={style} />);
         });
         return <div className="minimap-node" key={idx} style={style}>{textSegments}</div>;
       });

@@ -20,7 +20,6 @@ require.config({
   shim: {
     'jQuery': { exports : 'jQuery' },
     'underscore': { exports : '_' },
-    'jQuery.injectCSS': { deps: ['jQuery'] },
     "backbone": {
       deps: ["jQuery", "underscore"],
       exports: "Backbone" },
@@ -70,9 +69,9 @@ define(function (require) {
     document.getElementById("minimap")
   );
 
-  appState.on("update:minimap", _.debounce(function(e, obj) {
+  appState.on("update:textNodes", _.debounce(function(e, obj) {
     minimap.forceUpdate();
-  }, 150, true));
+  }, 100, true));
 
   var $ = require("jQuery");
   appState.on("change:pdf", function(e, pdf) {

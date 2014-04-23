@@ -15,13 +15,13 @@ define(['backbone', 'PDFJS'], function(Backbone, PDFJS) {
     },
     defaults: {
       data: '',
-      minimap: [],
+      textNodes: [],
       pdf: {}
     },
     loadFromData: function(data) {
       var self = this;
       PDFJS.getDocument(data).then(function(pdf) {
-        self.set({pdf: pdf, minimap: []});
+        self.set({pdf: pdf, textNodes: []});
       });
     }
   });

@@ -119,16 +119,24 @@ canvas {
     user-select: none;
 }
 
+.block h4 {
+    background-color: #e5e5e5;
+}
+
+.block h4:hover {
+    background-color: #d9d9d9;
+}
+
 .block h4 a {
     font-family: 'Montserrat', 'Source Sans Pro', sans-serif;
     text-shadow: text-shadow: 1px 1px 1px #fff;
     display: block;
+    background-color: inherit;
     min-height: 60px;
     line-height: 21px;
     font-size: 16px;
     padding: 10px 20px;
     color: #444;
-    background-color: #e5e5e5;
 
     -webkit-transition-property: box-shadow;
     -webkit-transition-duration: 300ms;
@@ -139,7 +147,7 @@ canvas {
 }
 
 .block h4 a:hover {
-    background-color: #d9d9d9;
+    background-color: inherit;
    -moz-box-shadow:    inset 0 0 10px rgba(0,0,0,0.3);
    -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
    box-shadow:         inset 0 0 10px rgba(0,0,0,0.3);
@@ -175,7 +183,6 @@ canvas {
 }
 
 .textLayer > div span.annotated {
-    opacity: 0.2;
     margin: -1px;
     padding: 1px;
 }

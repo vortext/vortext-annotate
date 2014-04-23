@@ -7,9 +7,9 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
       var appState = this.props.appState;
       var children = this.getDOMNode().childNodes;
       if(children.length > 0) {
-        var textDivs = appState.get("minimap");
-        textDivs[this.props.pageIndex] = children;
-        appState.trigger("update:minimap");
+        var textNodes = appState.get("textNodes");
+        textNodes[this.props.pageIndex] = children;
+        appState.trigger("update:textNodes");
       }
     },
     getNodeAnnotations: function(results, pageIndex) {
@@ -18,12 +18,15 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
       // filtered per page
       var acc = {};
       results.each(function(result) {
-        var id = result.get("id");
+        var props = {
+          type: result.get("id"),
+          color: result.get("color")
+        };
         var annotations = result.get("annotations");
         _.each(annotations, function(annotation) {
           _.each(annotation.nodes, function(node) {
             if(node.pageIndex === pageIndex) {
-              node["type"] = id;
+              node = _.extend(node, props);
               acc[node.index] = _.union(acc[node.index] || [], node);
             }
           });
@@ -32,10 +35,10 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
       return acc;
     },
     render: function() {
-      var results = this.props.results
-        , pageIndex = this.props.pageIndex
-        , key = this.props.key
-        , annotations = this.getNodeAnnotations(results, pageIndex);
+      var results = this.props.results,
+          pageIndex = this.props.pageIndex,
+          key = this.props.key,
+          annotations = this.getNodeAnnotations(results, pageIndex);
 
       var getActiveAnnotations = function(annotations) {
         return _.filter(annotations, function(c) {
@@ -54,7 +57,7 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
               });
 
         if(!_.isEmpty(activeAnnotations)) {
-          var nodeClassName = "";
+          var nodeAnnotations = [];
           var spans = activeAnnotations.map(function(ann, i) {
             var previous = activeAnnotations[i - 1];
 
@@ -63,33 +66,36 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
             }
             var next = activeAnnotations[i + 1];
 
-            var className = ann.type + "_annotation"
-              , text = o.textContent
-              , start = previous ? text.length + (previous.range[1] - previous.interval[1]) : 0
-              , left = ann.range[0] - ann.interval[0]
-              , right = text.length + (ann.range[1] - ann.interval[1])
-              , end = next ?  right : text.length;
+            var text = o.textContent,
+                start = previous ? text.length + (previous.range[1] - previous.interval[1]) : 0,
+                left = ann.range[0] - ann.interval[0],
+                right = text.length + (ann.range[1] - ann.interval[1]),
+                end = next ?  right : text.length,
+                style = { "backgroundColor": "rgba(" + ann.color.join(",") + ",0.2)" };
 
-            nodeClassName = nodeClassName + " " + className;
+            nodeAnnotations = _.union(nodeAnnotations, ann);
 
-            return(<span key={key + i}>
-                    <span className="pre">{text.slice(start, left)}</span>
-                    <span className={className + " annotated"}>{text.slice(left, right)}</span>
-                    <span className="post">{text.slice(right, end)}</span>
+            return(<span key={i}>
+                     <span className="pre">{text.slice(start, left)}</span>
+                     <span className="annotated" style={style}>{text.slice(left, right)}</span>
+                     <span className="post">{text.slice(right, end)}</span>
                    </span>);
           });
+          var dataColor = _.last(nodeAnnotations).color.join(",");
+          var dataAnnotations = _.pluck(nodeAnnotations, "type");
           return(
               <div style={o.style}
                    dir={o.dir}
-                   className={nodeClassName}
-                   key={key + i}>
+                   data-color={dataColor}
+                   data-annotations={dataAnnotations}
+                   key={i}>
               {spans}
             </div>);
         } else {
           return (
               <div style={o.style}
                    dir={o.dir}
-                   key={key + i}>
+                   key={i}>
               {o.textContent}
             </div>
           );

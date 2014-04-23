@@ -11,15 +11,22 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     render: function() {
       var result = this.props.result;
       var document = result.get("document");
+      var isActive = result.get("active");
+      var style = {
+        "backgroundColor": isActive ? "rgb(" + result.get("color") + ")" : "inherit",
+        "color": isActive ? "white" : "inherit"
+      };
 
       return(<div className="block">
                <h4>
-                 <a onClick={this.toggleActivate} className={result.get("active") ? result.id + "_header" : ""}>
+                 <a onClick={this.toggleActivate}
+                    style={style}>
                    {result.get("name")}
                  </a>
                </h4>
                <div className="content">
-                 <div className="document" dangerouslySetInnerHTML={{__html: Marked(document)}} />
+                 <div className="document"
+                      dangerouslySetInnerHTML={{__html: Marked(document)}} />
                </div>
              </div>);
     }

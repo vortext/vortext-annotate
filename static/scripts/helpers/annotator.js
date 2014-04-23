@@ -1,5 +1,5 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-define(['jQuery','underscore', 'Q', 'jQuery.injectCSS'], function($, _, Q) {
+define(['jQuery','underscore', 'Q'], function($, _, Q) {
   'use strict';
 
   var colors =
@@ -23,19 +23,6 @@ define(['jQuery','underscore', 'Q', 'jQuery.injectCSS'], function($, _, Q) {
     return str ? str.replace(/ /g, "-").toLowerCase() : null;
   };
 
-  function injectStyles(id, color) {
-    var styles = {};
-    var colorStr = color.join(",");
-    styles["." + id + "_header"] = {
-      "background-color": "rgb(" + colorStr + ") !important", // YOLO
-      "color": "white !important"
-    };
-    styles["." + id + "_annotation"] = {
-      "background-color": "rgb(" + colorStr + ")"
-    };
-    $.injectCSS(styles);
-  }
-
   var Annotator = {
     _postProcess: function(data) {
       data = _.clone(data);
@@ -43,7 +30,7 @@ define(['jQuery','underscore', 'Q', 'jQuery.injectCSS'], function($, _, Q) {
         var id = toClassName(result.name);
         result.active = idx == 0 ? true : false;
         result.id = id;
-        injectStyles(id, colors[idx % colors.length]);
+        result.color = colors[idx % colors.length];
       });
       return data;
     },
