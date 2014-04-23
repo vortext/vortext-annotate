@@ -60,6 +60,7 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
           var nodeAnnotations = [];
           var spans = activeAnnotations.map(function(ann, i) {
             var previous = activeAnnotations[i - 1];
+            nodeAnnotations = _.union(nodeAnnotations, ann);
 
             if(previous && previous.range[0] >= ann.range[0] && previous.range[1] >= ann.range[1]) {
               return "";
@@ -73,15 +74,13 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
                 end = next ?  right : text.length,
                 style = { "backgroundColor": "rgba(" + ann.color.join(",") + ",0.2)" };
 
-            nodeAnnotations = _.union(nodeAnnotations, ann);
-
             return(<span key={i}>
                      <span className="pre">{text.slice(start, left)}</span>
                      <span className="annotated" style={style}>{text.slice(left, right)}</span>
                      <span className="post">{text.slice(right, end)}</span>
                    </span>);
           });
-          var dataColor = _.last(nodeAnnotations).color.join(",");
+          var dataColor = _.first(nodeAnnotations).color.join(",");
           var dataAnnotations = _.pluck(nodeAnnotations, "type");
           return(
               <div style={o.style}
