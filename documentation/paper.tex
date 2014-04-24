@@ -75,7 +75,7 @@ The Spá architecture is modular and new models may be trivially added, thus the
 %Finding sentences or words with particular characteristics within a document is an important task in natural language processing and machine learning.
 Imposing structure on full-text documents (e.g., identifying specific sentences of interest) is an important and practical task in natural language processing and machine learning.
 For example, \emph{systematic reviews} are fundamental tools in \ac{ebm} \cite{sackett1996}, and aim to answer clinical questions by exhaustively searching the literature for relevant studies.
-During systematic reviewing data on trial design and conduct, intervention effectiveness, adverse effects, and potential biases, is extracted and synthesized to produce a textual and statistical summary.
+During systematic reviewing data on trial design and conduct, intervention effectiveness, adverse effects, and potential biases, are extracted and synthesized to produce a textual and statistical summary.
 As an example, we demonstrate the task of bias assessment in which a reviewer assess, for example, whether the participants and personnel were properly blinded.
 Assessing this is a time-consuming task, a single trial can take a domain expert around ten minutes \cite{Hartling2011}.
 Making matters worse, a single review may typically include several dozen trials, and due to empirical low rates of reviewer agreement it is regarded as best practice to have each study assessed twice by independent reviewers who later come to a consensus\cite{Hartling2009}.
@@ -165,7 +165,7 @@ Figure \ref{fig:screenshot} shows example system output: the overall risk of bia
 \section{Spá Architecture Overview}
 Spá relies on Mozilla pdf.js\footnote{\url{http://mozilla.github.io/pdf.js}} for visualization of the document and text extraction.
 The results of the text extraction are processed server-side by a variety of processing topologies, as outlined in figure \ref{fig:sequence}.
-Results, which could come from complicated machine learning systems, are communicated back to the browser and displayed using React components\footnote{\url{http://facebook.github.io/react}}.
+Results are communicated back to the browser and displayed using React components\footnote{\url{http://facebook.github.io/react}}.
 
 For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by \href{http://substance.io/}{substance.io}\footnote{\url{http://substance.io/beta/}}, that acts as a mini-map is projected to show where it resides within the document.
 The user can interactively activate and inspect specific results.
