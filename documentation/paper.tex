@@ -57,12 +57,12 @@
 % To this end, we present a web-based tool called Spá\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://clinici.co/}} that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
 % More generally, Spá provides a framework for visualizing predicted full-text \ac{pdf} annotations, both at the document and sentence level.
 
-Summarizing the evidence concerning medical interventions is an immense undertaking, in part because unstructured \ac{pdf} documents remain the main vehicle for disseminating the results of clinical trials.
+Summarizing the evidence about medical interventions is an immense undertaking, in part because unstructured \ac{pdf} documents remain the main vehicle for disseminating the results of clinical trials.
 Clinicians and researchers must therefore manually extract and synthesise information from these \acp{pdf}s to be published in \emph{systematic reviews}.
 We introduce Spá,\footnote{From the Old Norse word spá or spæ referring to prophesying and which is cognate with the present English word “spy,” continuing Proto-Germanic *spah- and the Proto-Indo-European root *(s)pe\`{k} (to see, to observe)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://spa.clinici.co/}} a web-based viewer that enables automated annotation and summarisation of \ac{pdf}s via \ac{ml}.
 To illustrate its functionalility, here we use Spá to semi-automate the assessment of bias in clinical trials.
 Spá can visualize the output from hybrid models that simultaneously classify documents (e.g., identifying trials as low or high risk of various biases), and annotate sentences that support these classifications.
-The Spá architecture is modular and new models may be trivially added, thus the tool made be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
+Spá has a modular architecture and new models may be trivially added, therefore the tool may be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
 
 \end{abstract}
 
@@ -79,6 +79,7 @@ They are fundamental tools in \ac{ebm} \cite{sackett1996}.
 The end product of a systematic review is an exhaustive synthesis (textual and statistical) of the current evidence.
 To produce these, reviewers must manually extract data on trial design and conduct, intervention effectiveness, adverse effects, and potential biases from the free-text of published studies.
 These extraction tasks can be semi-automated using machine learning approaches.
+<<<<<<< HEAD
 As an example, here we consider the task of bias assessment, in which reviewers assess, e.g., whether study participants and personnel were properly blinded.
 
 Assessing this is a time-consuming task: a single trial can take a domain expert around ten minutes \cite{Hartling2011}.
@@ -88,6 +89,20 @@ But if such technologies are to be practically useful, we need tools that visual
 Here we describe Spá, which aspires to realize this aim.
 
 Spá is an open-source, web-based tool that can incorporate state-of-the-art \acl{ml} predictors to automatically annotate \ac{pdf} articles.
+=======
+As an example, here we consider the risk of bias assessment, in which reviewers assess, e.g., whether study participants and personnel were properly blinded.
+
+Assessing this is a time-consuming task.
+A single trial may typically take a domain expert ten minutes \cite{Hartling2011}, and a single review may typically include several dozen trials.
+Making matters worse, due to low rates of reviewer agreement it is regarded as best practice to have each study assessed twice by independent reviewers who later come to a consensus.\cite{Hartling2009}
+
+Machine learning methods provide the machinery to automate such extractions; as they can effectively impose the desired structure onto \acp{pdf}. 
+
+But if such technologies are to be practically useful, we need tools that visualize these model predictions and annotations.
+Here we describe Spá, which aspires to realize this aim.
+
+Spá is an open-source, web-based tool that can incorporate state-of-the-art machine learning to automatically annotate \ac{pdf} articles.
+>>>>>>> 1b257ee... updates
 As a practical demonstration of this technology, we have built a machine learning system that automatically annotates \acp{pdf} to aid \ac{ebm}.
 % maybe?
 Specifically, this system leverages a multi-task model that simulteanously assesses the risk of biases across several domains.
