@@ -43,14 +43,23 @@
 
 \maketitle
 \begin{abstract}
-Unstructured PDF documents remain the main vehicle for dissemination of scientific findings.
-Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
-\acl{ebm} provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
-This represents an enormous burden, especially in light of the expotentially increasing volume of published biomedical articles.
-Machine learning provides a potential means of mitigating this burden by automating extraction.
-But for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
-To this end, we present a web-based tool called Spá\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://clinici.co/}} that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
-More generally, Spá provides a framework for visualizing predicted full-text PDF annotations, both at the document and sentence level.
+% Unstructured PDF documents remain the main vehicle for dissemination of scientific findings.
+% Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
+% \acl{ebm} provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
+% This represents an enormous burden, especially in light of the expotentially increasing volume of published biomedical articles.
+% Machine learning provides a potential means of mitigating this burden by automating extraction.
+% But for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
+% To this end, we present a web-based tool called Spá\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://clinici.co/}} that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
+% More generally, Spá provides a framework for visualizing predicted full-text PDF annotations, both at the document and sentence level.
+
+Summarizing the evidence about medical interventions is an immense undertaking.
+Unstructured PDF documents remain the main vehicle for disseminating the results of clinical trials.
+Expert clinicians and researchers typically manually extract and synthesise information about effectiveness, adverse effects, and trial quality, which are published as \emph{systematic reviews}.
+We introduce Spá\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://clinici.co/}}, a web-based PDF viewer which uses machine learning modules to semi-automate the task of PDF annotation and summarisation.
+As an example, we demonstrate the use of Spá to semi-automate the assessment of bias in clinical trials.
+Spá allows the use of hybrid models which simultaneously classify PDF documents (specifically identifying trials at low risk of various biases), and also annotate sentences or words which contribute most to the classification.
+Spá is modular, and new models may be trivially added, thus allowing its use in other domains with a PDF-based literature, including law, physics, and biology.
+
 \end{abstract}
 
 \acresetall
@@ -60,16 +69,19 @@ More generally, Spá provides a framework for visualizing predicted full-text PD
 
 %Finding sentences or words with particular characteristics within a document is an important task in natural language processing and machine learning.
 Imposing structure on full-text documents (e.g., identifying specific sentences of interest) is an important, challenging and practical task in natural language processing and machine learning.
-Consider \emph{systematic reviews} -- fundamental tools in \ac{ebm} \cite{sackett1996} -- which aim to address specific clinical questions by identifying and synthesizing data from all relevant published articles.
-When doing this one often needs, for example, to assess the \emph{risk of bias} for a particular study across different domains, such as bias due to improper blinding of participants and personnel.
-For this task, one wants to make a summary judgement (e.g., low risk of bias) and simultaneously extract the sentences supporting that judgement.
+\emph{Systematic reviews} are fundamental tools in \ac{ebm} \cite{sackett1996}, and aim to answer clinical questions by exhaustively searching the literature for relevant studies. Reviewers extract data on trial design and conduct, intervention effectiveness, adverse effects, and potential biases, and synthesise this data to produce a textual and statistical summary.
+As an example, we demonstrate the task of bias assessment.
+Assessing bias is time-consuming.
+Assessing a single trial takes a domain expert around 10 minutes \cite{Hartling2011}.
+A single review may typically include several dozen trials, and due to empirical low rates of reviewer agreement, it is regarded as best practice to have each study assessed twice by independent reviewers who later come to a consensus\cite{Hartling2009}.
 
-Extracting such information from the unstructured text of clinical trial articles is a laborious process.
+
 Machine learning methods provide the machinery to automate such extractions; as they can effectively impose the desired structure onto PDFs.
 For example, we can train a classifier to automatically assess the risk of bias across different domains and simulteanously identify the sentences supporting these assessments.
 We may also train a model that extracts the sample size from a paper describing a clinical trial. 
 But if such technologies are to be practically useful, we need tools that visualize these model predictions and annotations.
 Here we describe Spá, which aspires to realize this aim.
+
 Spá is an open-source, web-based tool that can incorporate state-of-the-art machine learning predictors to automatically annotate PDF articles.
 As a practical (and useful) demonstration of this technology, we have built a machine learning system that automatically annotates PDFs to facilitate \ac{ebm}. 
 Specifically, this system leverages a multi-task model that simulteanously assesses the risk of biases across several domains, and extracts sample sizes from articles.
@@ -81,13 +93,13 @@ This tool is unique in that it leverages state-of-the-art ML models applied to f
 \centering
 \includegraphics[width=.8\linewidth]{./images/screenshot2.png}
 \vspace{-1em}
-\caption{\label{fig:screenshot}Screenshot of a PDF with highlighted risk of bias. Here the risk of bias is assess to be low, for example, and one of the supporting sentences for this assessment describes the randomization procedure (highlighted in green).}
+\caption{\label{fig:screenshot}Screenshot of a PDF with highlighted risk of bias. Here the risk of bias is assessed to be low, for example, and one of the supporting sentences for this assessment describes the randomization procedure (highlighted in green).}
 \vspace{-2em}
 \end{figure}
 
 While our application of interest is \ac{ebm}, we emphasize that the visualization tool can be used for any domain in which one wants to annotate PDFs. 
 Thus the contribution of this work is two-fold, as we present:
-(1) a practical tool (Spá) that incorporates cutting edge machine learning to help researchers rapidly assess the risk of biases (and sample sizes) in published biomedical articles, and,
+(1) a practical tool (Spá) that incorporates cutting-edge machine learning to help researchers rapidly assess the risk of biases (and sample sizes) in published biomedical articles, and,
 (2) a general open-source web tool for visualizing the predictions of trained models from full-text articles.
 These contributions are described further in sections \ref{section:EBM-ML} and \ref{section:architecture}, respectively.
 
@@ -96,24 +108,24 @@ These contributions are described further in sections \ref{section:EBM-ML} and \
 \label{section:EBM-ML}
 
 \subsection{Systematic Reviews}
-%%% sort of redundant with above; may want to re-factor
-The process of pooling and summarizing clinical trials is called \emph{systematic reviewing}, and forms the corner-stone of current \ac{ebm}.
-Systematic reviewing consists of specifying a precise clinical question and accompanying study inclusion criteria, and then exhaustively searching the literature to identify eligible studies. 
-Identified eligible studies are subsequently analyzed (i.e., synthesized), resulting in a summary of all of the published evidence that pertains to the clinical question of interest.
-Systematic reviews thus represent a rigorous, data-driven approach to answering clinical questions. 
-But conducting systematic reviews is complicated by the massive number of trials that are conducted: for example, the Cochrane Library alone indexes 286,418 trials that were conducted in the last decade \cite{valkenhoef2012}.
-While methods and publishing standards are improving, many legacy publications will remain available only as PDF documents. 
+% %%% sort of redundant with above; may want to re-factor
+% The process of pooling and summarizing clinical trials is called \emph{systematic reviewing}, and forms the corner-stone of current \ac{ebm}.
+% Systematic reviewing consists of specifying a precise clinical question and accompanying study inclusion criteria, and then exhaustively searching the literature to identify eligible studies. 
+% Identified eligible studies are subsequently analyzed (i.e., synthesized), resulting in a summary of all of the published evidence that pertains to the clinical question of interest.
+% Systematic reviews thus represent a rigorous, data-driven approach to answering clinical questions. 
+% But conducting systematic reviews is complicated by the massive number of trials that are conducted: for example, the Cochrane Library alone indexes 286,418 trials that were conducted in the last decade \cite{valkenhoef2012}.
+% % While methods and publishing standards are improving, many legacy publications will remain available only as PDF documents. 
 
-Extracting information of interest from these PDFs is imperative but laborious. 
-To mitigate this burden, we have constructed machine learning models that automatically extract some characteristics of interest.
-Specifically, our model predicts {\it risk of biases} across different domains as a function of the texts comprising articles. 
-It simultaneously extracts sentences supporting these predictions. 
-We briefly outline our approach to achieving this below. 
-We also note that we have a a separate model that extracts the study sample size from articles. 
-Spá -- our visualization tool -- provides a framework to upload PDFs and then render these predicted annotations. 
-We foresee adding additional predictors to this tool that, for example, may identify different treatment mentions within the text (e.g., drugs). 
+% Extracting information of interest from these PDFs is imperative but laborious. 
+% To mitigate this burden, we have constructed machine learning models that automatically extract some characteristics of interest.
+% Specifically, our model predicts {\it risk of biases} across different domains as a function of the texts comprising articles. 
+% It simultaneously extracts sentences supporting these predictions. 
+% We briefly outline our approach to achieving this below. 
+% We also note that we have a a separate model that extracts the study sample size from articles. 
+% Spá -- our visualization tool -- provides a framework to upload PDFs and then render these predicted annotations. 
+% We foresee adding additional predictors to this tool that, for example, may identify different treatment mentions within the text (e.g., drugs). 
 
-% made a web-based tool that allows the visualization of annotations within a PDF documents, and meta-information alongside it.
+% % made a web-based tool that allows the visualization of annotations within a PDF documents, and meta-information alongside it.
 
 \subsection{Machine Learning Approaches}
 
@@ -124,7 +136,6 @@ Briefly, we match (the full-texts of) studies to entries in the CDSR, which cont
 The CDSR also contains sentences that annotators indicated as supporting their assessments. 
 We match these strings to substrings in the PDFs to provide sentence-level supervision. 
 This can thus be viewed as a \emph{distantly supervised} \cite{mintz-09,nguyen-11} approach.
-
  
 %%%
 % note that this is a little misleading right now -- we don't technically have this multi-task joint extraction thing going yet!!!
