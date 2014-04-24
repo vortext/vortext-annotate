@@ -14,6 +14,7 @@
 \usepackage{wasysym}
 \usepackage{amssymb}
 \usepackage{hyperref}
+\usepackage[multiple]{footmisc}
 \usepackage{microtype}
 \usepackage{acronym}
 \tolerance=1000
@@ -57,12 +58,12 @@
 % More generally, Spá provides a framework for visualizing predicted full-text \ac{pdf} annotations, both at the document and sentence level.
 
 Summarizing the evidence about medical interventions is an immense undertaking.
-In part this is because unstructured \ac{pdf} documents remain the main vehicle for disseminating the results of clinical trials.
+In part because unstructured \ac{pdf} documents remain the main vehicle for disseminating the results of clinical trials.
 Clinicians and researchers typically manually extract and synthesise information from these \acp{pdf} which is then published as a \emph{systematic review}.
 We introduce Spá\footnote{From the Old Norse word spá or spæ referring to prophesying and which is cognate with the present English word “spy,” continuing Proto-Germanic *spah- and the Proto-Indo-European root *(s)pe\`{k} (to see, to observe)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://spa.clinici.co/}}, a web-based \ac{pdf} viewer that allows for annotation and summarisation \acl{ml} modules to semi-automate the task of \ac{pdf} annotation and summarisation.
 To illustrate, we demonstrate the use of Spá to semi-automate the assessment of bias in clinical trials.
 Spá can visualize the output from hybrid models that simultaneously classify documents (e.g., identifying trials as low risk of various biases), and also annotates sentences or words that contribute most to the classification.
-The Spá architecture is modular, and new models may be trivially added, thus the tool made be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
+The Spá architecture is modular and new models may be trivially added, thus the tool made be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
 \end{abstract}
 
 \acresetall
@@ -86,7 +87,7 @@ But if such technologies are to be practically useful, we need tools that visual
 Here we describe Spá, which aspires to realize this aim.
 
 Spá is an open-source, web-based tool that can incorporate state-of-the-art machine learning predictors to automatically annotate \ac{pdf} articles.
-As a practical demonstration of this technology, we have built a machine learning system that automatically annotates \acp{pdf} to facilitate \ac{ebm}.
+As a practical demonstration of this technology, we have built a machine learning system that automatically annotates \acp{pdf} to aid \ac{ebm}.
 Specifically, this system leverages a multi-task model that simulteanously assesses the risk of biases across several domains.
 %Moreover, we have created machine learning systems on describing clinical trials with risk of bias predictions and extracted sample sizes.
 This tool is unique in that it leverages state-of-the-art \ac{ml} models applied to full-text articles to assist practitioners of \ac{ebm}.
@@ -104,7 +105,7 @@ While our application of interest is \ac{ebm}, we emphasize that the visualizati
 Thus the contribution of this work is two-fold, as we present:
 (1) a practical tool that incorporates machine learning to help researchers rapidly assess the risk of biases in published biomedical articles, and,
 (2) a general open-source web tool for visualizing the predictions of trained models from full-text articles.
-These contributions are described further in sections \ref{section:EBM-ML} and \ref{section:architecture}, respectively.
+These contributions are described further in sections \ref{section:EBM-ML} and \ref{section:architecture}.
 
 \section{Automating \acl{ebm}}
 \label{section:EBM-ML}
@@ -148,8 +149,7 @@ Because the risk of bias predictions are correlated (across domains), we take a 
 We accomplish this by way of a feature space construction that includes both shared and domain-specific terms (similar to the domain adaptation approach in \cite{daume2007}).
 
 With respect to the second task of sentence extraction, we \emph{jointly} assess the risk of bias associated with a given article \emph{and} the sentences that support this judgment.
-Specifically, we first make sentence level predictions (using one set of trained models), and then insert features representing the tokens (words) in the predicted sentences for exploitation by the document level classifier.
-Due to space constraints here, we omit further specifics of our approach, but we provide further details elsewhere \cite{marshall2014}.
+Specifically, we first make sentence level predictions (using one set of trained models), and then insert features representing the tokens (words) in the predicted sentences for exploitation by the document level classifier (further details specified in \cite{marshall2014}).
 Figure \ref{fig:screenshot} shows example system output: the overall risk of bias with respect to random sequence generation is judged to be low, and supporting sentence
 %More specifically, the database we leverage contains structured and semi-structured data for each systematic review. Internally, the Cochrane Collaboration stores working versions of their reviews as XML. Each review contains a wealth of (structured) data about the clinical trials that met the review inclusion criteria. There are usually multiple clinical trials described in a single review. Cochrane reviews use basic clinical trial identifiers which are unique per review (based on the first author surname and year of publication) throughout these files. It is therefore possible to extract structured data, and filtered snippets of full text data which describe a single clinical trial. Using these identifiers, we were able to obtain full structured citation data for the primary reference of all included studies across the \ac{cdsr}.
 
@@ -179,13 +179,13 @@ The user can interactively activate and inspect specific results.
 
 \section{Future work}
 We present a web-based tool for interactive visualization of annotations and meta-data on \ac{pdf} documents.
-This allows users to see the results from machine learning predictions for a specific document.
-We have demonstrated the utility of this system within the context of \ac{ebm} by automatically extracting potential risks of bias (and supporting sentences) via state-of-the-art ML methods.
+It allows users to see the results from machine learning predictions for a specific document.
+We have show the use of this system within the context of \ac{ebm} by automatically extracting potential risks of bias (and supporting sentences) via state-of-the-art ML methods.
 
 More generally, we believe the tool to be potentially useful for a much wider range of text mining and machine learning applications.
 To increase the generality of the tool we are developing a pluggable system for processing topologies, allowing developers to quickly plug in new systems for automated \ac{pdf} annotation.
 Furthermore, work is being done on allowing users to save selected annotations, possibly embedded within the document itself, for sharing and off-line use.
-The ultimate vision is to have an extensible system for semi-automated (machine assisted) screening, data extraction and data summarization for EBM, and to allow rapid development of similar systems for other domains.
+The vision is to have an extensible system for semi-automated (machine assisted) screening, data extraction and data summarization for EBM, and to allow rapid development of similar systems for other domains.
 
 \subsubsection{Acknowledgments}
 Part of this research was funded by the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 261433. % TODO add seed funds ack (BCW)
