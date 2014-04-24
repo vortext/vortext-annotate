@@ -6,6 +6,7 @@
 \usepackage{fixltx2e}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{wrapfig}
 \usepackage{amsmath}
 \usepackage{textcomp}
 \usepackage{wrapfig}
@@ -14,6 +15,7 @@
 \usepackage{amssymb}
 \usepackage{hyperref}
 \usepackage[multiple]{footmisc}
+\usepackage{microtype}
 \usepackage{acronym}
 \tolerance=1000
 \usepackage[usenames,dvipsnames]{xcolor}
@@ -24,7 +26,8 @@
 \urldef{\mailsc}\path|byron_wallace@brown.edu|
 
 \acrodef{ebm}[EBM]{Evidence-based Medicine}
-\acrodef{ml}[ML]{Machine Learning}
+% I don't think thi sneeds to be capitalized -- bcw
+\acrodef{ml}[ML]{machine learning}
 \acrodef{pdf}[PDF]{Portable Document Format}
 \acrodef{cdsr}[CDSR]{Cochrane Database of Systematic Reviews}
 \acrodef{svm}[SVM]{Support Vector Machine}
@@ -44,6 +47,8 @@
 \title{Spá: a web-based viewer for text mining in Evidence Based Medicine}
 
 
+%%% BCW -- I t
+
 \maketitle
 \begin{abstract}
 % Unstructured \ac{pdf} documents remain the main vehicle for dissemination of scientific findings.
@@ -55,13 +60,13 @@
 % To this end, we present a web-based tool called Spá\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://clinici.co/}} that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
 % More generally, Spá provides a framework for visualizing predicted full-text \ac{pdf} annotations, both at the document and sentence level.
 
-Summarizing the evidence about medical interventions is an immense undertaking.
-In part because unstructured \ac{pdf} documents remain the main vehicle for disseminating the results of clinical trials.
-Clinicians and researchers typically manually extract and synthesise information from these \acp{pdf} which is then published as a \emph{systematic review}.
-We introduce Spá\footnote{From the Old Norse word spá or spæ referring to prophesying and which is cognate with the present English word “spy,” continuing Proto-Germanic *spah- and the Proto-Indo-European root *(s)pe\`{k} (to see, to observe)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://spa.clinici.co/}}, a web-based \ac{pdf} viewer that allows for annotation and summarisation \acl{ml} modules to semi-automate the task of \ac{pdf} annotation and summarisation.
-To illustrate, we demonstrate the use of Spá to semi-automate the assessment of bias in clinical trials.
-Spá can visualize the output from hybrid models that simultaneously classify documents (e.g., identifying trials as low risk of various biases), and also annotates sentences or words that contribute most to the classification.
+Summarizing the evidence concerning medical interventions is an immense undertaking, in part because unstructured \ac{pdf} documents remain the main vehicle for disseminating the results of clinical trials.
+Clinicians and researchers must therefore manually extract and synthesise information from these \acp{pdf}s to be published in \emph{systematic reviews}.
+We introduce Spá,\footnote{From the Old Norse word spá or spæ referring to prophesying and which is cognate with the present English word “spy,” continuing Proto-Germanic *spah- and the Proto-Indo-European root *(s)pe\`{k} (to see, to observe)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://spa.clinici.co/}} a web-based viewer that enables automated annotation and summarisation of \ac{pdf}s via \ac{ml}.
+To illustrate its functionalility, here we use Spá to semi-automate the assessment of bias in clinical trials.
+Spá can visualize the output from hybrid models that simultaneously classify documents (e.g., identifying trials as low or high risk of various biases), and annotate sentences that support these classifications.
 The Spá architecture is modular and new models may be trivially added, thus the tool made be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
+
 \end{abstract}
 
 \acresetall
@@ -70,24 +75,25 @@ The Spá architecture is modular and new models may be trivially added, thus the
 \section{Introduction}
 \label{section:intro}
 
-%Finding sentences or words with particular characteristics within a document is an important task in natural language processing and machine learning.
-Imposing structure on full-text documents (e.g., identifying specific sentences of interest) is an important and practical task in natural language processing and machine learning.
-For example, \emph{systematic reviews} are fundamental tools in \ac{ebm} \cite{sackett1996}, and aim to answer clinical questions by exhaustively searching the literature for relevant studies.
-During systematic reviewing data on trial design and conduct, intervention effectiveness, adverse effects, and potential biases, are extracted and synthesized to produce a textual and statistical summary.
-As an example, we demonstrate the task of bias assessment in which a reviewer assess, for example, whether the participants and personnel were properly blinded.
-Assessing this is a time-consuming task, a single trial can take a domain expert around ten minutes \cite{Hartling2011}.
-Making matters worse, a single review may typically include several dozen trials, and due to empirical low rates of reviewer agreement it is regarded as best practice to have each study assessed twice by independent reviewers who later come to a consensus\cite{Hartling2009}.
+Imposing structure on full-text documents (e.g., identifying specific sentences of interest) is an important and practical task in natural language processing and machine learning, because doing so manually is laborious and costly.
+\emph{Systematic reviews} are an instructive example.
+Such reviews aim to answer clinical questions by exhaustively identifying and extracting information from all published relevant studies.
+They are fundamental tools in \ac{ebm} \cite{sackett1996}.
+The end product of a systematic review is an exhaustive synthesis (textual and statistical) of the current evidence.
+To produce these, reviewers must manually extract data on trial design and conduct, intervention effectiveness, adverse effects, and potential biases from the free-text of published studies.
+These extraction tasks can be semi-automated using machine learning approaches.
+As an example, here we consider the task of bias assessment, in which a reviewers assess, e.g., whether study participants and personnel were properly blinded.
 
-\ac{ml} methods provide the machinery to automate such extractions; as they can effectively impose the desired structure onto \acp{pdf}.
-%For example, we can train a classifier to automatically assess the risk of bias across different domains and simulteanously identify the sentences supporting these assessments.
-%We may also train a model that extracts the sample size from a paper describing a clinical trial.
+Assessing this is a time-consuming task: a single trial can take a domain expert around ten minutes \cite{Hartling2011}.
+Making matters worse, a single review may typically include several dozen trials, and due to low rates of reviewer agreement it is regarded as best practice to have each study assessed twice by independent reviewers who later come to a consensus \cite{Hartling2009}.
+Machine learning methods provide the machinery to automate such extractions; as they can effectively impose the desired structure onto \acp{pdf}. 
 But if such technologies are to be practically useful, we need tools that visualize these model predictions and annotations.
 Here we describe Spá, which aspires to realize this aim.
 
 Spá is an open-source, web-based tool that can incorporate state-of-the-art machine learning predictors to automatically annotate \ac{pdf} articles.
 As a practical demonstration of this technology, we have built a machine learning system that automatically annotates \acp{pdf} to aid \ac{ebm}.
+% maybe?
 Specifically, this system leverages a multi-task model that simulteanously assesses the risk of biases across several domains.
-%Moreover, we have created machine learning systems on describing clinical trials with risk of bias predictions and extracted sample sizes.
 This tool is unique in that it leverages state-of-the-art \ac{ml} models applied to full-text articles to assist practitioners of \ac{ebm}.
 
 \begin{figure}[htb]
@@ -103,7 +109,7 @@ While our application of interest is \ac{ebm}, we emphasize that the visualizati
 Thus the contribution of this work is two-fold, as we present:
 (1) a practical tool that incorporates machine learning to help researchers rapidly assess the risk of biases in published biomedical articles, and,
 (2) a general open-source web tool for visualizing the predictions of trained models from full-text articles.
-These contributions are described further in sections \ref{section:EBM-ML} and \ref{section:architecture}.
+These contributions are described further in Sections \ref{section:EBM-ML} and \ref{section:architecture}.
 
 \section{Automating \acl{ebm}}
 \label{section:EBM-ML}
@@ -141,14 +147,13 @@ This can thus be viewed as a \emph{distantly supervised} \cite{mintz-09,nguyen-1
 %%%
 % note that this is a little misleading right now -- we don't technically have this multi-task joint extraction thing going yet!!!
 %%%
-Concerning the risk of bias predictions, we have two tasks for a given article. First, predict the overall risk of bias for each of the domains of interest, and second extract the sentences that support these assessments.
-In both cases we leverage standard bag-of-words text encoding and linear-kernel \acp{svm}.
+From a \ac{ml} vantage, we have two tasks for a given article: (1) predict the overall risk of bias for each of the domains of interest, and (2) extract the sentences that support these assessments.
+For both tasks we leverage standard bag-of-words text encoding and linear-kernel \acp{svm}.
 Because the risk of bias predictions are correlated (across domains), we take a \emph{multi-task} \cite{evgeniou2004} approach to classification and jointly learn a model for the domains.
-We accomplish this by way of a feature space construction that includes both shared and domain-specific terms (similar to the domain adaptation approach in \cite{daume2007}).
-
-With respect to the second task of sentence extraction, we \emph{jointly} assess the risk of bias associated with a given article \emph{and} the sentences that support this judgment.
+We accomplish this by way of a feature space construction that includes both shared and domain-specific terms (similar to the domain adaptation approach in \cite{daume2007}). 
+Furthermore, we take a unified approach to the two tasks by \emph{jointly} assessing the risk of bias associated with a given article \emph{and} extracting the sentences that support this judgment.
 Specifically, we first make sentence level predictions (using one set of trained models), and then insert features representing the tokens (words) in the predicted sentences for exploitation by the document level classifier (further details specified in \cite{marshall2014}).
-Figure \ref{fig:screenshot} shows example system output: the overall risk of bias with respect to random sequence generation is judged to be low, and supporting sentence
+Figure \ref{fig:screenshot} shows example system output: in this case the overall risk of bias with respect to random sequence generation is judged to be low, and the supporting sentence for this judgement is highlighted in green.
 %More specifically, the database we leverage contains structured and semi-structured data for each systematic review. Internally, the Cochrane Collaboration stores working versions of their reviews as XML. Each review contains a wealth of (structured) data about the clinical trials that met the review inclusion criteria. There are usually multiple clinical trials described in a single review. Cochrane reviews use basic clinical trial identifiers which are unique per review (based on the first author surname and year of publication) throughout these files. It is therefore possible to extract structured data, and filtered snippets of full text data which describe a single clinical trial. Using these identifiers, we were able to obtain full structured citation data for the primary reference of all included studies across the \ac{cdsr}.
 
 
@@ -163,9 +168,10 @@ Figure \ref{fig:screenshot} shows example system output: the overall risk of bia
 \section{Spá Architecture Overview}
 Spá relies on Mozilla pdf.js\footnote{\url{http://mozilla.github.io/pdf.js}} for visualization of the document and text extraction.
 The results of the text extraction are processed server-side by a variety of processing topologies, as outlined in figure \ref{fig:sequence}.
-Results are communicated back to the browser and displayed using React components\footnote{\url{http://facebook.github.io/react}}.
+Results, which could come from complicated machine learning systems, are communicated back to the browser and displayed using React components.\footnote{\url{http://facebook.github.io/react}}
 
-For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by \href{http://substance.io/}{substance.io}\footnote{\url{http://substance.io/beta/}}, that acts as a mini-map is projected to show where it resides within the document.
+For each of the annotations the relevant nodes in the document are highlighted. 
+A custom scrollbar\footnote{inspired by \href{http://substance.io/}{substance.io}} that acts as a `mini-map' is projected to show where annotations reside within the document.
 The user can interactively activate and inspect specific results.
 \label{section:architecture}
 \begin{wrapfigure}{R}{0.5\textwidth}
@@ -176,17 +182,17 @@ The user can interactively activate and inspect specific results.
 \end{wrapfigure}
 
 \section{Future work}
-We present a web-based tool for interactive visualization of annotations and meta-data on \ac{pdf} documents.
+We have presented a web-based tool for visualization of annotations and summarizations for \ac{pdf} documents.
 It allows users to see the results from machine learning predictions for a specific document.
-We have show the use of this system within the context of \ac{ebm} by automatically extracting potential risks of bias (and supporting sentences) via state-of-the-art ML methods.
+We have demonstrated the use of this system within the context of \ac{ebm} by automatically extracting potential risks of bias (and supporting sentences) via state-of-the-art ML methods.
 
 More generally, we believe the tool to be potentially useful for a much wider range of text mining and machine learning applications.
-To increase the generality of the tool we are developing a pluggable system for processing topologies, allowing developers to quickly plug in new systems for automated \ac{pdf} annotation.
-Furthermore, work is being done on allowing users to save selected annotations, possibly embedded within the document itself, for sharing and off-line use.
+To increase the generality of the tool we are developing a pluggable system for processing topologies, allowing developers to quickly plug in new ML systems for automated \ac{pdf} annotation.
+Furthermore, we are working to allow users to save selected annotations, possibly embedded within the document itself, for sharing and off-line use.
 The vision is to have an extensible system for semi-automated (machine assisted) screening, data extraction and data summarization for EBM, and to allow rapid development of similar systems for other domains.
 
 \subsubsection{Acknowledgments}
-Part of this research was funded by the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 261433. % TODO add seed funds ack (BCW)
+Part of this research was funded by the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 261433. % %TODO add seed funds ack (BCW) -- I can do this post-acceptance though
 
 \bibliographystyle{splncs}
 \bibliography{references}
