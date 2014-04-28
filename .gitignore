@@ -67,3 +67,4 @@ pmids.txt
 
 static/build
 static/build/**
+target/
