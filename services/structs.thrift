@@ -1,0 +1,1 @@
+namespace java spa.services.structs
