@@ -1,5 +1,5 @@
 ({
-    appDir: "./static",
+    appDir: "./public",
     baseUrl: "./scripts",
     dir: "./build",
     optimize: "uglify2",
@@ -8,7 +8,7 @@
     // call with `node r.js -o build.js`
     // add `optimize=none` to skip script optimization (useful during debugging).
 
-    mainConfigFile: "./static/scripts/main.js",
+    mainConfigFile: "./public/scripts/main.js",
     onBuildWrite: function (moduleName, path, singleContents) {
         return singleContents.replace(/jsx!/g, '');
     },
