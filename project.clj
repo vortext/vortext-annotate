@@ -3,6 +3,7 @@
   :url "https://github.com/joelkuiper/spa"
   :license {:name "GNU General Public License (GPL) v3"
             :url "https://www.gnu.org/copyleft/gpl.html"}
+  :java-source-paths ["services/gen-java" "src/main/java"]
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.cli "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.2"]
