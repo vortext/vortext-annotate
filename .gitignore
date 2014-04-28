@@ -15,8 +15,6 @@
 *.swp
 *.vi
 *~
-*.sass-cache
-
 # OS or Editor folders
 .DS_Store
 Thumbs.db
@@ -36,34 +34,10 @@ nbproject
 *.fls
 *.pyc
 *.out
-CNLP.INI
-pmccorpusdownload.py
 data/*
-testdata/
-old/
-results/
 data/cache/
-.ipynb_checkpoints/
-
-
-*.INI
-
-*.pck
-
-CNLP.INI
-
-log.txt
-
-log2.txt
-
-log3.txt
-
-log4.txt
 
 *.log
-
-
-pmids.txt
 
 static/build
 static/build/**
