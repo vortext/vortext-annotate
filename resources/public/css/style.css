@@ -193,9 +193,3 @@ canvas {
 ::-moz-selection {
     background-color: rgba(0,0,255,0.2);
 }
-.annotated::selection {
-    background-color: rgba(0,0,255,1);
-}
-.annotated::-moz-selection {
-    background-color: rgba(0,0,255,1);
-}
