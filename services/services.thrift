@@ -5,8 +5,8 @@ include "exceptions.thrift"
 
 service PDFParser {
         void ping(),
-        // Calls the pdf parser to return, given a binary pdf, the RawPDF
-        Document parse(1:string binary)
+        // Calls the pdf parser to return, given a binary pdf (base64 encoded), the RawPDF
+        structs.Document parse(1:string file)
 
         oneway void shutdown()
 }
@@ -16,7 +16,7 @@ service Filter {
 
         // Filters are elements of a pipeline.
         // They receieve a document and yield a different (modified) document
-        Document filter(1:Document document) throws (1:ProcessException error),
+        structs.Document filter(1:structs.Document document) throws (1:exceptions.ProcessException error),
 
         oneway void shutdown()
 }

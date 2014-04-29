@@ -16,7 +16,7 @@ struct MetaReference {
 }
 
 struct Annotation {
-       1: i64 uuid;
+       1: string uuid; // 128bit hex
        2: i32 label;
        3: MetaReference __meta;
 }
