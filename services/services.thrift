@@ -21,7 +21,7 @@ service Filter {
 
         // Filters are elements of a pipeline.
         // They receieve a document and yield a different (modified) document
-        structs.Document filter(1:structs.Document document) throws (1:ProcessException error),
+        structs.Document run(1:structs.Document document) throws (1:ProcessException error),
 
         oneway void shutdown()
 }
