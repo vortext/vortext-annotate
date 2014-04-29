@@ -1,7 +1,12 @@
 namespace java spa.services.services
 
 include "structs.thrift"
-include "exceptions.thrift"
+
+exception ProcessException {
+  1: i32 timestamp
+  2: string what
+  3: optional string why
+}
 
 service PDFParser {
         void ping(),
@@ -16,7 +21,12 @@ service Filter {
 
         // Filters are elements of a pipeline.
         // They receieve a document and yield a different (modified) document
-        structs.Document filter(1:structs.Document document) throws (1:exceptions.ProcessException error),
+        structs.Document filter(1:structs.Document document) throws (1:ProcessException error),
 
         oneway void shutdown()
+}
+
+
+service Echo {
+        string echo(1:string input)
 }
