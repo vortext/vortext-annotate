@@ -193,24 +193,24 @@ class Document(TBase):
   """
   Attributes:
    - text
+   - textNodes
    - marginalia
    - meta
-   - textNodes
   """
 
   thrift_spec = (
     None, # 0
     (1, TType.STRING, 'text', None, None, ), # 1
-    (2, TType.LIST, 'marginalia', (TType.STRUCT,(Marginalis, Marginalis.thrift_spec)), None, ), # 2
-    (3, TType.MAP, 'meta', (TType.STRING,None,TType.STRUCT,(Mapping, Mapping.thrift_spec)), None, ), # 3
-    (4, TType.LIST, 'textNodes', (TType.STRUCT,(TextNode, TextNode.thrift_spec)), None, ), # 4
+    (2, TType.LIST, 'textNodes', (TType.STRUCT,(TextNode, TextNode.thrift_spec)), None, ), # 2
+    (3, TType.LIST, 'marginalia', (TType.STRUCT,(Marginalis, Marginalis.thrift_spec)), None, ), # 3
+    (4, TType.MAP, 'meta', (TType.STRING,None,TType.STRUCT,(Mapping, Mapping.thrift_spec)), None, ), # 4
   )
 
-  def __init__(self, text=None, marginalia=None, meta=None, textNodes=None,):
+  def __init__(self, text=None, textNodes=None, marginalia=None, meta=None,):
     self.text = text
+    self.textNodes = textNodes
     self.marginalia = marginalia
     self.meta = meta
-    self.textNodes = textNodes
 
   def __repr__(self):
     L = ['%s=%r' % (key, value)

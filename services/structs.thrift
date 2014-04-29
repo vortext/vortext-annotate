@@ -35,7 +35,7 @@ struct Mapping {
 
 struct Document {
        1: required string text;
-       2: optional list<Marginalis> marginalia;
-       3: optional map<string, Mapping> meta;
-       4: optional list<TextNode> textNodes;
+       2: required list<TextNode> textNodes;
+       3: optional list<Marginalis> marginalia;
+       4: optional map<string, Mapping> meta;
 }
