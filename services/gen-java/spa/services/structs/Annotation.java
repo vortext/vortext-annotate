@@ -38,7 +38,7 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
 
   private static final org.apache.thrift.protocol.TField UUID_FIELD_DESC = new org.apache.thrift.protocol.TField("uuid", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("label", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField __META_FIELD_DESC = new org.apache.thrift.protocol.TField("__meta", org.apache.thrift.protocol.TType.STRUCT, (short)3);
+  private static final org.apache.thrift.protocol.TField META_FIELD_DESC = new org.apache.thrift.protocol.TField("meta", org.apache.thrift.protocol.TType.STRUCT, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -48,13 +48,13 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
 
   public String uuid; // required
   public int label; // required
-  public MetaReference __meta; // required
+  public MetaReference meta; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     UUID((short)1, "uuid"),
     LABEL((short)2, "label"),
-    __META((short)3, "__meta");
+    META((short)3, "meta");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -73,8 +73,8 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
           return UUID;
         case 2: // LABEL
           return LABEL;
-        case 3: // __META
-          return __META;
+        case 3: // META
+          return META;
         default:
           return null;
       }
@@ -124,7 +124,7 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LABEL, new org.apache.thrift.meta_data.FieldMetaData("label", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.__META, new org.apache.thrift.meta_data.FieldMetaData("__meta", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.META, new org.apache.thrift.meta_data.FieldMetaData("meta", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MetaReference.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Annotation.class, metaDataMap);
@@ -136,13 +136,13 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
   public Annotation(
     String uuid,
     int label,
-    MetaReference __meta)
+    MetaReference meta)
   {
     this();
     this.uuid = uuid;
     this.label = label;
     setLabelIsSet(true);
-    this.__meta = __meta;
+    this.meta = meta;
   }
 
   /**
@@ -154,8 +154,8 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
       this.uuid = other.uuid;
     }
     this.label = other.label;
-    if (other.isSet__meta()) {
-      this.__meta = new MetaReference(other.__meta);
+    if (other.isSetMeta()) {
+      this.meta = new MetaReference(other.meta);
     }
   }
 
@@ -168,7 +168,7 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
     this.uuid = null;
     setLabelIsSet(false);
     this.label = 0;
-    this.__meta = null;
+    this.meta = null;
   }
 
   public String getUuid() {
@@ -218,27 +218,27 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __LABEL_ISSET_ID, value);
   }
 
-  public MetaReference get__meta() {
-    return this.__meta;
+  public MetaReference getMeta() {
+    return this.meta;
   }
 
-  public Annotation set__meta(MetaReference __meta) {
-    this.__meta = __meta;
+  public Annotation setMeta(MetaReference meta) {
+    this.meta = meta;
     return this;
   }
 
-  public void unset__meta() {
-    this.__meta = null;
+  public void unsetMeta() {
+    this.meta = null;
   }
 
-  /** Returns true if field __meta is set (has been assigned a value) and false otherwise */
-  public boolean isSet__meta() {
-    return this.__meta != null;
+  /** Returns true if field meta is set (has been assigned a value) and false otherwise */
+  public boolean isSetMeta() {
+    return this.meta != null;
   }
 
-  public void set__metaIsSet(boolean value) {
+  public void setMetaIsSet(boolean value) {
     if (!value) {
-      this.__meta = null;
+      this.meta = null;
     }
   }
 
@@ -260,11 +260,11 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
       }
       break;
 
-    case __META:
+    case META:
       if (value == null) {
-        unset__meta();
+        unsetMeta();
       } else {
-        set__meta((MetaReference)value);
+        setMeta((MetaReference)value);
       }
       break;
 
@@ -279,8 +279,8 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
     case LABEL:
       return Integer.valueOf(getLabel());
 
-    case __META:
-      return get__meta();
+    case META:
+      return getMeta();
 
     }
     throw new IllegalStateException();
@@ -297,8 +297,8 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
       return isSetUuid();
     case LABEL:
       return isSetLabel();
-    case __META:
-      return isSet__meta();
+    case META:
+      return isSetMeta();
     }
     throw new IllegalStateException();
   }
@@ -334,12 +334,12 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
         return false;
     }
 
-    boolean this_present___meta = true && this.isSet__meta();
-    boolean that_present___meta = true && that.isSet__meta();
-    if (this_present___meta || that_present___meta) {
-      if (!(this_present___meta && that_present___meta))
+    boolean this_present_meta = true && this.isSetMeta();
+    boolean that_present_meta = true && that.isSetMeta();
+    if (this_present_meta || that_present_meta) {
+      if (!(this_present_meta && that_present_meta))
         return false;
-      if (!this.__meta.equals(that.__meta))
+      if (!this.meta.equals(that.meta))
         return false;
     }
 
@@ -360,10 +360,10 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
     if (present_label)
       builder.append(label);
 
-    boolean present___meta = true && (isSet__meta());
-    builder.append(present___meta);
-    if (present___meta)
-      builder.append(__meta);
+    boolean present_meta = true && (isSetMeta());
+    builder.append(present_meta);
+    if (present_meta)
+      builder.append(meta);
 
     return builder.toHashCode();
   }
@@ -396,12 +396,12 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSet__meta()).compareTo(other.isSet__meta());
+    lastComparison = Boolean.valueOf(isSetMeta()).compareTo(other.isSetMeta());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSet__meta()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.__meta, other.__meta);
+    if (isSetMeta()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.meta, other.meta);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -438,11 +438,11 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
     sb.append(this.label);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("__meta:");
-    if (this.__meta == null) {
+    sb.append("meta:");
+    if (this.meta == null) {
       sb.append("null");
     } else {
-      sb.append(this.__meta);
+      sb.append(this.meta);
     }
     first = false;
     sb.append(")");
@@ -452,8 +452,8 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // check for sub-struct validity
-    if (__meta != null) {
-      __meta.validate();
+    if (meta != null) {
+      meta.validate();
     }
   }
 
@@ -509,11 +509,11 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 3: // __META
+          case 3: // META
             if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.__meta = new MetaReference();
-              struct.__meta.read(iprot);
-              struct.set__metaIsSet(true);
+              struct.meta = new MetaReference();
+              struct.meta.read(iprot);
+              struct.setMetaIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -541,9 +541,9 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
       oprot.writeFieldBegin(LABEL_FIELD_DESC);
       oprot.writeI32(struct.label);
       oprot.writeFieldEnd();
-      if (struct.__meta != null) {
-        oprot.writeFieldBegin(__META_FIELD_DESC);
-        struct.__meta.write(oprot);
+      if (struct.meta != null) {
+        oprot.writeFieldBegin(META_FIELD_DESC);
+        struct.meta.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -570,7 +570,7 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
       if (struct.isSetLabel()) {
         optionals.set(1);
       }
-      if (struct.isSet__meta()) {
+      if (struct.isSetMeta()) {
         optionals.set(2);
       }
       oprot.writeBitSet(optionals, 3);
@@ -580,8 +580,8 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
       if (struct.isSetLabel()) {
         oprot.writeI32(struct.label);
       }
-      if (struct.isSet__meta()) {
-        struct.__meta.write(oprot);
+      if (struct.isSetMeta()) {
+        struct.meta.write(oprot);
       }
     }
 
@@ -598,9 +598,9 @@ public class Annotation implements org.apache.thrift.TBase<Annotation, Annotatio
         struct.setLabelIsSet(true);
       }
       if (incoming.get(2)) {
-        struct.__meta = new MetaReference();
-        struct.__meta.read(iprot);
-        struct.set__metaIsSet(true);
+        struct.meta = new MetaReference();
+        struct.meta.read(iprot);
+        struct.setMetaIsSet(true);
       }
     }
   }

@@ -38,8 +38,8 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
 
   private static final org.apache.thrift.protocol.TField TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("text", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField MARGINALIA_FIELD_DESC = new org.apache.thrift.protocol.TField("marginalia", org.apache.thrift.protocol.TType.LIST, (short)2);
-  private static final org.apache.thrift.protocol.TField __META_FIELD_DESC = new org.apache.thrift.protocol.TField("__meta", org.apache.thrift.protocol.TType.MAP, (short)3);
-  private static final org.apache.thrift.protocol.TField __TEXT_NODES_FIELD_DESC = new org.apache.thrift.protocol.TField("__textNodes", org.apache.thrift.protocol.TType.LIST, (short)4);
+  private static final org.apache.thrift.protocol.TField META_FIELD_DESC = new org.apache.thrift.protocol.TField("meta", org.apache.thrift.protocol.TType.MAP, (short)3);
+  private static final org.apache.thrift.protocol.TField TEXT_NODES_FIELD_DESC = new org.apache.thrift.protocol.TField("textNodes", org.apache.thrift.protocol.TType.LIST, (short)4);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -49,15 +49,15 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
 
   public String text; // required
   public List<Marginalis> marginalia; // optional
-  public Map<String,Mapping> __meta; // optional
-  public List<TextNode> __textNodes; // optional
+  public Map<String,Mapping> meta; // optional
+  public List<TextNode> textNodes; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TEXT((short)1, "text"),
     MARGINALIA((short)2, "marginalia"),
-    __META((short)3, "__meta"),
-    __TEXT_NODES((short)4, "__textNodes");
+    META((short)3, "meta"),
+    TEXT_NODES((short)4, "textNodes");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -76,10 +76,10 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
           return TEXT;
         case 2: // MARGINALIA
           return MARGINALIA;
-        case 3: // __META
-          return __META;
-        case 4: // __TEXT_NODES
-          return __TEXT_NODES;
+        case 3: // META
+          return META;
+        case 4: // TEXT_NODES
+          return TEXT_NODES;
         default:
           return null;
       }
@@ -120,7 +120,7 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
   }
 
   // isset id assignments
-  private _Fields optionals[] = {_Fields.MARGINALIA,_Fields.__META,_Fields.__TEXT_NODES};
+  private _Fields optionals[] = {_Fields.MARGINALIA,_Fields.META,_Fields.TEXT_NODES};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -129,11 +129,11 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
     tmpMap.put(_Fields.MARGINALIA, new org.apache.thrift.meta_data.FieldMetaData("marginalia", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Marginalis.class))));
-    tmpMap.put(_Fields.__META, new org.apache.thrift.meta_data.FieldMetaData("__meta", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.META, new org.apache.thrift.meta_data.FieldMetaData("meta", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Mapping.class))));
-    tmpMap.put(_Fields.__TEXT_NODES, new org.apache.thrift.meta_data.FieldMetaData("__textNodes", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.TEXT_NODES, new org.apache.thrift.meta_data.FieldMetaData("textNodes", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TextNode.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -164,27 +164,27 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
       }
       this.marginalia = __this__marginalia;
     }
-    if (other.isSet__meta()) {
-      Map<String,Mapping> __this____meta = new HashMap<String,Mapping>(other.__meta.size());
-      for (Map.Entry<String, Mapping> other_element : other.__meta.entrySet()) {
+    if (other.isSetMeta()) {
+      Map<String,Mapping> __this__meta = new HashMap<String,Mapping>(other.meta.size());
+      for (Map.Entry<String, Mapping> other_element : other.meta.entrySet()) {
 
         String other_element_key = other_element.getKey();
         Mapping other_element_value = other_element.getValue();
 
-        String __this____meta_copy_key = other_element_key;
+        String __this__meta_copy_key = other_element_key;
 
-        Mapping __this____meta_copy_value = new Mapping(other_element_value);
+        Mapping __this__meta_copy_value = new Mapping(other_element_value);
 
-        __this____meta.put(__this____meta_copy_key, __this____meta_copy_value);
+        __this__meta.put(__this__meta_copy_key, __this__meta_copy_value);
       }
-      this.__meta = __this____meta;
+      this.meta = __this__meta;
     }
-    if (other.isSet__textNodes()) {
-      List<TextNode> __this____textNodes = new ArrayList<TextNode>(other.__textNodes.size());
-      for (TextNode other_element : other.__textNodes) {
-        __this____textNodes.add(new TextNode(other_element));
+    if (other.isSetTextNodes()) {
+      List<TextNode> __this__textNodes = new ArrayList<TextNode>(other.textNodes.size());
+      for (TextNode other_element : other.textNodes) {
+        __this__textNodes.add(new TextNode(other_element));
       }
-      this.__textNodes = __this____textNodes;
+      this.textNodes = __this__textNodes;
     }
   }
 
@@ -196,8 +196,8 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
   public void clear() {
     this.text = null;
     this.marginalia = null;
-    this.__meta = null;
-    this.__textNodes = null;
+    this.meta = null;
+    this.textNodes = null;
   }
 
   public String getText() {
@@ -263,77 +263,77 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
     }
   }
 
-  public int get__metaSize() {
-    return (this.__meta == null) ? 0 : this.__meta.size();
+  public int getMetaSize() {
+    return (this.meta == null) ? 0 : this.meta.size();
   }
 
-  public void putTo__meta(String key, Mapping val) {
-    if (this.__meta == null) {
-      this.__meta = new HashMap<String,Mapping>();
+  public void putToMeta(String key, Mapping val) {
+    if (this.meta == null) {
+      this.meta = new HashMap<String,Mapping>();
     }
-    this.__meta.put(key, val);
+    this.meta.put(key, val);
   }
 
-  public Map<String,Mapping> get__meta() {
-    return this.__meta;
+  public Map<String,Mapping> getMeta() {
+    return this.meta;
   }
 
-  public Document set__meta(Map<String,Mapping> __meta) {
-    this.__meta = __meta;
+  public Document setMeta(Map<String,Mapping> meta) {
+    this.meta = meta;
     return this;
   }
 
-  public void unset__meta() {
-    this.__meta = null;
+  public void unsetMeta() {
+    this.meta = null;
   }
 
-  /** Returns true if field __meta is set (has been assigned a value) and false otherwise */
-  public boolean isSet__meta() {
-    return this.__meta != null;
+  /** Returns true if field meta is set (has been assigned a value) and false otherwise */
+  public boolean isSetMeta() {
+    return this.meta != null;
   }
 
-  public void set__metaIsSet(boolean value) {
+  public void setMetaIsSet(boolean value) {
     if (!value) {
-      this.__meta = null;
+      this.meta = null;
     }
   }
 
-  public int get__textNodesSize() {
-    return (this.__textNodes == null) ? 0 : this.__textNodes.size();
+  public int getTextNodesSize() {
+    return (this.textNodes == null) ? 0 : this.textNodes.size();
   }
 
-  public java.util.Iterator<TextNode> get__textNodesIterator() {
-    return (this.__textNodes == null) ? null : this.__textNodes.iterator();
+  public java.util.Iterator<TextNode> getTextNodesIterator() {
+    return (this.textNodes == null) ? null : this.textNodes.iterator();
   }
 
-  public void addTo__textNodes(TextNode elem) {
-    if (this.__textNodes == null) {
-      this.__textNodes = new ArrayList<TextNode>();
+  public void addToTextNodes(TextNode elem) {
+    if (this.textNodes == null) {
+      this.textNodes = new ArrayList<TextNode>();
     }
-    this.__textNodes.add(elem);
+    this.textNodes.add(elem);
   }
 
-  public List<TextNode> get__textNodes() {
-    return this.__textNodes;
+  public List<TextNode> getTextNodes() {
+    return this.textNodes;
   }
 
-  public Document set__textNodes(List<TextNode> __textNodes) {
-    this.__textNodes = __textNodes;
+  public Document setTextNodes(List<TextNode> textNodes) {
+    this.textNodes = textNodes;
     return this;
   }
 
-  public void unset__textNodes() {
-    this.__textNodes = null;
+  public void unsetTextNodes() {
+    this.textNodes = null;
   }
 
-  /** Returns true if field __textNodes is set (has been assigned a value) and false otherwise */
-  public boolean isSet__textNodes() {
-    return this.__textNodes != null;
+  /** Returns true if field textNodes is set (has been assigned a value) and false otherwise */
+  public boolean isSetTextNodes() {
+    return this.textNodes != null;
   }
 
-  public void set__textNodesIsSet(boolean value) {
+  public void setTextNodesIsSet(boolean value) {
     if (!value) {
-      this.__textNodes = null;
+      this.textNodes = null;
     }
   }
 
@@ -355,19 +355,19 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
       }
       break;
 
-    case __META:
+    case META:
       if (value == null) {
-        unset__meta();
+        unsetMeta();
       } else {
-        set__meta((Map<String,Mapping>)value);
+        setMeta((Map<String,Mapping>)value);
       }
       break;
 
-    case __TEXT_NODES:
+    case TEXT_NODES:
       if (value == null) {
-        unset__textNodes();
+        unsetTextNodes();
       } else {
-        set__textNodes((List<TextNode>)value);
+        setTextNodes((List<TextNode>)value);
       }
       break;
 
@@ -382,11 +382,11 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
     case MARGINALIA:
       return getMarginalia();
 
-    case __META:
-      return get__meta();
+    case META:
+      return getMeta();
 
-    case __TEXT_NODES:
-      return get__textNodes();
+    case TEXT_NODES:
+      return getTextNodes();
 
     }
     throw new IllegalStateException();
@@ -403,10 +403,10 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
       return isSetText();
     case MARGINALIA:
       return isSetMarginalia();
-    case __META:
-      return isSet__meta();
-    case __TEXT_NODES:
-      return isSet__textNodes();
+    case META:
+      return isSetMeta();
+    case TEXT_NODES:
+      return isSetTextNodes();
     }
     throw new IllegalStateException();
   }
@@ -442,21 +442,21 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
         return false;
     }
 
-    boolean this_present___meta = true && this.isSet__meta();
-    boolean that_present___meta = true && that.isSet__meta();
-    if (this_present___meta || that_present___meta) {
-      if (!(this_present___meta && that_present___meta))
+    boolean this_present_meta = true && this.isSetMeta();
+    boolean that_present_meta = true && that.isSetMeta();
+    if (this_present_meta || that_present_meta) {
+      if (!(this_present_meta && that_present_meta))
         return false;
-      if (!this.__meta.equals(that.__meta))
+      if (!this.meta.equals(that.meta))
         return false;
     }
 
-    boolean this_present___textNodes = true && this.isSet__textNodes();
-    boolean that_present___textNodes = true && that.isSet__textNodes();
-    if (this_present___textNodes || that_present___textNodes) {
-      if (!(this_present___textNodes && that_present___textNodes))
+    boolean this_present_textNodes = true && this.isSetTextNodes();
+    boolean that_present_textNodes = true && that.isSetTextNodes();
+    if (this_present_textNodes || that_present_textNodes) {
+      if (!(this_present_textNodes && that_present_textNodes))
         return false;
-      if (!this.__textNodes.equals(that.__textNodes))
+      if (!this.textNodes.equals(that.textNodes))
         return false;
     }
 
@@ -477,15 +477,15 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
     if (present_marginalia)
       builder.append(marginalia);
 
-    boolean present___meta = true && (isSet__meta());
-    builder.append(present___meta);
-    if (present___meta)
-      builder.append(__meta);
+    boolean present_meta = true && (isSetMeta());
+    builder.append(present_meta);
+    if (present_meta)
+      builder.append(meta);
 
-    boolean present___textNodes = true && (isSet__textNodes());
-    builder.append(present___textNodes);
-    if (present___textNodes)
-      builder.append(__textNodes);
+    boolean present_textNodes = true && (isSetTextNodes());
+    builder.append(present_textNodes);
+    if (present_textNodes)
+      builder.append(textNodes);
 
     return builder.toHashCode();
   }
@@ -518,22 +518,22 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSet__meta()).compareTo(other.isSet__meta());
+    lastComparison = Boolean.valueOf(isSetMeta()).compareTo(other.isSetMeta());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSet__meta()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.__meta, other.__meta);
+    if (isSetMeta()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.meta, other.meta);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSet__textNodes()).compareTo(other.isSet__textNodes());
+    lastComparison = Boolean.valueOf(isSetTextNodes()).compareTo(other.isSetTextNodes());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSet__textNodes()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.__textNodes, other.__textNodes);
+    if (isSetTextNodes()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.textNodes, other.textNodes);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -575,23 +575,23 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
       }
       first = false;
     }
-    if (isSet__meta()) {
+    if (isSetMeta()) {
       if (!first) sb.append(", ");
-      sb.append("__meta:");
-      if (this.__meta == null) {
+      sb.append("meta:");
+      if (this.meta == null) {
         sb.append("null");
       } else {
-        sb.append(this.__meta);
+        sb.append(this.meta);
       }
       first = false;
     }
-    if (isSet__textNodes()) {
+    if (isSetTextNodes()) {
       if (!first) sb.append(", ");
-      sb.append("__textNodes:");
-      if (this.__textNodes == null) {
+      sb.append("textNodes:");
+      if (this.textNodes == null) {
         sb.append("null");
       } else {
-        sb.append(this.__textNodes);
+        sb.append(this.textNodes);
       }
       first = false;
     }
@@ -668,11 +668,11 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 3: // __META
+          case 3: // META
             if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
               {
                 org.apache.thrift.protocol.TMap _map27 = iprot.readMapBegin();
-                struct.__meta = new HashMap<String,Mapping>(2*_map27.size);
+                struct.meta = new HashMap<String,Mapping>(2*_map27.size);
                 for (int _i28 = 0; _i28 < _map27.size; ++_i28)
                 {
                   String _key29;
@@ -680,30 +680,30 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
                   _key29 = iprot.readString();
                   _val30 = new Mapping();
                   _val30.read(iprot);
-                  struct.__meta.put(_key29, _val30);
+                  struct.meta.put(_key29, _val30);
                 }
                 iprot.readMapEnd();
               }
-              struct.set__metaIsSet(true);
+              struct.setMetaIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 4: // __TEXT_NODES
+          case 4: // TEXT_NODES
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list31 = iprot.readListBegin();
-                struct.__textNodes = new ArrayList<TextNode>(_list31.size);
+                struct.textNodes = new ArrayList<TextNode>(_list31.size);
                 for (int _i32 = 0; _i32 < _list31.size; ++_i32)
                 {
                   TextNode _elem33;
                   _elem33 = new TextNode();
                   _elem33.read(iprot);
-                  struct.__textNodes.add(_elem33);
+                  struct.textNodes.add(_elem33);
                 }
                 iprot.readListEnd();
               }
-              struct.set__textNodesIsSet(true);
+              struct.setTextNodesIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -742,12 +742,12 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
           oprot.writeFieldEnd();
         }
       }
-      if (struct.__meta != null) {
-        if (struct.isSet__meta()) {
-          oprot.writeFieldBegin(__META_FIELD_DESC);
+      if (struct.meta != null) {
+        if (struct.isSetMeta()) {
+          oprot.writeFieldBegin(META_FIELD_DESC);
           {
-            oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRUCT, struct.__meta.size()));
-            for (Map.Entry<String, Mapping> _iter35 : struct.__meta.entrySet())
+            oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRUCT, struct.meta.size()));
+            for (Map.Entry<String, Mapping> _iter35 : struct.meta.entrySet())
             {
               oprot.writeString(_iter35.getKey());
               _iter35.getValue().write(oprot);
@@ -757,12 +757,12 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
           oprot.writeFieldEnd();
         }
       }
-      if (struct.__textNodes != null) {
-        if (struct.isSet__textNodes()) {
-          oprot.writeFieldBegin(__TEXT_NODES_FIELD_DESC);
+      if (struct.textNodes != null) {
+        if (struct.isSetTextNodes()) {
+          oprot.writeFieldBegin(TEXT_NODES_FIELD_DESC);
           {
-            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.__textNodes.size()));
-            for (TextNode _iter36 : struct.__textNodes)
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.textNodes.size()));
+            for (TextNode _iter36 : struct.textNodes)
             {
               _iter36.write(oprot);
             }
@@ -793,10 +793,10 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
       if (struct.isSetMarginalia()) {
         optionals.set(0);
       }
-      if (struct.isSet__meta()) {
+      if (struct.isSetMeta()) {
         optionals.set(1);
       }
-      if (struct.isSet__textNodes()) {
+      if (struct.isSetTextNodes()) {
         optionals.set(2);
       }
       oprot.writeBitSet(optionals, 3);
@@ -809,20 +809,20 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
           }
         }
       }
-      if (struct.isSet__meta()) {
+      if (struct.isSetMeta()) {
         {
-          oprot.writeI32(struct.__meta.size());
-          for (Map.Entry<String, Mapping> _iter38 : struct.__meta.entrySet())
+          oprot.writeI32(struct.meta.size());
+          for (Map.Entry<String, Mapping> _iter38 : struct.meta.entrySet())
           {
             oprot.writeString(_iter38.getKey());
             _iter38.getValue().write(oprot);
           }
         }
       }
-      if (struct.isSet__textNodes()) {
+      if (struct.isSetTextNodes()) {
         {
-          oprot.writeI32(struct.__textNodes.size());
-          for (TextNode _iter39 : struct.__textNodes)
+          oprot.writeI32(struct.textNodes.size());
+          for (TextNode _iter39 : struct.textNodes)
           {
             _iter39.write(oprot);
           }
@@ -853,7 +853,7 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
       if (incoming.get(1)) {
         {
           org.apache.thrift.protocol.TMap _map43 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.__meta = new HashMap<String,Mapping>(2*_map43.size);
+          struct.meta = new HashMap<String,Mapping>(2*_map43.size);
           for (int _i44 = 0; _i44 < _map43.size; ++_i44)
           {
             String _key45;
@@ -861,24 +861,24 @@ public class Document implements org.apache.thrift.TBase<Document, Document._Fie
             _key45 = iprot.readString();
             _val46 = new Mapping();
             _val46.read(iprot);
-            struct.__meta.put(_key45, _val46);
+            struct.meta.put(_key45, _val46);
           }
         }
-        struct.set__metaIsSet(true);
+        struct.setMetaIsSet(true);
       }
       if (incoming.get(2)) {
         {
           org.apache.thrift.protocol.TList _list47 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.__textNodes = new ArrayList<TextNode>(_list47.size);
+          struct.textNodes = new ArrayList<TextNode>(_list47.size);
           for (int _i48 = 0; _i48 < _list47.size; ++_i48)
           {
             TextNode _elem49;
             _elem49 = new TextNode();
             _elem49.read(iprot);
-            struct.__textNodes.add(_elem49);
+            struct.textNodes.add(_elem49);
           }
         }
-        struct.set__textNodesIsSet(true);
+        struct.setTextNodesIsSet(true);
       }
     }
   }

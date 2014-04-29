@@ -101,20 +101,20 @@ class Annotation(TBase):
   Attributes:
    - uuid
    - label
-   - __meta
+   - meta
   """
 
   thrift_spec = (
     None, # 0
     (1, TType.STRING, 'uuid', None, None, ), # 1
     (2, TType.I32, 'label', None, None, ), # 2
-    (3, TType.STRUCT, '__meta', (MetaReference, MetaReference.thrift_spec), None, ), # 3
+    (3, TType.STRUCT, 'meta', (MetaReference, MetaReference.thrift_spec), None, ), # 3
   )
 
-  def __init__(self, uuid=None, label=None, __meta=None,):
+  def __init__(self, uuid=None, label=None, meta=None,):
     self.uuid = uuid
     self.label = label
-    self.__meta = __meta
+    self.meta = meta
 
   def __repr__(self):
     L = ['%s=%r' % (key, value)
@@ -194,23 +194,23 @@ class Document(TBase):
   Attributes:
    - text
    - marginalia
-   - __meta
-   - __textNodes
+   - meta
+   - textNodes
   """
 
   thrift_spec = (
     None, # 0
     (1, TType.STRING, 'text', None, None, ), # 1
     (2, TType.LIST, 'marginalia', (TType.STRUCT,(Marginalis, Marginalis.thrift_spec)), None, ), # 2
-    (3, TType.MAP, '__meta', (TType.STRING,None,TType.STRUCT,(Mapping, Mapping.thrift_spec)), None, ), # 3
-    (4, TType.LIST, '__textNodes', (TType.STRUCT,(TextNode, TextNode.thrift_spec)), None, ), # 4
+    (3, TType.MAP, 'meta', (TType.STRING,None,TType.STRUCT,(Mapping, Mapping.thrift_spec)), None, ), # 3
+    (4, TType.LIST, 'textNodes', (TType.STRUCT,(TextNode, TextNode.thrift_spec)), None, ), # 4
   )
 
-  def __init__(self, text=None, marginalia=None, __meta=None, __textNodes=None,):
+  def __init__(self, text=None, marginalia=None, meta=None, textNodes=None,):
     self.text = text
     self.marginalia = marginalia
-    self.__meta = __meta
-    self.__textNodes = __textNodes
+    self.meta = meta
+    self.textNodes = textNodes
 
   def __repr__(self):
     L = ['%s=%r' % (key, value)

@@ -18,7 +18,7 @@ struct MetaReference {
 struct Annotation {
        1: string uuid; // 128bit hex
        2: i32 label;
-       3: MetaReference __meta;
+       3: MetaReference meta;
 }
 
 struct Marginalis {
@@ -36,6 +36,6 @@ struct Mapping {
 struct Document {
        1: required string text;
        2: optional list<Marginalis> marginalia;
-       3: optional map<string, Mapping> __meta;
-       4: optional list<TextNode> __textNodes;
+       3: optional map<string, Mapping> meta;
+       4: optional list<TextNode> textNodes;
 }
