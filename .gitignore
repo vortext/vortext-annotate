@@ -34,11 +34,6 @@ nbproject
 *.fls
 *.pyc
 *.out
-data/*
-data/cache/
-
 *.log
 
-static/build
-static/build/**
 target/
