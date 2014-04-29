@@ -37,3 +37,6 @@ nbproject
 *.log
 
 target/
+
+.nrepl-port
+.lein-repl-history
