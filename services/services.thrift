@@ -25,8 +25,3 @@ service Filter {
 
         oneway void shutdown()
 }
-
-
-service Echo {
-        string echo(1:string input)
-}
