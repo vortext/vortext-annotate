@@ -9,7 +9,8 @@ from thrift.protocol import TBinaryProtocol
 from thrift.server import TServer
 
 DEBUG_MODE = True
-logging.basicConfig(level=(logging.DEBUG if DEBUG_MODE else logging.INFO), format='[%(levelname)s] %(name)s %(asctime)s: %(message)s')
+LOG_LEVEL = (logging.DEBUG if DEBUG_MODE else logging.INFO)
+logging.basicConfig(level=LOG_LEVEL, format='[%(levelname)s] %(name)s %(asctime)s: %(message)s')
 log = logging.getLogger(__name__)
 
 class FilterHandler:
@@ -26,6 +27,6 @@ transport = TSocket.TServerSocket(port=9090)
 tfactory = TTransport.TBufferedTransportFactory()
 pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
-server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
+server = TServer.TThreadPoolServer(processor, transport, tfactory, pfactory)
 
 server.serve()
