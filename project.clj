@@ -9,8 +9,11 @@
                  [ch.qos.logback/logback-classic "1.1.2"]
                  [org.clojure/tools.logging "0.2.6"]
 
-                 [prismatic/plumbing "0.2.2"]
-
                  [thrift-clj "0.2.1"]
+
+                 [org.zeromq/jeromq "0.3.3"]
+                 [org.zeromq/cljzmq "0.1.4" :exclusions [org.zeromq/jzmq]]
+                 [org.clojure/tools.reader "0.8.4"]
+                 [prismatic/plumbing "0.2.2"]
                  [org.clojure/core.async "0.1.298.0-2a82a1-alpha"]
                  [http-kit "2.1.18"]])
