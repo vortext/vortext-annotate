@@ -60,8 +60,8 @@
 
 Summarizing the evidence about medical interventions is an immense undertaking, in part because unstructured \ac{pdf} documents remain the main vehicle for disseminating scientific findings.
 Clinicians and researchers must therefore manually extract and synthesise information from these \acp{pdf} to be published in \emph{systematic reviews}.
-We introduce Spá\footnote{From the Old Norse word spá or spæ referring to prophesying (prophecy)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://spa.clinici.co/}}, a web-based viewer that enables automated annotation and summarisation of \acp{pdf} via \ac{ml}.
-To illustrate its functionalility, here we use Spá to semi-automate the assessment of bias in clinical trials.
+We introduce Spá\footnote{From the Old Norse word spá or spæ referring to prophesying (prophecy)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{Kuiper2014}; demo available at \url{http://spa.clinici.co/}}, a web-based viewer that enables automated annotation and summarisation of \acp{pdf} via \ac{ml}.
+To illustrate its functionalility, we use Spá to semi-automate the assessment of bias in clinical trials.
 %Spá can visualize the output from hybrid models that simultaneously classify documents (e.g., identifying trials as low or high risk of various biases), and annotate sentences that support these classifications.
 Spá has a modular architecture, therefore the tool may be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
 
@@ -75,12 +75,12 @@ Spá has a modular architecture, therefore the tool may be widely useful in othe
 
 Imposing structure on full-text documents is an important and practical task in natural language processing and machine learning.
 \emph{Systematic reviews} are an instructive example.
-Such reviews aim to answer clinical questions by providing an exhaustive synthesis (textual and statistical) of the current evidence in all published literature.
-They are fundamental tools in \ac{ebm} \cite{sackett1996}.
-To produce these reviews data, like potential biases, must be manually extracted from the literature.
+Such reviews aim to answer clinical questions by providing an exhaustive synthesis of all the current evidence in published literature.
+They are fundamental tools in \ac{ebm} \cite{Sackett1996,Valkenhoef2012}.
+To produce these reviews data must be manually extracted from the literature.
 These extraction tasks are extremely labourous, but could potentially be (semi-)automated using machine learning approaches.
 
-As an example, we consider the risk of bias assessment, in which reviewers assess, e.g., whether study participants and personnel were properly blinded.
+As an example we consider risk of bias assessment, here reviewers assess, e.g., whether study participants and personnel were properly blinded \cite{Higgins2011}.
 Assessing risk of bias is a time-consuming task.
 A single trial may typically take a domain expert ten minutes \cite{Hartling2011}, and a single review may typically include several dozen trials.
 Making matters worse, due to low rates of reviewer agreement it is regarded as best practice to have each study assessed twice by independent reviewers who later come to a consensus \cite{Hartling2009}.
@@ -94,12 +94,12 @@ As a practical demonstration of this technology, we have built a machine learnin
 This tool is unique in that it leverages state-of-the-art \ac{ml} models applied to full-text articles to assist practitioners of \ac{ebm}.
 
 \begin{figure}[htb]
-\vspace{-1em}
+\vspace{-2em}
 \centering
 \includegraphics[width=0.8\linewidth]{./images/screenshot2.png}
 \vspace{-1em}
 \caption{\label{fig:screenshot}Screenshot of a \ac{pdf} with highlighted risk of bias. Here the risk of bias is assessed to be low, for example, and one of the supporting sentences for this assessment describes the randomization procedure (highlighted in green).}
-\vspace{-1em}
+\vspace{-1.5em}
 \end{figure}
 
 While our application of interest is \ac{ebm}, we emphasize that the visualization tool can be used for any domain in which one wants to annotate \acp{pdf}.
@@ -134,20 +134,20 @@ Thus the contribution of this work is two-fold, as we present:
 \subsection{Machine Learning Approaches}
 To automatically assess the study risk of bias, we have leveraged the \ac{cdsr} in lieu of manually annotated data, which would be expensive to collect.
 The \ac{cdsr} contains descriptions and data about clinical trials reported in existing systematic reviews.
-We match the full-texts of studies to entries in the \ac{cdsr}, which contains risk of bias assessment; providing  document level labels.
+We match the full-texts of studies to entries in the \ac{cdsr}, which contains risk of bias assessment; providing document level labels.
 The \ac{cdsr} also contains quotations that reviewers indicated as supporting their assessments.
 We match these strings to substrings in the \acp{pdf} to provide sentence-level supervision.
-This can be viewed as a \emph{distantly supervised} \cite{mintz-09,nguyen-11} approach.
+This can be viewed as a \emph{distantly supervised} \cite{Mintz09,Nguyen11} approach.
 
 %%%
 % note that this is a little misleading right now -- we don't technically have this multi-task joint extraction thing going yet!!!
 %%%
-From a \ac{ml} vantage, we have two tasks for a given article: (1) predict the overall risk of bias for each of the domains of interest, and (2) extract the sentences that support these assessments.
+From a \ac{ml} vantage, we have two tasks for a given article: (1) predict the overall risk of bias for each of the domains, and (2) extract the sentences that support these assessments.
 For both tasks we leverage standard bag-of-words text encoding and linear-kernel \aclp{svm}.
-Because the risk of bias predictions are correlated (across domains), we take a \emph{multi-task} \cite{evgeniou2004} approach to classification and jointly learn a model for the domains.
-We accomplish this by way of a feature space construction that includes both shared and domain-specific terms, similar to the domain adaptation approach in \cite{daume2007}.
+Because the risk of bias predictions are correlated across domains, we take a \emph{multi-task} \cite{Evgeniou2004} approach to classification and jointly learn a model for the domains.
+We accomplish this by way of a feature space construction that includes both shared and domain-specific terms, similar to the domain adaptation approach in \cite{Daume2007}.
 %Furthermore, we take a unified approach to the two tasks by \emph{jointly} assessing the risk of bias associated with a given article \emph{and} extracting the sentences that support this judgment.
-Specifically, we first make sentence level prediction, and then insert features representing the tokens (words) in the predicted sentences for exploitation by the document level classifier (further details specified in \cite{marshall2014}).
+Specifically, we first make sentence level prediction, and then insert features representing the tokens in the predicted sentences for exploitation by the document level classifier (see for details \cite{Marshall2014}).
 Figure \ref{fig:screenshot} shows the system in use.
 %More specifically, the database we leverage contains structured and semi-structured data for each systematic review. Internally, the Cochrane Collaboration stores working versions of their reviews as XML. Each review contains a wealth of (structured) data about the clinical trials that met the review inclusion criteria. There are usually multiple clinical trials described in a single review. Cochrane reviews use basic clinical trial identifiers which are unique per review (based on the first author surname and year of publication) throughout these files. It is therefore possible to extract structured data, and filtered snippets of full text data which describe a single clinical trial. Using these identifiers, we were able to obtain full structured citation data for the primary reference of all included studies across the \ac{cdsr}.
 
@@ -163,10 +163,11 @@ Figure \ref{fig:screenshot} shows the system in use.
 
 \label{section:architecture}
 \begin{wrapfigure}{}{0.5\textwidth}
-  \vspace{-1em}
+  \vspace{-2em}
   \includegraphics[width=0.48\textwidth]{./diagrams/sequence.pdf}
-  \caption{\label{fig:sequence}Sequence diagram of a typical request-response in Spá.}
   \vspace{-1em}
+  \caption{\label{fig:sequence}Sequence diagram of a typical request-response in Spá.}
+  \vspace{-1.5em}
 \end{wrapfigure}
 
 Spá relies on Mozilla pdf.js\footnote{\url{http://mozilla.github.io/pdf.js}} for visualization of the document and text extraction.
@@ -174,24 +175,22 @@ The results of the text extraction are processed server-side by a variety of pro
 Results are communicated back to the browser and displayed using React components.\footnote{\url{http://facebook.github.io/react}}
 
 For each of the annotations the relevant nodes in the document are highlighted.
-A custom scrollbar\footnote{inspired by \href{http://substance.io/}{substance.io}} that acts as a `mini-map' is projected to show where annotations reside within the document.
+A custom scrollbar, inspired by \href{http://substance.io/}{substance.io} that acts as a `mini-map' is projected to show where annotations reside within the document.
 The user can interactively activate and inspect specific results.
 
 \section{Future work}
 We have presented a web-based tool for visualization of annotations and marginalia for \ac{pdf} documents.
 Furthermore, we have demonstrated the use of this system within the context of \acl{ebm} by automatically extracting potential risks of bias.
 
-More generally, we believe the tool to be potentially useful for a much wider range of text mining and \acl{ml} applications.
+More generally, we believe the tool to be potentially useful for a much wider range of \acl{ml} applications.
 To increase the generality of the tool we are developing a pluggable system for processing topologies, allowing developers to quickly plug in new systems for automated \ac{pdf} annotation.
 Furthermore, we are working to allow users to save selected annotations, possibly embedded within the document itself, for sharing and off-line use.
-The vision is to have an extensible system for semi-automated (machine assisted) screening, data extraction and data summarization for EBM, and to allow rapid development of similar systems for other domains.
+The vision is to have an extensible system for machine assisted data extraction and data summarization.
 
 \subsubsection{Acknowledgments}
 Part of this research was funded by the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 261433. % %TODO add seed funds ack (BCW) -- I can do this post-acceptance though
 
 
 \bibliographystyle{splncs}
-
 \bibliography{references}
-
 \end{document}
