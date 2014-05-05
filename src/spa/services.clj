@@ -4,6 +4,7 @@
    [zeromq [device :as device] [zmq :as zmq]]))
 
 (defonce running-services (atom {}))
+(defonce context (zmq/zcontext))
 
 (defn start-process!
   "Open a sub process, return the subprocess
@@ -26,15 +27,17 @@
   (shutdown! [self])
   (dispatch [self payload]))
 
-
 (defn- remote-dispatch [socket payload]
-
-  )
+  (with-open [requester
+              (doto (zmq/socket context :req)
+                (zmq/connect socket))]
+    (zmq/send-str requester payload)
+    (zmq/receive-str requester)))
 
 (deftype Service [type file process socket]
   RemoteProcedure
   (shutdown! [self] (do (.destroy process) (swap! running-services dissoc [type file])))
-  (dispatch [self payload] (print "sending off" payload)))
+  (dispatch [self payload] (remote-dispatch socket payload)))
 
 (defn running?
   [type file]

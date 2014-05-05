@@ -25,7 +25,6 @@ def run_server(socket_addr):
         while True:
             message = socket.recv()
             log.debug("Received request: %s" % (message))
-            time.sleep(1)
             socket.send("World from %s" % socket_addr)
     except zmq.ZMQError as e:
         log.info("recv failed with: %s" % e)
