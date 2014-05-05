@@ -3,7 +3,7 @@
    [clojure.java.io :as io]
    [zeromq [device :as device] [zmq :as zmq]]))
 
-(defonce running-services* (atom #{}))
+(defonce running-services (atom {}))
 
 (defn start-process!
   "Open a sub process, return the subprocess
@@ -33,24 +33,27 @@
 
 (defn running?
   [type file]
-  (contains? running-services* [type file]))
+  (contains? running-services [type file]))
 
 (defmulti start-service! (fn [type file] type))
 (defmethod start-service! "python" [type file]
-  (let [port (zmq/first-free-port)
-        process (start-process! ["python" "<path to Abstract>" file port])]))
+  (let [server (.getPath (io/resource "topologies/JSONFilterServer.py"))
+        socket (str "tcp://localhost:" (zmq/first-free-port))
+        env {"SPA_VERSION" (System/getProperty "spa.version")}
+        process (start-process! ["python" server "-f" file "-s" socket] :redirect true :dir nil :env env)
+        remote-procedure (Service. type file process socket)]
+    (swap! running-services assoc [type file] remote-procedure)
+    remote-procedure))
 
 (defn services
   [type file]
   (if-not (running? type file)
     (start-service! type file)
-    (@running-services* [type file])))
+    (@running-services [type file])))
 
 (defn call
   "Initiates a Remote Procedure Call
    will start the service if not running already"
   [type file payload]
   (let [service (services type file)]
-    )
-
-  )
+    (dispatch service payload)))
