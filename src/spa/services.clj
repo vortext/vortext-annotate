@@ -26,21 +26,26 @@
   (shutdown! [self])
   (dispatch [self payload]))
 
+
+(defn- remote-dispatch [socket payload]
+
+  )
+
 (deftype Service [type file process socket]
   RemoteProcedure
-  (shutdown! [self] "stop")
+  (shutdown! [self] (do (.destroy process) (swap! running-services dissoc [type file])))
   (dispatch [self payload] (print "sending off" payload)))
 
 (defn running?
   [type file]
-  (contains? running-services [type file]))
+  (contains? @running-services [type file]))
 
 (defmulti start-service! (fn [type file] type))
 (defmethod start-service! "python" [type file]
   (let [server (.getPath (io/resource "topologies/JSONFilterServer.py"))
-        socket (str "tcp://localhost:" (zmq/first-free-port))
+        socket (str "tcp://127.0.0.1:" (zmq/first-free-port))
         env {"SPA_VERSION" (System/getProperty "spa.version")}
-        process (start-process! ["python" server "-f" file "-s" socket] :redirect true :dir nil :env env)
+        process (start-process! ["python" server "-f" file "-s" socket] :redirect true :env env)
         remote-procedure (Service. type file process socket)]
     (swap! running-services assoc [type file] remote-procedure)
     remote-procedure))
