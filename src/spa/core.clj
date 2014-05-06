@@ -40,4 +40,4 @@
   (let [handler (if (env :debug)
                   (reload/wrap-reload app) ;; only reload when in debug
                   app)]
-    (reset! server (run-server handler {:port (env :port)}))))
+    (reset! server (run-server handler {:port (Integer/parseInt (env :port))}))))
