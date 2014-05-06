@@ -8,7 +8,8 @@
             [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
-            [org.httpkit.server :refer :all]))
+            [org.httpkit.server :refer :all]
+            [spa.services :only shutdown! :as services]))
 
 (defonce server (atom nil))
 
@@ -30,15 +31,13 @@
     ;; graceful shutdown: wait for existing requests to be finished
     (@server :timeout 100)
     (reset! server nil))
+  (services/shutdown!)
   (log/info "… bye bye"))
 
 (defn -main [& args]
-  ;; The #' is useful, when you want to hot-reload code
-  ;; You may want to take a look: https://github.com/clojure/tools.namespace
-  ;; and http://http-kit.org/migration.html#reload
   (log/info "starting server, listening on" (env :port) (when (env :debug) "[DEBUG]"))
   (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (stop-server))))
   (let [handler (if (env :debug)
-                  (reload/wrap-reload app) ;; only reload when dev
+                  (reload/wrap-reload app) ;; only reload when in debug
                   app)]
     (reset! server (run-server handler {:port (env :port)}))))

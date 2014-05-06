@@ -1,10 +1,13 @@
 (ns spa.services
+  (:use environ.core)
   (:require
    [clojure.java.io :as io]
    [zeromq [device :as device] [zmq :as zmq]]))
 
 (defonce running-services (atom {}))
 (defonce context (zmq/zcontext))
+
+
 
 (defn start-process!
   "Open a sub process, return the subprocess
@@ -24,7 +27,7 @@
        (.start))))
 
 (defprotocol RemoteProcedure
-  (shutdown! [self])
+  (shutdown [self])
   (dispatch [self payload]))
 
 (defn- remote-dispatch [socket payload]
@@ -36,7 +39,7 @@
 
 (deftype Service [type file process socket]
   RemoteProcedure
-  (shutdown! [self] (do (.destroy process) (swap! running-services dissoc [type file])))
+  (shutdown [self] (do (.destroy process) (swap! running-services dissoc [type file])))
   (dispatch [self payload] (remote-dispatch socket payload)))
 
 (defn running?
@@ -47,7 +50,8 @@
 (defmethod start-service! "python" [type file]
   (let [server (.getPath (io/resource "topologies/JSONFilterServer.py"))
         socket (str "tcp://127.0.0.1:" (zmq/first-free-port))
-        env {"SPA_VERSION" (System/getProperty "spa.version")}
+        env {"DEBUG" (env :debug)
+             "SPA_VERSION" (System/getProperty "spa.version")}
         process (start-process! ["python" server "-f" file "-s" socket] :redirect true :env env)
         remote-procedure (Service. type file process socket)]
     (swap! running-services assoc [type file] remote-procedure)
@@ -65,3 +69,7 @@
   [type file payload]
   (let [service (services type file)]
     (dispatch service payload)))
+
+(defn shutdown! []
+  (doseq [services (vals @running-services)]
+    (shutdown services)))

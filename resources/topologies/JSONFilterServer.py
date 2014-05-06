@@ -3,7 +3,8 @@ import zmq
 
 context = zmq.Context()
 
-DEBUG_MODE = True
+DEBUG_MODE = os.environ("DEBUG")
+VERSION = os.environ("VERSION")
 LOG_LEVEL = (logging.DEBUG if DEBUG_MODE else logging.INFO)
 logging.basicConfig(level=LOG_LEVEL, format='[%(levelname)s] %(name)s %(asctime)s: %(message)s')
 log = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ signal.signal(signal.SIGINT, destroy)
 signal.signal(signal.SIGTERM, destroy)
 
 def run_server(socket_addr):
-    log.info("Starting server on %s" % (socket_addr))
+    log.info("Hail to the king Spa %s on %s" % (VERSION, socket_addr))
     socket = context.socket(zmq.REP)
     socket.bind(socket_addr)
     try:
@@ -31,8 +32,8 @@ def run_server(socket_addr):
 
 def main():
     p = optparse.OptionParser(
-        description="Runs the file as a worker process on the specified socket",
-        version="Spa %s" % (os.environ['SPA_VERSION']))
+        description="Runs the file (subclass of AbstractFilter) as a worker process on the specified socket",
+        version="Spa %s" % (VERSION))
     p.add_option('--file', '-f')
     p.add_option('--socket', '-s')
     options, arguments = p.parse_args()
