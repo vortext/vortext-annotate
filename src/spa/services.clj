@@ -7,8 +7,6 @@
 (defonce running-services (atom {}))
 (defonce context (zmq/zcontext))
 
-
-
 (defn start-process!
   "Open a sub process, return the subprocess
 
@@ -39,7 +37,8 @@
 
 (deftype Service [type file process socket]
   RemoteProcedure
-  (shutdown [self] (do (.destroy process) (swap! running-services dissoc [type file])))
+  (shutdown [self] (do (.destroy process)
+                       (swap! running-services dissoc [type file])))
   (dispatch [self payload] (remote-dispatch socket payload)))
 
 (defn running?
@@ -48,7 +47,7 @@
 
 (defmulti start-service! (fn [type file] type))
 (defmethod start-service! "python" [type file]
-  (let [server (.getPath (io/resource "topologies/JSONFilterServer.py"))
+  (let [server (.getPath (io/resource "multilang/python/JSONFilterServer.py"))
         socket (str "tcp://127.0.0.1:" (zmq/first-free-port))
         env {"DEBUG" (env :debug)
              "SPA_VERSION" (System/getProperty "spa.version")}
