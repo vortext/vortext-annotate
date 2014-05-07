@@ -27,9 +27,23 @@ For each of the annotations the relevant nodes in the document are highlighted a
 The user can interactively activate and inspect specific results.
 
 * Development prerequisites
-  - Python >= 2.7 (for packages see [[https://github.com/joelkuiper/spa/blob/master/requirements.txt][requirements.txt]])
-  - For minified deployment [[https://github.com/jrburke/r.js][r.js]]
+** Mac OS X
+   The server-side is written in [[http://clojure.org/][Clojure]]. To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
+   Make sure to have a recent version of the JVM as well.
+   #+BEGIN_SRC
+ brew install leiningen # install via Homebrew
+ leiningen deps # retrieve project dependencies
+ leiningen run # will run the server
+   #+END_SRC
+   For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
 
+   #+BEGIN_SRC
+ brew install zeromq
+ sudo easy_install pyzmq # python bindings, pip fails on Mavericks
+ npm install zeromq atob q # Node.js requirements
+   #+END_SRC
+
+The requirements for the Evidence-based medicine processing topology are specified within that directory.
 * Future work
 See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
