@@ -12,9 +12,8 @@
            f (io/as-file (io/resource path))]
        (when (not (nil? f))
          (load-string (slurp f))
-         (if-let [s (find-var (symbol (str ns "/" sym)))]
-           (var-get s)
-           nil))))))
+         (when-let [s (find-var (symbol (str ns "/" sym)))]
+           (var-get s)))))))
 
 (defn get-topology
   [name]
@@ -23,7 +22,7 @@
 (def make-graph
   (memoize
    (fn [name]
-     (graph/lazy-compile (get-topology name)))))
+     (graph/eager-compile (get-topology name)))))
 
 (defn available?
   [name]
@@ -34,4 +33,4 @@
   (if (available? name)
     (let [topology (make-graph name)]
       (:sink (topology payload)))
-    (throw (IllegalArgumentException. (str "could not find topology " name)))))
+    (throw (IllegalArgumentException. (str "could not find topology: " name)))))

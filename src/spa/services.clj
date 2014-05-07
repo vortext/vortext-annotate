@@ -49,7 +49,7 @@
   (contains? @running-services [type file]))
 
 (defmulti start-service! (fn [type file] type))
-(defmethod start-service! "python" [type file]
+(defmethod start-service! :python [type file]
   (let [server (.getPath (io/resource "multilang/python/JSONFilterServer.py"))
         topologies (.getPath (io/resource "topologies"))
         socket (str "tcp://127.0.0.1:" (zmq/first-free-port))

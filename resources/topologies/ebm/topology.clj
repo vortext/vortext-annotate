@@ -6,7 +6,10 @@
 ;; The input to the topology is the raw HTTP POST payload, by convention called source
 ;; We only return the sink to the client. Make sure that all relevant results are present and it's in a format understood
 ;; You MAY define custom serialization / deserialization
+
+(def py (partial call :python))
+
 (def topology
   {:source (fnk [body] (slurp body))
-   :sink   (fnk [source] (call "python" "ebm.word_tokenizer" source))
+   :sink   (fnk [source] (py "ebm.word_tokenizer" source))
    })

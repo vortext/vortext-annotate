@@ -32,7 +32,7 @@
           (status 500))))))
 
 (defn wrap-request-logger
-  "Logs the request. Log settings can be set in the `resources/log4j.properties.`"
+  "Logs the request"
   [handler]
   (fn [req]
     (let [{remote-addr :remote-addr request-method :request-method uri :uri} req]
