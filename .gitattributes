@@ -14,6 +14,7 @@
 *.manifest text eol=lf
 *.rdf text eol=lf
 *.clj text eol=lf
+*.edn text eol=lf
 *.java text eol=lf
 
 # PDF files shall not modify CRLF line endings
