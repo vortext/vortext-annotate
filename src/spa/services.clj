@@ -1,6 +1,6 @@
 (ns spa.services
-  (:use environ.core)
   (:require
+   [environ.core :refer :all]
    [clojure.java.io :as io]
    [zeromq [device :as device] [zmq :as zmq]]))
 
@@ -22,8 +22,9 @@
     (doseq [[k v] env] (.put environment k v))
     (-> pb
        (.directory (if (nil? dir) nil (io/file dir)))
-       (.inheritIO)
        (.redirectErrorStream (boolean redirect))
+       (.redirectOutput java.lang.ProcessBuilder$Redirect/INHERIT)
+       (.redirectError java.lang.ProcessBuilder$Redirect/INHERIT)
        (.start))))
 
 (defprotocol RemoteProcedure
@@ -58,7 +59,7 @@
     (swap! running-services assoc [type file] remote-procedure)
     remote-procedure))
 
-(defn obtain
+(defn obtain!
   [type file]
   (if-not (running? type file)
     (start-service! type file)
@@ -68,7 +69,7 @@
   "Initiates a Remote Procedure Call
    will start the service if not running already"
   [type file payload]
-  (let [service (obtain type file)]
+  (let [service (obtain! type file)]
     (dispatch service payload)))
 
 (defn shutdown! []

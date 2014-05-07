@@ -13,7 +13,7 @@ class Filter(AbstractFilter):
         logger.info("constructing %s" % (self.title))
 
     def run(self, payload):
-        return {"response": "Gotcha %s" % (payload)}
+        return {"echo": payload} # Some modified payload
 
 if __name__ == '__main__':
     Filter().run("")
