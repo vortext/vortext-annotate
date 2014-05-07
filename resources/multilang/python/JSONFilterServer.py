@@ -17,6 +17,7 @@ log = logging.getLogger(__name__)
 def destroy(signum, frame):
     log.warn("received %s shutting down..." % (signum))
     context.destroy(0)
+    sys.exit(0)
 
 signal.signal(signal.SIGINT, destroy)
 signal.signal(signal.SIGTERM, destroy)
