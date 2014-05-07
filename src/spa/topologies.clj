@@ -1,33 +1,37 @@
 (ns spa.topologies
   (:require
-   [spa.services :refer [call]]
-   [plumbing.core :refer :all]
-   [environ.core :refer :all]
    [clojure.tools.logging :as log]
    [clojure.java.io :as io]
-   [clojure.tools.reader :as r]
+   [clojure.string :only [join split replace] :as s]
    [plumbing.graph :as graph]))
 
-(defn- topology-resource
+(def get-var
+  (memoize
+   (fn [ns sym]
+     (let [path (str (s/replace ns "." "/") "/" sym ".clj")
+           f (io/as-file (io/resource path))]
+       (when (not (nil? f))
+         (load-string (slurp f))
+         (if-let [s (find-var (symbol (str ns "/" sym)))]
+           (var-get s)
+           nil))))))
+
+(defn get-topology
   [name]
-  (io/resource (str "topologies/" name "/topology.clj")))
+  (get-var (str "topologies." name) "topology"))
 
 (def make-graph
   (memoize
    (fn [name]
-     (let [topology-string  (slurp (topology-resource name))
-           topology (eval (r/read-string topology-string))]
-       (graph/eager-compile topology)))))
+     (graph/lazy-compile (get-topology name)))))
 
 (defn available?
   [name]
-  (not (nil? (topology-resource name))))
+  (not (nil? (get-topology name))))
 
 (defn process
   [name payload]
   (if (available? name)
     (let [topology (make-graph name)]
-      (into {} (topology payload)))
-    (do
-      (log/warn "Could not find a toplogy for" name)
-      nil)))
+      (:sink (topology payload)))
+    (throw (IllegalArgumentException. (str "could not find topology " name)))))

@@ -9,13 +9,17 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [org.httpkit.server :refer :all]
-            [spa.services :only shutdown! :as services]))
+            [spa.middleware :refer :all]
+            [spa.topologies :as topologies]
+            [spa.services :as services]))
 
 (defonce server (atom nil))
 
 (defn assemble-routes []
   (->
    (routes
+    (POST "/topologies/:name" [name :as req]
+          (topologies/process name req))
     (GET "/" [] (response/resource-response "index.html" {:root "public"}))
     (route/resources "/static")
     (route/not-found "Page not found"))))
@@ -23,7 +27,10 @@
 (def app
   (->
    (assemble-routes)
-   (handler/api)))
+   (handler/api)
+   (wrap-request-logger)
+   (wrap-exception-handler)
+   (wrap-response-logger)))
 
 (defn stop-server []
   (log/info "stopping server on" (env :port) "by user request")

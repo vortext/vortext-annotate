@@ -13,7 +13,7 @@ class Filter(AbstractFilter):
         logger.info("constructing %s" % (self.title))
 
     def run(self, payload):
-        return {} # Some modified payload
+        return {"count": len(payload)} # Some result
 
 if __name__ == '__main__':
     Filter().run("")
