@@ -1,7 +1,5 @@
 import os, logging, optparse, time, signal, sys
 import zmq
-import json
-
 
 def str2bool(v):
   return v.lower() in ("yes", "true", "t", "1")
@@ -30,11 +28,11 @@ def run_server(socket_addr, handler):
         # Wait for next request from client
         while True:
             try:
-                message = json.loads(socket.recv())
+                message = socket.recv()
                 response = handler.run(message)
-                socket.send(json.dumps(response, ensure_ascii=False))
+                socket.send(response)
             except Exception as e:
-                socket.send(json.dumps({"cause": str(e)}))
+                socket.send(str(e))
     except zmq.ZMQError as e:
         log.info("recv failed with: %s" % e)
 

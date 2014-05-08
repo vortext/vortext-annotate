@@ -1,12 +1,10 @@
-import sys, glob
-sys.path.append('../../multilang/python')
 
 import logging
 logger = logging.getLogger(__name__)
 
-from AbstractFilter import AbstractFilter
+from document_filter import DocumentFilter
 
-class Filter(AbstractFilter):
+class Filter(DocumentFilter):
     title = "Sentence Tokenizer"
 
     def __init__(self):

@@ -24,7 +24,6 @@
        (.directory (if (nil? dir) nil (io/file dir)))
        (.redirectErrorStream (boolean redirect))
        (.redirectOutput java.lang.ProcessBuilder$Redirect/INHERIT)
-       (.redirectError java.lang.ProcessBuilder$Redirect/INHERIT)
        (.start))))
 
 (defprotocol RemoteProcedure
@@ -50,7 +49,7 @@
 
 (defmulti start-service! (fn [type file] type))
 (defmethod start-service! :python [type file]
-  (let [server (.getPath (io/resource "multilang/python/JSONFilterServer.py"))
+  (let [server (.getPath (io/resource "multilang/python/filter_server.py"))
         topologies (.getPath (io/resource "topologies"))
         socket (str "tcp://127.0.0.1:" (zmq/first-free-port))
         args ["python" server "-m" file "-s" socket "-p" topologies]
