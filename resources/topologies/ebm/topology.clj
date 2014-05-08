@@ -8,8 +8,10 @@
 ;; You MAY define custom serialization / deserialization
 
 (def py (partial call :python))
+(def js (partial call :node))
 
 (def topology
   {:source (fnk [body] (slurp body))
-   :sink   (fnk [source] (py "ebm.word_tokenizer" source))
+   :pdf (fnk [source] (js "ebm/document_parser.js" source))
+   :sink   (fnk [pdf] (py "ebm.word_tokenizer" pdf))
    })

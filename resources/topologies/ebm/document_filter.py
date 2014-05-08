@@ -20,5 +20,5 @@ class DocumentFilter(AbstractFilter):
             return json.dumps({"cause": str(e)})
 
     @abstractmethod
-    def filter(self, payload):
+    def filter(self, document):
         pass

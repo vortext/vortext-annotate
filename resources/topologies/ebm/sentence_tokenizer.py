@@ -10,7 +10,7 @@ class Filter(DocumentFilter):
     def __init__(self):
         logger.info("constructing %s" % (self.title))
 
-    def run(self, payload):
+    def filter(self, payload):
         return {"echo": payload} # Some modified payload
 
 if __name__ == '__main__':

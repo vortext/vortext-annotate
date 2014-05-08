@@ -30,7 +30,7 @@ def run_server(socket_addr, handler):
             try:
                 message = socket.recv()
                 response = handler.run(message)
-                socket.send(response)
+                socket.send_string(response)
             except Exception as e:
                 log.error(str(e))
     except zmq.ZMQError as e:
@@ -38,7 +38,7 @@ def run_server(socket_addr, handler):
 
 def main():
     p = optparse.OptionParser(
-        description="Runs the filter (subclass of AbstractFilter) from the module as a worker process on the specified socket",
+        description="Runs the filter (subclass of abstract_filter) from the module as a worker process on the specified socket",
         version="%s" % (VERSION))
     p.add_option('--module', '-m')
     p.add_option('--socket', '-s')

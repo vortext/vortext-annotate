@@ -32,15 +32,15 @@ The user can interactively activate and inspect specific results.
    Make sure to have a recent version of the JVM as well.
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
- leiningen deps # retrieve project dependencies
- leiningen run # will run the server
+ lein deps # retrieve project dependencies
+ lein trampoline run # will run the server
    #+END_SRC
    For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
 
    #+BEGIN_SRC
  brew install zeromq
- sudo easy_install pyzmq # python bindings, pip fails on Mavericks
- npm install zeromq atob q # Node.js requirements
+ sudo easy_install pyzmq # python bindings, pip fails on Mavericks (alternatively use pip install pyzmq-static)
+ npm install zeromq atob commander q # Node.js requirements
    #+END_SRC
 
 The requirements for the Evidence-based medicine processing topology are specified within that directory.
