@@ -53,7 +53,7 @@
         topologies (.getPath (io/resource "topologies"))
         socket (str "tcp://127.0.0.1:" (zmq/first-free-port))
         args ["python" server "-m" file "-s" socket "-p" topologies]
-        process (start-process! args :env process-env)
+        process (start-process! args :env process-env :redirect true)
         remote-procedure (Service. type file process socket)]
     (swap! running-services assoc [type file] remote-procedure)
     remote-procedure))

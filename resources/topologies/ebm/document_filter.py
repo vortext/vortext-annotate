@@ -12,10 +12,12 @@ class DocumentFilter(AbstractFilter):
     __metaclass__ = ABCMeta
 
     def run(self, payload):
-        document = json.loads(payload)
-        result = self.filter(document)
-        return json.dumps(result, ensure_ascii=False)
-
+        try:
+            document = json.loads(payload)
+            result = self.filter(document)
+            return json.dumps(result, ensure_ascii=False)
+        except Exception as e:
+            return json.dumps({"cause": str(e)})
 
     @abstractmethod
     def filter(self, payload):

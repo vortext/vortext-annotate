@@ -32,7 +32,7 @@ def run_server(socket_addr, handler):
                 response = handler.run(message)
                 socket.send(response)
             except Exception as e:
-                socket.send(str(e))
+                log.error(str(e))
     except zmq.ZMQError as e:
         log.info("recv failed with: %s" % e)
 
