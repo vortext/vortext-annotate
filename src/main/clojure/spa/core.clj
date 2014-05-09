@@ -42,7 +42,7 @@
   (log/info "… bye bye"))
 
 (defn -main [& args]
-  (log/info "starting server, listening on" (env :port) (when (env :debug) "[DEBUG]"))
+  (log/info "Starting server, listening on" (env :port) (when (env :debug) "[DEBUG]"))
   (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (stop-server))))
   (let [handler (if (env :debug)
                   (reload/wrap-reload app) ;; only reload when in debug

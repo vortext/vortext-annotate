@@ -1,7 +1,9 @@
 import json
 
-import sys, glob
+import sys
 sys.path.append('../../multilang/python')
+import logging, copy
+log = logging.getLogger(__name__)
 
 
 from abc import ABCMeta, abstractmethod

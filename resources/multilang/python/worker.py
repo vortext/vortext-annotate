@@ -132,8 +132,7 @@ class MajorDomoWorker(object):
                     # Do nothing for heartbeats
                     pass
                 elif command == MDP.W_DISCONNECT:
-                    log.info("disconnect requested, killing worker")
-                    self.destroy()
+                    self.reconnect_to_broker()
                 else :
                     log.error("invalid input message: ")
             else:

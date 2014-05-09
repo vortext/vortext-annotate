@@ -68,7 +68,7 @@
 (defmethod obtain-service! :python [type arg]
   (start-local! type "multilang/python/filter_server.py" arg))
 (defmethod obtain-service! :node [type arg]
-  (start-local! type "multilang/nodejs/filter_server.js" arg))
+  (start-local! type "multilang/nodejs/FilterServer.js" arg))
 
 (defn call
   "Initiates a Remote Procedure Call

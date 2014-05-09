@@ -12,6 +12,6 @@
 
 (def topology
   {:source (fnk [body] (slurp body))
-   ;; :pdf (fnk [source] (js "ebm/document_parser.js" source))
-   :sink   (fnk [source] (py "ebm.word_tokenizer" source))
+   :pdf    (fnk [source] (js "ebm/document_parser.js" source))
+   :sink   (fnk [pdf] (py "ebm.word_tokenizer" pdf))
    })

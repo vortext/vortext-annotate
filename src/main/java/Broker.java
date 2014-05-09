@@ -35,7 +35,6 @@ import org.zeromq.ZMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  *  Majordomo Protocol broker
  *  A minimal implementation of http://rfc.zeromq.org/spec:7 and spec:8
@@ -187,6 +186,7 @@ public class Broker {
                 // Attach worker to service and mark as idle
                 ZFrame serviceFrame = msg.pop();
                 worker.service = requireService(serviceFrame);
+                log.debug("Ready from " + worker.service.name);
                 workerWaiting(worker);
                 serviceFrame.destroy();
             }
@@ -212,7 +212,9 @@ public class Broker {
         } else if (MDP.W_DISCONNECT.frameEquals(command)) {
             deleteWorker(worker, false);
         } else {
+            Formatter stdout = new Formatter(System.out);
             log.error("Invalid message");
+            msg.dump(stdout.out());
         }
         msg.destroy();
     }
