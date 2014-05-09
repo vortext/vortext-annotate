@@ -2,6 +2,8 @@
   :description "Mozilla PDF.js based viewer for machine learning and information retrieval on text documents"
   :url "https://github.com/joelkuiper/spa"
   :main spa.core
+  :source-paths ["src" "src/main/clojure"]
+  :java-source-paths ["src/main/java"] ; Java source is stored separately.
   :license {:name "GNU General Public License (GPL) v3"
             :url "https://www.gnu.org/copyleft/gpl.html"}
   :plugins [[lein-environ "0.5.0"]]

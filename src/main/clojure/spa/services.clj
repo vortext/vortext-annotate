@@ -48,21 +48,21 @@
   (contains? @running-services [type file]))
 
 (defn- build-and-start-service
-  [command server-file file]
+  [type server-file file]
   (let [server (.getPath (io/resource server-file))
         topologies (.getPath (io/resource "topologies"))
         socket (str "tcp://127.0.0.1:" (zmq/first-free-port))
-        args [command server "-m" file "-s" socket "-p" topologies]
+        args [(name type) server "-m" file "-s" socket "-p" topologies]
         process (start-process! args :env process-env :redirect true)
         remote-procedure (Service. type file process socket)]
-    (swap! running-services assoc [(keyword command) file] remote-procedure)
+    (swap! running-services assoc [type file] remote-procedure)
     remote-procedure))
 
 (defmulti start-service! (fn [type file] type))
 (defmethod start-service! :python [type file]
-  (build-and-start-service "python" "multilang/python/filter_server.py" file))
+  (build-and-start-service type "multilang/python/filter_server.py" file))
 (defmethod start-service! :node [type file]
-  (build-and-start-service "node" "multilang/nodejs/filter_server.js" file))
+  (build-and-start-service type "multilang/nodejs/filter_server.js" file))
 
 (defn obtain!
   [type file]
