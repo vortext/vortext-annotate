@@ -15,7 +15,7 @@ class DocumentFilter(AbstractFilter):
         try:
             document = json.loads(payload)
             result = self.filter(document)
-            return json.dumps(result, ensure_ascii=False)
+            return json.dumps(result, ensure_ascii=True)
         except Exception as e:
             return json.dumps({"cause": str(e)})
 

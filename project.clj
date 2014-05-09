@@ -8,6 +8,7 @@
             :url "https://www.gnu.org/copyleft/gpl.html"}
   :plugins [[lein-environ "0.5.0"]]
   :env {:debug true
+        :broker-socket "tcp://127.0.0.1:6667"
         :port 8080}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.cli "0.3.1"]

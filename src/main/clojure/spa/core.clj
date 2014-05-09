@@ -47,4 +47,5 @@
   (let [handler (if (env :debug)
                   (reload/wrap-reload app) ;; only reload when in debug
                   app)]
+    (services/start!)
     (reset! server (run-server handler {:port (env :port)}))))
