@@ -2,7 +2,7 @@ import json
 
 import sys
 sys.path.append('../../multilang/python')
-import logging, copy
+import logging
 log = logging.getLogger(__name__)
 
 
@@ -19,7 +19,7 @@ class DocumentFilter(AbstractFilter):
             result = self.filter(document)
             return json.dumps(result, ensure_ascii=True)
         except Exception as e:
-            return json.dumps({"cause": str(e)})
+            return json.dumps({"cause": str(e)}, ensure_ascii=True)
 
     @abstractmethod
     def filter(self, document):

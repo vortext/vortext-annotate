@@ -4,7 +4,7 @@
 
 ;; The topology MUST be defined and MUST be compilable by prismatic graph
 ;; The input to the topology is the raw HTTP POST payload, by convention called source
-;; We only return the sink to the client. Make sure that all relevant results are present and it's in a format understood
+;; We only return the sink to the client. Make sure that all relevant results are present and it's in a format understood by Ring (such as a JSON string)
 ;; You MAY define custom serialization / deserialization
 
 (def py (partial call :python))

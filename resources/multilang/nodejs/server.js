@@ -1,5 +1,7 @@
 var program = require('commander');
 var fs = require('fs');
+var _ = require('underscore');
+var Q = require('q');
 var path_module = require('path');
 var Worker = require('./worker');
 
@@ -19,14 +21,23 @@ function runServer(handler) {
   var worker = new Worker(program.socket, program.name);
   worker.start();
 
-  worker.on('request',function(req, rep) {
+  worker.on('request', function(req, rep) {
     var result;
     try {
       result = handler(req);
+      if(_.isFunction(result.then)) {
+        result.then(function(data) {
+          rep.reply(data);
+        }, function(err) {
+          rep.reply(err);
+        });
+      } else {
+        rep.reply(result);
+      }
     } catch (err) {
-      result = {cause: err};
+      result = JSON.stringify({ cause: err });
+      rep.reply(result);
     }
-    rep.reply(result);
   });
 
 }

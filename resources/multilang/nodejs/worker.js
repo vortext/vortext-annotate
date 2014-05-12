@@ -45,7 +45,7 @@ Worker.prototype.connectToBroker = function () {
   }
   self.socket = zmq.socket('dealer');
   self.socket.identity = self.name;
-  self.socket.setsockopt('linger', 1);
+  self.socket.setsockopt('linger', 0);
 
   self.socket.on('message', function () {
     self.onMsg.call(self, arguments);
@@ -59,7 +59,7 @@ Worker.prototype.connectToBroker = function () {
   self.hbTimer = setInterval(function () {
     self.sendHeartbeat();
     self.liveness--;
-    if (! self.liveness) {
+    if (!self.liveness) {
       clearInterval(self.hbTimer);
       console.log('Disconnected from broker - retrying in %s sec(s)...', (self.reconnect / 1000));
       setTimeout(function () {
@@ -79,7 +79,7 @@ Worker.prototype.onMsg = function (msg) {
   self.liveness = HEARTBEAT_LIVENESS;
 
   if (header !== MDP.WORKER) {
-    self.emitErr('(onMsg) Invalid message header \'' + header + '\'');
+    self.emitErr('Invalid message header \'' + header + '\'');
     // send error
     return;
   }
