@@ -61,7 +61,7 @@
 
 Summarizing the evidence about medical interventions is an immense undertaking, in part because unstructured \ac{pdf} documents remain the main vehicle for disseminating scientific findings.
 Clinicians and researchers must therefore manually extract and synthesise information from these \acp{pdf}.
-We introduce Spá\footnote{From the Old Norse word spá or spæ referring to prophesying (prophecy)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{Kuiper2014}; demo available at \url{http://spa.clinici.co/}}, a web-based viewer that enables automated annotation and summarisation of \acp{pdf} via \acl{ml}.
+We introduce Spá,\footnote{From the Old Norse word spá or spæ referring to prophesying (prophecy)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{Kuiper2014}; demo available at \url{http://spa.clinici.co/}} a web-based viewer that enables automated annotation and summarisation of \acp{pdf} via \acl{ml}.
 To illustrate its functionality, we use Spá to semi-automate the assessment of bias in clinical trials.
 %Spá can visualize the output from hybrid models that simultaneously classify documents (e.g., identifying trials as low or high risk of various biases), and annotate sentences that support these classifications.
 Spá has a modular architecture, therefore the tool may be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
@@ -84,7 +84,7 @@ These extraction tasks are extremely laborious, but could potentially be assiste
 As an example we consider risk of bias assessment.
 Here reviewers assess, e.g., whether study participants and personnel were properly blinded \cite{Higgins2011}.
 Assessing risk of bias is a time-consuming task.
-A single trial may typically take a domain expert ten minutes \cite{Hartling2011}, and a single review may typically include several dozen trials.
+A single trial typically takes a domain expert ten minutes \cite{Hartling2011}, and a single review typically includes several dozen trials.
 Making matters worse, due to low rates of reviewer agreement it is regarded as best practice to have each study assessed twice by independent reviewers who later come to a consensus \cite{Hartling2009}.
 
 Machine learning methods could provide the machinery to automate such extractions; as they can effectively impose the desired structure onto \acp{pdf}.
@@ -96,7 +96,7 @@ As a practical demonstration of this technology, we have built a machine learnin
 This tool is unique in that it leverages state-of-the-art \ac{ml} models applied to full-text articles to assist practitioners of \ac{ebm}.
 
 \begin{figure}[htb]
-\vspace{-2em}
+\vspace{-1em}
 \centering
 \includegraphics[width=0.8\linewidth]{./images/screenshot2.png}
 \vspace{-1em}
@@ -107,7 +107,7 @@ This tool is unique in that it leverages state-of-the-art \ac{ml} models applied
 While our application of interest is \ac{ebm}, we emphasize that the visualization tool can be used for any domain in which one wants to annotate \acp{pdf}, e.g. genome-wide association studies or jurisprudence.
 Thus the contribution of this work is two-fold, as we present:
 (1) a practical tool that incorporates machine learning to help researchers rapidly assess the risk of biases in published biomedical articles, and,
-(2) a general open-source web tool for visualizing the predictions of trained models from full-text articles.
+(2) a general open-source system for visualizing the predictions of trained models from full-text articles on the web.
 %These contributions are described further in sections \ref{section:EBM-ML} and \ref{section:architecture}.
 
 \section{Case study: Risk of Bias in \acl{ebm}}
@@ -149,7 +149,7 @@ For both tasks we leverage standard bag-of-words text encoding and linear-kernel
 Because the risk of bias predictions are correlated across domains, we take a \emph{multi-task} \cite{Evgeniou2004} approach to classification and jointly learn a model for the domains.
 We accomplish this by way of a feature space construction that includes both shared and domain-specific terms, similar to the domain adaptation approach in \cite{Daume2007}.
 %Furthermore, we take a unified approach to the two tasks by \emph{jointly} assessing the risk of bias associated with a given article \emph{and} extracting the sentences that support this judgment.
-Specifically, we first make sentence level prediction, and then insert features representing the tokens in the predicted sentences for exploitation by the document level classifier (see for details \cite{Marshall2014}).
+Specifically, we first make sentence level prediction, and then insert features representing the tokens in the predicted sentences for exploitation by the document level classifier.
 Figure \ref{fig:screenshot} shows the system in use.
 %More specifically, the database we leverage contains structured and semi-structured data for each systematic review. Internally, the Cochrane Collaboration stores working versions of their reviews as XML. Each review contains a wealth of (structured) data about the clinical trials that met the review inclusion criteria. There are usually multiple clinical trials described in a single review. Cochrane reviews use basic clinical trial identifiers which are unique per review (based on the first author surname and year of publication) throughout these files. It is therefore possible to extract structured data, and filtered snippets of full text data which describe a single clinical trial. Using these identifiers, we were able to obtain full structured citation data for the primary reference of all included studies across the \ac{cdsr}.
 
