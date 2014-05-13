@@ -1,0 +1,3 @@
+[submodule "resources/pdfjs"]
+	path = resources/pdfjs
+	url = git@github.com:joelkuiper/pdf.js.git
