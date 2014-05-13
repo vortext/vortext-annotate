@@ -8,9 +8,9 @@ var Q = require('q');
 global.window = global;
 global.navigator = { userAgent: "node" };
 global.PDFJS = {};
-global.DOMParser = require('./pdfjs/domparsermock.js').DOMParserMock;
+global.DOMParser = require('./domparsermock.js').DOMParserMock;
 
-require('./pdfjs/pdf.combined.js');
+require('./pdfjs/singlefile/build/pdf.combined.js');
 
 function handler(payload) {
   return PDFJS.getDocument(payload).then(function (pdf) {

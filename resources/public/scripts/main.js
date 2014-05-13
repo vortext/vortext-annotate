@@ -25,7 +25,7 @@ require.config({
       exports: "Backbone" },
     'PDFJS': {
       exports: 'PDFJS',
-      deps: ['vendor/pdfjs/compatibility', 'vendor/pdfjs/ui_utils'] }
+      deps: ['vendor/pdfjs/generic/web/compatibility', 'vendor/ui_utils'] }
   }
 });
 
