@@ -71,7 +71,7 @@ define(function (require) {
 
   appState.on("update:textNodes", _.debounce(function(e, obj) {
     minimap.forceUpdate();
-  }, 150, true));
+  }, 50));
 
   var $ = require("jQuery");
   appState.on("change:pdf", function(e, pdf) {
