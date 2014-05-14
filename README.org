@@ -30,20 +30,34 @@ The user can interactively activate and inspect specific results.
 ** Mac OS X
    The server-side is written in [[http://clojure.org/][Clojure]]. To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
    Make sure to have a recent version of the JVM as well.
+   We include PDF.js as a git submodule.
+
+   #+BEGIN_SRC
+   git clone <this repo>
+   cd <your folder>
+   git submodule init
+   git submodule update
+   cd resources/pdfjs
+   # Compile the PDF.js files
+   node make generic
+   # For PDF.js on NodeJS
+   node make singlefile
+   #+END_SRC
+
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
  lein deps # retrieve project dependencies
  lein trampoline run # will run the server
    #+END_SRC
    For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
-
    #+BEGIN_SRC
  brew install zeromq
- sudo easy_install pyzmq # python bindings, pip fails on Mavericks (alternatively use pip install pyzmq-static)
- npm install zeromq atob commander q # Node.js requirements
+ sudo easy_install pyzmq # python bindings for zeromq, pip fails on Mavericks
+ # (alternatively use pip install pyzmq-static)
+ npm install underscore q zeromq atob commander q # Node.js requirements
    #+END_SRC
 
-The requirements for the Evidence-based medicine processing topology are specified within that directory.
+   The requirements for the Evidence-based medicine processing topology are specified within that directory.
 * Future work
 See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
