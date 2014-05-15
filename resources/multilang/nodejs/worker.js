@@ -93,7 +93,6 @@ Worker.prototype.onMsg = function (msg) {
     // Do nothing for heartbeats
     // console.log('W: HEARTBEAT from broker');
   } else if (type == MDP.W_DISCONNECT) {
-    console.log('got W_DISCONNECT');
     self.connectToBroker();
   } else {
     self.emitErr('Invalid message type \'' + type.toString() + '\'');

@@ -66,9 +66,9 @@
 
 (defmulti obtain-service! (fn [type arg] type))
 (defmethod obtain-service! :python [type arg]
-  (start-local! type "multilang/python/server.py" arg))
+  (start-local! type "multilang/python/server" arg))
 (defmethod obtain-service! :node [type arg]
-  (start-local! type "multilang/nodejs/server.js" arg))
+  (start-local! type "multilang/nodejs/server" arg))
 
 (defn call
   "Initiates a Remote Procedure Call
