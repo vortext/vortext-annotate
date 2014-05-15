@@ -45,6 +45,10 @@ define(['jQuery','underscore', 'Q'], function($, _, Q) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         async: true,
+        error: function(request, error) {
+          console.error("could not process", error);
+          deferred.reject(request);
+        },
         success: function(data) {
           deferred.resolve(self._postProcess(data.result));
         }});
