@@ -26,23 +26,39 @@ function handler(payload) {
   });
 };
 
+function flush(data, out) {
+  if(out) {
+    fs.writeFile(out, data);
+  } else {
+    console.log(data);
+  }
+}
+
 if(require.main === module) {
   program
     .option('-i, --input [input]', 'path to PDF to parse')
     .option('-o, --output [output]', 'path to output file')
+    .option('-n, --noparse', 'just return the base64 encoded pdf')
+    .option('-b, --base64', 'input pdf as base64')
     .parse(process.argv);
 
-  var pdf = new Uint8Array(fs.readFileSync(program.input));
+  var pdf;
+  if(program.base64) {
+    var pdfData = fs.readFileSync(program.input, "binary");
+    pdf = new Uint8Array(Buffer(pdfData, "base64"));
+  } else {
+    pdf = new Uint8Array(fs.readFileSync(program.input));
+  }
   var out = program.output;
-  var resultPromise = handler(pdf);
-  resultPromise.then(function(result) {
-    result = JSON.stringify(result);
-    if(out) {
-      fs.writeFile(out, result);
-    } else {
-      console.log(result);
-    }
-  });
+  if(program.noparse) {
+    flush(new Buffer(pdf, "binary").toString("base64"), out);
+  } else {
+    var resultPromise = handler(pdf);
+    resultPromise.then(function(result) {
+      result = JSON.stringify(result);
+      flush(result, out);
+    });
+  }
 }
 
 module.exports = handler;
