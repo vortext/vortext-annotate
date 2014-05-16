@@ -46,7 +46,7 @@ define(['jQuery','underscore', 'Q'], function($, _, Q) {
         dataType: 'json',
         async: true,
         error: function(request, error) {
-          console.error("could not process", error);
+          console.error("Could not request annotations", error);
           deferred.reject(request);
         },
         success: function(data) {
