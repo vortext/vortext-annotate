@@ -1,10 +1,10 @@
-import logging, copy
+import logging, copy, sys
 log = logging.getLogger(__name__)
 
 from document_filter import DocumentFilter
 
 class Filter(DocumentFilter):
-    title = "Word Tokenizer"
+    title = "Tokenizer"
 
     def __init__(self):
         log.info("constructing %s" % (self.title))
@@ -14,4 +14,6 @@ class Filter(DocumentFilter):
                 "count": len(document)}
 
 if __name__ == '__main__':
-    Filter().run("")
+    with open(sys.argv[1], 'r') as f:
+        contents = f.read()
+        print Filter().run(contents)

@@ -46,11 +46,9 @@ function handler(payload) {
     });
 
     return Q.all(_.invoke(pages, "then", function(page) {
-      return page.getTextContent().then(function(content) {
-        return content;;
-      });
-    })).then(function(content) {
-      return textContentToDocument(content);
+      return page.getTextContent();
+    })).then(function(contents) {
+      return textContentToDocument(contents);
     });
   });
 };
@@ -71,7 +69,7 @@ if(require.main === module) {
   program
     .option('-i, --input [input]', 'path to PDF to parse')
     .option('-o, --output [output]', 'path to output file')
-    .option('-n, --noparse', 'Do no parse, simply return the base64 encoded pdf')
+    .option('-n, --noparse', 'Do no parse, return the base64 encoded pdf')
     .option('-b, --base64', 'input pdf as base64')
     .parse(process.argv);
 
