@@ -26,7 +26,7 @@ function textContentToDocument(content) {
       var item = items[j];
 
       var nextOffset = offset + item.str.length;
-      var node = { pageIndex: i, interval: [offset, nextOffset] };
+      var node = { pageIndex: i, interval: [totalLength + offset, totalLength + nextOffset] };
       text += (item.str + " ");
       offset = nextOffset + 1; // 1 added for the extra space in text join
       nodes.push(node);

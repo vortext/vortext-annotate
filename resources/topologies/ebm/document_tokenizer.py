@@ -65,13 +65,14 @@ class OverlappingIntervals():
         bounds = (start, end) tuple
         returns all overlapping bounds
         """
-        return [interval for interval in self.intervals if self._is_overlapping(interval, bounds)]
+        return [interval for interval[:] in self.intervals if self._is_overlapping(interval, bounds)]
 
     def overlap_indices(self, bounds):
         """
         return the 0 indexed positions and bounds of overlapping bounds
+        WARNING need to return range by value here
         """
-        return [{"index": index, "range": interval} for index, interval in enumerate(self.intervals) if self._is_overlapping(interval, bounds)]
+        return [{"index": index, "range": interval[:]} for index, interval in enumerate(self.intervals) if self._is_overlapping(interval, bounds)]
 
 class Filter(DocumentFilter):
     title = "Tokenizer"
@@ -81,37 +82,41 @@ class Filter(DocumentFilter):
         self.word_tokenizer = newPunktWordTokenizer()
         self.sentence_tokenizer = PunktSentenceTokenizer()
 
-    def offset_by_page(self, nodes, pages):
-        """
-        Adds the page offset to each of the nodes
-        """
-        node_intervals = []
-        for node in nodes:
-            offset = pages[node["pageIndex"]]["offset"]
-            interval = node["interval"]
-            node_intervals += [[interval[0] + offset, interval[1] + offset]]
-        return node_intervals
-
     def filter(self, document):
-        text = document["text"].encode("utf8")
+        text = document["text"]
         nodes = document["__nodes"]
         pages = document["__pages"]
 
         sentence_spans = self.sentence_tokenizer.span_tokenize(text)
-        overlap = OverlappingIntervals(self.offset_by_page(nodes, pages))
+        overlap = OverlappingIntervals([node["interval"] for node in nodes])
 
         sentence_mappings = []
+        word_mappings = []
         for sentence_span in sentence_spans:
-            node_indicies = overlap.overlap_indices(sentence_span)
-            if node_indicies:
-                node_indicies[0]["range"][0]  = sentence_span[0]
-                node_indicies[-1]["range"][1]  = sentence_span[1]
-                sentence_mappings += [{"nodes": node_indicies, "span": sentence_span}]
+            sentence_nodes = overlap.overlap_indices(sentence_span)
+            sentence_nodes[0]["range"][0] = sentence_span[0]
+            sentence_nodes[-1]["range"][1] = sentence_span[1]
+
+            sentence = text[sentence_span[0]:sentence_span[1]]
+            word_spans = self.word_tokenizer.span_tokenize(sentence)
+            sentence_overlap = OverlappingIntervals([node["range"] for node in sentence_nodes])
+
+            # Add word mappings
+            for word_span in word_spans:
+                word_nodes = sentence_overlap.overlap_indices([x+sentence_span[0] for x in word_span])
+
+                word_nodes[0]["range"][0] = word_span[0]
+                word_nodes[-1]["range"][1] = word_span[1]
+
+                word_mappings += [word_nodes]
+
+            sentence_mappings += [sentence_nodes]
 
 
         document.update({
             "__mappings": {
-                "sentences": sentence_mappings
+                "sentences": sentence_mappings,
+                "words": word_mappings
             }})
 
         return document
