@@ -17,6 +17,7 @@ function textContentToDocument(content) {
   var pages = [];
   var text = "";
 
+  var totalLength = 0;
   for (var i = 0; i < content.length; i++) {
     var offset = 0;
     var page = content[i];
@@ -30,8 +31,8 @@ function textContentToDocument(content) {
       offset = nextOffset + 1; // 1 added for the extra space in text join
       nodes.push(node);
     }
-
-    pages.push({length: offset});
+    pages.push({offset: totalLength, length: offset});
+    totalLength += offset;
   }
   return { "text": text,
            "__pages": pages,
