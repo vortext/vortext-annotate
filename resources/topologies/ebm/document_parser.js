@@ -68,7 +68,7 @@ function flush(data, out) {
 if(require.main === module) {
   program
     .option('-i, --input [input]', 'path to PDF to parse')
-    .option('-o, --output [output]', 'path to output file')
+    .option('-o, --output [output]', 'path to output file, flushes to STDOUT if none given')
     .option('-n, --noparse', 'Do no parse, return the base64 encoded pdf')
     .option('-b, --base64', 'input pdf as base64')
     .parse(process.argv);
