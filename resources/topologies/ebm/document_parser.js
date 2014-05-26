@@ -12,6 +12,32 @@ global.DOMParser = require('./domparsermock.js').DOMParserMock;
 
 require('./pdfjs/singlefile/build/pdf.combined.js');
 
+function textContentToDocument(content) {
+  var nodes = [];
+  var pages = [];
+  var text = "";
+
+  for (var i = 0; i < content.length; i++) {
+    var offset = 0;
+    var page = content[i];
+    var items = page.items;
+    for (var j = 0; j < items.length; j++) {
+      var item = items[j];
+
+      var nextOffset = offset + item.str.length;
+      var node = { pageIndex: i, interval: [offset, nextOffset] };
+      text += (item.str + " ");
+      offset = nextOffset + 1; // 1 added for the extra space in text join
+      nodes.push(node);
+    }
+
+    pages.push({length: offset});
+  }
+  return { "text": text,
+           "__pages": pages,
+           "__nodes": nodes };
+}
+
 function handler(payload) {
   return PDFJS.getDocument(payload).then(function (pdf) {
     var pages = _.map(_.range(1, pdf.numPages + 1), function(pageNr) {
@@ -20,12 +46,18 @@ function handler(payload) {
 
     return Q.all(_.invoke(pages, "then", function(page) {
       return page.getTextContent().then(function(content) {
-        return content;
+        return content;;
       });
-    }));
+    })).then(function(content) {
+      return textContentToDocument(content);
+    });
   });
 };
 
+
+/* --------------------
+ For stand-alone usage.
+ --------------------- */
 function flush(data, out) {
   if(out) {
     fs.writeFile(out, data);
@@ -38,7 +70,7 @@ if(require.main === module) {
   program
     .option('-i, --input [input]', 'path to PDF to parse')
     .option('-o, --output [output]', 'path to output file')
-    .option('-n, --noparse', 'just return the base64 encoded pdf')
+    .option('-n, --noparse', 'Do no parse, simply return the base64 encoded pdf')
     .option('-b, --base64', 'input pdf as base64')
     .parse(process.argv);
 
