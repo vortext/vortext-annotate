@@ -8,7 +8,6 @@ require.config({
   },
   paths: {
     'jQuery': 'vendor/jquery',
-    'jQuery.injectCSS': 'vendor/jquery.injectCSS',
     'underscore': 'vendor/underscore',
     'Q': 'vendor/q',
     'react': 'vendor/react',
