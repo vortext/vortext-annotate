@@ -7,7 +7,7 @@
   :license {:name "GNU General Public License (GPL) v3"
             :url "https://www.gnu.org/copyleft/gpl.html"}
   :plugins [[lein-environ "0.5.0"]]
-  :env {:debug true
+  :env {:debug false
         :broker-socket "tcp://127.0.0.1:6667"
         :port 8080}
   :profiles {:dev {:dependencies [[peridot "0.3.0"]]}}
