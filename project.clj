@@ -2,19 +2,20 @@
   :description "Mozilla PDF.js based viewer for machine learning and information retrieval on text documents"
   :url "https://github.com/joelkuiper/spa"
   :main spa.core
-  :source-paths ["src" "src/main/clojure"]
-  :java-source-paths ["src/main/java"] ; Java source is stored separately.
+  :source-paths ["src/clj"]
+  :java-source-paths ["src/java"]
   :license {:name "GNU General Public License (GPL) v3"
             :url "https://www.gnu.org/copyleft/gpl.html"}
   :plugins [[lein-environ "0.5.0"]]
   :env {:debug true
         :broker-socket "tcp://127.0.0.1:6667"
         :port 8080}
+  :profiles {:dev {:dependencies [[kerodon "0.3.0"]]}}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.cli "0.3.1"]
                  [org.clojure/tools.logging "0.2.6"]
-                 [org.clojure/core.async "0.1.298.0-2a82a1-alpha"]
-                 [org.clojure/tools.reader "0.8.4"]
+                 ;;[org.clojure/core.async "0.1.298.0-2a82a1-alpha"]
+                 ;;[org.clojure/tools.reader "0.8.4"]
                  [ch.qos.logback/logback-classic "1.1.2"]
 
                  [environ "0.5.0"]
