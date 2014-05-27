@@ -10,12 +10,10 @@
   :env {:debug true
         :broker-socket "tcp://127.0.0.1:6667"
         :port 8080}
-  :profiles {:dev {:dependencies [[kerodon "0.3.0"]]}}
+  :profiles {:dev {:dependencies [[peridot "0.3.0"]]}}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.cli "0.3.1"]
                  [org.clojure/tools.logging "0.2.6"]
-                 ;;[org.clojure/core.async "0.1.298.0-2a82a1-alpha"]
-                 ;;[org.clojure/tools.reader "0.8.4"]
                  [ch.qos.logback/logback-classic "1.1.2"]
 
                  [environ "0.5.0"]
