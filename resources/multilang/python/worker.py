@@ -6,8 +6,7 @@ Author: Min RK <benjaminrk@gmail.com>
 Based on Java example by Arkadiusz Orzechowski
 """
 
-import logging
-import time
+import logging, sys, time
 import zmq
 
 # MajorDomo protocol constants:
@@ -132,7 +131,9 @@ class MajorDomoWorker(object):
                     # Do nothing for heartbeats
                     pass
                 elif command == MDP.W_DISCONNECT:
-                    self.reconnect_to_broker()
+                    #self.reconnect_to_broker()
+                    self.destroy()
+                    sys.exit();
                 else :
                     log.error("invalid input message: ")
             else:
