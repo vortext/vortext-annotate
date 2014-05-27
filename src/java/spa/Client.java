@@ -69,7 +69,7 @@ public class Client {
     /**
      * Connect or reconnect to broker
      */
-    void reconnectToBroker() {
+    private void reconnectToBroker() {
         if (client != null) {
             ctx.destroySocket(client);
         }

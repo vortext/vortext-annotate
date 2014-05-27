@@ -64,13 +64,14 @@ class OverlappingIntervals():
         """
         bounds = (start, end) tuple
         returns all overlapping bounds
+        WARNING returns range by value
         """
         return [interval for interval[:] in self.intervals if self._is_overlapping(interval, bounds)]
 
     def overlap_indices(self, bounds):
         """
         return the 0 indexed positions and bounds of overlapping bounds
-        WARNING need to return range by value here
+        WARNING returns range by value
         """
         return [{"index": index, "range": interval[:]} for index, interval in enumerate(self.intervals) if self._is_overlapping(interval, bounds)]
 

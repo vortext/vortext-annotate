@@ -13,16 +13,15 @@
 (defonce broker (atom nil))
 
 (defn start! []
-  (let [b (Thread.
-           (fn [] (doto (Broker.)
-                   (.bind (env :broker-socket))
-                   (.mediate))))
+  (let [b  (Broker. (env :broker-socket))
         c (Client. (env :broker-socket))]
+    (future (.run b))
     (reset! client-session c)
-    (reset! broker b)
-    (.start b)))
+    (reset! broker b)))
 
-(defn shutdown! [])
+(defn shutdown! []
+  (.destroy @client-session)
+  (.destroy @broker))
 
 (defn start-process!
   "Open a sub process, return the subprocess
@@ -45,13 +44,13 @@
   (shutdown [self])
   (call [self payload]))
 
-(deftype LocalService [type file process]
+(deftype LocalService [type name process]
   RemoteProcedure
   (shutdown [self] (.destroy process))
   (call [self payload]
     (let [request (doto (ZMsg.)
                     (.addString payload))
-          reply (.send @client-session file request)]
+          reply (.send @client-session name request)]
       (when-not (nil? reply)
         (String. (.getData (.pop reply)))))))
 
@@ -74,5 +73,6 @@
   "Initiates a Remote Procedure Call
    will start the service if not running already"
   [type file payload]
+  (assert (and (not (nil? @broker)) (not (nil? @client-session))))
   (let [service (obtain-service! type file)]
     (call service payload)))

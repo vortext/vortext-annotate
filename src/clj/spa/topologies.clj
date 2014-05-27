@@ -5,7 +5,7 @@
    [clojure.string :only [join split replace] :as s]
    [plumbing.graph :as graph]))
 
-(def get-var
+(def get-var-in-resource-ns
   (memoize
    (fn [ns sym]
      (let [path (str (s/replace ns "." "/") "/" sym ".clj")
@@ -17,7 +17,7 @@
 
 (defn get-topology
   [name]
-  (get-var (str "topologies." name) "topology"))
+  (get-var-in-resource-ns (str "topologies." name) "topology"))
 
 (def make-graph
   (memoize

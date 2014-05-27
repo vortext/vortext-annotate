@@ -23,6 +23,7 @@ import spa.MDP;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Collection;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *  Majordomo Protocol broker
  *  A minimal implementation of http://rfc.zeromq.org/spec:7 and spec:8
  */
-public class Broker {
+public class Broker implements Runnable {
 
     // We'd normally pull these from config data
     private static final String INTERNAL_SERVICE_PREFIX = "mmi.";
@@ -91,19 +92,20 @@ public class Broker {
     /**
      * Initialize broker state.
      */
-    public Broker() {
+    public Broker(String endpoint) {
         this.services = new HashMap<String, Service>();
         this.workers = new HashMap<String, Worker>();
         this.waiting = new ArrayDeque<Worker>();
         this.heartbeatAt = System.currentTimeMillis() + HEARTBEAT_INTERVAL;
         this.ctx = new ZContext();
         this.socket = ctx.createSocket(ZMQ.ROUTER);
+        this.bind(endpoint);
     }
 
     /**
      * Main broker work happens here
      */
-    public void mediate() {
+    public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             ZMQ.Poller items = new ZMQ.Poller(1);
             items.register(socket, ZMQ.Poller.POLLIN);
@@ -112,8 +114,9 @@ public class Broker {
             }
             if (items.pollin(0)) {
                 ZMsg msg = ZMsg.recvMsg(socket);
-                if (msg == null) break; // Interrupted
-
+                if (msg == null) {
+                    break; // Interrupted
+                }
                 ZFrame sender = msg.pop();
                 ZFrame empty = msg.pop();
                 ZFrame header = msg.pop();
@@ -141,9 +144,9 @@ public class Broker {
     /**
      * Disconnect all workers, destroy context.
      */
-    private void destroy() {
-        log.warn("Destroying broker");
-        Worker[] deleteList = workers.entrySet().toArray(new Worker[0]);
+    public void destroy() {
+        log.debug("Destroying broker");
+        Collection<Worker> deleteList = workers.values();
         for (Worker worker : deleteList) {
             deleteWorker(worker, true);
         }
@@ -224,6 +227,7 @@ public class Broker {
      */
     private void deleteWorker(Worker worker, boolean disconnect) {
         assert (worker != null);
+        log.debug("Deleting worker " + worker.service.name + (disconnect ? " and sending DISCONNECT" : ""));
         if (disconnect) {
             sendToWorker(worker, MDP.W_DISCONNECT, null, null);
         }
@@ -266,7 +270,7 @@ public class Broker {
      * Bind broker to endpoint, can call this multiple times. We use a single
      * socket for both clients and workers.
      */
-    public void bind(String endpoint) {
+    private void bind(String endpoint) {
         socket.bind(endpoint);
         log.info("MDP broker/0.1.1 is active at " + endpoint);
     }

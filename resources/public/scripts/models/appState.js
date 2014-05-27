@@ -14,7 +14,7 @@ define(['backbone', 'PDFJS'], function(Backbone, PDFJS) {
       });
     },
     defaults: {
-      data: '',
+      data: null,
       textNodes: [],
       pdf: {}
     },
