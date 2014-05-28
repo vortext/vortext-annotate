@@ -1,5 +1,6 @@
 (ns topologies.ebm ;; This MUST be in the form topologies.<name> and cannot contain special characters.
-  (:require [spa.services :refer [call]])
+  (:require [spa.services :refer [call]]
+            [clojure.java.io :as io])
   (:use plumbing.core))
 
 ;; The topology MUST be defined and MUST be compilable by prismatic graph.
@@ -20,7 +21,7 @@
 (def to-response (comp merge-marginalia))
 
 (def topology
-  {:source        (fnk [body] (slurp body))
+  {:source        (fnk [body] (.bytes body))
    :pdf           (fnk [source] (js "ebm/document_parser.js" source))
    :doc           (fnk [pdf] (py "ebm.document_tokenizer" pdf))
    :risk-of-bias  (fnk [doc] (py "ebm.risk_of_bias" doc))

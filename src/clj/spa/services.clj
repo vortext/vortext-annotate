@@ -49,7 +49,7 @@
   (shutdown [self] (.destroy process))
   (call [self payload]
     (let [request (doto (ZMsg.)
-                    (.addString payload))
+                    (.add payload))
           reply (.send @client-session name request)]
       (when-not (nil? reply)
         (String. (.getData (.pop reply)))))))

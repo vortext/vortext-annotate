@@ -39,7 +39,7 @@ function textContentToDocument(content) {
            "__nodes": nodes };
 }
 
-function handler(payload) {
+function convertToDocument(payload) {
   return PDFJS.getDocument(payload).then(function (pdf) {
     var pages = _.map(_.range(1, pdf.numPages + 1), function(pageNr) {
       return pdf.getPage(pageNr);
@@ -52,6 +52,14 @@ function handler(payload) {
     });
   });
 };
+
+function handler(payload) {
+  var pdf = new Uint8Array(Buffer(payload, "binary"));
+  var document = convertToDocument(pdf);
+  return document.then(function(doc) {
+    return JSON.stringify(doc);
+  });
+}
 
 
 /* --------------------
@@ -84,7 +92,7 @@ if(require.main === module) {
   if(program.noparse) {
     flush(new Buffer(pdf, "binary").toString("base64"), out);
   } else {
-    var resultPromise = handler(pdf);
+    var resultPromise = converToDocument(pdf);
     resultPromise.then(function(result) {
       result = JSON.stringify(result);
       flush(result, out);

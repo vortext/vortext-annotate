@@ -84,7 +84,7 @@ Worker.prototype.onMsg = function (msg) {
 
   if (type == MDP.W_REQUEST) {
     var client = msg[3];
-    var data = msg[5].toString();
+    var data = msg[5];
 
     self.onRequest(client, data);
   } else if (type == MDP.W_HEARTBEAT) {
