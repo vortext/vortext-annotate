@@ -1,5 +1,6 @@
 (ns topologies.ebm ;; This MUST be in the form topologies.<name> and cannot contain special characters.
   (:require [spa.services :refer [call]]
+            [cheshire.core :as json]
             [clojure.java.io :as io])
   (:use plumbing.core))
 
@@ -13,12 +14,11 @@
 (def py (partial call :python))
 (def js (partial call :node))
 
-
 (defn merge-marginalia [doc]
   "merges marginalia with the node mappings and nodes"
   doc)
 
-(def to-response (comp merge-marginalia))
+(def to-response (comp json/decode merge-marginalia json/encode))
 
 (def topology
   {:source        (fnk [body] (.bytes body))
