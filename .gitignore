@@ -42,3 +42,5 @@ target/
 .lein-repl-history
 */revision.tex
 .lein-env
+node_modules
+
