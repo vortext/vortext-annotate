@@ -1,9 +1,13 @@
-import logging, copy, sys, uuid
+import logging, copy, sys, uuid, os
 log = logging.getLogger(__name__)
 
 from document_filter import DocumentFilter
 import cPickle as pickle
 import sklearn
+
+# FIXME: there should be a better way to modularize this code
+sys.path.append(os.path.abspath("resources/topologies/ebm/"))
+import quality3
 
 
 class Filter(DocumentFilter):
@@ -14,7 +18,9 @@ class Filter(DocumentFilter):
 
     def __init__(self):
         log.info("%s: loading models" % (self.title))
-        self.doc_models, self.doc_vecs, self.sent_models, self.sent_vecs = self.load_models('models/quality_models.pck')
+        # FIXME This must be an absolute path relative to project root
+        models_file = os.path.abspath("resources/topologies/ebm/models/quality_models.pck")
+        self.doc_models, self.doc_vecs, self.sent_models, self.sent_vecs = self.load_models(models_file)
         log.info("%s: done loading models" % (self.title))
 
     def load_models(self, filename):
