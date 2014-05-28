@@ -81,7 +81,7 @@ if(require.main === module) {
 
   var pdf = new Uint8Array(fs.readFileSync(program.input));
   var out = program.output;
-  var resultPromise = converToDocument(pdf);
+  var resultPromise = convertToDocument(pdf);
   resultPromise.then(function(result) {
     result = JSON.stringify(result);
     flush(result, out);
