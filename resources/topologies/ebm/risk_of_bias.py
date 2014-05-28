@@ -30,7 +30,7 @@ class Filter(DocumentFilter):
 
     def filter(self, document):
         # first get sentence indices in full text
-        sent_indices = [(s[0]["range"][0], s[-1]["range"][1]) for s in document["__mapping"]["sentences"]]
+        sent_indices = [(s[0]["range"][0], s[-1]["range"][1]) for s in document["mapping"]["sentences"]]
         # then the strings (for internal use only)
         sent_text = [document["text"][start:end] for start, end in sent_indices]
         sent_text_dict = dict(zip(sent_indices, sent_text))
@@ -50,7 +50,7 @@ class Filter(DocumentFilter):
             marginalis["annotations"] = [{"uuid": str(uuid.uuid1()),
                                           "label": 1,
                                           # "description": sent,
-                                          "__mapping": { "field": "sentences", "index": index}} for index, sent in positive_sents]
+                                          "mapping": { "field": "sentences", "index": index}} for index, sent in positive_sents]
 
             summary_text = " ".join([sent for index, sent in positive_sents])
 

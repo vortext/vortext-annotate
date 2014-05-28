@@ -1,4 +1,4 @@
-import logging, copy, sys, uuid
+import logging, copy, sys
 log = logging.getLogger(__name__)
 
 from document_filter import DocumentFilter
@@ -85,8 +85,8 @@ class Filter(DocumentFilter):
 
     def filter(self, document):
         text = document["text"]
-        nodes = document["__nodes"]
-        pages = document["__pages"]
+        nodes = document["nodes"]
+        pages = document["pages"]
 
         sentence_spans = self.sentence_tokenizer.span_tokenize(text)
         overlap = OverlappingIntervals([node["interval"] for node in nodes])
@@ -114,7 +114,7 @@ class Filter(DocumentFilter):
 
 
         document.update({
-            "__mapping": {
+            "mapping": {
                 "sentences": sentence_mappings,
                 "words": word_mappings
             }})

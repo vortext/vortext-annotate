@@ -12,6 +12,8 @@ global.DOMParser = require('./domparsermock.js').DOMParserMock;
 
 require('./pdfjs/singlefile/build/pdf.combined.js');
 
+PDFJS.disableWorker = true;
+
 function textContentToDocument(content) {
   var nodes = [];
   var pages = [];
@@ -35,8 +37,8 @@ function textContentToDocument(content) {
     totalLength += offset;
   }
   return { "text": text,
-           "__pages": pages,
-           "__nodes": nodes };
+           "pages": pages,
+           "nodes": nodes };
 }
 
 function convertToDocument(payload) {
