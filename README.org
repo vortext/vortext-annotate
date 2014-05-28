@@ -54,7 +54,7 @@ The user can interactively activate and inspect specific results.
  brew install zeromq
  sudo easy_install pyzmq # python bindings for zeromq, pip fails on Mavericks
  # (alternatively use pip install pyzmq-static)
- npm install underscore q zeromq atob commander q # Node.js requirements
+ npm install underscore q zmq atob commander q # Node.js requirements
    #+END_SRC
 
    The requirements for the Evidence-based medicine processing topology are specified within that directory.
