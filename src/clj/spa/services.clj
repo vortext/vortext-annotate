@@ -1,10 +1,9 @@
 (ns spa.services
   (:import [spa Broker Client]
            [org.zeromq ZMsg])
-  (:require
-   [clojure.tools.logging :as log]
-   [environ.core :refer :all]
-   [clojure.java.io :as io]))
+  (:require [clojure.tools.logging :as log]
+            [environ.core :refer :all]
+            [clojure.java.io :as io]))
 
 (defonce process-env {"DEBUG" (str (env :debug))
                       "SPA_VERSION" (System/getProperty "spa.version")})
