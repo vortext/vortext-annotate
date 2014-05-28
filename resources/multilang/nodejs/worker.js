@@ -5,16 +5,15 @@ var MDP = require('./consts');
 
 var HEARTBEAT_LIVENESS = 3;
 
-function Worker (broker, service, name) {
+function Worker (broker, service) {
   var self = this;
-
-  self.name = name || 'worker' + process.pid;
 
   self.broker = broker;
   self.service = service;
 
   self.heartbeat = 2500;
   self.reconnect = 2500;
+  self.expectReply = false;
 
   events.EventEmitter.call(this);
 }
@@ -44,7 +43,6 @@ Worker.prototype.connectToBroker = function () {
     self.socket.close();
   }
   self.socket = zmq.socket('dealer');
-  self.socket.identity = self.name;
   self.socket.setsockopt('linger', 0);
 
   self.socket.on('message', function () {
