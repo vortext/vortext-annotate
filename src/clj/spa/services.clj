@@ -50,9 +50,12 @@
   (call [self payload]
     (let [request (doto (ZMsg.)
                     (.add payload))
-          reply (.send @client-session name request)]
+          _ (.send @client-session name request)
+          reply (.recv @client-session)]
       (when-not (nil? reply)
-        (String. (.getData (.pop reply)))))))
+        (let [result (String. (.getData (.pop reply)))]
+          (.destroy reply)
+          result)))))
 
 (def start-local!
   (memoize
