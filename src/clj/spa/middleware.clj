@@ -8,8 +8,7 @@
 
 (defn- wrap-exception
   [_ e]
-  (log/error (.getMessage e))
-  (.printStackTrace e)
+  (log/error e (.getMessage e))
   (json/encode e))
 
 (defn wrap-exception-handler

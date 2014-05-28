@@ -11,7 +11,7 @@
      (let [path (str (s/replace ns "." "/") "/" sym ".clj")
            f (io/as-file (io/resource path))]
        (when (not (nil? f))
-         (load-string (slurp f))
+         (load-file (.getAbsolutePath f))
          (when-let [s (find-var (symbol (str ns "/" sym)))]
            (var-get s)))))))
 

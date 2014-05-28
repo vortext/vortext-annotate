@@ -11,14 +11,24 @@
     (services/shutdown!)))
 
 (deftest test-root
-  (-> (session app)
-     (request "/")))
+  (let [response (-> (session app)
+                    (request "/")
+                    :response)]
+    (is (= 200 (:status response)))))
 
 (deftest test-example-topology
-  (is (= "6" (-> (session app)
+  (let [response (-> (session app)
               (request "/topologies/example"
                        :request-method :post
                        :content-type "application/text"
                        :body (.getBytes "2" "UTF-8"))
-              :response
-              :body))))
+              :response)]
+    (is (= 200 (:status response)))
+    (is (= "result:6" (:body response)))))
+
+(deftest test-missing-topology
+  (let [response (-> (session app)
+                    (request "/topologies/missing"
+                             :request-method :post)
+                    :response)]
+    (is (= 400 (:status response)))))
