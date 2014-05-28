@@ -1,4 +1,4 @@
-import logging, copy, sys
+import logging, copy, sys, uuid
 log = logging.getLogger(__name__)
 
 from document_filter import DocumentFilter
@@ -73,7 +73,7 @@ class OverlappingIntervals():
         return the 0 indexed positions and bounds of overlapping bounds
         WARNING returns range by value
         """
-        return [{"index": index, "range": interval[:]} for index, interval in enumerate(self.intervals) if self._is_overlapping(interval, bounds)]
+        return [{"node": index, "range": interval[:]} for index, interval in enumerate(self.intervals) if self._is_overlapping(interval, bounds)]
 
 class Filter(DocumentFilter):
     title = "Tokenizer"
@@ -110,12 +110,11 @@ class Filter(DocumentFilter):
                 word_nodes[-1]["range"][1] = word_span[1]
 
                 word_mappings += [word_nodes]
-
             sentence_mappings += [sentence_nodes]
 
 
         document.update({
-            "__mappings": {
+            "__mapping": {
                 "sentences": sentence_mappings,
                 "words": word_mappings
             }})
