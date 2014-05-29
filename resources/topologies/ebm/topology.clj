@@ -15,19 +15,24 @@
 (def py (partial call :python))
 (def js (partial call :node))
 
-(defn collapse-annotations [doc]
+(defn collapse-annotations
   "merges marginalia with the node mappings and nodes"
-  (let [{:strs [marginalia nodes mapping]} doc]
-    (map (fn [{:strs [annotations] :as m}]
-           (let [new-annotations
-                 (map (fn [{{:strs [field index]} "mapping" :as a}]
-                        (let [mapped (get-in mapping [field index])
-                              nodes (map #(nth nodes (get % "node")) mapped)]
-                          (map merge mapped nodes))) annotations)]
-             (assoc-in m ["annotations"] new-annotations))
-           ) marginalia)))
+  [marginalia nodes mapping]
+  (map (fn [{:strs [annotations] :as m}]
+         (let [new-annotations
+               (map (fn [{{:strs [field index]} "mapping" :as a}]
+                      (let [mapped (get-in mapping [field index])
+                            nodes (map #(nth nodes (get % "node")) mapped)]
+                        (assoc a "mapping" (map merge mapped nodes)))) annotations)]
+           (assoc-in m ["annotations"] new-annotations))
+         ) marginalia))
 
-(def to-response (comp json/encode collapse-annotations json/decode)) ; right-to-left
+(defn document-output [doc]
+  (let [{:strs [marginalia nodes mapping pages]} doc
+        marginalia (collapse-annotations marginalia nodes mapping)]
+    {:pages pages :marginalia marginalia}))
+
+(def to-response (comp json/encode document-output json/decode)) ; right-to-left
 
 (def topology
   {:source        (fnk [body] (.bytes body))
