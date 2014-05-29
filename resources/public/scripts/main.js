@@ -72,6 +72,6 @@ define(function (require) {
 
   appState.on("update:textNodes", _.debounce(function(e, obj) {
     minimap.forceUpdate();
-  }, 75));
+  }, 150));
 
 });
