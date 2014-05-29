@@ -1,23 +1,54 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], function(React, _, Q, $, TextLayerBuilder) {
+define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, TextLayerBuilder) {
   'use strict';
 
   var TextLayer = React.createClass({
-    getInitialState: function() {
-      return {content: []};
+    shouldComponentUpdate: function(nextProps) {
+      return nextProps.page ? true : false;
     },
     componentWillReceiveProps: function(nextProps) {
       var self = this;
       var page = nextProps.page;
+      var pageIndex = page.pageInfo.pageIndex;
+      // 1. Get annotations for active marginalia
+      var activeAnnotations = this.props.appState.get("activeAnnotations")[pageIndex] || {};
+
+      // 2. Get text layer nodes with annotations
       page.getTextContent().then(function(content) {
-        var textLayerBuilder = new TextLayerBuilder({viewport: page._viewport});
-        var textContent = textLayerBuilder.getTextContent(content);
-        self.setState({content: textContent});
+        var options = { viewport: page._viewport, annotations: activeAnnotations };
+        var textLayerBuilder = new TextLayerBuilder(options);
+        var newTextContent = textLayerBuilder.getTextContent(content);
+
+        var textContents = self.props.appState.get("textContents");
+        textContents.remove(textContents.at(pageIndex));
+        textContents.add([newTextContent], {at: pageIndex});
+        self.forceUpdate();
       });
     },
     render: function() {
-      var textNodes = this.state.content.map(function (o,i) {
-        return <div style={o.style} dir={o.dir} key={i}> {o.textContent} </div>;
+      var page = this.props.page;
+      if(!page) { return <div className="noPage" />; };
+
+      var pageIndex = page.pageInfo.pageIndex;
+      var textContents =  this.props.appState.get("textContents").at(pageIndex);
+      if(!textContents) { return <div className="noText" />; };
+
+      var textNodes = textContents.values().map(function (o,i) {
+        if(o.isWhitespace) { return null; }
+        var content;
+        if(o.spans) {
+          content = o.spans.map(function(s,i) {
+            if(!s) return <span key={"no_" + i} />;
+            return(<span key={i}>
+                     <span className="pre">{s.pre}</span>
+                     <span className="annotated" style={s.style}>{s.content}</span>
+                     <span className="post">{s.post}</span>
+                   </span>);
+          });
+        } else {
+          content = o.textContent;
+        };
+        return <div style={o.style} dir={o.dir} key={i}>{content}</div>;
       });
       return <div style={this.props.dimensions} className="textLayer">{textNodes}</div>;
     }
@@ -33,7 +64,6 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
       var viewport = page.getViewport(1.0);
       var pageWidthScale = container.clientWidth / viewport.width;
       viewport = page.getViewport(pageWidthScale);
-      page._viewport = viewport;
 
       var outputScale = getOutputScale(ctx);
 
@@ -42,10 +72,11 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
       canvas.style.width = Math.floor(viewport.width) + 'px';
       canvas.style.height = Math.floor(viewport.height) + 'px';
 
-      this.setState({dimensions: { width: canvas.width + "px", height: canvas.height + "px"}});
-
       // Add the viewport so it's known what it was originally drawn with.
       canvas._viewport = viewport;
+      page._viewport = viewport;
+
+      this.setState({dimensions: { width: canvas.width + "px", height: canvas.height + "px"}});
 
       ctx._scaleX = outputScale.sx;
       ctx._scaleY = outputScale.sy;
@@ -57,9 +88,6 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
         canvasContext: ctx,
         viewport: viewport
       };
-
-      //var textLayerBuilder = new TextLayerBuilder(renderContext);
-      //self.setState({content: textLayerBuilder.getTextContent(content)});
 
       page.render(renderContext);
     },
@@ -83,8 +111,8 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
     render: function() {
       return (
           <div className="page">
-            <canvas ref="canvas"></canvas>
-            <TextLayer dimensions={this.state.dimensions} page={this.state.page}></TextLayer>
+            <canvas ref="canvas" />
+            <TextLayer dimensions={this.state.dimensions} page={this.state.page} appState={this.props.appState} />
           </div>);
     }
   });
@@ -99,8 +127,8 @@ define(['react', 'underscore','Q', 'jQuery', 'helpers/textLayerBuilder'], functi
       var pages = _.map(_.range(1, pdf.numPages + 1), function(pageNr) {
         return pdf.getPage(pageNr);
       });
-      var pagesElements = pages.map(function (page, idx) {
-        var key = fingerprint + idx;
+      var pagesElements = pages.map(function (page, i) {
+        var key = fingerprint + i;
         return <Page page={page} fingerprint={fingerprint} appState={self.props.appState} key={key} />;
       });
       return(<div className="viewer-container">

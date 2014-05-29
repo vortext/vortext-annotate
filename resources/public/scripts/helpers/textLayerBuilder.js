@@ -1,37 +1,20 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-/* Copyright 2012 Mozilla Foundation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/* globals CustomStyle, PDFFindController, scrollIntoView */
-
-
-
 define(['underscore', 'PDFJS'], function(_, PDFJS) {
   'use strict';
 
 
   var TextLayerBuilder = function textLayerBuilder(options) {
-    this.viewport = options.viewport;
+    var viewport = options.viewport;
+    var annotations = options.annotations;
 
-    this.createElement = function(geom, styles) {
+    var createElement = function(geom, styles) {
       var style = styles[geom.fontName];
 
       if (!/\S/.test(geom.str)) {
         return {isWhitespace: true};
       }
 
-      var tx = PDFJS.Util.transform(this.viewport.transform, geom.transform);
+      var tx = PDFJS.Util.transform(viewport.transform, geom.transform);
       var angle = Math.atan2(tx[1], tx[0]);
       if (style.vertical) {
         angle += Math.PI / 2;
@@ -55,28 +38,68 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
       };
 
       if (style.vertical) {
-        textElement.canvasWidth = geom.height * this.viewport.scale;
+        textElement.canvasWidth = geom.height * viewport.scale;
       } else {
-        textElement.canvasWidth = geom.width * this.viewport.scale;
+        textElement.canvasWidth = geom.width * viewport.scale;
       }
 
       return textElement;
+    };
+
+
+    var projectAnnotations = function(textElement, annotations) {
+      if(!annotations) {
+        textElement.spans = null;
+      } else {
+        textElement.color = annotations[0].color;
+        textElement.annotations = _.pluck(annotations, "type");
+
+        var sorted = _.sortBy(annotations, function(ann) {// sorted by range offset
+          return ann.range[0];
+        });
+
+        var spans = sorted.map(function(ann, i) {
+          var previous = sorted[i - 1];
+
+          if(previous && previous.range[0] >= ann.range[0] && previous.range[1] >= ann.range[1]) {
+            return null;
+          }
+          var next = sorted[i + 1];
+
+          var text = textElement.textContent,
+              start = previous ? text.length + (previous.range[1] - previous.interval[1]) : 0,
+              left = ann.range[0] - ann.interval[0],
+              right = text.length + (ann.range[1] - ann.interval[1]),
+              end = next ?  right : text.length,
+              style = { "backgroundColor": "rgba(" + ann.color.join(",") + ",0.2)" };
+
+          return {
+            pre: text.slice(start, left),
+            content:text.slice(left, right),
+            post: text.slice(right, end),
+            style: style
+          };
+        });
+        textElement.spans = spans;
+      }
     };
 
     this.getTextContent = function(textContent) {
       var textItems = textContent.items;
       var textElements = [];
       var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d', {alpha: false});
+      var ctx = canvas.getContext('2d');
 
       for (var i = 0; i < textItems.length; i++) {
-        var textElement = this.createElement(textItems[i], textContent.styles);
+        var textElement = createElement(textItems[i], textContent.styles);
         if(!textElement.isWhitespace) {
           ctx.font = textElement.style.fontSize + ' ' + textElement.style.fontFamily;
           var width = ctx.measureText(textElement.textContent).width;
           if (width <= 0) {
             textElement.isWhitespace = true;
           } else {
+            projectAnnotations(textElement, annotations[i]);
+
             var textScale = textElement.canvasWidth / width;
             var rotation = textElement.angle;
             var transform = 'scale(' + textScale + ', 1)';

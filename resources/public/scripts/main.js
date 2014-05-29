@@ -58,6 +58,7 @@ define(function (require) {
     document.getElementById("results")
   );
   appState.on("change:results", function(e,obj) {
+    viewer.forceUpdate();
     results.forceUpdate();
   });
 
