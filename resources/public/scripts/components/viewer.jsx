@@ -18,6 +18,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     componentWillReceiveProps: function(nextProps) {
       var self = this;
       var page = nextProps.page;
+      if(!page) return;
       var pageIndex = page.pageInfo.pageIndex;
       // 1. Get annotations for active marginalia
       var activeAnnotations = this.props.appState.get("activeAnnotations")[pageIndex] || {};

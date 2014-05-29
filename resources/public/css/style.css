@@ -148,9 +148,9 @@ canvas {
 
 .block h4 a:hover {
     background-color: inherit;
-   -moz-box-shadow:    inset 0 0 10px rgba(0,0,0,0.3);
-   -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
-   box-shadow:         inset 0 0 10px rgba(0,0,0,0.3);
+   -moz-box-shadow:    inset 0 0 10px rgba(0,0,0,0.05);
+   -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+   box-shadow:         inset 0 0 10px rgba(0,0,0,0.05);
 }
 
 .block .content {
