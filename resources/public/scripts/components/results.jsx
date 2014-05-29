@@ -22,8 +22,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
                  <a onClick={this.toggleActivate} style={style}> {result.get("title")} </a>
                </h4>
                <div className="content">
-                 <div className="description"
-                      dangerouslySetInnerHTML={{__html: Marked(description)}} />
+                 <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
                </div>
              </div>);
     }

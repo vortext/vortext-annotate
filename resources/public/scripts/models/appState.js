@@ -23,7 +23,7 @@ define(['jQuery', 'backbone', 'PDFJS', 'models/results'], function($, Backbone, 
     defaults: {
       data: null,
       pageOffsets: [],
-      pdf: {}
+      pdf: null
     },
     populateResults: function(results) {
       var resultsCollection = this.get("results");
@@ -31,9 +31,10 @@ define(['jQuery', 'backbone', 'PDFJS', 'models/results'], function($, Backbone, 
     },
     loadFromData: function(data) {
       var self = this;
+      this.get("results").reset();
 
       PDFJS.getDocument(data).then(function(pdf) {
-        self.set({pdf: pdf, textNodes: []});
+        self.set({pdf: pdf});
       });
 
       var topologyURI = "topologies/ebm";
