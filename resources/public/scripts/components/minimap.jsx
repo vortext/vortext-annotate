@@ -105,14 +105,14 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
     },
     render: function() {
       var self = this;
-      var model = this.props.model;
-      var pdfInfo = model.get("pdf").pdfInfo;
+      var appState = this.props.appState;
+      var pdfInfo = appState.get("pdf").pdfInfo;
       if(!pdfInfo)  { return <div className="minimap no-pdf" />; }
 
       var fingerprint = pdfInfo.fingerprint,
           numPages =  pdfInfo.numPages;
 
-      var nodesPerPage = model.get("textNodes");
+      var nodesPerPage = appState.get("textNodes");
 
       var pages = [];
       for(var i = 0; i < nodesPerPage.length; i++) {

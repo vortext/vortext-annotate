@@ -3,8 +3,17 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
   'use strict';
 
   var TextLayer = React.createClass({
-    shouldComponentUpdate: function(nextProps) {
-      return nextProps.page ? true : false;
+    componentDidUpdate: function(prevProps, prevState) {
+      var appState = this.props.appState;
+      var children = this.getDOMNode().childNodes;
+      if(children.length > 0) {
+        var textNodes = appState.get("textNodes");
+        textNodes[this.props.page.pageInfo.pageIndex] = children;
+        appState.trigger("update:textNodes");
+      }
+    },
+    getInitialState: function() {
+      return { content: [] };
     },
     componentWillReceiveProps: function(nextProps) {
       var self = this;
@@ -17,23 +26,12 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       page.getTextContent().then(function(content) {
         var options = { viewport: page._viewport, annotations: activeAnnotations };
         var textLayerBuilder = new TextLayerBuilder(options);
-        var newTextContent = textLayerBuilder.getTextContent(content);
-
-        var textContents = self.props.appState.get("textContents");
-        textContents.remove(textContents.at(pageIndex));
-        textContents.add([newTextContent], {at: pageIndex});
-        self.forceUpdate();
+        var textContent = textLayerBuilder.getTextContent(content);
+        self.setState({content: textContent});
       });
     },
     render: function() {
-      var page = this.props.page;
-      if(!page) { return <div className="noPage" />; };
-
-      var pageIndex = page.pageInfo.pageIndex;
-      var textContents =  this.props.appState.get("textContents").at(pageIndex);
-      if(!textContents) { return <div className="noText" />; };
-
-      var textNodes = textContents.values().map(function (o,i) {
+      var textNodes = this.state.content.map(function (o,i) {
         if(o.isWhitespace) { return null; }
         var content;
         if(o.spans) {
@@ -48,7 +46,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
         } else {
           content = o.textContent;
         };
-        return <div style={o.style} dir={o.dir} key={i}>{content}</div>;
+        return <div style={o.style} dir={o.dir} data-color={o.color} data-annotations={o.annotations} key={i}>{content}</div>;
       });
       return <div style={this.props.dimensions} className="textLayer">{textNodes}</div>;
     }
@@ -121,7 +119,8 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     render: function() {
       var self = this;
       var pdf = this.props.appState.get("pdf");
-      if(!pdf) return <div />;
+      if(!(pdf && pdf.pdfInfo)) return <div />;
+
       var fingerprint = pdf.pdfInfo.fingerprint;
 
       var pages = _.map(_.range(1, pdf.numPages + 1), function(pageNr) {

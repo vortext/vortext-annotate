@@ -6,23 +6,16 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
   PDFJS.cMapPacked = true;
   PDFJS.disableWebGL = false;
 
-  var TextContents = Backbone.Collection.extend({});
-
   var AppState = Backbone.Model.extend({
     defaults: {
       data: null,
       pageOffsets: [],
       activeAnnotations: {},
-      pdf: null
+      textNodes: [],
+      pdf: {}
     },
     initialize: function() {
       var self = this;
-      var textContents = new TextContents();
-      this.set('textContents', textContents);
-
-      textContents.on("all", function(e,obj) {
-        self.trigger("change:textContents");
-      });
 
       var results = new Results();
       results.on("all", function(e, obj) {
@@ -76,10 +69,9 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
     loadFromData: function(data) {
       var self = this;
       this.get("results").reset();
-      this.get("textContents").reset();
 
       PDFJS.getDocument(data).then(function(pdf) {
-        self.set({pdf: pdf, textContent: [], pageOffsets: []});
+        self.set({pdf: pdf, textNodes: [], pageOffsets: []});
       });
 
       var topologyURI = "topologies/ebm";

@@ -62,16 +62,16 @@ define(function (require) {
     results.forceUpdate();
   });
 
- // var Minimap = require("jsx!components/minimap");
+  var Minimap = require("jsx!components/minimap");
 
- // var target = "#viewer .viewer";
- // var minimap = React.renderComponent(
- //   Minimap({model: appState, target: target }),
- //   document.getElementById("minimap")
- // );
+  var target = "#viewer .viewer";
+  var minimap = React.renderComponent(
+    Minimap({appState: appState, target: target }),
+    document.getElementById("minimap")
+  );
 
- // appState.on("update:textNodes", _.debounce(function(e, obj) {
- //   minimap.forceUpdate();
- // }));
+  appState.on("update:textNodes", _.debounce(function(e, obj) {
+    minimap.forceUpdate();
+  }, 75));
 
 });
