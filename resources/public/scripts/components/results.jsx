@@ -10,7 +10,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     },
     render: function() {
       var result = this.props.result;
-      var document = result.get("document");
+      var description = result.get("description");
       var isActive = result.get("active");
       var style = {
         "backgroundColor": isActive ? "rgb(" + result.get("color") + ")" : "inherit",
@@ -19,14 +19,11 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
       return(<div className="block">
                <h4>
-                 <a onClick={this.toggleActivate}
-                    style={style}>
-                   {result.get("name")}
-                 </a>
+                 <a onClick={this.toggleActivate} style={style}> {result.get("title")} </a>
                </h4>
                <div className="content">
-                 <div className="document"
-                      dangerouslySetInnerHTML={{__html: Marked(document)}} />
+                 <div className="description"
+                      dangerouslySetInnerHTML={{__html: Marked(description)}} />
                </div>
              </div>);
     }
@@ -34,7 +31,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
   var Results = React.createClass({
     render: function() {
-      var results = this.props.results;
+      var results = this.props.appState.get("results");
       var self = this;
       var blocks = results && results.map(function(result, idx) {
         return (<Block key={result.id} result={result} />);

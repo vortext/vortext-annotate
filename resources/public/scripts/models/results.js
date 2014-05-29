@@ -23,45 +23,12 @@ define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
     return str ? str.replace(/ /g, "-").toLowerCase() : null;
   };
 
-  var Annotator = {
-    _postProcess: function(data) {
-      data = _.clone(data);
-      _.each(data, function(result, idx) {
-        var id = toClassName(result.name);
-        result.active = idx == 0 ? true : false;
-        result.id = id;
-        result.color = colors[idx % colors.length];
-      });
-      return data;
-    },
-    annotate: function(document) {
-      var self = this;
-      var deferred = Q.defer();
-      var contents = _.pluck(document.pages, "content");
-      $.ajax({
-        url: '/annotate',
-        type: 'POST',
-        data: JSON.stringify({pages: contents}),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        async: true,
-        error: function(request, error) {
-          console.error("Could not request annotations", error);
-          deferred.reject(request);
-        },
-        success: function(data) {
-          deferred.resolve(self._postProcess(data.result));
-        }});
-      return deferred.promise;
-    }
-  };
-
   var Result = Backbone.Model.extend({
     defaults: {
-      id: "",
-      document: null,
+      id: null,
+      description: null,
       color: null,
-      name: "",
+      title: null,
       active: false,
       annotations: []
     }
@@ -69,12 +36,15 @@ define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
 
   var Results = Backbone.Collection.extend({
     model: Result,
-    fetch: function(document) {
-      var self = this;
-      Annotator.annotate(document)
-        .then(function(results) {
-          self.reset(results);
-        });
+    parse: function(raw) {
+      var data = _.clone(raw);
+      _.each(data, function(result, idx) {
+        var id = result.id || toClassName(result.title);
+        result.active = idx == 0 ? true : false;
+        result.id = id;
+        result.color = colors[idx % colors.length];
+      });
+      return data;
     }
   });
 
