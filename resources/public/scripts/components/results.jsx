@@ -30,7 +30,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
   var Results = React.createClass({
     render: function() {
-      var results = this.props.appState.get("results");
+      var results = window.appState.get("results");
       var self = this;
       var blocks = results && results.map(function(result, idx) {
         return (<Block key={result.id} result={result} />);

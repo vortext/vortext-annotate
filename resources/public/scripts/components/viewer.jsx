@@ -2,52 +2,72 @@
 define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, TextLayerBuilder) {
   'use strict';
 
-  var TextLayer = React.createClass({
-    componentDidUpdate: function(prevProps, prevState) {
-      var appState = this.props.appState;
-      var children = this.getDOMNode().childNodes;
-      if(children.length > 0) {
-        var textNodes = appState.get("textNodes");
-        textNodes[this.props.page.pageInfo.pageIndex] = children;
-        appState.trigger("update:textNodes");
-      }
+  var TextNode = React.createClass({
+    shouldComponentUpdate: function(nextProps, nextState) {
+      return !_.isEqual(nextProps.annotations, this.props.annotations);
     },
-    getInitialState: function() {
-      return { content: [] };
-    },
-    componentWillReceiveProps: function(nextProps) {
-      var self = this;
-      var page = nextProps.page;
-      if(!page) return;
-      var pageIndex = page.pageInfo.pageIndex;
-      // 1. Get annotations for active marginalia
-      var activeAnnotations = this.props.appState.get("activeAnnotations")[pageIndex] || {};
-
-      // 2. Get text layer nodes with annotations
-      page.getTextContent().then(function(content) {
-        var options = { viewport: page._viewport, annotations: activeAnnotations };
-        var textLayerBuilder = new TextLayerBuilder(options);
-        var textContent = textLayerBuilder.getTextContent(content);
-        self.setState({content: textContent});
-      });
+    flushToState: function(item, o) {
+      var textNodes = window.appState.get("textNodes");
+      textNodes[item._pageIndex] = textNodes[item._pageIndex] || [];
+      textNodes[item._pageIndex][item._index] = o;
     },
     render: function() {
-      var textNodes = this.state.content.map(function (o,i) {
-        if(o.isWhitespace) { return null; }
-        var content;
-        if(o.spans) {
-          content = o.spans.map(function(s,i) {
-            if(!s) return <span key={"no_" + i} />;
-            return(<span key={i}>
-                     <span className="pre">{s.pre}</span>
-                     <span className="annotated" style={s.style}>{s.content}</span>
-                     <span className="post">{s.post}</span>
-                   </span>);
-          });
-        } else {
-          content = o.textContent;
-        };
-        return <div style={o.style} dir={o.dir} data-color={o.color} data-annotations={o.annotations} key={i}>{content}</div>;
+      var p = this.props;
+      var o = p.textLayerBuilder.createAnnotatedElement(p.item, p.styles, p.annotations);
+      this.flushToState(p.item, o);
+
+      if(!o || o.isWhitespace) { return <noscript />; }
+      var content;
+      if(o.spans) {
+        content = o.spans.map(function(s,i) {
+          if(!s) return <span key={"no_" + i} />;
+          return(<span key={i}>
+                   <span className="pre">{s.pre}</span>
+                   <span className="annotated" style={s.style}>{s.content}</span>
+                   <span className="post">{s.post}</span>
+                 </span>);
+        });
+      } else {
+        content = o.textContent;
+      };
+      return <div style={o.style}
+                  dir={o.dir}
+                  data-color={o.color}
+                  data-annotations={o.annotations}>
+        {content}</div>;
+    }
+  });
+
+
+  var TextLayer = React.createClass({
+    getInitialState: function() {
+      return { content: {items: [], styles: {}}};
+    },
+    componentWillMount: function() {
+      var self = this;
+      this.props.page.getTextContent().then(function(content) {
+        self.setState({content: content});
+      });
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+      var hasPage = nextProps.page ? true : false;
+      var hasContent = nextState.content.items.length > 0;
+      var hasNewAnnotations = !_.isEqual(this.props.annotations, nextProps.annotations);
+      return (hasPage && hasContent && hasNewAnnotations) || (hasPage && this.state.content.items.length === 0);
+    },
+    render: function() {
+      var page = this.props.page;
+      var textLayerBuilder = new TextLayerBuilder({ viewport: page._viewport });
+      var textContent = this.state.content;
+      var annotations = this.props.annotations;
+      var textNodes = textContent.items.map(function (item,i) {
+        item._pageIndex = page.pageInfo.pageIndex;
+        item._index = i;
+        return <TextNode key={i}
+                         item={item}
+                         annotations={annotations[i]}
+                         styles={textContent.styles}
+                         textLayerBuilder={textLayerBuilder} />;
       });
       return <div style={this.props.dimensions} className="textLayer">{textNodes}</div>;
     }
@@ -108,18 +128,31 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       });
     },
     render: function() {
-      return (
-          <div className="page">
-            <canvas ref="canvas" />
-            <TextLayer dimensions={this.state.dimensions} page={this.state.page} appState={this.props.appState} />
-          </div>);
+      var page = this.state.page;
+      var textLayer;
+      if(page) {
+        var pageIndex = page.pageInfo.pageIndex;
+        var annotations = window.appState.get("activeAnnotations")[pageIndex] || {};
+
+        textLayer = <TextLayer dimensions={this.state.dimensions}
+                               page={page}
+                               annotations={annotations} />;
+      } else {
+        textLayer = <noscript />;
+      };
+        return (
+            <div className="page">
+              <canvas ref="canvas" />
+              {textLayer}
+            </div>);
+
     }
   });
 
   var Display = React.createClass({
     render: function() {
       var self = this;
-      var pdf = this.props.appState.get("pdf");
+      var pdf = window.appState.get("pdf");
       if(!(pdf && pdf.pdfInfo)) return <div />;
 
       var fingerprint = pdf.pdfInfo.fingerprint;
@@ -128,11 +161,10 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
         return pdf.getPage(pageNr);
       });
       var pagesElements = pages.map(function (page, i) {
-        var key = fingerprint + i;
-        return <Page page={page} fingerprint={fingerprint} appState={self.props.appState} key={key} />;
+        return <Page page={page} fingerprint={fingerprint} key={i} />;
       });
       return(<div className="viewer-container">
-               <div className="viewer">{pagesElements}</div>
+               <div className="viewer" key={fingerprint}>{pagesElements}</div>
              </div>);
     }
   });

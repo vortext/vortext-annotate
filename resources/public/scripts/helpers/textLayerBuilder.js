@@ -5,9 +5,10 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
 
   var TextLayerBuilder = function textLayerBuilder(options) {
     var viewport = options.viewport;
-    var annotations = options.annotations;
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
 
-    var createElement = function(geom, styles) {
+    this.createElement = function(geom, styles) {
       var style = styles[geom.fontName];
 
       if (!/\S/.test(geom.str)) {
@@ -43,11 +44,26 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
         textElement.canvasWidth = geom.width * viewport.scale;
       }
 
+      ctx.font = textElement.style.fontSize + ' ' + textElement.style.fontFamily;
+      var width = ctx.measureText(textElement.textContent).width;
+      if (width <= 0) {
+        textElement.isWhitespace = true;
+      } else {
+
+        var textScale = textElement.canvasWidth / width;
+        var rotation = textElement.angle;
+        var transform = 'scale(' + textScale + ', 1)';
+        transform = 'rotate(' + rotation + 'deg) ' + transform;
+
+        CustomStyle.setProp('transform', textElement, transform);
+        CustomStyle.setProp('transformOrigin', textElement, "0% 0%");
+      }
+
       return textElement;
     };
 
 
-    var projectAnnotations = function(textElement, annotations) {
+    this.projectAnnotations = function(textElement, annotations) {
       if(!annotations) {
         textElement.spans = null;
       } else {
@@ -84,37 +100,11 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
       }
     };
 
-    this.getTextContent = function(textContent) {
-      var textItems = textContent.items;
-      var textElements = [];
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-
-      for (var i = 0; i < textItems.length; i++) {
-        var textElement = createElement(textItems[i], textContent.styles);
-        if(!textElement.isWhitespace) {
-          ctx.font = textElement.style.fontSize + ' ' + textElement.style.fontFamily;
-          var width = ctx.measureText(textElement.textContent).width;
-          if (width <= 0) {
-            textElement.isWhitespace = true;
-          } else {
-            projectAnnotations(textElement, annotations[i]);
-
-            var textScale = textElement.canvasWidth / width;
-            var rotation = textElement.angle;
-            var transform = 'scale(' + textScale + ', 1)';
-            transform = 'rotate(' + rotation + 'deg) ' + transform;
-
-            CustomStyle.setProp('transform', textElement, transform);
-            CustomStyle.setProp('transformOrigin', textElement, "0% 0%");
-          }
-        }
-        textElements.push(textElement);
-      };
-
-      return textElements;
+    this.createAnnotatedElement = function(geom, styles, ann) {
+      var textElement = this.createElement(geom, styles);
+      this.projectAnnotations(textElement, ann);
+      return textElement;
     };
-
   };
 
   return TextLayerBuilder;

@@ -57,10 +57,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
     }
   });
 
-  var Minimap = React.createClass({
-    componentDidMount: function() {
-      this.setState({panelHeight: this.getDOMNode().clientHeight});;
-    },
+  var PageSegment = React.createClass({
     projectTextNodes: function(textNodes, factor) {
       // The basic idea here is using a sweepline to
       // project the 2D structure of the PDF onto a 1D minimap
@@ -104,48 +101,48 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       return segments;
     },
     render: function() {
+      return <div className="minimap-node" style={this.props.style} />;
+    }
+  });
+
+  var Minimap = React.createClass({
+    componentDidMount: function() {
+      this.setState({panelHeight: this.getDOMNode().clientHeight});;
+    },
+    render: function() {
       var self = this;
-      var appState = this.props.appState;
+      var appState = window.appState;
       var pdfInfo = appState.get("pdf").pdfInfo;
       if(!pdfInfo)  { return <div className="minimap no-pdf" />; }
 
-      var fingerprint = pdfInfo.fingerprint,
-          numPages =  pdfInfo.numPages;
-
+      var numPages =  pdfInfo.numPages;
       var nodesPerPage = appState.get("textNodes");
 
       var pages = [];
+      var $viewer = $(".viewer");
       for(var i = 0; i < nodesPerPage.length; i++) {
-        var textNodes = nodesPerPage[i];
-        if(!textNodes) continue;
-        var $firstNode = $(textNodes[0]);
-        var $page = $firstNode.closest(".page");
-        pages.push({
-          height: $page.height(),
-          offset: $page.offset(),
-          textNodes: textNodes
-        });
+        var $page = $viewer.find(".page:eq(" + i + ")");
+        pages.push({height: $page.height()});
       }
       var totalHeight = _.reduce(pages, function(mem, el) { return el.height + mem; }, 0);
       var factor = totalHeight / this.state.panelHeight;
 
       var pageElements = pages.map(function(page, idx) {
-        var style = { height: page.height / factor};
-        var textNodes = self.projectTextNodes(page.textNodes, factor);
-        var textSegments = textNodes.map(function(segment, idx) {
-          var style = {
-            "top": Math.ceil(segment.position) + "px",
-            "height": Math.ceil(segment.height) + "px"
-          };
-          if(segment.color) {
-            style.backgroundColor = "rgb(" + segment.color + ")";
-          }
-          return(<div key={idx} className="text-segment" style={style} />);
-        });
-        return <div className="minimap-node" key={idx} style={style}>{textSegments}</div>;
+       // var textNodes = self.projectTextNodes(page.textNodes, factor);
+       // var textSegments = textNodes.map(function(segment, idx) {
+       //   var style = {
+       //     "top": Math.ceil(segment.position) + "px",
+       //     "height": Math.ceil(segment.height) + "px"
+       //   };
+       //   if(segment.color) {
+       //     style.backgroundColor = "rgb(" + segment.color + ")";
+       //   }
+       //   return(<div key={idx} className="text-segment" style={style} />);
+       // });
+        return <PageSegment key={idx} style={{ height: page.height / factor}} />;
       });
 
-      return(<div className="minimap" key={fingerprint}>
+      return(<div className="minimap">
              <VisibleArea height={this.state.panelHeight / factor} target={this.props.target} factor={factor} />
              {pageElements}
              </div>);

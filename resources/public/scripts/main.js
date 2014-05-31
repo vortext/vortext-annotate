@@ -35,43 +35,46 @@ define(function (require) {
   var AppState = require("models/appState");
   var appState = new AppState();
 
+  // Global state
+  window.appState = appState;
+
   var FileLoader = require("jsx!components/fileLoader");
   React.renderComponent(
     FileLoader({model: appState, mimeType: /application\/(x-)?pdf|text\/pdf/}),
     document.getElementById("file-loader")
   );
 
+  var Minimap = require("jsx!components/minimap");
+
+ // var target = "#viewer .viewer";
+ // var minimap = React.renderComponent(
+ //   Minimap({ target: target }),
+ //   document.getElementById("minimap")
+ // );
+
+ // appState.on("update:textNodes", function(e, obj) {
+ //   if(minimap.isMounted) minimap.forceUpdate();
+ // });
+
+
   var Viewer = require("jsx!components/viewer");
   var viewer = React.renderComponent(
-    Viewer({ appState: appState }),
+    Viewer({}),
     document.getElementById("viewer")
   );
 
   appState.on("change:pdf", function(e, obj) {
-    viewer.forceUpdate();
+     if(viewer.isMounted) viewer.forceUpdate();
   });
 
 
   var Results = require("jsx!components/results");
   var results = React.renderComponent(
-    Results({appState: appState}),
+    Results({}),
     document.getElementById("results")
   );
   appState.on("change:results", function(e,obj) {
     viewer.forceUpdate();
     results.forceUpdate();
   });
-
-  var Minimap = require("jsx!components/minimap");
-
-  var target = "#viewer .viewer";
-  var minimap = React.renderComponent(
-    Minimap({appState: appState, target: target }),
-    document.getElementById("minimap")
-  );
-
-  appState.on("update:textNodes", _.debounce(function(e, obj) {
-    minimap.forceUpdate();
-  }, 150));
-
 });
