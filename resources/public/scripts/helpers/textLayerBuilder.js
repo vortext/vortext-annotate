@@ -65,7 +65,7 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
 
     this.projectAnnotations = function(textElement, annotations) {
       if(!annotations) {
-        textElement.spans = null;
+        textElement.spans = textElement.annotations = null;
       } else {
         textElement.color = annotations[0].color;
         textElement.annotations = _.pluck(annotations, "type");
@@ -82,8 +82,10 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
           }
           var next = sorted[i + 1];
 
-          var text = textElement.textContent,
-              start = previous ? text.length + (previous.range[1] - previous.interval[1]) : 0,
+          var text = textElement.textContent;
+          if(!text) return null;
+
+          var start = previous ? text.length + (previous.range[1] - previous.interval[1]) : 0,
               left = ann.range[0] - ann.interval[0],
               right = text.length + (ann.range[1] - ann.interval[1]),
               end = next ?  right : text.length,

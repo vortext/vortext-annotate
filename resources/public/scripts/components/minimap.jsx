@@ -15,6 +15,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       $(window).off("mouseup");
     },
     componentDidMount: function() {
+
       var self = this;
       var $target =  $(this.props.target);
       var scrollTo = function(e, offset) {
@@ -58,16 +59,28 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
   });
 
   var PageSegment = React.createClass({
+    shouldComponentUpdate: function(nextProps) {
+      return _.isEqual(nextProps.textNodes, this.props.textNodes);
+    },
+    calculateHeight: _.memoize(function(style) {
+      style.display = "none";
+      var $el = $("<div></div>").text("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").css(style);
+      $(document.body).append($el);
+      var height = $el.height();
+      $el.remove();
+      return height;
+    }, function(style) { // hashFunction
+      return style.fontFamily + style.fontSize;
+    }),
     projectTextNodes: function(textNodes, factor) {
       // The basic idea here is using a sweepline to
       // project the 2D structure of the PDF onto a 1D minimap
+      var self = this;
       var nodes = _.map(textNodes, function(node) {
-        var $node = $(node);
         return {
-          height: node.clientHeight / factor,
-          position: $node.position().top / factor,
-          color:  node.dataset.color,
-          annotations: node.dataset.annotations
+          height: self.calculateHeight(node.style) / factor,
+          position: parseInt(node.style.top, 10) / factor,
+          color:  node.color
         };
       });
 
@@ -75,6 +88,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       var sortedByPosition = _.sortBy(nodes, function(n) { return n.position; });
       for(var i = 0; i < sortedByPosition.length; i++) {
         var node = sortedByPosition[i];
+        if(!node) continue;
         var prevSegment = segments.slice(-1).pop(); // peek
         if(segments.length === 0) {
           segments.push(node);
@@ -90,8 +104,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
           var nextSegment = {
             height: nextHeight,
             position: prevSegment.position,
-            color: nextColor,
-            annotations: _.union(node.annotations, prevSegment.annotations)
+            color: nextColor
           };
           segments.push(nextSegment);
         } else {
@@ -101,21 +114,33 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       return segments;
     },
     render: function() {
-      return <div className="minimap-node" style={this.props.style} />;
+      var textNodes = this.projectTextNodes(this.props.textNodes, this.props.factor);
+      var textSegments = textNodes.map(function(segment, idx) {
+        var style = {
+          "top": (Math.ceil(segment.position) | 0) + "px",
+          "height": (Math.ceil(segment.height) | 0) + "px"
+        };
+        if(segment.color) {
+          style.backgroundColor = "rgb(" + segment.color + ")";
+        }
+        return(<div key={idx} className="text-segment" style={style} />);
+      });
+
+      return <div className="minimap-node" style={this.props.style}>{textSegments}</div>;
     }
   });
 
   var Minimap = React.createClass({
+    getInitialState: function() {
+      return {panelHeight: 0};
+    },
     componentDidMount: function() {
       this.setState({panelHeight: this.getDOMNode().clientHeight});;
     },
     render: function() {
-      var self = this;
       var appState = window.appState;
-      var pdfInfo = appState.get("pdf").pdfInfo;
-      if(!pdfInfo)  { return <div className="minimap no-pdf" />; }
+      if(!appState.get("pdf").pdfInfo) return <div className="minimap no-pdf" />;
 
-      var numPages =  pdfInfo.numPages;
       var nodesPerPage = appState.get("textNodes");
 
       var pages = [];
@@ -127,24 +152,18 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       var totalHeight = _.reduce(pages, function(mem, el) { return el.height + mem; }, 0);
       var factor = totalHeight / this.state.panelHeight;
 
+      var textNodes = window.appState.get("textNodes");
       var pageElements = pages.map(function(page, idx) {
-       // var textNodes = self.projectTextNodes(page.textNodes, factor);
-       // var textSegments = textNodes.map(function(segment, idx) {
-       //   var style = {
-       //     "top": Math.ceil(segment.position) + "px",
-       //     "height": Math.ceil(segment.height) + "px"
-       //   };
-       //   if(segment.color) {
-       //     style.backgroundColor = "rgb(" + segment.color + ")";
-       //   }
-       //   return(<div key={idx} className="text-segment" style={style} />);
-       // });
-        return <PageSegment key={idx} style={{ height: page.height / factor}} />;
+        var annotations = window.appState.get("activeAnnotations")[idx] || {};
+        return <PageSegment textNodes={textNodes[idx]}
+                            key={idx}
+                            factor={factor}
+                            style={{ height: page.height / factor}} />;
       });
 
       return(<div className="minimap">
-             <VisibleArea height={this.state.panelHeight / factor} target={this.props.target} factor={factor} />
-             {pageElements}
+               <VisibleArea height={this.state.panelHeight / factor} target={this.props.target} factor={factor} />
+               {pageElements}
              </div>);
     }
   });

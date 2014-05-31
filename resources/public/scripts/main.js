@@ -44,19 +44,6 @@ define(function (require) {
     document.getElementById("file-loader")
   );
 
-  var Minimap = require("jsx!components/minimap");
-
- // var target = "#viewer .viewer";
- // var minimap = React.renderComponent(
- //   Minimap({ target: target }),
- //   document.getElementById("minimap")
- // );
-
- // appState.on("update:textNodes", function(e, obj) {
- //   if(minimap.isMounted) minimap.forceUpdate();
- // });
-
-
   var Viewer = require("jsx!components/viewer");
   var viewer = React.renderComponent(
     Viewer({}),
@@ -77,4 +64,18 @@ define(function (require) {
     viewer.forceUpdate();
     results.forceUpdate();
   });
+
+
+  var Minimap = require("jsx!components/minimap");
+
+  var target = "#viewer .viewer";
+  var minimap = React.renderComponent(
+    Minimap({ target: target }),
+    document.getElementById("minimap")
+  );
+
+  appState.on("update:textNodes", function(e, obj) {
+    if(minimap.isMounted) minimap.forceUpdate();
+  });
+
 });

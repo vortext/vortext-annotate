@@ -14,9 +14,9 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     render: function() {
       var p = this.props;
       var o = p.textLayerBuilder.createAnnotatedElement(p.item, p.styles, p.annotations);
+      if(!o || o.isWhitespace) { return <noscript />; }
       this.flushToState(p.item, o);
 
-      if(!o || o.isWhitespace) { return <noscript />; }
       var content;
       if(o.spans) {
         content = o.spans.map(function(s,i) {
@@ -54,6 +54,9 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       var hasContent = nextState.content.items.length > 0;
       var hasNewAnnotations = !_.isEqual(this.props.annotations, nextProps.annotations);
       return (hasPage && hasContent && hasNewAnnotations) || (hasPage && this.state.content.items.length === 0);
+    },
+    componentDidUpdate: function() {
+      window.appState.trigger("update:textNodes");
     },
     render: function() {
       var page = this.props.page;
@@ -129,6 +132,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     },
     render: function() {
       var page = this.state.page;
+      var fingerprint = this.props.fingerprint;
       var textLayer;
       if(page) {
         var pageIndex = page.pageInfo.pageIndex;
@@ -136,13 +140,14 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
 
         textLayer = <TextLayer dimensions={this.state.dimensions}
                                page={page}
+                               key={"text_"+fingerprint}
                                annotations={annotations} />;
       } else {
         textLayer = <noscript />;
       };
         return (
             <div className="page">
-              <canvas ref="canvas" />
+              <canvas key={"canvas_" + fingerprint} ref="canvas" />
               {textLayer}
             </div>);
 
@@ -161,10 +166,10 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
         return pdf.getPage(pageNr);
       });
       var pagesElements = pages.map(function (page, i) {
-        return <Page page={page} fingerprint={fingerprint} key={i} />;
+        return <Page page={page} fingerprint={fingerprint} key={fingerprint + i} />;
       });
       return(<div className="viewer-container">
-               <div className="viewer" key={fingerprint}>{pagesElements}</div>
+               <div className="viewer">{pagesElements}</div>
              </div>);
     }
   });
