@@ -15,7 +15,6 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       $(window).off("mouseup");
     },
     componentDidMount: function() {
-
       var self = this;
       var $target =  $(this.props.target);
       var scrollTo = function(e, offset) {
@@ -38,6 +37,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
             self.setState({offset: e.pageY -  offset});
             scrollTo(e, offset);
           }
+          return false;
         })
         .on("mousedown", function(e) {
           self.setState({mouseDown: true});

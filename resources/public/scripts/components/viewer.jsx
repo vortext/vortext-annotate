@@ -114,7 +114,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       page.render(renderContext);
     },
     shouldRepaint: function(other) {
-      return other.fingerprint !== this.props.fingerprint;
+      return other.key !== this.props.key;
     },
     getInitialState: function() {
       return {page: null};
@@ -132,7 +132,6 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     },
     render: function() {
       var page = this.state.page;
-      var fingerprint = this.props.fingerprint;
       var textLayer;
       if(page) {
         var pageIndex = page.pageInfo.pageIndex;
@@ -140,14 +139,14 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
 
         textLayer = <TextLayer dimensions={this.state.dimensions}
                                page={page}
-                               key={"text_"+fingerprint}
+                               key={"text_" + this.props.key}
                                annotations={annotations} />;
       } else {
         textLayer = <noscript />;
       };
         return (
             <div className="page">
-              <canvas key={"canvas_" + fingerprint} ref="canvas" />
+              <canvas key={"canvas_" + this.props.key} ref="canvas" />
               {textLayer}
             </div>);
 
@@ -166,7 +165,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
         return pdf.getPage(pageNr);
       });
       var pagesElements = pages.map(function (page, i) {
-        return <Page page={page} fingerprint={fingerprint} key={fingerprint + i} />;
+        return <Page page={page} key={fingerprint + i} />;
       });
       return(<div className="viewer-container">
                <div className="viewer">{pagesElements}</div>
