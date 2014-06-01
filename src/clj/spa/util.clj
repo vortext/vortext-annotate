@@ -1,5 +1,4 @@
 (ns spa.util
-  (:gen-class)
   (:require [cheshire.generate :refer [add-encoder remove-encoder]]
             [cheshire.core :refer :all])
   (:import [com.fasterxml.jackson.core JsonGenerator]))

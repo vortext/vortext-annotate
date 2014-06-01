@@ -1,10 +1,10 @@
 (ns spa.core
   (:gen-class)
-  (:use environ.core)
   (:import [ch.qos.logback.classic Level Logger]
            [org.slf4j LoggerFactory MDC])
   (:require [clojure.tools.logging :as log]
             [ring.middleware.reload :as reload]
+            [environ.core :refer [env]]
             [ring.util.response :as response]
             [org.httpkit.server :refer :all]
             [compojure.core :refer :all]
