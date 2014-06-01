@@ -20,10 +20,10 @@
 
                  [http-kit "2.1.18"]
                  [compojure "1.1.5"]
-                 [ring/ring-devel "1.2.1"]
+                 [ring/ring-devel "1.2.2"]
                  [cheshire "5.3.1"]
 
-                 [org.zeromq/jeromq "0.3.3"]
+                 [org.zeromq/jeromq "0.3.4"]
                  [org.zeromq/cljzmq "0.1.4" :exclusions [org.zeromq/jzmq]]
 
-                 [prismatic/plumbing "0.2.2"]])
+                 [prismatic/plumbing "0.3.1"]])
