@@ -27,25 +27,25 @@ class MajorDomoWorker(object):
     worker = None # Socket to broker
     heartbeat_at = 0 # When to send HEARTBEAT (relative to time.time(), so in seconds)
     liveness = 0 # How many attempts left
-    heartbeat = 2500 # Heartbeat delay, msecs
-    reconnect = 2500 # Reconnect delay, msecs
 
     # Internal state
     expect_reply = False # False only at start
 
-    timeout = 10000 # poller timeout
     verbose = False # Print activity to stdout
 
     # Return address, if any
     reply_to = None
 
 
-    def __init__(self, broker, service, verbose=False):
+    def __init__(self, broker, service, timeout, heartbeat, reconnect, verbose=False):
         self.broker = broker
         self.service = service
         self.verbose = verbose
         self.ctx = zmq.Context()
         self.poller = zmq.Poller()
+        self.heartbeat = heartbeat
+        self.reconnect = reconnect
+        self.timeout = timeout
         self.reconnect_to_broker()
 
     def destroy(self):

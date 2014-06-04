@@ -23,13 +23,13 @@
   (.destroy @broker))
 
 (defn start-process!
-  "Open a sub process, return the subprocess
+  "Open a sub process, return the subprocess.
 
   args - List of command line arguments
   :redirect - Redirect stderr to stdout
   :dir - Set initial directory
   :env - Set environment variables"
-  [args &{:keys [redirect dir env]}]
+  [args & {:keys [redirect dir env]}]
   (let [pb (ProcessBuilder. args)
         environment (.environment pb)]
     (doseq [[k v] env] (.put environment k v))
@@ -39,42 +39,71 @@
        (.redirectOutput java.lang.ProcessBuilder$Redirect/INHERIT)
        (.start))))
 
+(defn- rpc [name payload]
+  (let [request (doto (ZMsg.)
+                  (.add payload))
+        _ (.send @client-session name request)
+        reply (.recv @client-session)]
+    (when-not (nil? reply)
+      (let [result (String. (.getData (.pop reply)))]
+        (.destroy reply)
+        result))))
+
 (defprotocol RemoteProcedure
   (shutdown [self])
-  (call [self payload]))
+  (dispatch [self payload]))
+
 
 (deftype LocalService [type name process]
   RemoteProcedure
   (shutdown [self] (.destroy process))
-  (call [self payload]
-    (let [request (doto (ZMsg.)
-                    (.add payload))
-          _ (.send @client-session name request)
-          reply (.recv @client-session)]
-      (when-not (nil? reply)
-        (let [result (String. (.getData (.pop reply)))]
-          (.destroy reply)
-          result)))))
+  (dispatch [self payload] (rpc name payload)))
 
 (def start-local!
   (memoize
-   (fn [type server-file file]
+   (fn [type server-file file {:as options
+                              :keys [reconnect heartbeat timeout service-name]
+                              :or {service-name nil
+                                   timeout (env :default-timeout)
+                                   heartbeat (env :heartbeat-interval)
+                                   reconnect (env :reconnect-timeout)}}]
      (let [server (.getPath (io/resource server-file))
            topologies (.getPath (io/resource "topologies"))
-           args [(name type) server "-m" file "-s" (env :broker-socket) "-p" topologies "-n" file]
+           service-name (or service-name file)
+           args [(name type)
+                 server
+                 "-m" file
+                 "-s" (env :broker-socket)
+                 "-p" topologies
+                 "-n" service-name
+                 "--timeout" (str timeout)
+                 "--heartbeat" (str heartbeat)
+                 "--reconnect" (str reconnect)]
            process (start-process! args :env process-env :redirect true)]
        (LocalService. type file process)))))
 
-(defmulti obtain-service! (fn [type arg] type))
-(defmethod obtain-service! :python [type arg]
-  (start-local! type "multilang/python/server" arg))
-(defmethod obtain-service! :node [type arg]
-  (start-local! type "multilang/nodejs/server" arg))
+(defmulti local-service! (fn [type file options] type))
+(defmethod local-service! :python [type file options]
+  (start-local! type "multilang/python/server" file options))
+(defmethod local-service! :node [type file options]
+  (start-local! type "multilang/nodejs/server" file options))
 
 (defn call
-  "Initiates a Remote Procedure Call
-   will start the service if not running already"
-  [type file payload]
+  "Initiates a Remote Procedure Call.
+   Will open a local sub process unless :local? is false.
+   When calling remote (i.e. :local? false) only the name and payload need to be defined.
+
+  type - type of sub process to start
+  file - module file that defines the handler for the subprocess
+  payload - payload to process
+  :name - (optional) name of the service to call
+  :heartbeat - (optional) the heartbeat interval for the service
+  :reconnect - (optional) the reconnect rate for the service
+  :timeout - (optional) timeout for the service (per service)"
+
+  [type file payload & options]
   (assert (and (not (nil? @broker)) (not (nil? @client-session))))
-  (let [service (obtain-service! type file)]
-    (call service payload)))
+  (if (get options :local? true)
+    (let [service (local-service! type file options)]
+      (dispatch service payload))
+    (rpc name payload)))

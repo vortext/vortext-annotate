@@ -5,15 +5,14 @@ var MDP = require('./consts');
 
 var HEARTBEAT_LIVENESS = 3;
 
-function Worker (broker, service) {
+function Worker (broker, service, timeout, heartbeat, reconnect) {
   var self = this;
 
   self.broker = broker;
   self.service = service;
 
-  self.heartbeat = 2500;
-  self.reconnect = 2500;
-  self.expectReply = false;
+  self.heartbeat = heartbeat;
+  self.reconnect = reconnect;
 
   events.EventEmitter.call(this);
 }

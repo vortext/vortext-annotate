@@ -19,8 +19,8 @@ def destroy(signum, frame):
 signal.signal(signal.SIGINT, destroy)
 signal.signal(signal.SIGTERM, destroy)
 
-def run_server(socket_addr, name, handler):
-    worker = MajorDomoWorker(socket_addr, name, DEBUG_MODE)
+def run_server(socket_addr, name, timeout, heartbeat, reconnect, handler):
+    worker = MajorDomoWorker(socket_addr, name, timeout, heartbeat, reconnect, DEBUG_MODE)
     reply = None
     while True:
         request = worker.recv(reply)
@@ -34,6 +34,9 @@ def main():
         version="%s" % (VERSION))
     p.add_option('--module', '-m')
     p.add_option('--socket', '-s')
+    p.add_option('--reconnect', default=2500, type="int")
+    p.add_option('--timeout', default=2500, type="int")
+    p.add_option('--heartbeat', default=2500, type="int")
     p.add_option('--name', '-n', help="Service name")
     p.add_option('--path', '-p', default="../../topologies", help="Path where to look for modules")
     options, arguments = p.parse_args()
@@ -45,7 +48,7 @@ def main():
     handler = f()
 
     log.info("Hail to the king %s on %s" % (VERSION, options.socket))
-    run_server(options.socket, options.name, handler)
+    run_server(options.socket, options.name, options.timeout, options.heartbeat, options.reconnect, handler)
 
 if __name__ == '__main__':
     main()

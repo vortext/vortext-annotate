@@ -38,6 +38,6 @@
   {:source        (fnk [body] (.bytes body))
    :pdf           (fnk [source] (js "ebm/document_parser.js" source))
    :doc           (fnk [pdf] (py "ebm.document_tokenizer" pdf))
-   :risk-of-bias  (fnk [doc] (py "ebm.risk_of_bias" doc))
+   :risk-of-bias  (fnk [doc] (py "ebm.risk_of_bias" doc :timeout 10000))
    :sink          (fnk [risk-of-bias] (to-response risk-of-bias))
    })

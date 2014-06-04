@@ -9,6 +9,9 @@
   :plugins [[lein-environ "0.5.0"]]
   :env {:debug false
         :broker-socket "tcp://127.0.0.1:6667"
+        :default-timeout 2500,
+        :heartbeat-interval 2500,
+        :reconnect-timeout 2500,
         :port 8080}
   :profiles {:dev {:dependencies [[peridot "0.3.0"]]}}
   :dependencies [[org.clojure/clojure "1.6.0"]
