@@ -15,22 +15,32 @@
 (def py (partial call :python))
 (def js (partial call :node))
 
+(defn update-vals [map vals f]
+  (reduce #(update-in % [%2] f) map vals))
+
+(defn compensate-offset
+  [mappings pages]
+  (map (fn [m]
+         (let [page-offset (get (nth pages (get m "pageIndex")) "offset")
+               subtract (fn [el] (map #(- % page-offset) el))]
+           (update-vals m ["interval" "range"] subtract))) mappings))
+
 (defn collapse-annotations
-  "merges marginalia with the node mappings and nodes"
-  [marginalia nodes mapping]
+  "merges marginalia with the node mappings and nodes
+   compensates for page offest"
+  [marginalia nodes mapping pages]
   (map (fn [{:strs [annotations] :as m}]
          (let [new-annotations
                (map (fn [{{:strs [field index]} "mapping" :as a}]
                       (let [mapped (get-in mapping [field index])
-                            nodes (map #(nth nodes (get % "node")) mapped)]
-                        (assoc a "mapping" (map merge mapped nodes)))) annotations)]
+                            nodes (map #(nth nodes (get % "node")) mapped)
+                            new-mapping (map merge mapped nodes)]
+                        (assoc a "mapping" (compensate-offset new-mapping pages)))) annotations)]
            (assoc-in m ["annotations"] new-annotations))
          ) marginalia))
 
-(defn document-output [doc]
-  (let [{:strs [marginalia nodes mapping pages]} doc
-        marginalia (collapse-annotations marginalia nodes mapping)]
-    {:pages pages :marginalia marginalia}))
+(defn document-output [{:strs [marginalia nodes mapping pages]}]
+  {:marginalia (collapse-annotations marginalia nodes mapping pages)})
 
 (def to-response (comp json/encode document-output json/decode)) ; right-to-left
 

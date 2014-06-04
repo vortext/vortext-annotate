@@ -30,7 +30,6 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
     },
     setActiveAnnotations: function() {
       var self = this;
-      var pageOffsets = this.get("pageOffsets");
       var acc = {};
       this.get("results").each(function(result) {
         var props = {
@@ -44,19 +43,6 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
             node = _.extend(node, props);
             acc[node.pageIndex] = acc[node.pageIndex] || {};
             acc[node.pageIndex][node.node] = _.union(acc[node.pageIndex][node.node] || [], _.clone(node));
-          });
-        });
-      });
-      // substract pageOffset from each nodes' interval and range
-      _.each(acc, function(page) {
-        _.each(page, function(annotation) {
-          _.each(annotation, function(node)  {
-            var pageOffset = pageOffsets[node.pageIndex].offset;
-            var substract = function(vec, num) {
-              return _.map(_.clone(vec), function(x) { return  x - num; });
-            };
-            node.range = substract(node.range, pageOffset);
-            node.interval = substract(node.interval, pageOffset);
           });
         });
       });
