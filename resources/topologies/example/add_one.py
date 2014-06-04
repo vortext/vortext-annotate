@@ -9,5 +9,5 @@ class Filter(AbstractFilter):
         # Setup here
         print "Hello, I'm adding one"
 
-    def run(self, input):
+    def handler(self, input):
         return str(int(input) + 1)

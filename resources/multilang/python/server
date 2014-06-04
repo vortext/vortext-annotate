@@ -26,7 +26,7 @@ def run_server(socket_addr, name, handler):
         request = worker.recv(reply)
         if request is None:
             break # Worker was interrupted
-        reply = handler.run(request[0])
+        reply = handler.handler(request[0])
 
 def main():
     p = optparse.OptionParser(

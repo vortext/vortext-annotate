@@ -28,7 +28,7 @@ class DocumentFilter(AbstractFilter):
     __metaclass__ = ABCMeta
 
     @timethis
-    def run(self, payload):
+    def handler(self, payload):
         try:
             document = json.loads(payload)
             result = self.filter(document)
