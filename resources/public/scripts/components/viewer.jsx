@@ -120,7 +120,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       return {page: null};
     },
     componentDidUpdate: function(prevProps, prevState) {
-      if(!prevState.page || this.shouldRepaint(prevProps)) {
+      if(this.state.page && (!prevState.page || this.shouldRepaint(prevProps))) {
         this.drawPage(this.state.page);
       }
     },
@@ -134,8 +134,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       var page = this.state.page;
       var textLayer;
       if(page) {
-        var pageIndex = page.pageIndex;
-        var annotations = window.appState.get("activeAnnotations")[pageIndex] || {};
+        var annotations = window.appState.get("activeAnnotations")[page.pageIndex] || {};
 
         textLayer = <TextLayer dimensions={this.state.dimensions}
                                page={page}
