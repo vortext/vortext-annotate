@@ -9,7 +9,6 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
   var AppState = Backbone.Model.extend({
     defaults: {
       data: null,
-      pageOffsets: [],
       activeAnnotations: {},
       textNodes: [],
       pdf: {}
@@ -24,9 +23,6 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
       });
 
       this.set('results', results);
-      this.on("change:data", function(e,data) {
-        self.loadFromData(data);
-      });
     },
     setActiveAnnotations: function() {
       var self = this;
@@ -46,7 +42,7 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
           });
         });
       });
-      this.set("activeAnnotations", acc);
+      this.set("activeAnnotations", Object.freeze(acc));
     },
     populateResults: function(results) {
       var resultsCollection = this.get("results");
@@ -57,24 +53,30 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
       this.get("results").reset();
 
       PDFJS.getDocument(data).then(function(pdf) {
-        self.set({pdf: pdf, textNodes: [], pageOffsets: []});
+        self.set({pdf: pdf, textNodes: []});
       });
 
       var topologyURI = "topologies/ebm";
-      var request = new XMLHttpRequest();
-      request.open("POST", topologyURI, true);
-      request.setRequestHeader('Content-Type', 'application/pdf');
-      request.onload = function (e) {
-        if (request.status >= 200 && request.status < 400) {
-          var data = JSON.parse(request.responseText);
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", topologyURI, true);
+      xhr.setRequestHeader('Content-Type', 'application/pdf');
+      xhr.onload = function (e) {
+        if (xhr.status >= 200 && xhr.status < 400) {
+          var data = JSON.parse(xhr.responseText);
           self.set('pageOffsets', data.pages);
           self.populateResults(data.marginalia);
         } else {
           // handle error
         }
       };
+      xhr.addEventListener("progress", function(e) {
+        // normalize position attributes across XMLHttpRequest versions and browsers
+        var position = e.position || e.loaded;
+        var total = e.totalSize || e.total;
+        // report progress
+      });
 
-      request.send(data);
+      xhr.send(data);
 
     }
   });

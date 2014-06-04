@@ -29,10 +29,13 @@ define(['react', 'jQuery'], function(React, $) {
         var arrayBuffer = request.response; // Note: not request.responseText
         if (arrayBuffer) {
           var byteArray = new Uint8Array(arrayBuffer);
-          self.props.model.set({data:byteArray});
+          self.props.callback(byteArray);
         }
       };
       request.send(null);
+    },
+    triggerFileUpload: function() {
+      this.refs.file.getDOMNode().click();
     },
     loadFile: function() {
       var self = this;
@@ -41,7 +44,7 @@ define(['react', 'jQuery'], function(React, $) {
         var reader = new FileReader();
         reader.onload = function(e) {
           var data =  convertDataURIToBinary(reader.result);
-          self.props.model.set({data:data});
+          self.props.callback(data);
         };
         reader.readAsDataURL(file);
       } else {
@@ -51,11 +54,11 @@ define(['react', 'jQuery'], function(React, $) {
     },
     render: function() {
       return(
-         <form enctype="multipart/form-data" onSubmit={this.loadFile}>
-          <input name="file" type="file" ref="file" />
-           <input onClick={this.loadExample} type="button" className="button secondary tiny" value="Example" />
-           <input type="submit" className="button tiny" value="Upload" />
-         </form>);
+        <ul className="right">
+          <input accept={this.props.mimeType} style={{display:"none"}} name="file" type="file" ref="file" onChange={this.loadFile} />
+          <li><a onClick={this.loadExample}>Example</a></li>
+          <li className="active"><a onClick={this.triggerFileUpload}>Upload PDF</a></li>
+        </ul>);
     }
   });
 

@@ -69,7 +69,6 @@ html, body {
     border-left: 1px solid #ddd;
     background-color: white;
     padding: 0.5em;
-    top: 0;
     left: calc(65% - 15px);
     width: calc(35% + 15px);
     z-index: 100;
