@@ -64,7 +64,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       var textContent = this.state.content;
       var annotations = this.props.annotations;
       var textNodes = textContent.items.map(function (item,i) {
-        item._pageIndex = page.pageInfo.pageIndex;
+        item._pageIndex = page.pageIndex;
         item._index = i;
         return <TextNode key={i}
                          item={item}
@@ -134,7 +134,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       var page = this.state.page;
       var textLayer;
       if(page) {
-        var pageIndex = page.pageInfo.pageIndex;
+        var pageIndex = page.pageIndex;
         var annotations = window.appState.get("activeAnnotations")[pageIndex] || {};
 
         textLayer = <TextLayer dimensions={this.state.dimensions}
