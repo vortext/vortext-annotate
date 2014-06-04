@@ -138,7 +138,8 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       return {panelHeight: 0};
     },
     componentDidMount: function() {
-      this.setState({panelHeight: this.getDOMNode().clientHeight});;
+      var $el = $(this.getDOMNode());
+      this.setState({panelHeight: $el.height() - $el.offset().top });
     },
     render: function() {
       var appState = window.appState;
