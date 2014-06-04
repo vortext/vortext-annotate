@@ -55,7 +55,7 @@ define(['react', 'jQuery'], function(React, $) {
     render: function() {
       return(
         <ul className="right">
-          <input accept={this.props.mimeType} style={{display:"none"}} name="file" type="file" ref="file" onChange={this.loadFile} />
+          <input accept={this.props.accept} style={{display:"none"}} name="file" type="file" ref="file" onChange={this.loadFile} />
           <li><a onClick={this.loadExample}>Example</a></li>
           <li className="active"><a onClick={this.triggerFileUpload}>Upload PDF</a></li>
         </ul>);

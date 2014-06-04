@@ -40,7 +40,7 @@ define(function (require) {
 
   var FileLoader = require("jsx!components/fileLoader");
   React.renderComponent(
-    FileLoader({callback: appState.loadFromData.bind(appState), mimeType: /application\/(x-)?pdf|text\/pdf/}),
+    FileLoader({callback: appState.loadFromData.bind(appState), accept:".pdf", mimeType: /application\/(x-)?pdf|text\/pdf/}),
     document.getElementById("file-loader")
   );
 
