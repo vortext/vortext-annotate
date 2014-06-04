@@ -8,7 +8,6 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
 
   var AppState = Backbone.Model.extend({
     defaults: {
-      data: null,
       activeAnnotations: {},
       textNodes: [],
       pdf: {}
@@ -50,33 +49,35 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
     },
     loadFromData: function(data) {
       var self = this;
-      this.get("results").reset();
 
       PDFJS.getDocument(data).then(function(pdf) {
+        if(self.get("pdf").pdfInfo && self.get("pdf").pdfInfo.fingerprint === pdf.pdfInfo.fingerprint) return;
+
+        var topologyURI = "topologies/ebm";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", topologyURI, true);
+        xhr.setRequestHeader('Content-Type', 'application/pdf');
+        xhr.onload = function (e) {
+          if (xhr.status >= 200 && xhr.status < 400) {
+            var data = JSON.parse(xhr.responseText);
+            self.populateResults(data.marginalia);
+          } else {
+            // handle error
+          }
+        };
+        xhr.addEventListener("progress", function(e) {
+          // normalize position attributes across XMLHttpRequest versions and browsers
+          var position = e.position || e.loaded;
+          var total = e.totalSize || e.total;
+          // report progress
+        });
+
+        xhr.send(data);
+
+
         self.set({pdf: pdf, textNodes: []});
+        self.get("results").reset();
       });
-
-      var topologyURI = "topologies/ebm";
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", topologyURI, true);
-      xhr.setRequestHeader('Content-Type', 'application/pdf');
-      xhr.onload = function (e) {
-        if (xhr.status >= 200 && xhr.status < 400) {
-          var data = JSON.parse(xhr.responseText);
-          self.set('pageOffsets', data.pages);
-          self.populateResults(data.marginalia);
-        } else {
-          // handle error
-        }
-      };
-      xhr.addEventListener("progress", function(e) {
-        // normalize position attributes across XMLHttpRequest versions and browsers
-        var position = e.position || e.loaded;
-        var total = e.totalSize || e.total;
-        // report progress
-      });
-
-      xhr.send(data);
 
     }
   });
