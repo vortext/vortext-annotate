@@ -77,9 +77,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
         self.callTopology("topologies/ebm", data).then(function(data) {
           self.populateResults(data.marginalia);
         });
-
       });
-
     }
   });
   return AppState;

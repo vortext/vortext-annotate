@@ -31,12 +31,12 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       });
 
       var minimap = $(this.getDOMNode().parentNode);
-      var DOCUMENT_OFFSET = minimap.offset().top;
+      var document_offset = minimap.offset().top;
 
       minimap
         .on("mousemove", function(e) {
           if(self.state.mouseDown) {
-            var offset = (self.props.height + DOCUMENT_OFFSET / 2);
+            var offset = (self.props.height + document_offset / 2);
             self.setState({offset: e.pageY -  offset});
             scrollTo(e, offset);
           }
@@ -47,7 +47,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
           var y = e.pageY;
 
           // Jump to mousedown position
-          var offset = (self.props.height + DOCUMENT_OFFSET / 2);
+          var offset = (self.props.height + document_offset / 2);
           self.setState({offset: e.pageY - offset });
           scrollTo(e, offset);
           return false;
@@ -68,14 +68,15 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
     calculateHeight: _.memoize(
       function(style) {
         style.display = "none";
-        var $el = $("<div></div>").text("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").css(style);
+        var str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var $el = $("<div></div>").text(str).css(style);
         $(document.body).append($el);
         var height = $el.height();
         $el.remove();
         return height;
       }, function(style) { // hashFunction
         return style.fontFamily + style.fontSize;
-      }),
+    }),
     projectTextNodes: function(textNodes, factor) {
       // The basic idea here is using a sweepline to
       // project the 2D structure of the PDF onto a 1D minimap
@@ -152,12 +153,10 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       var numPages = pdf.numPages;
       var $target = $(this.props.target);
 
-      // We assume that each page has the same height (this is not true sometimes)
-      var totalHeight = 0;
-      for(var i = 0; i < numPages; i++) {
-        var $page = $target.find(".page:eq(" + i + ")");
-        totalHeight += $page.height();
-      }
+      // We assume that each page has the same height.
+      // This is not true sometimes, but often enough for academic papers.
+      var $page = $target.find(".page:eq(1)");
+      var totalHeight = $page.height() * numPages;
       var factor = totalHeight / this.state.panelHeight;
 
       var pageElements = _.map(_.range(0, numPages), function(page, pageIndex) {
