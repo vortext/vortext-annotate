@@ -34,7 +34,7 @@ html, body {
     position: absolute;
     right: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.06);
+    background-color: rgba(0,0,0,0.08);
 }
 
 .minimap:hover,
@@ -68,44 +68,24 @@ html, body {
     position: absolute;
     border-left: 1px solid #ddd;
     background-color: white;
-    padding: 0.5em;
     left: calc(70% - 15px);
     width: calc(30% + 15px);
-    z-index: 100;
     height: 100%;
     overflow: auto;
 }
 
-.page {
-    direction: ltr;
-    background-color: white;
-    background-clip: content-box;
-    position: relative;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 1em;
+#results {
+    margin-bottom: 5em;
 }
 
 .block {
-    margin: 1em 1em 2em 1em;
-}
-
-span.head {
-    font-weight: bold;
-    margin-bottom: 2em;
+    margin: 1em;
 }
 
 .block h4 {
     margin: 0;
     padding: 0;
     cursor: pointer;
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
-    -o-user-select: none;
-    user-select: none;
-}
-
-canvas {
     -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+ */
@@ -142,9 +122,9 @@ canvas {
 
 .block h4 a:hover {
     background-color: inherit;
-   -moz-box-shadow:    inset 0 0 10px rgba(0,0,0,0.05);
-   -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-   box-shadow:         inset 0 0 10px rgba(0,0,0,0.05);
+   -moz-box-shadow:    inset 0 0 10px rgba(0,0,0,0.1);
+   -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+   box-shadow:         inset 0 0 10px rgba(0,0,0,0.1);
 }
 
 .block .content {
@@ -153,9 +133,23 @@ canvas {
     border-top: none;
 }
 
-.block ul {
-    margin-top: 1em;
+canvas {
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    -o-user-select: none;
+    user-select: none;
 }
+
+.page {
+    direction: ltr;
+    background-color: white;
+    background-clip: content-box;
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1em;
+}
+
 
 .textLayer {
     position: absolute;
