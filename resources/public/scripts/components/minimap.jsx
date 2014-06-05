@@ -65,16 +65,17 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
     shouldComponentUpdate: function(nextProps) {
       return _.isEqual(nextProps.textNodes, this.props.textNodes);
     },
-    calculateHeight: _.memoize(function(style) {
-      style.display = "none";
-      var $el = $("<div></div>").text("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").css(style);
-      $(document.body).append($el);
-      var height = $el.height();
-      $el.remove();
-      return height;
-    }, function(style) { // hashFunction
-      return style.fontFamily + style.fontSize;
-    }),
+    calculateHeight: _.memoize(
+      function(style) {
+        style.display = "none";
+        var $el = $("<div></div>").text("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").css(style);
+        $(document.body).append($el);
+        var height = $el.height();
+        $el.remove();
+        return height;
+      }, function(style) { // hashFunction
+        return style.fontFamily + style.fontSize;
+      }),
     projectTextNodes: function(textNodes, factor) {
       // The basic idea here is using a sweepline to
       // project the 2D structure of the PDF onto a 1D minimap
@@ -143,26 +144,28 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
     },
     render: function() {
       var appState = window.appState;
-      if(!appState.get("pdf").pdfInfo) return <div className="minimap no-pdf" />;
+      var pdf = appState.get("pdf");
+      if(!pdf.pdfInfo) return <div className="minimap no-pdf" />;
 
-      var nodesPerPage = appState.get("textNodes");
+      var textNodes = appState.get("textNodes");
 
-      var pages = [];
-      var $viewer = $(".viewer");
-      for(var i = 0; i < nodesPerPage.length; i++) {
-        var $page = $viewer.find(".page:eq(" + i + ")");
-        pages.push({height: $page.height()});
+      var numPages = pdf.numPages;
+      var $target = $(this.props.target);
+
+      // We assume that each page has the same height (this is not true sometimes)
+      var totalHeight = 0;
+      for(var i = 0; i < numPages; i++) {
+        var $page = $target.find(".page:eq(" + i + ")");
+        totalHeight += $page.height();
       }
-      var totalHeight = _.reduce(pages, function(mem, el) { return el.height + mem; }, 0);
       var factor = totalHeight / this.state.panelHeight;
 
-      var textNodes = window.appState.get("textNodes");
-      var pageElements = pages.map(function(page, idx) {
-        var annotations = window.appState.get("activeAnnotations")[idx] || {};
-        return <PageSegment textNodes={textNodes[idx]}
-                            key={idx}
+      var pageElements = _.map(_.range(0, numPages), function(page, pageIndex) {
+        var annotations = window.appState.get("activeAnnotations")[pageIndex] || {};
+        return <PageSegment textNodes={textNodes[pageIndex]}
+                            key={pageIndex}
                             factor={factor}
-                            style={{ height: page.height / factor}} />;
+        style={{ height: (totalHeight / numPages) / factor}} />;
       });
 
       return(<div className="minimap">

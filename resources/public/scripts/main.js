@@ -65,7 +65,6 @@ define(function (require) {
     results.forceUpdate();
   });
 
-
   var Minimap = require("jsx!components/minimap");
 
   var target = "#viewer .viewer";

@@ -36,15 +36,14 @@ define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
 
   var Results = Backbone.Collection.extend({
     model: Result,
-    parse: function(raw) {
-      var data = _.clone(raw);
+    parse: function(data) {
       _.each(data, function(result, idx) {
         var id = result.id || toClassName(result.title);
         result.active = idx == 0 ? true : false;
         result.id = id;
         result.color = colors[idx % colors.length];
       });
-      return data;
+      return Object.freeze(data);
     }
   });
 

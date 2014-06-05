@@ -1,5 +1,5 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbone, PDFJS, Results) {
+define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q, Backbone, PDFJS, Results) {
   'use strict';
   PDFJS.workerSrc = 'static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = 'static/scripts/vendor/pdfjs/generic/web/cmaps/';
@@ -37,7 +37,7 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
           _.each(annotation.mapping, function(node) {
             node = _.extend(node, props);
             acc[node.pageIndex] = acc[node.pageIndex] || {};
-            acc[node.pageIndex][node.node] = _.union(acc[node.pageIndex][node.node] || [], _.clone(node));
+            acc[node.pageIndex][node.node] = Object.freeze(_.union(acc[node.pageIndex][node.node] || [], node));
           });
         });
       });
@@ -47,36 +47,36 @@ define(['underscore', 'backbone', 'PDFJS', 'models/results'], function(_, Backbo
       var resultsCollection = this.get("results");
       resultsCollection.reset(Results.prototype.parse(results));
     },
+    callTopology: function(uri, data) {
+      var deferred = Q.defer();
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", uri, true);
+      xhr.setRequestHeader('Content-Type', 'application/pdf');
+      xhr.onload = function (e) {
+        if (xhr.status >= 200 && xhr.status < 400) {
+          var data = JSON.parse(xhr.responseText);
+          deferred.resolve(data);
+        } else {
+          deferred.reject(data);
+        }
+      };
+
+      xhr.send(data);
+      return deferred.promise;
+    },
     loadFromData: function(data) {
       var self = this;
 
       PDFJS.getDocument(data).then(function(pdf) {
         if(self.get("pdf").pdfInfo && self.get("pdf").pdfInfo.fingerprint === pdf.pdfInfo.fingerprint) return;
 
-        var topologyURI = "topologies/ebm";
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", topologyURI, true);
-        xhr.setRequestHeader('Content-Type', 'application/pdf');
-        xhr.onload = function (e) {
-          if (xhr.status >= 200 && xhr.status < 400) {
-            var data = JSON.parse(xhr.responseText);
-            self.populateResults(data.marginalia);
-          } else {
-            // handle error
-          }
-        };
-        xhr.addEventListener("progress", function(e) {
-          // normalize position attributes across XMLHttpRequest versions and browsers
-          var position = e.position || e.loaded;
-          var total = e.totalSize || e.total;
-          // report progress
-        });
-
-        xhr.send(data);
-
-
         self.set({pdf: pdf, textNodes: []});
         self.get("results").reset();
+
+        self.callTopology("topologies/ebm", data).then(function(data) {
+          self.populateResults(data.marginalia);
+        });
+
       });
 
     }

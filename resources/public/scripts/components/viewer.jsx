@@ -14,7 +14,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     render: function() {
       var p = this.props;
       var o = p.textLayerBuilder.createAnnotatedElement(p.item, p.styles, p.annotations);
-      if(!o || o.isWhitespace) { return <noscript />; }
+      if(!o || o.isWhitespace) { return <div />; }
       this.flushToState(p.item, o);
 
       var content;
@@ -38,7 +38,6 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     }
   });
 
-
   var TextLayer = React.createClass({
     getInitialState: function() {
       return { content: {items: [], styles: {}}};
@@ -51,12 +50,17 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     },
     shouldComponentUpdate: function(nextProps, nextState) {
       var hasPage = nextProps.page ? true : false;
+      var hadContent = this.state.content.items.length > 0;
       var hasContent = nextState.content.items.length > 0;
       var hasNewAnnotations = !_.isEqual(this.props.annotations, nextProps.annotations);
-      return (hasPage && hasContent && hasNewAnnotations) || (hasPage && this.state.content.items.length === 0);
+      return (hasPage && !hadContent) || (hasPage && hasContent && hasNewAnnotations);
     },
     componentDidUpdate: function() {
-      window.appState.trigger("update:textNodes");
+      var pageIndex = this.props.page.pageIndex;
+      var textNodes = window.appState.get("textNodes")[pageIndex];
+      if(textNodes && textNodes.length > 0) {
+        window.appState.trigger("update:textNodes");
+      }
     },
     render: function() {
       var page = this.props.page;
@@ -78,6 +82,9 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
 
 
   var Page = React.createClass({
+    getInitialState: function() {
+      return {page: null};
+    },
     drawPage: function(page) {
       var container = this.getDOMNode();
       var canvas = this.refs.canvas.getDOMNode();
@@ -116,9 +123,6 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     shouldRepaint: function(other) {
       return other.key !== this.props.key;
     },
-    getInitialState: function() {
-      return {page: null};
-    },
     componentDidUpdate: function(prevProps, prevState) {
       if(this.state.page && (!prevState.page || this.shouldRepaint(prevProps))) {
         this.drawPage(this.state.page);
@@ -141,7 +145,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
                                key={"text_" + this.props.key}
                                annotations={annotations} />;
       } else {
-        textLayer = <noscript />;
+        textLayer = <div key={"text_" + this.props.key} />;
       };
         return (
             <div className="page">
