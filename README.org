@@ -39,7 +39,7 @@ The user can interactively activate and inspect specific results.
    git submodule update
    cd resources/pdfjs
    # Compile the PDF.js files
-   node make web # you can ignore the error
+   node make dist
    # For PDF.js on NodeJS
    node make singlefile
    #+END_SRC
