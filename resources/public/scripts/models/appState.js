@@ -10,7 +10,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
     defaults: {
       activeAnnotations: {},
       textNodes: [],
-      pdf: {}
+      pdf: null
     },
     initialize: function() {
       var self = this;
@@ -68,7 +68,8 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
       var self = this;
 
       PDFJS.getDocument(data).then(function(pdf) {
-        if(self.get("pdf").pdfInfo && self.get("pdf").pdfInfo.fingerprint === pdf.pdfInfo.fingerprint) return;
+        var currentPdf = self.get("pdf");
+        if(currentPdf && currentPdf.pdfInfo.fingerprint === pdf.pdfInfo.fingerprint) return;
 
         self.set({pdf: pdf, textNodes: []});
         self.get("results").reset();

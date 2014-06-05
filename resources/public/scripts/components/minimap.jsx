@@ -145,7 +145,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
     render: function() {
       var appState = window.appState;
       var pdf = appState.get("pdf");
-      if(!pdf.pdfInfo) return <div className="minimap no-pdf" />;
+      if(!(pdf && pdf.pdfInfo)) return <div className="minimap no-pdf" />;
 
       var textNodes = appState.get("textNodes");
 
