@@ -32,11 +32,11 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
 
       var minimap = $(this.getDOMNode().parentNode);
       var document_offset = minimap.offset().top;
+      var offset = ((self.props.height/ 2) + document_offset);
 
       minimap
         .on("mousemove", function(e) {
           if(self.state.mouseDown) {
-            var offset = (self.props.height + document_offset / 2);
             self.setState({offset: e.pageY -  offset});
             scrollTo(e, offset);
           }
@@ -45,9 +45,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
         .on("mousedown", function(e) {
           self.setState({mouseDown: true});
           var y = e.pageY;
-
           // Jump to mousedown position
-          var offset = (self.props.height + document_offset / 2);
           self.setState({offset: e.pageY - offset });
           scrollTo(e, offset);
           return false;
