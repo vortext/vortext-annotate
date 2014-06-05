@@ -17,8 +17,8 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
 
       var results = new Results();
       results.on("all", function(e, obj) {
-        self.setActiveAnnotations();
         self.trigger("change:results");
+        self.setActiveAnnotations();
       });
 
       this.set('results', results);

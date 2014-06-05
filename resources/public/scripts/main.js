@@ -40,7 +40,9 @@ define(function (require) {
 
   var FileLoader = require("jsx!components/fileLoader");
   React.renderComponent(
-    FileLoader({callback: appState.loadFromData.bind(appState), accept:".pdf", mimeType: /application\/(x-)?pdf|text\/pdf/}),
+    FileLoader({callback: appState.loadFromData.bind(appState),
+                accept:".pdf",
+                mimeType: /application\/(x-)?pdf|text\/pdf/}),
     document.getElementById("file-loader")
   );
 
@@ -54,6 +56,9 @@ define(function (require) {
      if(viewer.isMounted) viewer.forceUpdate();
   });
 
+  appState.on("change:activeAnnotations", function(e, obj) {
+     if(viewer.isMounted) viewer.forceUpdate();
+  });
 
   var Results = require("jsx!components/results");
   var results = React.renderComponent(
@@ -61,7 +66,6 @@ define(function (require) {
     document.getElementById("results")
   );
   appState.on("change:results", function(e,obj) {
-    viewer.forceUpdate();
     results.forceUpdate();
   });
 
