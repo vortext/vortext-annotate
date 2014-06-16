@@ -1,5 +1,5 @@
 #+BEGIN_HTML
-<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/documentation/images/logo.jpg" alt="logo" align="right" height="175" />
+<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/doc/images/logo.jpg" alt="logo" align="right" height="175" />
 #+END_HTML
 
 #+BEGIN_QUOTE
@@ -7,65 +7,74 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
 #+END_QUOTE
 
 * Introduction
-Unstructured PDF documents remain the main vehicle for dissemination of scientific findings.
-Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
-Evidence-based medicine provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
-Machine learning provides a potential means of mitigating this burden by automating extraction.
-But, for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
-To this end, we present an web-based tool called Spá that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
-More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
+  Unstructured PDF documents remain the main vehicle for dissemination of scientific findings.
+  Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
+  Evidence-based medicine provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
+  Machine learning provides a potential means of mitigating this burden by automating extraction.
+  But, for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
+  To this end, we present an web-based tool called Spá that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
+  More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
 
 * Example
-You can try the visualizer at [[http://spa.clinici.co]] and use one of the Randomized Clinical Trials from the [[https://github.com/joelkuiper/spa/tree/master/examples][examples]] folder.
+  You can try the visualizer at [[http://spa.clinici.co]] and use one of the Randomized Clinical Trials from the [[https://github.com/joelkuiper/spa/tree/master/examples][examples]] folder.
 
 * Technical overview
-Spá relies on [[http://mozilla.github.io/pdf.js][Mozilla PDF.js]] for visualization of the document and text extraction.
-The results of the text extraction are processed server-side.
-Results are communicated back to the browser and displayed using [[http://facebook.github.io/react][React]].
+** Server side
+   The server-side is written on the principles of [[https://en.wikipedia.org/wiki/Polyglot_%28computing%29][polyglot programming]] by using graphs as an abstraction of computing.
+   In essence, it's a poor-mans [[https://storm.incubator.apache.org/][Apache Storm]].
 
-For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by [[http://substance.io/beta/][substance.io]], that acts as a mini-map is projected to show where it resides within the document.
-The user can interactively activate and inspect specific results.
+** Client side
+   Spá relies on [[http://mozilla.github.io/pdf.js][Mozilla PDF.js]] for visualization of the document and text extraction.
+   The results of the text extraction are processed server-side.
+   Results are communicated back to the browser and displayed using [[http://facebook.github.io/react][React]].
+
+   For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by [[http://substance.io/beta/][substance.io]], that acts as a mini-map is projected to show where it resides within the document.
+   The user can interactively activate and inspect specific results.
 
 * Development prerequisites
 ** Mac OS X
    The server-side is written in [[http://clojure.org/][Clojure]]. To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
-   Make sure to have a recent version of the JVM as well.
+   Make sure to have a recent version of the Java Virtual Machine (JVM) as well.
    We include PDF.js as a git submodule.
 
    #+BEGIN_SRC
-   git clone <this repo>
-   cd <your folder>
-   git submodule init
-   git submodule update
-   cd resources/pdfjs
-   # Compile the PDF.js files
-   node make web # you can ignore the error
-   # For PDF.js on NodeJS
-   node make singlefile
+ git clone <this repo>
+ cd <your folder>
+ git submodule init
+ git submodule update
+ cd resources/pdfjs
+
+ brew update # make sure you have recent versions
+ brew install node # install nodejs via Homebrew
+ # Compile the PDF.js files
+ node make dist
+ # For PDF.js on NodeJS (server side)
+ node make singlefile
    #+END_SRC
 
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
  lein deps # retrieve project dependencies
- lein trampoline run # will run the server
+ lein run # will run the server
+ DEBUG=true lein run # will run in debug mode
    #+END_SRC
    For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
    #+BEGIN_SRC
  brew install zeromq
- sudo easy_install pyzmq # python bindings for zeromq, pip fails on Mavericks
+ sudo easy_install pyzmq # python bindings for zeromq, pip fails on Mac OS X Mavericks
  # (alternatively use pip install pyzmq-static)
- npm install underscore q zmq atob commander q # Node.js requirements
+ npm install underscore q zmq atob commander # Node.js requirements
    #+END_SRC
 
-   The requirements for the Evidence-based medicine processing topology are specified within that directory.
+   The requirements for the evidence-based medicine processing topology are specified within that directory.
 * Future work
-See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
+  See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
 * Contributing
-Currently this is a research object.
-The API and organizational structure are subject to change.
-Comments and suggestions are much appreciated.
-For code contributions: fork, branch, and send a pull request.
+  Currently this is a research object.
+  The API and organizational structure are subject to change.
+  Comments and suggestions are much appreciated.
+  For code contributions: fork, branch, and send a pull request.
 
-* LICENSE
-Spa is open source, and licensed under [[http://gplv3.fsf.org/][GPLv3]]. See [[https://github.com/joelkuiper/spa/blob/master/LICENSE.md][LICENSE.md]] for more information.
+* License
+  Spa is open source, and licensed under [[http://gplv3.fsf.org/][GPLv3]]. See [[https://github.com/joelkuiper/spa/blob/master/LICENSE.md][LICENSE.md]] for more information.

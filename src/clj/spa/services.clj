@@ -39,7 +39,7 @@
        (.redirectOutput java.lang.ProcessBuilder$Redirect/INHERIT)
        (.start))))
 
-(defn- rpc [name payload]
+(defn rpc [name payload]
   (let [request (doto (ZMsg.)
                   (.add payload))
         _ (.send @client-session name request)
@@ -52,7 +52,6 @@
 (defprotocol RemoteProcedure
   (shutdown [self])
   (dispatch [self payload]))
-
 
 (deftype LocalService [type name process]
   RemoteProcedure
@@ -91,7 +90,7 @@
 (defn call
   "Initiates a Remote Procedure Call.
    Will open a local sub process unless :local? is false.
-   When calling remote (i.e. :local? false) only the name and payload need to be defined.
+   When calling remote (i.e. :local? false) the :name and payload need to be defined.
 
   type - type of sub process to start
   file - module file that defines the handler for the subprocess
@@ -106,4 +105,4 @@
   (if (get options :local? true)
     (let [service (local-service! type file options)]
       (dispatch service payload))
-    (rpc name payload)))
+    (rpc (:name options) payload)))
