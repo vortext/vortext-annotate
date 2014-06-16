@@ -21,7 +21,7 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
 * Technical overview
 ** Server side
    The server-side is written on the principles of [[https://en.wikipedia.org/wiki/Polyglot_%28computing%29][polyglot programming]] by using graphs as an abstraction of computing.
-   In essence, it's a poor-mans Apache Storm.
+   In essence, it's a poor-mans [[https://storm.incubator.apache.org/][Apache Storm]].
 
 ** Client side
    Spá relies on [[http://mozilla.github.io/pdf.js][Mozilla PDF.js]] for visualization of the document and text extraction.
