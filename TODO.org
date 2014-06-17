@@ -1,0 +1,26 @@
+* Client side
+** "Flux" architecture refactor
+** Loading states
+** Rename results to marginalia
+** Show extracted annotations separately
+** Embed UUID and highlight when hover
+* Annotations
+** Allow select-drag adding of annotations
+** W3C RDFa / Providence / Annotations
+** Write named destinations + stand-off markup
+** Scroll into view for annotations
+** Database (hash + lsh?) -> Postgres/Riak?
+* Project view
+** Users / projects?
+** Show results for multiple pdfs
+* Server side
+** Progress updates / async topologies
+*** Channels for topolgies
+*** Implement MDP/2 (partial results)
+*** Websockets to subscribe to updates?
+** R RPC Worker
+** Multi-process worker servers
+** Better exception handling
+** Documentation
+** Dockerfiles + Deploy
+** Cancel task handler
