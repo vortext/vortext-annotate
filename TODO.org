@@ -19,7 +19,7 @@
 *** Implement MDP/2 (partial results)
 *** Websockets to subscribe to updates?
 ** R RPC Worker
-** Multi-process worker servers
+** Multi-process workers
 ** Better exception handling
 ** Documentation
 ** Dockerfiles + Deploy
