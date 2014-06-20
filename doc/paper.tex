@@ -1,31 +1,22 @@
-% Created 2014-04-14 Mon 18:10
-\documentclass[runningheads,a4paper]{llncs}
+\documentclass{llncs}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[protrusion=true,expansion=true]{microtype}
-\usepackage{fixltx2e}
+\usepackage{makeidx}  % allows for indexgeneration
 \usepackage{graphicx}
 \usepackage[english]{babel}
 \usepackage{float}
 \usepackage{wrapfig}
-\usepackage{amsmath}
 \usepackage{textcomp}
-\usepackage{marvosym}
-\usepackage{wasysym}
-\usepackage{amssymb}
 \usepackage{hyperref}
 \usepackage[multiple]{footmisc}
 \usepackage{acronym}
 \tolerance=1000
-\usepackage[usenames,dvipsnames]{xcolor}
-\usepackage{listings}
 
 \urldef{\mailsa}\path|{joel.kuiper, m.a.swertz}@rug.nl|
 \urldef{\mailsb}\path|iain.marshall@kcl.ac.uk|
 \urldef{\mailsc}\path|byron.wallace@utexas.edu|
 
 \acrodef{ebm}[EBM]{Evidence-based Medicine}
-% I don't think thi sneeds to be capitalized -- bcw
 \acrodef{ml}[ML]{machine learning}
 \acrodef{pdf}[PDF]{Portable Document Format}
 \acrodef{cdsr}[CDSR]{Cochrane Database of Systematic Reviews}
@@ -38,32 +29,18 @@
 
 \begin{document}
 \setcounter{tocdepth}{3}
-\newcommand{\highlight}[1]{\colorbox{yellow}{#1}}
 
-\input{revision}
+%\input{revision}
 \author{Kuiper, J\inst{1}. \and Marshall, I.J.\inst{2} \and Wallace, B.C.\inst{3} \and Swertz, M.A.\inst{1}}
-\date{\texttt{revision: \revision, date: \revisiondate}}
+%\date{\texttt{revision: \revision, date: \revisiondate}}
 \title{Spá: a web-based viewer for text mining in Evidence Based Medicine}
-
-
-%%% BCW --
 
 \maketitle
 \begin{abstract}
-% Unstructured \ac{pdf} documents remain the main vehicle for dissemination of scientific findings.
-% Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
-% \acl{ebm} provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
-% This represents an enormous burden, especially in light of the expotentially increasing volume of published biomedical articles.
-% Machine learning provides a potential means of mitigating this burden by automating extraction.
-% But for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
-% To this end, we present a web-based tool called Spá\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{kuiper2014}; demo available at \url{http://clinici.co/}} that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
-% More generally, Spá provides a framework for visualizing predicted full-text \ac{pdf} annotations, both at the document and sentence level.
-
 Summarizing the evidence about medical interventions is an immense undertaking, in part because unstructured \ac{pdf} documents remain the main vehicle for disseminating scientific findings.
 Clinicians and researchers must therefore manually extract and synthesise information from these \acp{pdf}.
 We introduce Spá,\footnote{From the Old Norse word spá or spæ referring to prophesying (prophecy)}\footnote{Source code available under GPLv3 at \url{https://github.com/joelkuiper/spa} \cite{Kuiper2014}; demo available at \url{http://spa.clinici.co/}} a web-based viewer that enables automated annotation and summarisation of \acp{pdf} via \acl{ml}.
 To illustrate its functionality, we use Spá to semi-automate the assessment of bias in clinical trials.
-%Spá can visualize the output from hybrid models that simultaneously classify documents (e.g., identifying trials as low or high risk of various biases), and annotate sentences that support these classifications.
 Spá has a modular architecture, therefore the tool may be widely useful in other domains with a \ac{pdf}-based literature, including law, physics, and biology.
 
 \end{abstract}
@@ -108,30 +85,9 @@ While our application of interest is \ac{ebm}, we emphasize that the visualizati
 Thus the contribution of this work is two-fold, as we present:
 (1) a practical tool that incorporates machine learning to help researchers rapidly assess the risk of biases in published biomedical articles, and,
 (2) a general open-source system for visualizing the predictions of trained models from full-text articles on the web.
-%These contributions are described further in sections \ref{section:EBM-ML} and \ref{section:architecture}.
 
 \section{Case study: Risk of Bias in \acl{ebm}}
 \label{section:EBM-ML}
-
-% \subsection{Systematic Reviews}
-% %%% sort of redundant with above; may want to re-factor
-% The process of pooling and summarizing clinical trials is called \emph{systematic reviewing}, and forms the corner-stone of current \ac{ebm}.
-% Systematic reviewing consists of specifying a precise clinical question and accompanying study inclusion criteria, and then exhaustively searching the literature to identify eligible studies.
-% Identified eligible studies are subsequently analyzed (i.e., synthesized), resulting in a summary of all of the published evidence that pertains to the clinical question of interest.
-% Systematic reviews thus represent a rigorous, data-driven approach to answering clinical questions.
-% But conducting systematic reviews is complicated by the massive number of trials that are conducted: for example, the Cochrane Library alone indexes 286,418 trials that were conducted in the last decade \cite{valkenhoef2012}.
-% % While methods and publishing standards are improving, many legacy publications will remain available only as \ac{pdf} documents.
-
-% Extracting information of interest from these \acp{pdf} is imperative but laborious.
-% To mitigate this burden, we have constructed machine learning models that automatically extract some characteristics of interest.
-% Specifically, our model predicts {\it risk of biases} across different domains as a function of the texts comprising articles.
-% It simultaneously extracts sentences supporting these predictions.
-% We briefly outline our approach to achieving this below.
-% We also note that we have a a separate model that extracts the study sample size from articles.
-% Spá -- our visualization tool -- provides a framework to upload \acp{pdf} and then render these predicted annotations.
-% We foresee adding additional predictors to this tool that, for example, may identify different treatment mentions within the text (e.g., drugs).
-
-% % made a web-based tool that allows the visualization of annotations within a \ac{pdf} documents, and meta-information alongside it.
 
 \subsection{Machine Learning Approaches}
 To automatically assess the study risk of bias, we have leveraged the \ac{cdsr} in lieu of manually annotated data, which would be expensive to collect.
@@ -141,39 +97,26 @@ The \ac{cdsr} also contains quotations that reviewers indicated as supporting th
 We match these strings to substrings in the \acp{pdf} to provide sentence-level supervision.
 This can be viewed as a \emph{distantly supervised} \cite{Mintz09,Nguyen11} approach.
 
-%%%
-% note that this is a little misleading right now -- we don't technically have this multi-task joint extraction thing going yet!!!
-%%%
 From a \ac{ml} vantage, we have two tasks for a given article: (1) predict the overall risk of bias for each of the domains, and (2) extract the sentences that support these assessments.
 For both tasks we leverage standard bag-of-words text encoding and linear-kernel \aclp{svm}.
 Because the risk of bias predictions are correlated across domains, we take a \emph{multi-task} \cite{Evgeniou2004} approach to classification and jointly learn a model for the domains.
 We accomplish this by way of a feature space construction that includes both shared and domain-specific terms, similar to the domain adaptation approach in \cite{Daume2007}.
-%Furthermore, we take a unified approach to the two tasks by \emph{jointly} assessing the risk of bias associated with a given article \emph{and} extracting the sentences that support this judgment.
 Specifically, we first make sentence level prediction, and then insert features representing the tokens in the predicted sentences for exploitation by the document level classifier.
 Figure \ref{fig:screenshot} shows the system in use.
-%More specifically, the database we leverage contains structured and semi-structured data for each systematic review. Internally, the Cochrane Collaboration stores working versions of their reviews as XML. Each review contains a wealth of (structured) data about the clinical trials that met the review inclusion criteria. There are usually multiple clinical trials described in a single review. Cochrane reviews use basic clinical trial identifiers which are unique per review (based on the first author surname and year of publication) throughout these files. It is therefore possible to extract structured data, and filtered snippets of full text data which describe a single clinical trial. Using these identifiers, we were able to obtain full structured citation data for the primary reference of all included studies across the \ac{cdsr}.
-
-
-% \begin{itemize}
-% \item Basically show that we're using state of the art
-% \item Briefly talk about cochrane DB / distant supervision
-% \item KDD stuff (briefly)
-% \item Multi-task stuff!
-% \end{itemize}
 
 \section{Spá Architecture Overview}
 
-\label{section:architecture}
-\begin{wrapfigure}{}{0.5\textwidth}
-  \vspace{-2em}
-  \includegraphics[width=0.48\textwidth]{./diagrams/sequence.pdf}
-  \vspace{-1em}
-  \caption{\label{fig:sequence}Sequence diagram of a typical request-response in Spá.}
-  \vspace{-1.5em}
-\end{wrapfigure}
+%label{section:architecture}
+%begin{wrapfigure}{}{0.5\textwidth}
+% \vspace{-2em}
+% \includegraphics[width=0.6\textwidth]{./diagrams/sequence.pdf}
+% \vspace{-1em}
+% \caption{\label{fig:sequence}Sequence diagram of a typical request-response in Spá.}
+% \vspace{-1.0em}
+%end{wrapfigure}
 
 Spá relies on Mozilla pdf.js\footnote{\url{http://mozilla.github.io/pdf.js}} for visualization of the document and text extraction.
-The results of the text extraction are processed server-side by a variety of processing topologies, as outlined in figure \ref{fig:sequence}.
+The results of the text extraction are processed server-side by a variety of processing topologies.
 Results are communicated back to the browser and displayed using React components.\footnote{\url{http://facebook.github.io/react}}
 
 For each of the annotations the relevant nodes in the document are highlighted.
@@ -190,8 +133,7 @@ Furthermore, we are working to allow users to persist annotations and marginalia
 The vision is to have an extensible system for machine assisted data extraction that will greatly increase both the quality and the reproducibility (i.e. data provenance) of current \acl{ebm}.
 
 \subsubsection{Acknowledgments}
-Part of this research was funded by the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 261433. % %TODO add seed funds ack (BCW) -- I can do this post-acceptance though
-
+Part of this research was funded by the European Union Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 261433.
 
 \bibliographystyle{splncs}
 \bibliography{references}
