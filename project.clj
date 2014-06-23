@@ -16,17 +16,17 @@
   :profiles {:dev {:dependencies [[peridot "0.3.0"]]}}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.cli "0.3.1"]
-                 [org.clojure/tools.logging "0.2.6"]
+                 [org.clojure/tools.logging "0.3.0"]
                  [ch.qos.logback/logback-classic "1.1.2"]
 
                  [environ "0.5.0"]
 
                  [http-kit "2.1.18"]
                  [compojure "1.1.5"]
-                 [ring/ring-devel "1.2.2"]
+                 [ring/ring-devel "1.3.0"]
                  [cheshire "5.3.1"]
 
                  [org.zeromq/jeromq "0.3.4"]
                  [org.zeromq/cljzmq "0.1.4" :exclusions [org.zeromq/jzmq]]
 
-                 [prismatic/plumbing "0.3.1"]])
+                 [prismatic/plumbing "0.3.2"]])
