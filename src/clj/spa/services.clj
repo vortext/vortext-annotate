@@ -60,17 +60,17 @@
 
 (def start-local!
   (memoize
-   (fn [type server-file file {:as options
+   (fn [type worker-file file {:as options
                               :keys [reconnect heartbeat timeout service-name]
                               :or {service-name nil
                                    timeout (env :default-timeout)
                                    heartbeat (env :heartbeat-interval)
                                    reconnect (env :reconnect-timeout)}}]
-     (let [server (.getPath (io/resource server-file))
+     (let [worker (.getPath (io/resource worker-file))
            topologies (.getPath (io/resource "topologies"))
            service-name (or service-name file)
            args [(name type)
-                 server
+                 worker
                  "-m" file
                  "-s" (env :broker-socket)
                  "-p" topologies
@@ -83,9 +83,9 @@
 
 (defmulti local-service! (fn [type file options] type))
 (defmethod local-service! :python [type file options]
-  (start-local! type "multilang/python/server" file options))
+  (start-local! type "multilang/python/worker" file options))
 (defmethod local-service! :node [type file options]
-  (start-local! type "multilang/nodejs/server" file options))
+  (start-local! type "multilang/nodejs/worker" file options))
 
 (defn call
   "Initiates a Remote Procedure Call.
