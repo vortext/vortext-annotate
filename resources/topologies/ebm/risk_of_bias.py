@@ -16,9 +16,12 @@ class Handler(DocumentHandler):
     title = "Risk of Bias"
 
     def __init__(self):
-        log.info("%s: loading models" % (self.title))
-        # FIXME This must be an absolute path relative to project root
-        models_file = os.path.abspath("resources/topologies/ebm/models/quality_models.pck")
+
+        script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+        rel_path = "models/quality_models.pck"
+        models_file = os.path.join(script_dir, rel_path)
+
+        log.info("%s: loading models: %s" % (self.title, models_file))
         self.doc_models, self.doc_vecs, self.sent_models, self.sent_vecs = self.load_models(models_file)
         log.info("%s: done loading models" % (self.title))
 
