@@ -1,5 +1,5 @@
 (ns topologies.example ;; This MUST be in the form topologies.<name> and cannot contain special characters.
-  (:require [spa.services :refer [call]])
+  (:require [spa.services :refer [js py]])
   (:use plumbing.core))
 
 ;; The topology MUST be defined and MUST be compilable by prismatic graph.
@@ -8,9 +8,6 @@
 ;; Make sure sing returns a valid Ring response
 ;; You MAY define custom serialization / deserialization, as none is done by default.
 ;; See the [Ring Spec](https://github.com/ring-clojure/ring/blob/master/SPEC)
-
-(def py (partial call :python))
-(def js (partial call :node))
 
 (def topology
   {:source        (fnk [body] (slurp body))

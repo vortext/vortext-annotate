@@ -106,3 +106,10 @@
     (let [service (local-service! type file options)]
       (dispatch service payload))
     (rpc (:name options) payload)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Public convenience methods
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def py (partial call :python))
+(def js (partial call :node))

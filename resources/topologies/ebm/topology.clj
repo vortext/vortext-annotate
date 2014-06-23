@@ -1,5 +1,5 @@
 (ns topologies.ebm ;; This MUST be in the form topologies.<name> and cannot contain special characters.
-  (:require [spa.services :refer [call]]
+  (:require [spa.services :refer [js py]]
             [cheshire.core :as json]
             [clojure.tools.logging :as log]
             [clojure.java.io :as io])
@@ -11,9 +11,6 @@
 ;; Make sure sink returns a valid Ring response
 ;; You MAY define custom serialization / deserialization, as none is done by default.
 ;; See the [Ring Spec](https://github.com/ring-clojure/ring/blob/master/SPEC)
-
-(def py (partial call :python))
-(def js (partial call :node))
 
 (defn update-vals [map vals f]
   (reduce #(update-in % [%2] f) map vals))
