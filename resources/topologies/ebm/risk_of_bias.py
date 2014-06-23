@@ -9,8 +9,7 @@ import sklearn
 sys.path.append(os.path.abspath("resources/topologies/ebm/"))
 import quality3
 
-
-class Filter(DocumentFilter):
+class Handler(DocumentHandler):
     CORE_DOMAINS = ["Random sequence generation", "Allocation concealment", "Blinding of participants and personnel",
                     "Blinding of outcome assessment", "Incomplete outcome data", "Selective reporting"]
 
@@ -28,7 +27,8 @@ class Filter(DocumentFilter):
             data = pickle.load(f)
         return data
 
-    def filter(self, document):
+    # Main
+    def handle_document(self, document):
         # first get sentence indices in full text
         sent_indices = [(s[0]["range"][0], s[-1]["range"][1]) for s in document["mapping"]["sentences"]]
         # then the strings (for internal use only)

@@ -26,11 +26,11 @@ def run_server(socket_addr, name, timeout, heartbeat, reconnect, handler):
         request = worker.recv(reply)
         if request is None:
             break # Worker was interrupted
-        reply = handler.handler(request[0])
+        reply = handler.handle(request[0])
 
 def main():
     p = optparse.OptionParser(
-        description="Runs the filter (subclass of abstract_filter) from the module as a worker process on the specified socket",
+        description="Runs the handler from the module as a worker process on the specified socket.",
         version="%s" % (VERSION))
     p.add_option('--module', '-m')
     p.add_option('--socket', '-s')
@@ -39,16 +39,30 @@ def main():
     p.add_option('--heartbeat', default=2500, type="int")
     p.add_option('--name', '-n', help="Service name")
     p.add_option('--path', '-p', default="../../topologies", help="Path where to look for modules")
+
+    # For stand alone usage
+    p.add_option('--input', help="Run the specified worker once on the input file, useful for testing and debugging")
+    p.add_option('--output', help="Path where to write the output when called with --input")
+
     options, arguments = p.parse_args()
 
     sys.path.append(options.path)
-    mod = __import__(options.module, fromlist=['Filter'])
-    f = getattr(mod, 'Filter')
+    mod = __import__(options.module, fromlist=['Handler'])
+    h = getattr(mod, 'Handler')
 
-    handler = f()
+    handler = h()
 
-    log.info("Hail to the king %s on %s" % (VERSION, options.socket))
-    run_server(options.socket, options.name, options.timeout, options.heartbeat, options.reconnect, handler)
+    if(options.input):
+      with open(options.input, 'r') as f:
+        contents = f.read()
+        if(options.output):
+          with open(options.output, "w") as output_file:
+            output_file.write(handler.handle(contents))
+        else:
+          print handler.handle(contents)
+    else:
+      log.info("Hail to the king %s on %s" % (VERSION, options.socket))
+      run_server(options.socket, options.name, options.timeout, options.heartbeat, options.reconnect, handler)
 
 if __name__ == '__main__':
     main()

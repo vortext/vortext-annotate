@@ -24,18 +24,18 @@ def timethis(func):
         return result
     return wrapper
 
-class DocumentFilter(AbstractFilter):
+class DocumentHandler(AbstractHandler):
     __metaclass__ = ABCMeta
 
     @timethis
-    def handler(self, payload):
+    def handle(self, payload):
         try:
             document = json.loads(payload)
-            result = self.filter(document)
+            result = self.handle(document)
             return json.dumps(result, ensure_ascii=True)
         except Exception as e:
             return json.dumps({"cause": str(e)}, ensure_ascii=True)
 
     @abstractmethod
-    def filter(self, document):
+    def handle_document(self, document):
         pass

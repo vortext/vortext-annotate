@@ -1,7 +1,7 @@
 import logging, copy, sys
 log = logging.getLogger(__name__)
 
-from document_filter import DocumentFilter
+from document_handler import DocumentHandler
 
 from nltk.tokenize.punkt import *
 from functools import wraps
@@ -75,7 +75,7 @@ class OverlappingIntervals():
         """
         return [{"node": index, "range": interval[:]} for index, interval in enumerate(self.intervals) if self._is_overlapping(interval, bounds)]
 
-class Filter(DocumentFilter):
+class Handler(DocumentHandler):
     title = "Tokenizer"
 
     def __init__(self):
@@ -83,7 +83,7 @@ class Filter(DocumentFilter):
         self.word_tokenizer = newPunktWordTokenizer()
         self.sentence_tokenizer = PunktSentenceTokenizer()
 
-    def filter(self, document):
+    def handle_document(self, document):
         text = document["text"]
         nodes = document["nodes"]
         pages = document["pages"]
@@ -120,9 +120,3 @@ class Filter(DocumentFilter):
             }})
 
         return document
-
-if __name__ == '__main__':
-    with open(sys.argv[1], 'r') as f:
-        contents = f.read()
-        f = Filter()
-        print f.run(contents)
