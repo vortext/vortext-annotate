@@ -1,3 +1,7 @@
+* IN PROGRESS Python SpaDoc
+** Use scikit word tokenizer
+** Write JSON for all the Cochrane PDFs
+** Write small wrapper
 * Client side
 ** "Flux" architecture refactor
 ** Loading states
@@ -10,17 +14,22 @@
 ** Write named destinations + stand-off markup
 ** Scroll into view for annotations
 ** Database (hash + lsh?) -> Postgres/Riak?
-* Project view
-** Users / projects?
-** Show results for multiple pdfs
 * Server side
+** Documentation
+** DONE Better CLI
+*** DONE Rename to workers
+*** DONE Put stand-alone stuff in workers
+*** DONE Write CLI for HTTP topology
 ** Progress updates / async topologies
-*** Channels for topolgies
+*** Channels for topologies
 *** Implement MDP/2 (partial results)
 *** Websockets to subscribe to updates?
 ** R RPC Worker
 ** Multi-process workers
 ** Better exception handling
-** Documentation
+*** Handle exceptions during worker startup
 ** Dockerfiles + Deploy
 ** Cancel task handler
+* Project view
+** Users / projects?
+** Show results for multiple pdfs

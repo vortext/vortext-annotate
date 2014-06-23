@@ -55,7 +55,7 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
  lein deps # retrieve project dependencies
- lein run # will run the server
+ lein run start # will run the server
  DEBUG=true lein run # will run in debug mode
    #+END_SRC
    For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
