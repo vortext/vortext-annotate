@@ -1,7 +1,8 @@
 * IN PROGRESS Python SpaDoc
-** Use scikit word tokenizer
-** Write JSON for all the Cochrane PDFs
-** Write small wrapper
+** DONE Use scikit word tokenizer
+** Write data for all the Cochrane PDFs
+** Write small SpaDoc wrapper
+** ProtocolBuffers?
 * Client side
 ** "Flux" architecture refactor
 ** Loading states
@@ -13,7 +14,7 @@
 ** W3C RDFa / Providence / Annotations
 ** Write named destinations + stand-off markup
 ** Scroll into view for annotations
-** Database (hash + lsh?) -> Postgres/Riak?
+** Database (hash + lsh?) -> Postgres/Riak/Jena?
 * Server side
 ** Documentation
 ** DONE Better CLI
