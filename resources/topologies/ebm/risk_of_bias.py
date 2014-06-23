@@ -1,7 +1,7 @@
 import logging, copy, sys, uuid, os
 log = logging.getLogger(__name__)
 
-from document_filter import DocumentFilter
+from document_handler import DocumentHandler
 import cPickle as pickle
 import sklearn
 
@@ -72,9 +72,3 @@ class Handler(DocumentHandler):
 
         document.update({"marginalia": output})
         return document
-
-if __name__ == '__main__':
-    with open(sys.argv[1], 'r') as f:
-        contents = f.read()
-        f = Filter()
-        print f.run(contents)

@@ -15,6 +15,8 @@ program
   .option('--heartbeat [heartbeat]', 'Sent a heartbeat every [heartbeat] milliseconds', parseInt)
   .option('--reconnect [reconnect]', 'Attempt to reconnect to disconnected broker after [reconnect] milliseconds', parseInt)
   .option('-p, --path [path]', 'Path to the module directory', path_module.join(__dirname, '../../topologies'))
+  .option('--input [input]', 'Runs the specified handler once on the specified file, useful for testing and debugging')
+  .option('--output [output]', 'Path to the output file if called with --input')
   .parse(process.argv);
 
 
@@ -44,4 +46,25 @@ function runServer(handler) {
 
 }
 
-runServer(handler);
+
+/* --------------------
+ For stand-alone usage.
+ --------------------- */
+if(program.input) {
+  function flush(data, out) {
+    if(out) {
+      fs.writeFile(out, data);
+    } else {
+      console.log(data);
+    }
+  }
+
+  var input = fs.readFileSync(program.input);
+  var out = program.output;
+  var resultPromise = handler(input);
+  resultPromise.then(function(result) {
+    flush(result, out);
+  });
+} else {
+  runServer(handler);
+}

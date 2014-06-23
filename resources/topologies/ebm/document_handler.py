@@ -8,7 +8,7 @@ import time
 log = logging.getLogger(__name__)
 
 from abc import ABCMeta, abstractmethod
-from abstract_filter import AbstractFilter
+from abstract_handler import AbstractHandler
 from collections import namedtuple
 
 def timethis(func):
@@ -31,7 +31,7 @@ class DocumentHandler(AbstractHandler):
     def handle(self, payload):
         try:
             document = json.loads(payload)
-            result = self.handle(document)
+            result = self.handle_document(document)
             return json.dumps(result, ensure_ascii=True)
         except Exception as e:
             return json.dumps({"cause": str(e)}, ensure_ascii=True)

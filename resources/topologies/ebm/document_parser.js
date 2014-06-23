@@ -63,31 +63,4 @@ function handler(payload) {
   });
 }
 
-
-/* --------------------
- For stand-alone usage.
- --------------------- */
-function flush(data, out) {
-  if(out) {
-    fs.writeFile(out, data);
-  } else {
-    console.log(data);
-  }
-}
-
-if(require.main === module) {
-  program
-    .option('-i, --input [input]', 'path to PDF to parse')
-    .option('-o, --output [output]', 'path to output file, flushes to STDOUT if none given')
-    .parse(process.argv);
-
-  var pdf = new Uint8Array(fs.readFileSync(program.input));
-  var out = program.output;
-  var resultPromise = convertToDocument(pdf);
-  resultPromise.then(function(result) {
-    result = JSON.stringify(result);
-    flush(result, out);
-  });
-}
-
 module.exports = handler;
