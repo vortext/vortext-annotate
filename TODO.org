@@ -1,8 +1,8 @@
 * IN PROGRESS Python SpaDoc
 ** IN PROGRESS ProtocolBuffers
 *** VERIFY Define spec
-*** Implement NodeJS
-*** Implement Python
+*** DONE Implement NodeJS
+*** IN PROGRESS Implement Python
 *** Implement Clojure
 ** DONE Use scikit word tokenizer
 ** Write data for all the Cochrane PDFs
