@@ -26,7 +26,7 @@
     :error (.setLevel logger Level/ERROR)))
 
 (defn stop-server! []
-  (log/info "stopping server on" (env :port) "by user request")
+  (log/info "Stopping server on" (env :port) "by user request")
   (when-not (nil? @server)
     ;; graceful shutdown: wait for existing requests to be finished
     (@server :timeout 100)

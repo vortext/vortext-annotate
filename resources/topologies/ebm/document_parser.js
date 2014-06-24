@@ -3,6 +3,7 @@ var fs = require('fs');
 var atob = require('atob');
 var _ = require('underscore');
 var Q = require('q');
+var ProtoBuf = require("protobufjs");
 
 // let PDF.js be loaded not as a module in global space.
 global.window = global;
@@ -13,6 +14,10 @@ global.DOMParser = require('./domparsermock.js').DOMParserMock;
 require('./pdfjs/singlefile/build/pdf.combined.js');
 
 PDFJS.disableWorker = true;
+
+var builder = ProtoBuf.loadProtoFile(__dirname + "/document.proto"), // somehow must be an absolute path
+    Spa = builder.build("Spa"),
+    Document = Spa.Document;
 
 function textContentToDocument(content) {
   var nodes = [];
@@ -28,17 +33,20 @@ function textContentToDocument(content) {
       var item = items[j];
 
       var nextOffset = offset + item.str.length;
-      var node = { pageIndex: i, node: j, interval: [totalLength + offset, totalLength + nextOffset]};
+      var node = { pageIndex: i,
+		   nodeIndex: j,
+		   interval: { lower: totalLength + offset,
+			       upper: totalLength + nextOffset }};
       text += (item.str + " ");
       offset = nextOffset + 1; // 1 added for the extra space in text join
       nodes.push(node);
     }
-    pages.push({offset: totalLength, length: offset});
+    pages.push({ offset: totalLength, length: offset });
     totalLength += offset;
   }
-  return { "text": text,
-           "pages": pages,
-           "nodes": nodes };
+  return new Document({ "text": text,
+			"pages": pages,
+			"nodes": nodes });
 }
 
 function convertToDocument(payload) {
@@ -59,7 +67,7 @@ function handler(payload) {
   var pdf = new Uint8Array(Buffer(payload, "binary"));
   var document = convertToDocument(pdf);
   return document.then(function(doc) {
-    return JSON.stringify(doc);
+    return doc.encode().toBuffer();
   });
 }
 
