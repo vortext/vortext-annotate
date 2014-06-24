@@ -125,7 +125,7 @@ class MajorDomoWorker(object):
                     # pop empty
                     assert msg.pop(0) == ''
 
-                    return msg # We have a request to process
+                    return msg.pop(0) # We have a request to process
                 elif command == MDP.W_HEARTBEAT:
                     # Do nothing for heartbeats
                     pass

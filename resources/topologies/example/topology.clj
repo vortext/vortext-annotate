@@ -13,5 +13,5 @@
   {:source        (fnk [body] (slurp body))
    :incremented   (fnk [source] (py "example.add_one" source))
    :doubled       (fnk [incremented] (js "example/multiply.js" incremented))
-   :sink          (fnk [doubled] (str "result:" doubled))
+   :sink          (fnk [doubled] (str "result:" (String. doubled)))
    })

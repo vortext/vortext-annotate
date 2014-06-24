@@ -45,7 +45,7 @@
         _ (.send @client-session name request)
         reply (.recv @client-session)]
     (when-not (nil? reply)
-      (let [result (String. (.getData (.pop reply)))]
+      (let [result (.getData (.pop reply))]
         (.destroy reply)
         result))))
 
