@@ -16,8 +16,8 @@ require('./pdfjs/singlefile/build/pdf.combined.js');
 PDFJS.disableWorker = true;
 
 var builder = ProtoBuf.loadProtoFile(__dirname + "/document.proto"), // somehow must be an absolute path
-    Spa = builder.build("Spa"),
-    Document = Spa.Document;
+    spa = builder.build("spa"),
+    Document = spa.Document;
 
 function textContentToDocument(content) {
   var nodes = [];
@@ -67,7 +67,7 @@ function handler(payload) {
   var pdf = new Uint8Array(Buffer(payload, "binary"));
   var document = convertToDocument(pdf);
   return document.then(function(doc) {
-    return doc.encode().toBuffer();
+    return doc.toBuffer();
   });
 }
 

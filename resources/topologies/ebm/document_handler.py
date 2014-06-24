@@ -1,15 +1,13 @@
-import json
-
-import sys
+import sys, logging, time
 sys.path.append('../../multilang/python')
-import logging
+
 from functools import wraps
-import time
+from build.gen import document_pb2
+
 log = logging.getLogger(__name__)
 
 from abc import ABCMeta, abstractmethod
 from abstract_handler import AbstractHandler
-from collections import namedtuple
 
 def timethis(func):
     '''
@@ -20,7 +18,7 @@ def timethis(func):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        log.debug("call to {} took {}".format(func.__name__, end-start))
+        log.debug("call to {} took {} seconds".format(func.__name__, end-start))
         return result
     return wrapper
 
@@ -29,12 +27,10 @@ class DocumentHandler(AbstractHandler):
 
     @timethis
     def handle(self, payload):
-        try:
-            document = json.loads(payload)
-            result = self.handle_document(document)
-            return json.dumps(result, ensure_ascii=True)
-        except Exception as e:
-            return json.dumps({"cause": str(e)}, ensure_ascii=True)
+        document = document_pb2.Document()
+        document.ParseFromString(payload)
+        result = self.handle_document(document)
+        return result.SerializeToString()
 
     @abstractmethod
     def handle_document(self, document):

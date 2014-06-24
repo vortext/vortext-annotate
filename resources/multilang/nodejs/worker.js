@@ -92,7 +92,7 @@ Worker.prototype.onMsg = function (msg) {
   } else if (type == MDP.W_DISCONNECT) {
     console.log("Exiting by request of broker");
     self.stop();
-	  process.exit();
+    process.exit();
   } else {
     self.emitErr('Invalid message type \'' + type.toString() + '\'');
     // send error

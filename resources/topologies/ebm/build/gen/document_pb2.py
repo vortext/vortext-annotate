@@ -12,28 +12,28 @@ from google.protobuf import descriptor_pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='document.proto',
-  package='Spa',
-  serialized_pb='\n\x0e\x64ocument.proto\x12\x03Spa\"\xac\x06\n\x08\x44ocument\x12\x0c\n\x04text\x18\x01 \x02(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12!\n\x05nodes\x18\x03 \x03(\x0b\x32\x12.Spa.Document.Node\x12!\n\x05pages\x18\x04 \x03(\x0b\x32\x12.Spa.Document.Page\x12$\n\x05words\x18\x05 \x03(\x0b\x32\x15.Spa.Document.Mapping\x12(\n\tsentences\x18\x06 \x03(\x0b\x32\x15.Spa.Document.Mapping\x12,\n\nmarginalia\x18\x07 \x03(\x0b\x32\x18.Spa.Document.Marginalis\x1a(\n\x08Interval\x12\r\n\x05upper\x18\x01 \x02(\x03\x12\r\n\x05lower\x18\x02 \x02(\x03\x1aV\n\x04Node\x12\x11\n\tpageIndex\x18\x01 \x02(\x04\x12\x11\n\tnodeIndex\x18\x02 \x02(\x04\x12(\n\x08interval\x18\x03 \x02(\x0b\x32\x16.Spa.Document.Interval\x1a&\n\x04Page\x12\x0e\n\x06length\x18\x01 \x02(\x04\x12\x0e\n\x06offset\x18\x02 \x02(\x04\x1az\n\x07Mapping\x12/\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x1d.Spa.Document.Mapping.Element\x1a>\n\x07\x45lement\x12\x0c\n\x04node\x18\x01 \x02(\x04\x12%\n\x05range\x18\x02 \x02(\x0b\x32\x16.Spa.Document.Interval\x1a\x9a\x02\n\nMarginalis\x12\x0c\n\x04type\x18\x01 \x02(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x38\n\x0b\x61nnotations\x18\x04 \x03(\x0b\x32#.Spa.Document.Marginalis.Annotation\x1a\x9f\x01\n\nAnnotation\x12\x0b\n\x03uri\x18\x01 \x02(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12=\n\x08mappings\x18\x04 \x03(\x0b\x32+.Spa.Document.Marginalis.Annotation.Mapping\x1a%\n\x07Mapping\x12\x0b\n\x03key\x18\x01 \x02(\t\x12\r\n\x05index\x18\x02 \x02(\x04')
+  package='spa',
+  serialized_pb='\n\x0e\x64ocument.proto\x12\x03spa\"\xb1\x06\n\x08\x44ocument\x12\x0c\n\x04text\x18\x01 \x02(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12!\n\x05nodes\x18\x03 \x03(\x0b\x32\x12.spa.Document.Node\x12!\n\x05pages\x18\x04 \x03(\x0b\x32\x12.spa.Document.Page\x12$\n\x05words\x18\x05 \x03(\x0b\x32\x15.spa.Document.Mapping\x12(\n\tsentences\x18\x06 \x03(\x0b\x32\x15.spa.Document.Mapping\x12,\n\nmarginalia\x18\x07 \x03(\x0b\x32\x18.spa.Document.Marginalis\x1a(\n\x08Interval\x12\r\n\x05upper\x18\x01 \x02(\x03\x12\r\n\x05lower\x18\x02 \x02(\x03\x1aV\n\x04Node\x12\x11\n\tpageIndex\x18\x01 \x02(\x04\x12\x11\n\tnodeIndex\x18\x02 \x02(\x04\x12(\n\x08interval\x18\x03 \x02(\x0b\x32\x16.spa.Document.Interval\x1a&\n\x04Page\x12\x0e\n\x06length\x18\x01 \x02(\x04\x12\x0e\n\x06offset\x18\x02 \x02(\x04\x1a\x7f\n\x07Mapping\x12/\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x1d.spa.Document.Mapping.Element\x1a\x43\n\x07\x45lement\x12\x11\n\tnodeIndex\x18\x01 \x02(\x04\x12%\n\x05range\x18\x02 \x02(\x0b\x32\x16.spa.Document.Interval\x1a\x9a\x02\n\nMarginalis\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x38\n\x0b\x61nnotations\x18\x04 \x03(\x0b\x32#.spa.Document.Marginalis.Annotation\x1a\x9f\x01\n\nAnnotation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12=\n\x08mappings\x18\x04 \x03(\x0b\x32+.spa.Document.Marginalis.Annotation.Mapping\x1a%\n\x07Mapping\x12\x0b\n\x03key\x18\x01 \x02(\t\x12\r\n\x05index\x18\x02 \x02(\x04')
 
 
 
 
 _DOCUMENT_INTERVAL = _descriptor.Descriptor(
   name='Interval',
-  full_name='Spa.Document.Interval',
+  full_name='spa.Document.Interval',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='upper', full_name='Spa.Document.Interval.upper', index=0,
+      name='upper', full_name='spa.Document.Interval.upper', index=0,
       number=1, type=3, cpp_type=2, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='lower', full_name='Spa.Document.Interval.lower', index=1,
+      name='lower', full_name='spa.Document.Interval.lower', index=1,
       number=2, type=3, cpp_type=2, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -54,27 +54,27 @@ _DOCUMENT_INTERVAL = _descriptor.Descriptor(
 
 _DOCUMENT_NODE = _descriptor.Descriptor(
   name='Node',
-  full_name='Spa.Document.Node',
+  full_name='spa.Document.Node',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='pageIndex', full_name='Spa.Document.Node.pageIndex', index=0,
+      name='pageIndex', full_name='spa.Document.Node.pageIndex', index=0,
       number=1, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='nodeIndex', full_name='Spa.Document.Node.nodeIndex', index=1,
+      name='nodeIndex', full_name='spa.Document.Node.nodeIndex', index=1,
       number=2, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='interval', full_name='Spa.Document.Node.interval', index=2,
+      name='interval', full_name='spa.Document.Node.interval', index=2,
       number=3, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -95,20 +95,20 @@ _DOCUMENT_NODE = _descriptor.Descriptor(
 
 _DOCUMENT_PAGE = _descriptor.Descriptor(
   name='Page',
-  full_name='Spa.Document.Page',
+  full_name='spa.Document.Page',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='length', full_name='Spa.Document.Page.length', index=0,
+      name='length', full_name='spa.Document.Page.length', index=0,
       number=1, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='offset', full_name='Spa.Document.Page.offset', index=1,
+      name='offset', full_name='spa.Document.Page.offset', index=1,
       number=2, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -129,20 +129,20 @@ _DOCUMENT_PAGE = _descriptor.Descriptor(
 
 _DOCUMENT_MAPPING_ELEMENT = _descriptor.Descriptor(
   name='Element',
-  full_name='Spa.Document.Mapping.Element',
+  full_name='spa.Document.Mapping.Element',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='node', full_name='Spa.Document.Mapping.Element.node', index=0,
+      name='nodeIndex', full_name='spa.Document.Mapping.Element.nodeIndex', index=0,
       number=1, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='range', full_name='Spa.Document.Mapping.Element.range', index=1,
+      name='range', full_name='spa.Document.Mapping.Element.range', index=1,
       number=2, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -158,18 +158,18 @@ _DOCUMENT_MAPPING_ELEMENT = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=489,
-  serialized_end=551,
+  serialized_end=556,
 )
 
 _DOCUMENT_MAPPING = _descriptor.Descriptor(
   name='Mapping',
-  full_name='Spa.Document.Mapping',
+  full_name='spa.Document.Mapping',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='elements', full_name='Spa.Document.Mapping.elements', index=0,
+      name='elements', full_name='spa.Document.Mapping.elements', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -185,25 +185,25 @@ _DOCUMENT_MAPPING = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=429,
-  serialized_end=551,
+  serialized_end=556,
 )
 
 _DOCUMENT_MARGINALIS_ANNOTATION_MAPPING = _descriptor.Descriptor(
   name='Mapping',
-  full_name='Spa.Document.Marginalis.Annotation.Mapping',
+  full_name='spa.Document.Marginalis.Annotation.Mapping',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='Spa.Document.Marginalis.Annotation.Mapping.key', index=0,
+      name='key', full_name='spa.Document.Marginalis.Annotation.Mapping.key', index=0,
       number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='index', full_name='Spa.Document.Marginalis.Annotation.Mapping.index', index=1,
+      name='index', full_name='spa.Document.Marginalis.Annotation.Mapping.index', index=1,
       number=2, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -218,40 +218,40 @@ _DOCUMENT_MARGINALIS_ANNOTATION_MAPPING = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=799,
-  serialized_end=836,
+  serialized_start=804,
+  serialized_end=841,
 )
 
 _DOCUMENT_MARGINALIS_ANNOTATION = _descriptor.Descriptor(
   name='Annotation',
-  full_name='Spa.Document.Marginalis.Annotation',
+  full_name='spa.Document.Marginalis.Annotation',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uri', full_name='Spa.Document.Marginalis.Annotation.uri', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      name='uri', full_name='spa.Document.Marginalis.Annotation.uri', index=0,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='label', full_name='Spa.Document.Marginalis.Annotation.label', index=1,
+      name='label', full_name='spa.Document.Marginalis.Annotation.label', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='content', full_name='Spa.Document.Marginalis.Annotation.content', index=2,
+      name='content', full_name='spa.Document.Marginalis.Annotation.content', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='mappings', full_name='Spa.Document.Marginalis.Annotation.mappings', index=3,
+      name='mappings', full_name='spa.Document.Marginalis.Annotation.mappings', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -266,40 +266,40 @@ _DOCUMENT_MARGINALIS_ANNOTATION = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=677,
-  serialized_end=836,
+  serialized_start=682,
+  serialized_end=841,
 )
 
 _DOCUMENT_MARGINALIS = _descriptor.Descriptor(
   name='Marginalis',
-  full_name='Spa.Document.Marginalis',
+  full_name='spa.Document.Marginalis',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='type', full_name='Spa.Document.Marginalis.type', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      name='type', full_name='spa.Document.Marginalis.type', index=0,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='title', full_name='Spa.Document.Marginalis.title', index=1,
+      name='title', full_name='spa.Document.Marginalis.title', index=1,
       number=2, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='description', full_name='Spa.Document.Marginalis.description', index=2,
+      name='description', full_name='spa.Document.Marginalis.description', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='annotations', full_name='Spa.Document.Marginalis.annotations', index=3,
+      name='annotations', full_name='spa.Document.Marginalis.annotations', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -314,61 +314,61 @@ _DOCUMENT_MARGINALIS = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=554,
-  serialized_end=836,
+  serialized_start=559,
+  serialized_end=841,
 )
 
 _DOCUMENT = _descriptor.Descriptor(
   name='Document',
-  full_name='Spa.Document',
+  full_name='spa.Document',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='text', full_name='Spa.Document.text', index=0,
+      name='text', full_name='spa.Document.text', index=0,
       number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='uri', full_name='Spa.Document.uri', index=1,
+      name='uri', full_name='spa.Document.uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='nodes', full_name='Spa.Document.nodes', index=2,
+      name='nodes', full_name='spa.Document.nodes', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='pages', full_name='Spa.Document.pages', index=3,
+      name='pages', full_name='spa.Document.pages', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='words', full_name='Spa.Document.words', index=4,
+      name='words', full_name='spa.Document.words', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='sentences', full_name='Spa.Document.sentences', index=5,
+      name='sentences', full_name='spa.Document.sentences', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='marginalia', full_name='Spa.Document.marginalia', index=6,
+      name='marginalia', full_name='spa.Document.marginalia', index=6,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -384,7 +384,7 @@ _DOCUMENT = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=24,
-  serialized_end=836,
+  serialized_end=841,
 )
 
 _DOCUMENT_INTERVAL.containing_type = _DOCUMENT;
@@ -414,19 +414,19 @@ class Document(_message.Message):
     __metaclass__ = _reflection.GeneratedProtocolMessageType
     DESCRIPTOR = _DOCUMENT_INTERVAL
 
-    # @@protoc_insertion_point(class_scope:Spa.Document.Interval)
+    # @@protoc_insertion_point(class_scope:spa.Document.Interval)
 
   class Node(_message.Message):
     __metaclass__ = _reflection.GeneratedProtocolMessageType
     DESCRIPTOR = _DOCUMENT_NODE
 
-    # @@protoc_insertion_point(class_scope:Spa.Document.Node)
+    # @@protoc_insertion_point(class_scope:spa.Document.Node)
 
   class Page(_message.Message):
     __metaclass__ = _reflection.GeneratedProtocolMessageType
     DESCRIPTOR = _DOCUMENT_PAGE
 
-    # @@protoc_insertion_point(class_scope:Spa.Document.Page)
+    # @@protoc_insertion_point(class_scope:spa.Document.Page)
 
   class Mapping(_message.Message):
     __metaclass__ = _reflection.GeneratedProtocolMessageType
@@ -435,10 +435,10 @@ class Document(_message.Message):
       __metaclass__ = _reflection.GeneratedProtocolMessageType
       DESCRIPTOR = _DOCUMENT_MAPPING_ELEMENT
 
-      # @@protoc_insertion_point(class_scope:Spa.Document.Mapping.Element)
+      # @@protoc_insertion_point(class_scope:spa.Document.Mapping.Element)
     DESCRIPTOR = _DOCUMENT_MAPPING
 
-    # @@protoc_insertion_point(class_scope:Spa.Document.Mapping)
+    # @@protoc_insertion_point(class_scope:spa.Document.Mapping)
 
   class Marginalis(_message.Message):
     __metaclass__ = _reflection.GeneratedProtocolMessageType
@@ -450,16 +450,16 @@ class Document(_message.Message):
         __metaclass__ = _reflection.GeneratedProtocolMessageType
         DESCRIPTOR = _DOCUMENT_MARGINALIS_ANNOTATION_MAPPING
 
-        # @@protoc_insertion_point(class_scope:Spa.Document.Marginalis.Annotation.Mapping)
+        # @@protoc_insertion_point(class_scope:spa.Document.Marginalis.Annotation.Mapping)
       DESCRIPTOR = _DOCUMENT_MARGINALIS_ANNOTATION
 
-      # @@protoc_insertion_point(class_scope:Spa.Document.Marginalis.Annotation)
+      # @@protoc_insertion_point(class_scope:spa.Document.Marginalis.Annotation)
     DESCRIPTOR = _DOCUMENT_MARGINALIS
 
-    # @@protoc_insertion_point(class_scope:Spa.Document.Marginalis)
+    # @@protoc_insertion_point(class_scope:spa.Document.Marginalis)
   DESCRIPTOR = _DOCUMENT
 
-  # @@protoc_insertion_point(class_scope:Spa.Document)
+  # @@protoc_insertion_point(class_scope:spa.Document)
 
 
 # @@protoc_insertion_point(module_scope)

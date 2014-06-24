@@ -1,6 +1,6 @@
 * IN PROGRESS Python SpaDoc
 ** IN PROGRESS ProtocolBuffers
-*** VERIFY Define spec
+*** DONE Define spec
 *** DONE Implement NodeJS
 *** IN PROGRESS Implement Python
 *** Implement Clojure
@@ -32,6 +32,7 @@
 ** R RPC Worker
 ** Multi-process workers
 ** Better exception handling
+*** Handle errors during processing
 *** Handle exceptions during worker startup
 ** Dockerfiles + Deploy
 ** Cancel task handler

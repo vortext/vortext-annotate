@@ -36,16 +36,15 @@ class MajorDomoWorker(object):
     # Return address, if any
     reply_to = None
 
-
-    def __init__(self, broker, service, timeout, heartbeat, reconnect, verbose=False):
-        self.broker = broker
-        self.service = service
+    def __init__(self, options, verbose=False):
+        self.broker = options.socket
+        self.service = options.name
+        self.heartbeat = options.heartbeat
+        self.reconnect = options.reconnect
+        self.timeout = options.timeout
         self.verbose = verbose
         self.ctx = zmq.Context()
         self.poller = zmq.Poller()
-        self.heartbeat = heartbeat
-        self.reconnect = reconnect
-        self.timeout = timeout
         self.reconnect_to_broker()
 
     def destroy(self):
@@ -134,7 +133,7 @@ class MajorDomoWorker(object):
                     #self.reconnect_to_broker()
                     self.destroy()
                     sys.exit();
-                else :
+                else:
                     log.error("invalid input message: ")
             else:
                 self.liveness -= 1

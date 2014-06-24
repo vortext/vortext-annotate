@@ -35,12 +35,10 @@ function runServer(handler) {
       Q.when(result, function(data) {
         rep.reply(data);
       }, function(err) {
-        rep.reply(err);
+	console.error("Failed to process", err);
       });
     } catch (err) {
       console.error("Failed to process", err);
-      result = JSON.stringify({cause: "Error: " + err});
-      rep.reply(result);
     }
   });
 
@@ -61,8 +59,8 @@ if(program.input) {
 
   var input = fs.readFileSync(program.input);
   var out = program.output;
-  var resultPromise = handler(input);
-  resultPromise.then(function(result) {
+  var result = handler(input);
+  result.then(function(result) {
     flush(result, out);
   });
 } else {
