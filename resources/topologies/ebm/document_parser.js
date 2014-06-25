@@ -31,7 +31,6 @@ function textContentToDocument(content) {
     var items = page.items;
     for (var j = 0; j < items.length; j++) {
       var item = items[j];
-
       var nextOffset = offset + item.str.length;
       var node = { pageIndex: i,
 		   nodeIndex: j,

@@ -44,7 +44,6 @@ function runServer(handler) {
 
 }
 
-
 /* --------------------
  For stand-alone usage.
  --------------------- */
@@ -60,7 +59,7 @@ if(program.input) {
   var input = fs.readFileSync(program.input);
   var out = program.output;
   var result = handler(input);
-  result.then(function(result) {
+  Q.when(result, function(result) {
     flush(result, out);
   });
 } else {

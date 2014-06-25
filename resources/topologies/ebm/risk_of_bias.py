@@ -30,14 +30,14 @@ class Handler(DocumentHandler):
         log.info("%s: done loading models" % (self.title))
 
 
-    def add_annotation(self, marginalis, type, index, label=1, content=None):
+    def add_annotation(self, marginalis, type, index, label="biased", content=None):
         annotation = marginalis.annotations.add()
         annotation.label = label
         annotation.content = content
-        for mapping in mappings:
-            m = annotation.mappings.add()
-            m.key = type
-            m.index = index
+
+        mapping = annotation.mappings.add()
+        mapping.key = type
+        mapping.index = index
 
     def handle_document(self, document):
         """
@@ -46,9 +46,10 @@ class Handler(DocumentHandler):
         """
 
         # first get sentence indices in full text
-        sent_indices = [(s[0].range.lower, s[-1].range.upper) for s in document.sentences]
+        document_text = document.text
+        sent_indices = [(s.elements[0].range.lower, s.elements[-1].range.upper) for s in document.sentences]
         # then the strings (for internal use only)
-        sent_text = [document.text[start:end] for start, end in sent_indices]
+        sent_text = [document_text[start:end] for start, end in sent_indices]
         sent_text_dict = dict(zip(sent_indices, sent_text))
 
         output = []
@@ -75,7 +76,7 @@ class Handler(DocumentHandler):
             summary_text = " ".join([sent for index, sent in positive_sents])
 
             doc_vec.builder_clear()
-            doc_vec.builder_add_docs([document["text"]])
+            doc_vec.builder_add_docs([document_text])
             doc_vec.builder_add_docs([summary_text], prefix="high-prob-sent-")
 
             X_doc = doc_vec.builder_transform()
