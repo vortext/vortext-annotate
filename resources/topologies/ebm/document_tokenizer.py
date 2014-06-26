@@ -37,7 +37,7 @@ class Handler(DocumentHandler):
         last = len(nodes) - 1
         for i, node in enumerate(nodes):
             element = mapping.elements.add()
-            element.nodeIndex = node["index"]
+            element.node_index = node["index"]
             element.range.lower = node["range"][0] if i != 0 else span[0]
             element.range.upper = node["range"][1] if i != last else span[1]
 

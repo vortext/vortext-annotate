@@ -71,13 +71,13 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
         textElement.annotations = _.pluck(annotations, "type");
 
         var sorted = _.sortBy(annotations, function(ann) {// sorted by range offset
-          return ann.range[0];
+          return ann.range.lower;
         });
 
         var spans = sorted.map(function(ann, i) {
           var previous = sorted[i - 1];
 
-          if(previous && previous.range[0] >= ann.range[0] && previous.range[1] >= ann.range[1]) {
+          if(previous && previous.range.lower >= ann.range.lower && previous.range.upper >= ann.range.lower) {
             return null;
           }
           var next = sorted[i + 1];
@@ -85,9 +85,9 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
           var text = textElement.textContent;
           if(!text) return null;
 
-          var start = previous ? text.length + (previous.range[1] - previous.interval[1]) : 0,
-              left = ann.range[0] - ann.interval[0],
-              right = text.length + (ann.range[1] - ann.interval[1]),
+          var start = previous ? text.length + (previous.range.upper - previous.interval.upper) : 0,
+              left = ann.range.lower - ann.interval.lower,
+              right = text.length + (ann.range.upper - ann.interval.upper),
               end = next ?  right : text.length,
               style = { "backgroundColor": "rgba(" + ann.color.join(",") + ",0.2)" };
 

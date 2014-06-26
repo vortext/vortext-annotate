@@ -34,10 +34,8 @@ class Handler(DocumentHandler):
         annotation = marginalis.annotations.add()
         annotation.label = label
         annotation.content = content
-
-        mapping = annotation.mappings.add()
-        mapping.key = type
-        mapping.index = index
+        annotation.mapping.key = type
+        annotation.mapping.index = index
 
     def handle_document(self, document):
         """

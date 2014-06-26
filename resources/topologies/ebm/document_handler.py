@@ -2,7 +2,7 @@ import sys, logging, time
 sys.path.append('../../multilang/python')
 
 from functools import wraps
-from build.gen import document_pb2
+from spa import SpaDoc_pb2
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class DocumentHandler(AbstractHandler):
 
     @timethis
     def handle(self, payload):
-        document = document_pb2.Document()
+        document = SpaDoc_pb2.Document()
         document.ParseFromString(payload)
         result = self.handle_document(document)
         return result.SerializeToString()

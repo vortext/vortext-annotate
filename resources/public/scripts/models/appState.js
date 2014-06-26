@@ -36,8 +36,8 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
         _.each(result.get("annotations"), function(annotation) {
           _.each(annotation.mapping, function(node) {
             node = _.extend(node, props);
-            acc[node.pageIndex] = acc[node.pageIndex] || {};
-            acc[node.pageIndex][node.node] = Object.freeze(_.union(acc[node.pageIndex][node.node] || [], node));
+            acc[node["page-index"]] = acc[node["page-index"]] || {};
+            acc[node["page-index"]][node["node-index"]] = Object.freeze(_.union(acc[node["page-index"]][node["node-index"]] || [], node));
           });
         });
       });

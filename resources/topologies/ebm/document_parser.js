@@ -15,7 +15,7 @@ require('./pdfjs/singlefile/build/pdf.combined.js');
 
 PDFJS.disableWorker = true;
 
-var builder = ProtoBuf.loadProtoFile(__dirname + "/document.proto"), // somehow must be an absolute path
+var builder = ProtoBuf.loadProtoFile(__dirname + "/SpaDoc.proto"), // somehow must be an absolute path
     spa = builder.build("spa"),
     Document = spa.Document;
 
@@ -32,8 +32,8 @@ function textContentToDocument(content) {
     for (var j = 0; j < items.length; j++) {
       var item = items[j];
       var nextOffset = offset + item.str.length;
-      var node = { pageIndex: i,
-		   nodeIndex: j,
+      var node = { page_index: i,
+		   node_index: j,
 		   interval: { lower: totalLength + offset,
 			       upper: totalLength + nextOffset }};
       text += (item.str + " ");

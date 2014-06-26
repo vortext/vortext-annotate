@@ -58,7 +58,7 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
  brew install zeromq
  sudo easy_install pyzmq # python bindings for zeromq, pip fails on Mac OS X Mavericks
  # (alternatively use pip install pyzmq-static)
- npm install underscore q zmq atob commander # Node.js requirements
+ npm -g install underscore q zmq atob commander protobufjs
    #+END_SRC
 
    #+BEGIN_SRC

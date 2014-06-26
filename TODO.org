@@ -1,6 +1,6 @@
 * IN PROGRESS Python SpaDoc
 ** IN PROGRESS ProtocolBuffers
-*** DONE Define spec
+*** VERIFY Define spec
 *** DONE Implement NodeJS
 *** IN PROGRESS Implement Python
 *** Implement Clojure
