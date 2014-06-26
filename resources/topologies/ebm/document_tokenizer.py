@@ -2,27 +2,35 @@ import logging, re
 log = logging.getLogger(__name__)
 
 from document_handler import DocumentHandler
+from interval_tree import IntervalTree
 from nltk.tokenize.punkt import PunktSentenceTokenizer
 
-class OverlappingIntervals():
-    """
-    Maintains a list of start, end tuples and calculates overlaps.
-    """
-    def __init__(self, intervals):
-        """
-        Takes intervals = list of (start, end) tuples and sorts them.
-        """
-        self.intervals = sorted(intervals)
+class Interval:
+    def __init__(self, lower, upper):
+        self.lower = lower
+        self.upper = upper
 
-    def _is_overlapping(self, i1, i2):
-        return i2[0] < i1[1] and i1[0] < i2[1]
+    def get_begin(self):
+        return self.lower
+
+    def get_end(self):
+        return self.upper
+
+    def __hash__(self):
+        return 31 * self.upper + self.lower
+
+    def __eq__(self, other):
+        return (other.lower, other.upper) == (self.lower, self.upper)
+
+class OverlappingIntervals:
+    def __init__(self, intervals):
+        self.T = IntervalTree(intervals)
+        self.H = dict((obj, index) for index, obj in enumerate(intervals))
 
     def overlap_indices(self, bounds):
-        """
-        Return the 0 indexed positions and bounds of overlapping bounds.
-        FIXME: we can stop iterating when interval[1] > bounds[0] (or use an segment/interval tree)
-        """
-        return [{"index": index, "range": interval} for index, interval in enumerate(self.intervals) if self._is_overlapping(interval, bounds)]
+        nodes = self.T.search(bounds[0], bounds[1])
+        idxs = [self.H[node] for node in nodes]
+        return map(lambda idx,node: {"index": idx, "range": (node.lower, node.upper)}, idxs, nodes)
 
 class Handler(DocumentHandler):
     title = "Tokenizer"
@@ -51,7 +59,7 @@ class Handler(DocumentHandler):
         pages = document.pages
 
         sentence_spans = self.sentence_tokenizer.span_tokenize(text)
-        overlap = OverlappingIntervals([(n.interval.lower, n.interval.upper) for n in nodes])
+        overlap = OverlappingIntervals([Interval(n.interval.lower, n.interval.upper) for n in nodes])
 
         for sentence_span in sentence_spans:
             sentence_nodes = overlap.overlap_indices(sentence_span)
@@ -60,15 +68,14 @@ class Handler(DocumentHandler):
             self.add_mapping(sentence_mapping, sentence_nodes, sentence_span)
 
             sentence = text[sentence_span[0]:sentence_span[1]]
-            sentence_overlap = OverlappingIntervals([node["range"] for node in sentence_nodes])
 
             # Add word mappings
-            for m in self.word_token_pattern.finditer(sentence):
-                word_span = m.span()
-                # Add sentence offset
-                word_nodes = sentence_overlap.overlap_indices([x+sentence_span[0] for x in word_span])
+            # for m in self.word_token_pattern.finditer(sentence):
+            #     word_span = m.span()
+            #     # Add sentence offset
+            #     word_nodes = overlap.overlap_indices([x+sentence_span[0] for x in word_span])
 
-                word_mapping = document.words.add()
-                self.add_mapping(word_mapping, word_nodes, word_span)
+            #     word_mapping = document.words.add()
+            #     self.add_mapping(word_mapping, word_nodes, word_span)
 
         return document
