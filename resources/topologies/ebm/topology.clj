@@ -28,9 +28,11 @@
 
 (defn collapse-annotations
   [marginalis doc]
-  (let [annotations (:annotations marginalis)
+  (let [get-mapping-field (memoize (fn [key] (into [] ((keyword key) doc))))
+        get-node (memoize (fn [key index] (nth (get-mapping-field key) index)))
+        annotations (:annotations marginalis)
         mappings (map :mapping annotations)
-        nodes (map (fn [m] (:elements (nth ((keyword (:key m)) doc) (:index m)))) mappings)
+        nodes (map (fn [m] (:elements (get-node (:key m) (:index m)))) mappings)
         new-mapping (map (fn [ann] (compensate-offset
                                    (map (fn [el] (merge el (nth (:nodes doc) (:node-index el)))) ann)
                                    (:pages doc))) nodes)]
@@ -44,7 +46,7 @@
 
 (def topology
   {:source        (fnk [body] (.bytes body))
-   :pdf           (fnk [source] (js "ebm/document_parser.js" source))
-   :doc           (fnk [pdf] (py "ebm.document_tokenizer" pdf))
+   :pdf           (fnk [source] (js "ebm/document_parser.js" source :timeout 4000))
+   :doc           (fnk [pdf] (py "ebm.document_tokenizer" pdf :timeout 10000))
    :risk-of-bias  (fnk [doc] (py "ebm.risk_of_bias" doc :timeout 10000))
    :sink          (fnk [risk-of-bias] (json/encode (collapse-references (protobuf-load Document risk-of-bias))))})

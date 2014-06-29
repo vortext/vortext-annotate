@@ -2,23 +2,24 @@
 ** IN PROGRESS ProtocolBuffers
 *** VERIFY Define spec
 *** DONE Implement NodeJS
-*** IN PROGRESS Implement Python
-*** Implement Clojure
+*** DONE Implement Python
+*** DONE Implement Clojure
 ** DONE Use scikit word tokenizer
 ** Write data for all the Cochrane PDFs
 ** Write small SpaDoc wrapper for training
 * Client side
+** Rename results to marginalia
 ** "Flux" architecture refactor
 ** Loading states
-** Rename results to marginalia
+*** Better way of loading pages
 ** Show extracted annotations separately
 ** Embed UUID and highlight on hover
 * Annotations
 ** Allow select-drag adding of annotations
 ** W3C RDFa / Providence / Annotations
-** Write named destinations + stand-off markup
 ** Scroll into view for annotations
 ** Database (hash + LSH?) -> Postgres/Riak/Jena?
+** Write named destinations + stand-off markup
 * Server side
 ** Documentation
 ** DONE Better CLI

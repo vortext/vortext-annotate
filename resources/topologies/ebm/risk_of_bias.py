@@ -5,7 +5,6 @@ from document_handler import DocumentHandler
 import cPickle as pickle
 import sklearn
 
-# FIXME: there should be a better way to modularize this code
 sys.path.append(os.path.abspath("resources/topologies/ebm/"))
 import quality3
 
