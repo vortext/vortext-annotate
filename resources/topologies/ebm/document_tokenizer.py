@@ -2,35 +2,7 @@ import logging, re
 log = logging.getLogger(__name__)
 
 from document_handler import DocumentHandler
-from interval_tree import IntervalTree
 from nltk.tokenize.punkt import PunktSentenceTokenizer
-
-class Interval:
-    def __init__(self, lower, upper):
-        self.lower = lower
-        self.upper = upper
-
-    def get_begin(self):
-        return self.lower
-
-    def get_end(self):
-        return self.upper
-
-    def __hash__(self):
-        return 31 * self.upper + self.lower
-
-    def __eq__(self, other):
-        return (other.lower, other.upper) == (self.lower, self.upper)
-
-class OverlappingIntervals:
-    def __init__(self, intervals):
-        self.T = IntervalTree(intervals)
-        self.H = dict((obj, index) for index, obj in enumerate(intervals))
-
-    def overlap_indices(self, bounds):
-        nodes = self.T.search(bounds[0], bounds[1])
-        idxs = [self.H[node] for node in nodes]
-        return map(lambda idx,node: {"index": idx, "range": (node.lower, node.upper)}, idxs, nodes)
 
 class Handler(DocumentHandler):
     title = "Tokenizer"
@@ -56,18 +28,31 @@ class Handler(DocumentHandler):
         """
         text = document.text
         nodes = document.nodes
+        node_intervals = [(n.interval.lower, n.interval.upper) for n in nodes]
         pages = document.pages
 
         sentence_spans = self.sentence_tokenizer.span_tokenize(text)
-        overlap = OverlappingIntervals([Interval(n.interval.lower, n.interval.upper) for n in nodes])
 
+        def _is_overlapping(i1, i2):
+            return i2[0] < i1[1] and i1[0] < i2[1]
+
+        curr = 0
         for sentence_span in sentence_spans:
-            sentence_nodes = overlap.overlap_indices(sentence_span)
-            sentence_mapping = document.sentences.add()
+            sentence_nodes = []
+            if _is_overlapping(sentence_span, node_intervals[max(curr - 1, 0)]):
+                curr = max(curr - 1, 0)
+            while not _is_overlapping(sentence_span, node_intervals[curr]):
+                curr += 1
+            while curr < len(nodes) and _is_overlapping(sentence_span, node_intervals[curr]):
+                sentence_nodes += [{"index": curr,
+                                    "range": (nodes[curr].interval.lower,
+                                              nodes[curr].interval.upper)}]
+                curr += 1
 
-            self.add_mapping(sentence_mapping, sentence_nodes, sentence_span)
-
-            sentence = text[sentence_span[0]:sentence_span[1]]
+            if sentence_nodes:
+                sentence_mapping = document.sentences.add()
+                self.add_mapping(sentence_mapping, sentence_nodes, sentence_span)
+           #sentence = text[sentence_span[0]:sentence_span[1]]
 
             # Add word mappings
             # for m in self.word_token_pattern.finditer(sentence):

@@ -5,11 +5,11 @@
 *** DONE Implement Python
 *** DONE Implement Clojure
 ** DONE Use scikit word tokenizer
-** Write data for all the Cochrane PDFs
+** Write cache for all the Cochrane PDFs
 ** Write small SpaDoc wrapper for training
 * Client side
 ** Rename results to marginalia
-** "Flux" architecture refactor
+** [[https://facebook.github.io/react/docs/flux-overview.html]["Flux" architecture]] refactor
 ** Loading states
 *** Better way of loading pages
 ** Show extracted annotations separately
@@ -18,7 +18,7 @@
 ** Allow select-drag adding of annotations
 ** W3C RDFa / Providence / Annotations
 ** Scroll into view for annotations
-** Database (hash + LSH?) -> Postgres/Riak/Jena?
+** Database (hash + Locality Sensitive Hashing) -> Postgres/Riak/Jena?
 ** Write named destinations + stand-off markup
 * Server side
 ** Documentation

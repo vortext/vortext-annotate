@@ -344,25 +344,25 @@ public final class SpaDoc {
     public interface IntervalOrBuilder
         extends com.google.protobuf.MessageOrBuilder {
 
-      // required int64 upper = 1;
+      // required uint32 upper = 1;
       /**
-       * <code>required int64 upper = 1;</code>
+       * <code>required uint32 upper = 1;</code>
        */
       boolean hasUpper();
       /**
-       * <code>required int64 upper = 1;</code>
+       * <code>required uint32 upper = 1;</code>
        */
-      long getUpper();
+      int getUpper();
 
-      // required int64 lower = 2;
+      // required uint32 lower = 2;
       /**
-       * <code>required int64 lower = 2;</code>
+       * <code>required uint32 lower = 2;</code>
        */
       boolean hasLower();
       /**
-       * <code>required int64 lower = 2;</code>
+       * <code>required uint32 lower = 2;</code>
        */
-      long getLower();
+      int getLower();
     }
     /**
      * Protobuf type {@code spa.Document.Interval}
@@ -417,12 +417,12 @@ public final class SpaDoc {
               }
               case 8: {
                 bitField0_ |= 0x00000001;
-                upper_ = input.readInt64();
+                upper_ = input.readUInt32();
                 break;
               }
               case 16: {
                 bitField0_ |= 0x00000002;
-                lower_ = input.readInt64();
+                lower_ = input.readUInt32();
                 break;
               }
             }
@@ -465,41 +465,41 @@ public final class SpaDoc {
       }
 
       private int bitField0_;
-      // required int64 upper = 1;
+      // required uint32 upper = 1;
       public static final int UPPER_FIELD_NUMBER = 1;
-      private long upper_;
+      private int upper_;
       /**
-       * <code>required int64 upper = 1;</code>
+       * <code>required uint32 upper = 1;</code>
        */
       public boolean hasUpper() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int64 upper = 1;</code>
+       * <code>required uint32 upper = 1;</code>
        */
-      public long getUpper() {
+      public int getUpper() {
         return upper_;
       }
 
-      // required int64 lower = 2;
+      // required uint32 lower = 2;
       public static final int LOWER_FIELD_NUMBER = 2;
-      private long lower_;
+      private int lower_;
       /**
-       * <code>required int64 lower = 2;</code>
+       * <code>required uint32 lower = 2;</code>
        */
       public boolean hasLower() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int64 lower = 2;</code>
+       * <code>required uint32 lower = 2;</code>
        */
-      public long getLower() {
+      public int getLower() {
         return lower_;
       }
 
       private void initFields() {
-        upper_ = 0L;
-        lower_ = 0L;
+        upper_ = 0;
+        lower_ = 0;
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -522,10 +522,10 @@ public final class SpaDoc {
                           throws java.io.IOException {
         getSerializedSize();
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeInt64(1, upper_);
+          output.writeUInt32(1, upper_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeInt64(2, lower_);
+          output.writeUInt32(2, lower_);
         }
         getUnknownFields().writeTo(output);
       }
@@ -538,11 +538,11 @@ public final class SpaDoc {
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt64Size(1, upper_);
+            .computeUInt32Size(1, upper_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt64Size(2, lower_);
+            .computeUInt32Size(2, lower_);
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -660,9 +660,9 @@ public final class SpaDoc {
 
         public Builder clear() {
           super.clear();
-          upper_ = 0L;
+          upper_ = 0;
           bitField0_ = (bitField0_ & ~0x00000001);
-          lower_ = 0L;
+          lower_ = 0;
           bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
@@ -757,68 +757,68 @@ public final class SpaDoc {
         }
         private int bitField0_;
 
-        // required int64 upper = 1;
-        private long upper_ ;
+        // required uint32 upper = 1;
+        private int upper_ ;
         /**
-         * <code>required int64 upper = 1;</code>
+         * <code>required uint32 upper = 1;</code>
          */
         public boolean hasUpper() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required int64 upper = 1;</code>
+         * <code>required uint32 upper = 1;</code>
          */
-        public long getUpper() {
+        public int getUpper() {
           return upper_;
         }
         /**
-         * <code>required int64 upper = 1;</code>
+         * <code>required uint32 upper = 1;</code>
          */
-        public Builder setUpper(long value) {
+        public Builder setUpper(int value) {
           bitField0_ |= 0x00000001;
           upper_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required int64 upper = 1;</code>
+         * <code>required uint32 upper = 1;</code>
          */
         public Builder clearUpper() {
           bitField0_ = (bitField0_ & ~0x00000001);
-          upper_ = 0L;
+          upper_ = 0;
           onChanged();
           return this;
         }
 
-        // required int64 lower = 2;
-        private long lower_ ;
+        // required uint32 lower = 2;
+        private int lower_ ;
         /**
-         * <code>required int64 lower = 2;</code>
+         * <code>required uint32 lower = 2;</code>
          */
         public boolean hasLower() {
           return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
-         * <code>required int64 lower = 2;</code>
+         * <code>required uint32 lower = 2;</code>
          */
-        public long getLower() {
+        public int getLower() {
           return lower_;
         }
         /**
-         * <code>required int64 lower = 2;</code>
+         * <code>required uint32 lower = 2;</code>
          */
-        public Builder setLower(long value) {
+        public Builder setLower(int value) {
           bitField0_ |= 0x00000002;
           lower_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required int64 lower = 2;</code>
+         * <code>required uint32 lower = 2;</code>
          */
         public Builder clearLower() {
           bitField0_ = (bitField0_ & ~0x00000002);
-          lower_ = 0L;
+          lower_ = 0;
           onChanged();
           return this;
         }
@@ -837,25 +837,25 @@ public final class SpaDoc {
     public interface NodeOrBuilder
         extends com.google.protobuf.MessageOrBuilder {
 
-      // required uint64 page_index = 1;
+      // required uint32 page_index = 1;
       /**
-       * <code>required uint64 page_index = 1;</code>
+       * <code>required uint32 page_index = 1;</code>
        */
       boolean hasPageIndex();
       /**
-       * <code>required uint64 page_index = 1;</code>
+       * <code>required uint32 page_index = 1;</code>
        */
-      long getPageIndex();
+      int getPageIndex();
 
-      // required uint64 node_index = 2;
+      // required uint32 node_index = 2;
       /**
-       * <code>required uint64 node_index = 2;</code>
+       * <code>required uint32 node_index = 2;</code>
        */
       boolean hasNodeIndex();
       /**
-       * <code>required uint64 node_index = 2;</code>
+       * <code>required uint32 node_index = 2;</code>
        */
-      long getNodeIndex();
+      int getNodeIndex();
 
       // required .spa.Document.Interval interval = 3;
       /**
@@ -924,12 +924,12 @@ public final class SpaDoc {
               }
               case 8: {
                 bitField0_ |= 0x00000001;
-                pageIndex_ = input.readUInt64();
+                pageIndex_ = input.readUInt32();
                 break;
               }
               case 16: {
                 bitField0_ |= 0x00000002;
-                nodeIndex_ = input.readUInt64();
+                nodeIndex_ = input.readUInt32();
                 break;
               }
               case 26: {
@@ -985,35 +985,35 @@ public final class SpaDoc {
       }
 
       private int bitField0_;
-      // required uint64 page_index = 1;
+      // required uint32 page_index = 1;
       public static final int PAGE_INDEX_FIELD_NUMBER = 1;
-      private long pageIndex_;
+      private int pageIndex_;
       /**
-       * <code>required uint64 page_index = 1;</code>
+       * <code>required uint32 page_index = 1;</code>
        */
       public boolean hasPageIndex() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required uint64 page_index = 1;</code>
+       * <code>required uint32 page_index = 1;</code>
        */
-      public long getPageIndex() {
+      public int getPageIndex() {
         return pageIndex_;
       }
 
-      // required uint64 node_index = 2;
+      // required uint32 node_index = 2;
       public static final int NODE_INDEX_FIELD_NUMBER = 2;
-      private long nodeIndex_;
+      private int nodeIndex_;
       /**
-       * <code>required uint64 node_index = 2;</code>
+       * <code>required uint32 node_index = 2;</code>
        */
       public boolean hasNodeIndex() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required uint64 node_index = 2;</code>
+       * <code>required uint32 node_index = 2;</code>
        */
-      public long getNodeIndex() {
+      public int getNodeIndex() {
         return nodeIndex_;
       }
 
@@ -1040,8 +1040,8 @@ public final class SpaDoc {
       }
 
       private void initFields() {
-        pageIndex_ = 0L;
-        nodeIndex_ = 0L;
+        pageIndex_ = 0;
+        nodeIndex_ = 0;
         interval_ = spa.SpaDoc.Document.Interval.getDefaultInstance();
       }
       private byte memoizedIsInitialized = -1;
@@ -1073,10 +1073,10 @@ public final class SpaDoc {
                           throws java.io.IOException {
         getSerializedSize();
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeUInt64(1, pageIndex_);
+          output.writeUInt32(1, pageIndex_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeUInt64(2, nodeIndex_);
+          output.writeUInt32(2, nodeIndex_);
         }
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
           output.writeMessage(3, interval_);
@@ -1092,11 +1092,11 @@ public final class SpaDoc {
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeUInt64Size(1, pageIndex_);
+            .computeUInt32Size(1, pageIndex_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeUInt64Size(2, nodeIndex_);
+            .computeUInt32Size(2, nodeIndex_);
         }
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
           size += com.google.protobuf.CodedOutputStream
@@ -1219,9 +1219,9 @@ public final class SpaDoc {
 
         public Builder clear() {
           super.clear();
-          pageIndex_ = 0L;
+          pageIndex_ = 0;
           bitField0_ = (bitField0_ & ~0x00000001);
-          nodeIndex_ = 0L;
+          nodeIndex_ = 0;
           bitField0_ = (bitField0_ & ~0x00000002);
           if (intervalBuilder_ == null) {
             interval_ = spa.SpaDoc.Document.Interval.getDefaultInstance();
@@ -1341,68 +1341,68 @@ public final class SpaDoc {
         }
         private int bitField0_;
 
-        // required uint64 page_index = 1;
-        private long pageIndex_ ;
+        // required uint32 page_index = 1;
+        private int pageIndex_ ;
         /**
-         * <code>required uint64 page_index = 1;</code>
+         * <code>required uint32 page_index = 1;</code>
          */
         public boolean hasPageIndex() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required uint64 page_index = 1;</code>
+         * <code>required uint32 page_index = 1;</code>
          */
-        public long getPageIndex() {
+        public int getPageIndex() {
           return pageIndex_;
         }
         /**
-         * <code>required uint64 page_index = 1;</code>
+         * <code>required uint32 page_index = 1;</code>
          */
-        public Builder setPageIndex(long value) {
+        public Builder setPageIndex(int value) {
           bitField0_ |= 0x00000001;
           pageIndex_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required uint64 page_index = 1;</code>
+         * <code>required uint32 page_index = 1;</code>
          */
         public Builder clearPageIndex() {
           bitField0_ = (bitField0_ & ~0x00000001);
-          pageIndex_ = 0L;
+          pageIndex_ = 0;
           onChanged();
           return this;
         }
 
-        // required uint64 node_index = 2;
-        private long nodeIndex_ ;
+        // required uint32 node_index = 2;
+        private int nodeIndex_ ;
         /**
-         * <code>required uint64 node_index = 2;</code>
+         * <code>required uint32 node_index = 2;</code>
          */
         public boolean hasNodeIndex() {
           return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
-         * <code>required uint64 node_index = 2;</code>
+         * <code>required uint32 node_index = 2;</code>
          */
-        public long getNodeIndex() {
+        public int getNodeIndex() {
           return nodeIndex_;
         }
         /**
-         * <code>required uint64 node_index = 2;</code>
+         * <code>required uint32 node_index = 2;</code>
          */
-        public Builder setNodeIndex(long value) {
+        public Builder setNodeIndex(int value) {
           bitField0_ |= 0x00000002;
           nodeIndex_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required uint64 node_index = 2;</code>
+         * <code>required uint32 node_index = 2;</code>
          */
         public Builder clearNodeIndex() {
           bitField0_ = (bitField0_ & ~0x00000002);
-          nodeIndex_ = 0L;
+          nodeIndex_ = 0;
           onChanged();
           return this;
         }
@@ -1538,25 +1538,25 @@ public final class SpaDoc {
     public interface PageOrBuilder
         extends com.google.protobuf.MessageOrBuilder {
 
-      // required uint64 length = 1;
+      // required uint32 length = 1;
       /**
-       * <code>required uint64 length = 1;</code>
+       * <code>required uint32 length = 1;</code>
        */
       boolean hasLength();
       /**
-       * <code>required uint64 length = 1;</code>
+       * <code>required uint32 length = 1;</code>
        */
-      long getLength();
+      int getLength();
 
-      // required uint64 offset = 2;
+      // required uint32 offset = 2;
       /**
-       * <code>required uint64 offset = 2;</code>
+       * <code>required uint32 offset = 2;</code>
        */
       boolean hasOffset();
       /**
-       * <code>required uint64 offset = 2;</code>
+       * <code>required uint32 offset = 2;</code>
        */
-      long getOffset();
+      int getOffset();
     }
     /**
      * Protobuf type {@code spa.Document.Page}
@@ -1611,12 +1611,12 @@ public final class SpaDoc {
               }
               case 8: {
                 bitField0_ |= 0x00000001;
-                length_ = input.readUInt64();
+                length_ = input.readUInt32();
                 break;
               }
               case 16: {
                 bitField0_ |= 0x00000002;
-                offset_ = input.readUInt64();
+                offset_ = input.readUInt32();
                 break;
               }
             }
@@ -1659,41 +1659,41 @@ public final class SpaDoc {
       }
 
       private int bitField0_;
-      // required uint64 length = 1;
+      // required uint32 length = 1;
       public static final int LENGTH_FIELD_NUMBER = 1;
-      private long length_;
+      private int length_;
       /**
-       * <code>required uint64 length = 1;</code>
+       * <code>required uint32 length = 1;</code>
        */
       public boolean hasLength() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required uint64 length = 1;</code>
+       * <code>required uint32 length = 1;</code>
        */
-      public long getLength() {
+      public int getLength() {
         return length_;
       }
 
-      // required uint64 offset = 2;
+      // required uint32 offset = 2;
       public static final int OFFSET_FIELD_NUMBER = 2;
-      private long offset_;
+      private int offset_;
       /**
-       * <code>required uint64 offset = 2;</code>
+       * <code>required uint32 offset = 2;</code>
        */
       public boolean hasOffset() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required uint64 offset = 2;</code>
+       * <code>required uint32 offset = 2;</code>
        */
-      public long getOffset() {
+      public int getOffset() {
         return offset_;
       }
 
       private void initFields() {
-        length_ = 0L;
-        offset_ = 0L;
+        length_ = 0;
+        offset_ = 0;
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -1716,10 +1716,10 @@ public final class SpaDoc {
                           throws java.io.IOException {
         getSerializedSize();
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeUInt64(1, length_);
+          output.writeUInt32(1, length_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeUInt64(2, offset_);
+          output.writeUInt32(2, offset_);
         }
         getUnknownFields().writeTo(output);
       }
@@ -1732,11 +1732,11 @@ public final class SpaDoc {
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeUInt64Size(1, length_);
+            .computeUInt32Size(1, length_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeUInt64Size(2, offset_);
+            .computeUInt32Size(2, offset_);
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -1854,9 +1854,9 @@ public final class SpaDoc {
 
         public Builder clear() {
           super.clear();
-          length_ = 0L;
+          length_ = 0;
           bitField0_ = (bitField0_ & ~0x00000001);
-          offset_ = 0L;
+          offset_ = 0;
           bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
@@ -1951,68 +1951,68 @@ public final class SpaDoc {
         }
         private int bitField0_;
 
-        // required uint64 length = 1;
-        private long length_ ;
+        // required uint32 length = 1;
+        private int length_ ;
         /**
-         * <code>required uint64 length = 1;</code>
+         * <code>required uint32 length = 1;</code>
          */
         public boolean hasLength() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required uint64 length = 1;</code>
+         * <code>required uint32 length = 1;</code>
          */
-        public long getLength() {
+        public int getLength() {
           return length_;
         }
         /**
-         * <code>required uint64 length = 1;</code>
+         * <code>required uint32 length = 1;</code>
          */
-        public Builder setLength(long value) {
+        public Builder setLength(int value) {
           bitField0_ |= 0x00000001;
           length_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required uint64 length = 1;</code>
+         * <code>required uint32 length = 1;</code>
          */
         public Builder clearLength() {
           bitField0_ = (bitField0_ & ~0x00000001);
-          length_ = 0L;
+          length_ = 0;
           onChanged();
           return this;
         }
 
-        // required uint64 offset = 2;
-        private long offset_ ;
+        // required uint32 offset = 2;
+        private int offset_ ;
         /**
-         * <code>required uint64 offset = 2;</code>
+         * <code>required uint32 offset = 2;</code>
          */
         public boolean hasOffset() {
           return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
-         * <code>required uint64 offset = 2;</code>
+         * <code>required uint32 offset = 2;</code>
          */
-        public long getOffset() {
+        public int getOffset() {
           return offset_;
         }
         /**
-         * <code>required uint64 offset = 2;</code>
+         * <code>required uint32 offset = 2;</code>
          */
-        public Builder setOffset(long value) {
+        public Builder setOffset(int value) {
           bitField0_ |= 0x00000002;
           offset_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required uint64 offset = 2;</code>
+         * <code>required uint32 offset = 2;</code>
          */
         public Builder clearOffset() {
           bitField0_ = (bitField0_ & ~0x00000002);
-          offset_ = 0L;
+          offset_ = 0;
           onChanged();
           return this;
         }
@@ -2160,15 +2160,15 @@ public final class SpaDoc {
       public interface ElementOrBuilder
           extends com.google.protobuf.MessageOrBuilder {
 
-        // required uint64 node_index = 1;
+        // required uint32 node_index = 1;
         /**
-         * <code>required uint64 node_index = 1;</code>
+         * <code>required uint32 node_index = 1;</code>
          */
         boolean hasNodeIndex();
         /**
-         * <code>required uint64 node_index = 1;</code>
+         * <code>required uint32 node_index = 1;</code>
          */
-        long getNodeIndex();
+        int getNodeIndex();
 
         // required .spa.Document.Interval range = 2;
         /**
@@ -2237,7 +2237,7 @@ public final class SpaDoc {
                 }
                 case 8: {
                   bitField0_ |= 0x00000001;
-                  nodeIndex_ = input.readUInt64();
+                  nodeIndex_ = input.readUInt32();
                   break;
                 }
                 case 18: {
@@ -2293,19 +2293,19 @@ public final class SpaDoc {
         }
 
         private int bitField0_;
-        // required uint64 node_index = 1;
+        // required uint32 node_index = 1;
         public static final int NODE_INDEX_FIELD_NUMBER = 1;
-        private long nodeIndex_;
+        private int nodeIndex_;
         /**
-         * <code>required uint64 node_index = 1;</code>
+         * <code>required uint32 node_index = 1;</code>
          */
         public boolean hasNodeIndex() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required uint64 node_index = 1;</code>
+         * <code>required uint32 node_index = 1;</code>
          */
-        public long getNodeIndex() {
+        public int getNodeIndex() {
           return nodeIndex_;
         }
 
@@ -2332,7 +2332,7 @@ public final class SpaDoc {
         }
 
         private void initFields() {
-          nodeIndex_ = 0L;
+          nodeIndex_ = 0;
           range_ = spa.SpaDoc.Document.Interval.getDefaultInstance();
         }
         private byte memoizedIsInitialized = -1;
@@ -2360,7 +2360,7 @@ public final class SpaDoc {
                             throws java.io.IOException {
           getSerializedSize();
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            output.writeUInt64(1, nodeIndex_);
+            output.writeUInt32(1, nodeIndex_);
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             output.writeMessage(2, range_);
@@ -2376,7 +2376,7 @@ public final class SpaDoc {
           size = 0;
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeUInt64Size(1, nodeIndex_);
+              .computeUInt32Size(1, nodeIndex_);
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             size += com.google.protobuf.CodedOutputStream
@@ -2499,7 +2499,7 @@ public final class SpaDoc {
 
           public Builder clear() {
             super.clear();
-            nodeIndex_ = 0L;
+            nodeIndex_ = 0;
             bitField0_ = (bitField0_ & ~0x00000001);
             if (rangeBuilder_ == null) {
               range_ = spa.SpaDoc.Document.Interval.getDefaultInstance();
@@ -2608,35 +2608,35 @@ public final class SpaDoc {
           }
           private int bitField0_;
 
-          // required uint64 node_index = 1;
-          private long nodeIndex_ ;
+          // required uint32 node_index = 1;
+          private int nodeIndex_ ;
           /**
-           * <code>required uint64 node_index = 1;</code>
+           * <code>required uint32 node_index = 1;</code>
            */
           public boolean hasNodeIndex() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
           }
           /**
-           * <code>required uint64 node_index = 1;</code>
+           * <code>required uint32 node_index = 1;</code>
            */
-          public long getNodeIndex() {
+          public int getNodeIndex() {
             return nodeIndex_;
           }
           /**
-           * <code>required uint64 node_index = 1;</code>
+           * <code>required uint32 node_index = 1;</code>
            */
-          public Builder setNodeIndex(long value) {
+          public Builder setNodeIndex(int value) {
             bitField0_ |= 0x00000001;
             nodeIndex_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>required uint64 node_index = 1;</code>
+           * <code>required uint32 node_index = 1;</code>
            */
           public Builder clearNodeIndex() {
             bitField0_ = (bitField0_ & ~0x00000001);
-            nodeIndex_ = 0L;
+            nodeIndex_ = 0;
             onChanged();
             return this;
           }
@@ -3749,15 +3749,15 @@ public final class SpaDoc {
           com.google.protobuf.ByteString
               getKeyBytes();
 
-          // required uint64 index = 2;
+          // required uint32 index = 2;
           /**
-           * <code>required uint64 index = 2;</code>
+           * <code>required uint32 index = 2;</code>
            */
           boolean hasIndex();
           /**
-           * <code>required uint64 index = 2;</code>
+           * <code>required uint32 index = 2;</code>
            */
-          long getIndex();
+          int getIndex();
         }
         /**
          * Protobuf type {@code spa.Document.Marginalis.Annotation.Mapping}
@@ -3817,7 +3817,7 @@ public final class SpaDoc {
                   }
                   case 16: {
                     bitField0_ |= 0x00000002;
-                    index_ = input.readUInt64();
+                    index_ = input.readUInt32();
                     break;
                   }
                 }
@@ -3915,25 +3915,25 @@ public final class SpaDoc {
             }
           }
 
-          // required uint64 index = 2;
+          // required uint32 index = 2;
           public static final int INDEX_FIELD_NUMBER = 2;
-          private long index_;
+          private int index_;
           /**
-           * <code>required uint64 index = 2;</code>
+           * <code>required uint32 index = 2;</code>
            */
           public boolean hasIndex() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
           }
           /**
-           * <code>required uint64 index = 2;</code>
+           * <code>required uint32 index = 2;</code>
            */
-          public long getIndex() {
+          public int getIndex() {
             return index_;
           }
 
           private void initFields() {
             key_ = "";
-            index_ = 0L;
+            index_ = 0;
           }
           private byte memoizedIsInitialized = -1;
           public final boolean isInitialized() {
@@ -3959,7 +3959,7 @@ public final class SpaDoc {
               output.writeBytes(1, getKeyBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-              output.writeUInt64(2, index_);
+              output.writeUInt32(2, index_);
             }
             getUnknownFields().writeTo(output);
           }
@@ -3976,7 +3976,7 @@ public final class SpaDoc {
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
               size += com.google.protobuf.CodedOutputStream
-                .computeUInt64Size(2, index_);
+                .computeUInt32Size(2, index_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -4096,7 +4096,7 @@ public final class SpaDoc {
               super.clear();
               key_ = "";
               bitField0_ = (bitField0_ & ~0x00000001);
-              index_ = 0L;
+              index_ = 0;
               bitField0_ = (bitField0_ & ~0x00000002);
               return this;
             }
@@ -4291,35 +4291,35 @@ public final class SpaDoc {
               return this;
             }
 
-            // required uint64 index = 2;
-            private long index_ ;
+            // required uint32 index = 2;
+            private int index_ ;
             /**
-             * <code>required uint64 index = 2;</code>
+             * <code>required uint32 index = 2;</code>
              */
             public boolean hasIndex() {
               return ((bitField0_ & 0x00000002) == 0x00000002);
             }
             /**
-             * <code>required uint64 index = 2;</code>
+             * <code>required uint32 index = 2;</code>
              */
-            public long getIndex() {
+            public int getIndex() {
               return index_;
             }
             /**
-             * <code>required uint64 index = 2;</code>
+             * <code>required uint32 index = 2;</code>
              */
-            public Builder setIndex(long value) {
+            public Builder setIndex(int value) {
               bitField0_ |= 0x00000002;
               index_ = value;
               onChanged();
               return this;
             }
             /**
-             * <code>required uint64 index = 2;</code>
+             * <code>required uint32 index = 2;</code>
              */
             public Builder clearIndex() {
               bitField0_ = (bitField0_ & ~0x00000002);
-              index_ = 0L;
+              index_ = 0;
               onChanged();
               return this;
             }
@@ -8535,12 +8535,12 @@ public final class SpaDoc {
       "Mapping\022(\n\tsentences\030\006 \003(\0132\025.spa.Documen" +
       "t.Mapping\022,\n\nmarginalia\030\007 \003(\0132\030.spa.Docu" +
       "ment.Marginalis\032(\n\010Interval\022\r\n\005upper\030\001 \002" +
-      "(\003\022\r\n\005lower\030\002 \002(\003\032X\n\004Node\022\022\n\npage_index\030" +
-      "\001 \002(\004\022\022\n\nnode_index\030\002 \002(\004\022(\n\010interval\030\003 " +
+      "(\r\022\r\n\005lower\030\002 \002(\r\032X\n\004Node\022\022\n\npage_index\030" +
+      "\001 \002(\r\022\022\n\nnode_index\030\002 \002(\r\022(\n\010interval\030\003 " +
       "\002(\0132\026.spa.Document.Interval\032&\n\004Page\022\016\n\006l",
-      "ength\030\001 \002(\004\022\016\n\006offset\030\002 \002(\004\032\200\001\n\007Mapping\022" +
+      "ength\030\001 \002(\r\022\016\n\006offset\030\002 \002(\r\032\200\001\n\007Mapping\022" +
       "/\n\010elements\030\001 \003(\0132\035.spa.Document.Mapping" +
-      ".Element\032D\n\007Element\022\022\n\nnode_index\030\001 \002(\004\022" +
+      ".Element\032D\n\007Element\022\022\n\nnode_index\030\001 \002(\r\022" +
       "%\n\005range\030\002 \002(\0132\026.spa.Document.Interval\032\231" +
       "\002\n\nMarginalis\022\014\n\004type\030\001 \001(\t\022\r\n\005title\030\002 \002" +
       "(\t\022\023\n\013description\030\003 \001(\t\0228\n\013annotations\030\004" +
@@ -8549,7 +8549,7 @@ public final class SpaDoc {
       " \001(\t\022\017\n\007content\030\003 \001(\t\022<\n\007mapping\030\004 \001(\0132+" +
       ".spa.Document.Marginalis.Annotation.Mapp",
       "ing\032%\n\007Mapping\022\013\n\003key\030\001 \002(\t\022\r\n\005index\030\002 \002" +
-      "(\004"
+      "(\r"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

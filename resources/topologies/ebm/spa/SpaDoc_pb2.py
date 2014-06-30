@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='SpaDoc.proto',
   package='spa',
-  serialized_pb='\n\x0cSpaDoc.proto\x12\x03spa\"\xb4\x06\n\x08\x44ocument\x12\x0c\n\x04text\x18\x01 \x02(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12!\n\x05nodes\x18\x03 \x03(\x0b\x32\x12.spa.Document.Node\x12!\n\x05pages\x18\x04 \x03(\x0b\x32\x12.spa.Document.Page\x12$\n\x05words\x18\x05 \x03(\x0b\x32\x15.spa.Document.Mapping\x12(\n\tsentences\x18\x06 \x03(\x0b\x32\x15.spa.Document.Mapping\x12,\n\nmarginalia\x18\x07 \x03(\x0b\x32\x18.spa.Document.Marginalis\x1a(\n\x08Interval\x12\r\n\x05upper\x18\x01 \x02(\x03\x12\r\n\x05lower\x18\x02 \x02(\x03\x1aX\n\x04Node\x12\x12\n\npage_index\x18\x01 \x02(\x04\x12\x12\n\nnode_index\x18\x02 \x02(\x04\x12(\n\x08interval\x18\x03 \x02(\x0b\x32\x16.spa.Document.Interval\x1a&\n\x04Page\x12\x0e\n\x06length\x18\x01 \x02(\x04\x12\x0e\n\x06offset\x18\x02 \x02(\x04\x1a\x80\x01\n\x07Mapping\x12/\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x1d.spa.Document.Mapping.Element\x1a\x44\n\x07\x45lement\x12\x12\n\nnode_index\x18\x01 \x02(\x04\x12%\n\x05range\x18\x02 \x02(\x0b\x32\x16.spa.Document.Interval\x1a\x99\x02\n\nMarginalis\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x38\n\x0b\x61nnotations\x18\x04 \x03(\x0b\x32#.spa.Document.Marginalis.Annotation\x1a\x9e\x01\n\nAnnotation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12<\n\x07mapping\x18\x04 \x01(\x0b\x32+.spa.Document.Marginalis.Annotation.Mapping\x1a%\n\x07Mapping\x12\x0b\n\x03key\x18\x01 \x02(\t\x12\r\n\x05index\x18\x02 \x02(\x04')
+  serialized_pb='\n\x0cSpaDoc.proto\x12\x03spa\"\xb4\x06\n\x08\x44ocument\x12\x0c\n\x04text\x18\x01 \x02(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12!\n\x05nodes\x18\x03 \x03(\x0b\x32\x12.spa.Document.Node\x12!\n\x05pages\x18\x04 \x03(\x0b\x32\x12.spa.Document.Page\x12$\n\x05words\x18\x05 \x03(\x0b\x32\x15.spa.Document.Mapping\x12(\n\tsentences\x18\x06 \x03(\x0b\x32\x15.spa.Document.Mapping\x12,\n\nmarginalia\x18\x07 \x03(\x0b\x32\x18.spa.Document.Marginalis\x1a(\n\x08Interval\x12\r\n\x05upper\x18\x01 \x02(\r\x12\r\n\x05lower\x18\x02 \x02(\r\x1aX\n\x04Node\x12\x12\n\npage_index\x18\x01 \x02(\r\x12\x12\n\nnode_index\x18\x02 \x02(\r\x12(\n\x08interval\x18\x03 \x02(\x0b\x32\x16.spa.Document.Interval\x1a&\n\x04Page\x12\x0e\n\x06length\x18\x01 \x02(\r\x12\x0e\n\x06offset\x18\x02 \x02(\r\x1a\x80\x01\n\x07Mapping\x12/\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x1d.spa.Document.Mapping.Element\x1a\x44\n\x07\x45lement\x12\x12\n\nnode_index\x18\x01 \x02(\r\x12%\n\x05range\x18\x02 \x02(\x0b\x32\x16.spa.Document.Interval\x1a\x99\x02\n\nMarginalis\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x38\n\x0b\x61nnotations\x18\x04 \x03(\x0b\x32#.spa.Document.Marginalis.Annotation\x1a\x9e\x01\n\nAnnotation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12<\n\x07mapping\x18\x04 \x01(\x0b\x32+.spa.Document.Marginalis.Annotation.Mapping\x1a%\n\x07Mapping\x12\x0b\n\x03key\x18\x01 \x02(\t\x12\r\n\x05index\x18\x02 \x02(\r')
 
 
 
@@ -27,14 +27,14 @@ _DOCUMENT_INTERVAL = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='upper', full_name='spa.Document.Interval.upper', index=0,
-      number=1, type=3, cpp_type=2, label=2,
+      number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='lower', full_name='spa.Document.Interval.lower', index=1,
-      number=2, type=3, cpp_type=2, label=2,
+      number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -61,14 +61,14 @@ _DOCUMENT_NODE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='page_index', full_name='spa.Document.Node.page_index', index=0,
-      number=1, type=4, cpp_type=4, label=2,
+      number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='node_index', full_name='spa.Document.Node.node_index', index=1,
-      number=2, type=4, cpp_type=4, label=2,
+      number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -102,14 +102,14 @@ _DOCUMENT_PAGE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='length', full_name='spa.Document.Page.length', index=0,
-      number=1, type=4, cpp_type=4, label=2,
+      number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='offset', full_name='spa.Document.Page.offset', index=1,
-      number=2, type=4, cpp_type=4, label=2,
+      number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -136,7 +136,7 @@ _DOCUMENT_MAPPING_ELEMENT = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='node_index', full_name='spa.Document.Mapping.Element.node_index', index=0,
-      number=1, type=4, cpp_type=4, label=2,
+      number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -204,7 +204,7 @@ _DOCUMENT_MARGINALIS_ANNOTATION_MAPPING = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='index', full_name='spa.Document.Marginalis.Annotation.Mapping.index', index=1,
-      number=2, type=4, cpp_type=4, label=2,
+      number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
