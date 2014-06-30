@@ -28,13 +28,14 @@
 
 (defn collapse-annotations
   [marginalis doc]
-  (let [get-mapping-field (memoize (fn [key] (into [] ((keyword key) doc))))
+  (let [get-mapping-field (memoize (fn [key] ((keyword key) doc)))
         get-node (memoize (fn [key index] (nth (get-mapping-field key) index)))
+        get-node-by-element (memoize (fn [el] (nth (:nodes doc) (:node-index el))))
         annotations (:annotations marginalis)
         mappings (map :mapping annotations)
         nodes (map (fn [m] (:elements (get-node (:key m) (:index m)))) mappings)
         new-mapping (map (fn [ann] (compensate-offset
-                                   (map (fn [el] (merge el (nth (:nodes doc) (:node-index el)))) ann)
+                                   (map (fn [el] (merge el (get-node-by-element el))) ann)
                                    (:pages doc))) nodes)]
     (map (fn [a b] (assoc (into {} a) :mapping b)) annotations new-mapping)))
 
