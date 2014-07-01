@@ -6,19 +6,15 @@ var Q = require('q');
 var path_module = require('path');
 var Worker = require('./worker.js');
 
-function toString(val) {
-  return val + "";
-}
-
 program
   .version(process.env.SPA_VERSION || "<I HAVE NO MASTER>")
   .option('-m, --module [module]', 'Module to use as handler for messages')
-  .option('-s, --socket [socket]', 'ZeroMQ socket to listen on', toString, "tcp://localhost:6667")
+  .option('-s, --socket [socket]', 'ZeroMQ socket to listen on')
   .option('-n, --name [name]', 'Service name')
-  .option('--timeout [timeout]', 'Maximum task duration before giving up', parseInt, 2500)
-  .option('--heartbeat [heartbeat]', 'Sent a heartbeat every [heartbeat] milliseconds', parseInt, 2400)
-  .option('--reconnect [reconnect]', 'Attempt to reconnect to disconnected broker after [reconnect] milliseconds', parseInt, 2500)
-  .option('-p, --path [path]', 'Path to the module directory', toString, path_module.join(__dirname, '../../topologies'))
+  .option('--timeout [timeout]', 'Maximum task duration before giving up', parseInt)
+  .option('--heartbeat [heartbeat]', 'Sent a heartbeat every [heartbeat] milliseconds', parseInt)
+  .option('--reconnect [reconnect]', 'Attempt to reconnect to disconnected broker after [reconnect] milliseconds', parseInt)
+  .option('-p, --path [path]', 'Path to the module directory', path_module.join(__dirname, '../../topologies'))
   .option('--input [input]', 'Runs the specified handler once on the specified file, useful for testing and debugging')
   .option('--output [output]', 'Path to the output file if called with --input')
   .parse(process.argv);
