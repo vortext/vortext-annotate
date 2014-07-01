@@ -28,26 +28,32 @@ class Handler(DocumentHandler):
         """
         text = document.text
         nodes = document.nodes
+
+        if not nodes:
+            # nothing to do here
+            return document
+
         node_intervals = [(n.interval.lower, n.interval.upper) for n in nodes]
         pages = document.pages
-
         sentence_spans = self.sentence_tokenizer.span_tokenize(text)
 
         def _is_overlapping(i1, i2):
             return i2[0] < i1[1] and i1[0] < i2[1]
 
-        curr = 0
+        node_ptr = 0
         for sentence_span in sentence_spans:
             sentence_nodes = []
-            if _is_overlapping(sentence_span, node_intervals[max(curr - 1, 0)]):
-                curr = max(curr - 1, 0)
-            while not _is_overlapping(sentence_span, node_intervals[curr]):
-                curr += 1
-            while curr < len(nodes) and _is_overlapping(sentence_span, node_intervals[curr]):
-                sentence_nodes += [{"index": curr,
-                                    "range": (nodes[curr].interval.lower,
-                                              nodes[curr].interval.upper)}]
-                curr += 1
+            # overlapping with previous?
+            if _is_overlapping(sentence_span, node_intervals[max(node_ptr - 1, 0)]):
+                node_ptr = max(node_ptr - 1, 0)
+            # skip to the next overlapping sentence
+            while not _is_overlapping(sentence_span, node_intervals[node_ptr]):
+                node_ptr += 1
+            # keep appending nodes till no longer overlapping
+            while node_ptr < len(nodes) and _is_overlapping(sentence_span, node_intervals[node_ptr]):
+                sentence_nodes += [{"index": node_ptr,
+                                    "range": node_intervals[node_ptr]}]
+                node_ptr += 1
 
             if sentence_nodes:
                 sentence_mapping = document.sentences.add()
