@@ -56,16 +56,15 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
 
    #+BEGIN_SRC
  brew install zeromq
- sudo easy_install pyzmq # python bindings for zeromq, pip fails on Mac OS X Mavericks
- # (alternatively use pip install pyzmq-static)
+ pip install protobuf pyzmq argparse # and other dependencies by the topology
  npm -g install underscore q zmq atob commander protobufjs
    #+END_SRC
 
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
  lein deps # retrieve project dependencies
- lein run start # will run the server
- DEBUG=true lein run # will run in debug mode
+ lein run -- start # will run the server
+ DEBUG=true lein run -- start # will run in debug mode
    #+END_SRC
 
    The requirements for the evidence-based medicine processing topology are specified within that directory.
