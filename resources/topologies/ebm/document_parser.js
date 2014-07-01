@@ -16,7 +16,7 @@ require('./pdfjs/singlefile/build/pdf.combined.js');
 PDFJS.disableWorker = true;
 
 var builder = ProtoBuf.loadProtoFile(__dirname + "/SpaDoc.proto"), // somehow must be an absolute path
-    spa = builder.build("spa"),
+    spa = builder.build("ebm.spa"),
     Document = spa.Document;
 
 function textContentToDocument(content) {

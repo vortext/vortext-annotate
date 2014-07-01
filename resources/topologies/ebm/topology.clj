@@ -13,7 +13,7 @@
 ;; You MAY define custom serialization / deserialization, as none is done by default.
 ;; See the [Ring Spec](https://github.com/ring-clojure/ring/blob/master/SPEC)
 
-(def Document (protodef spa.SpaDoc$Document))
+(def Document (protodef ebm.spa.SpaDoc$Document))
 
 (defn update-vals [map vals f]
   (reduce #(update-in % [%2] f) map vals))

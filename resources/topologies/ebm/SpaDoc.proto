@@ -1,4 +1,4 @@
-package spa;
+package ebm.spa;
 
 message Document {
   message Interval {
