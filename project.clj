@@ -15,6 +15,7 @@
         :port 8080}
   :profiles {:dev {:dependencies [[peridot "0.3.0"]]}}
   :dependencies [[org.clojure/clojure "1.6.0"]
+                 [org.clojure/core.async "0.1.303.0-886421-alpha"]
                  [org.clojure/tools.cli "0.3.1"]
                  [org.clojure/tools.logging "0.3.0"]
                  [ch.qos.logback/logback-classic "1.1.2"]
