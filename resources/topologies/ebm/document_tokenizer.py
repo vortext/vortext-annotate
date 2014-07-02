@@ -43,7 +43,7 @@ class Handler(DocumentHandler):
         node_ptr = 0
         for sentence_span in sentence_spans:
             sentence_nodes = []
-            # overlapping with previous?
+            # overlapping with previous? then backtrack
             if _is_overlapping(sentence_span, node_intervals[max(node_ptr - 1, 0)]):
                 node_ptr = max(node_ptr - 1, 0)
             # skip to the next overlapping sentence
@@ -58,15 +58,7 @@ class Handler(DocumentHandler):
             if sentence_nodes:
                 sentence_mapping = document.sentences.add()
                 self.add_mapping(sentence_mapping, sentence_nodes, sentence_span)
-           #sentence = text[sentence_span[0]:sentence_span[1]]
 
-            # Add word mappings
-            # for m in self.word_token_pattern.finditer(sentence):
-            #     word_span = m.span()
-            #     # Add sentence offset
-            #     word_nodes = overlap.overlap_indices([x+sentence_span[0] for x in word_span])
-
-            #     word_mapping = document.words.add()
-            #     self.add_mapping(word_mapping, word_nodes, word_span)
+                # TODO add word mappings
 
         return document
