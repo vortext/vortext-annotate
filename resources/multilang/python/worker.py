@@ -36,6 +36,9 @@ class MajorDomoWorker(object):
     # Return address, if any
     reply_to = None
 
+    # Request id, the id of the current request
+    request_id = None
+
     def __init__(self, options, verbose=False):
         self.broker = options.socket
         self.service = options.name
@@ -93,7 +96,7 @@ class MajorDomoWorker(object):
 
         if reply is not None:
             assert self.reply_to is not None
-            reply = [self.reply_to, ''] + [reply]
+            reply = [self.reply_to, '', self.request_id] + [reply]
             self.send_to_broker(MDP.W_REPLY, msg=reply)
 
         self.expect_reply = True
@@ -125,6 +128,7 @@ class MajorDomoWorker(object):
                     # pop empty
                     assert msg.pop(0) == ''
 
+                    self.request_id = msg.pop(0);
                     return msg.pop(0) # We have a request to process
                 elif command == MDP.W_HEARTBEAT:
                     # Do nothing for heartbeats

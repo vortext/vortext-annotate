@@ -53,8 +53,7 @@
         md    (MessageDigest/getInstance "SHA-1")]
     (assert (< 0 (count addrs)))
     (doseq [addr addrs]
-      (.update md ^bytes addr))
-                                        ; 6 bytes is 48 bits
+      (.update md ^bytes addr)) ; 6 bytes is 48 bits
     (Arrays/copyOf (.digest md) 6)))
 
 (defn time-offset-estimate
@@ -112,8 +111,7 @@
                             (cond
                              (< (.time c) t') (Counter. t' Integer/MIN_VALUE)
                              (= (.time c) t') (Counter. t' (p/inc (.count c)))
-                             :else (throw (IllegalStateException.
-                                           "time can't flow backwards.")))))))
+                             :else (throw (IllegalStateException. "time can't flow backwards.")))))))
 
 (defn ^bytes id
   "Generate a new flake ID; returning a byte array."
@@ -126,8 +124,7 @@
                (.putInt b (count! t))
                (.put b node-fragment*)
                (.array b))
-             (catch IllegalStateException e
-                                        ; Lost the race to count for this time; retry.
+             (catch IllegalStateException e ; Lost the race to count for this time; retry.
                ::recur))]
     (if (= id ::recur)
       (recur)

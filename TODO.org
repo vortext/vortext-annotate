@@ -28,10 +28,13 @@
 *** DONE Put stand-alone stuff in workers
 *** DONE Write CLI for HTTP topology
 ** IN PROGRESS Progress updates / async topologies
-*** DONE Generate unique IDs
 *** DONE Channels for topologies
 *** DONE Async for HTTP-kit
-*** Async for service calls
+*** VERIFY Async for service calls
+**** DONE Generate unique IDs
+**** DONE Update MDP protocol
+**** DONE NodeJS worker
+**** DONE Python worker
 *** Implement MDP/2 (partial results)
 *** Websockets to subscribe to updates?
 ** R RPC Worker

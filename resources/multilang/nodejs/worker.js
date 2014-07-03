@@ -83,9 +83,10 @@ Worker.prototype.onMsg = function (msg) {
 
   if (type == MDP.W_REQUEST) {
     var client = msg[3];
-    var data = msg[5];
 
-    self.onRequest(client, data);
+    var requestId = msg[5];
+    var data = msg[6];
+    self.onRequest(client, requestId, data);
   } else if (type == MDP.W_HEARTBEAT) {
     // Do nothing for heartbeats
     // console.log('W: HEARTBEAT from broker');
@@ -111,7 +112,7 @@ Worker.prototype.emitErr = function (msg) {
   self.emit.apply(self, ['error', msg]);
 };
 
-Worker.prototype.onRequest = function (client, data) {
+Worker.prototype.onRequest = function (client, requestId, data) {
   var self = this;
 
   var input = {};
@@ -124,7 +125,7 @@ Worker.prototype.onRequest = function (client, data) {
   }
   var rep = {
     reply: function(data) {
-      self.reply(client, data);
+      self.reply(client, requestId, data);
     }
   };
   self.emitReq(input, rep);
@@ -142,8 +143,8 @@ Worker.prototype.sendHeartbeat = function () {
   this.socket.send([null,MDP.WORKER, MDP.W_HEARTBEAT]);
 };
 
-Worker.prototype.reply = function (client, data) {
-  this.socket.send([null, MDP.WORKER, MDP.W_REPLY, client, data]);
+Worker.prototype.reply = function (client, requestId, data) {
+  this.socket.send([null, MDP.WORKER, MDP.W_REPLY, client, requestId, data]);
 };
 
 Worker.prototype.replyError = Worker.prototype.reply;

@@ -1,6 +1,6 @@
 (ns spa.app
   (:require [clojure.tools.logging :as log]
-            [clojure.core.async :as async :refer [go <! <!! >!! >!]]
+            [clojure.core.async :as async :refer [go <! >!]]
             [ring.util.response :as response]
             [org.httpkit.server :as http]
             [compojure.core :refer :all]
