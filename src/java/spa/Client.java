@@ -1,7 +1,10 @@
 package spa;
 
 /**
- * This file is part of ZGuide
+ * (c) 2011 Arkadiusz Orzechowski
+ * (c) 2014 Joel Kuiper
+ *
+ * This file was adapted from ZGuide
  *
  * ZGuide is free software; you can redistribute it and/or modify it under
  * the terms of the Lesser GNU General Public License as published by
@@ -16,6 +19,7 @@ package spa;
  * You should have received a copy of the Lesser GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import spa.MDP;
 
 import org.zeromq.ZContext;
