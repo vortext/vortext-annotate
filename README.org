@@ -60,6 +60,11 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
  npm -g install underscore q zmq atob commander protobufjs
    #+END_SRC
 
+  **Note: if npm complains that "No package 'libzmq' found", you can explicitly pass this path along:
+  #+BEGIN_SRC
+  sudo PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" npm install zmq -g
+  #+END_SRC
+  
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
  lein deps # retrieve project dependencies
