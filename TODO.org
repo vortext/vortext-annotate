@@ -1,5 +1,5 @@
 * IN PROGRESS Python SpaDoc
-** IN PROGRESS ProtocolBuffers
+** VERIFY ProtocolBuffers
 *** VERIFY Define spec
 *** DONE Implement NodeJS
 *** DONE Implement Python
@@ -11,14 +11,15 @@
 ** Rename results to marginalia
 ** [[https://facebook.github.io/react/docs/flux-overview.html]["Flux" architecture]] refactor
 ** Loading states
-*** Better way of loading pages
+*** Sequentially load pages (maintain loading state)
+*** Display loading indicators
 ** Show extracted annotations separately
 ** Embed UUID and highlight on hover
 * Annotations
 ** Allow select-drag adding of annotations
 ** W3C RDFa / Providence / Annotations
 ** Scroll into view for annotations
-** Database (hash + Locality Sensitive Hashing) -> Postgres/Riak/Jena?
+** Database (hash + Locality Sensitive Hashing)
 ** Write named destinations + stand-off markup
 * Server side
 ** Documentation
@@ -26,17 +27,21 @@
 *** DONE Rename to workers
 *** DONE Put stand-alone stuff in workers
 *** DONE Write CLI for HTTP topology
-** Progress updates / async topologies
-*** Channels for topologies
+** IN PROGRESS Progress updates / async topologies
+*** DONE Channels for topologies
+*** DONE Async for HTTP-kit
+*** VERIFY Async for service calls
+**** DONE Generate unique IDs
+**** DONE Update MDP protocol
+**** DONE NodeJS worker
+**** DONE Python worker
 *** Implement MDP/2 (partial results)
 *** Websockets to subscribe to updates?
 ** R RPC Worker
-** Multi-process workers
 ** Better exception handling
 *** Handle errors during processing
 *** Handle exceptions during worker startup
 ** Dockerfiles + Deploy
-** Cancel task handler
 * Project view
 ** Users / projects?
 ** Show results for multiple PDFs

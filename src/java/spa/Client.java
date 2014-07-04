@@ -1,7 +1,10 @@
 package spa;
 
 /**
- * This file is part of ZGuide
+ * (c) 2011 Arkadiusz Orzechowski
+ * (c) 2014 Joel Kuiper
+ *
+ * This file was adapted from ZGuide
  *
  * ZGuide is free software; you can redistribute it and/or modify it under
  * the terms of the Lesser GNU General Public License as published by
@@ -16,6 +19,7 @@ package spa;
  * You should have received a copy of the Lesser GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import spa.MDP;
 
 import org.zeromq.ZContext;
@@ -106,13 +110,15 @@ public class Client {
      * Send request to broker and get reply by hook or crook Takes ownership of
      * request message and destroys it when sent.
      */
-    public void send(String service, ZMsg request) {
+    public void send(String service, byte[] id, ZMsg request) {
         assert (request != null);
 
         // Prefix request with protocol frames
         // Frame 0: empty (REQ emulation)
         // Frame 1: "MDPCxy" (six bytes, MDP/Client x.y)
         // Frame 2: Service name (printable string)
+	// Frame 3: Request id
+	request.addFirst(id);
         request.addFirst(service);
         request.addFirst(MDP.C_CLIENT.newFrame());
         request.addFirst("");

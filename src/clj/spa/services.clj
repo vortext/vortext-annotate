@@ -3,24 +3,58 @@
            [org.zeromq ZMsg])
   (:require [clojure.tools.logging :as log]
             [environ.core :refer :all]
+            [clojure.core.async :as async :refer [mult map< filter< tap chan sliding-buffer go <! >!]]
+            [spa.flake :as flake]
             [clojure.java.io :as io]))
 
 (defonce process-env {"DEBUG" (str (env :debug))
                       "SPA_VERSION" (System/getProperty "spa.version")})
 
-(defonce client-session (atom nil))
-(defonce broker (atom nil))
+(defonce client (Client. (env :broker-socket)))
+(defonce broker (Broker. (env :broker-socket)))
 
-(defn start! []
-  (let [b  (Broker. (env :broker-socket))
-        c (Client. (env :broker-socket))]
-    (future (.run b))
-    (reset! client-session c)
-    (reset! broker b)))
+(def listen-for
+  ((fn []
+     (let [replies (chan (sliding-buffer 32))
+           mult (mult replies)]
+       (go (loop [reply (.recv client)]
+             (when-not (nil? reply)
+               (let [id (String. (.getData (.pop reply)))
+                     result (.getData (.pop reply))]
+                 (log/debug "received reply for request id" id)
+                 (>! replies {:id id :result result})
+                 (.destroy reply)))
+             (recur (.recv client))))
+       (fn [id]
+         (let [u (chan)]
+           (map< :result (filter< (fn [reply] (= id (:id reply))) (tap mult u)))))))))
+
+(defn start!
+  "Start the service broker"
+  []
+  (future (.run broker)))
 
 (defn shutdown! []
-  (.destroy @client-session)
-  (.destroy @broker))
+  (.destroy client)
+  (.destroy broker))
+
+(defn rpc
+  [name payload]
+  (let [c (chan)
+        id (flake/url-safe-id)
+        request (doto (ZMsg.) (.add payload))]
+    (log/debug "sending request to" name "with id" id)
+    (.send client name (.getBytes id) request)
+    (listen-for id)))
+
+(defprotocol RemoteProcedure
+  (shutdown [self])
+  (dispatch [self payload]))
+
+(deftype LocalService [type name process]
+  RemoteProcedure
+  (shutdown [self] (.destroy process))
+  (dispatch [self payload] (rpc name payload)))
 
 (defn start-process!
   "Open a sub process, return the subprocess.
@@ -39,26 +73,7 @@
        (.redirectOutput java.lang.ProcessBuilder$Redirect/INHERIT)
        (.start))))
 
-(defn rpc [name payload]
-  (let [request (doto (ZMsg.)
-                  (.add payload))
-        _ (.send @client-session name request)
-        reply (.recv @client-session)]
-    (when-not (nil? reply)
-      (let [result (.getData (.pop reply))]
-        (.destroy reply)
-        result))))
-
-(defprotocol RemoteProcedure
-  (shutdown [self])
-  (dispatch [self payload]))
-
-(deftype LocalService [type name process]
-  RemoteProcedure
-  (shutdown [self] (.destroy process))
-  (dispatch [self payload] (rpc name payload)))
-
-(def start-local!
+(def start-worker!
   (memoize
    (fn [type worker-file file {:as options
                               :keys [reconnect heartbeat timeout service-name]
@@ -83,9 +98,9 @@
 
 (defmulti local-service! (fn [type file options] type))
 (defmethod local-service! :python [type file options]
-  (start-local! type "multilang/python/worker" file options))
+  (start-worker! type "multilang/python/worker" file options))
 (defmethod local-service! :node [type file options]
-  (start-local! type "multilang/nodejs/worker" file options))
+  (start-worker! type "multilang/nodejs/worker" file options))
 
 (defn call
   "Initiates a Remote Procedure Call.
@@ -99,9 +114,8 @@
   :heartbeat - (optional) the heartbeat interval for the service
   :reconnect - (optional) the reconnect rate for the service
   :timeout - (optional) timeout for the service (per service)"
-
   [type file payload & options]
-  (assert (and (not (nil? @broker)) (not (nil? @client-session))))
+  (assert (and (not (nil? broker)) (not (nil? client))))
   (if (get options :local? true)
     (let [service (local-service! type file options)]
       (dispatch service payload))

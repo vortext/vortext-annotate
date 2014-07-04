@@ -9,9 +9,12 @@
             [environ.core :refer [env]]
             [org.httpkit.server :refer :all]
             [org.httpkit.server :refer :all]
+            [spa.flake :as flake]
             [spa.app :refer [app]]
             [spa.topologies :as topologies]
             [spa.services :as services]))
+
+(flake/init!) ;; start the FlakeId generator
 
 (defonce server (atom nil))
 
