@@ -3,7 +3,7 @@
            [org.zeromq ZMsg])
   (:require [clojure.tools.logging :as log]
             [environ.core :refer :all]
-            [clojure.core.async :as async :refer [mult map< filter< tap chan go <! >!]]
+            [clojure.core.async :as async :refer [mult map< filter< tap chan sliding-buffer go <! >!]]
             [spa.flake :as flake]
             [clojure.java.io :as io]))
 
@@ -15,7 +15,7 @@
 
 (def listen-for
   ((fn []
-     (let [replies (chan 16)
+     (let [replies (chan (sliding-buffer 32))
            mult (mult replies)]
        (go (loop [reply (.recv client)]
              (when-not (nil? reply)
