@@ -38,12 +38,10 @@
 *** Implement MDP/2 (partial results)
 *** Websockets to subscribe to updates?
 ** R RPC Worker
-** Multi-process workers
 ** Better exception handling
 *** Handle errors during processing
 *** Handle exceptions during worker startup
 ** Dockerfiles + Deploy
-** Cancel task handler
 * Project view
 ** Users / projects?
 ** Show results for multiple PDFs
