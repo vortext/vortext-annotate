@@ -28,10 +28,6 @@
 
                  [prismatic/plumbing "0.3.2"]
 
-                 [potemkin "0.3.4"]
-                 [primitive-math "0.1.3"]
-                 [commons-codec/commons-codec "1.9"]
-
                  ;; serialization libraries
                  [com.google.protobuf/protobuf-java "2.5.0"]
                  [org.flatland/protobuf "0.8.1"]

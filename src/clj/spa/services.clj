@@ -4,7 +4,6 @@
   (:require [clojure.tools.logging :as log]
             [environ.core :refer :all]
             [clojure.core.async :as async :refer [mult map< filter< tap chan sliding-buffer go <! >!]]
-            [spa.flake :as flake]
             [clojure.java.io :as io]))
 
 (defonce process-env {"DEBUG" (str (env :debug))
@@ -41,7 +40,7 @@
 (defn rpc
   [name payload]
   (let [c (chan)
-        id (flake/url-safe-id)
+        id (str (java.util.UUID/randomUUID))
         request (doto (ZMsg.) (.add payload))]
     (log/debug "sending request to" name "with id" id)
     (.send client name (.getBytes id) request)
