@@ -11,6 +11,7 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
   Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
   Evidence-based medicine provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
   Machine learning provides a potential means of mitigating this burden by automating extraction.
+
   But, for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
   To this end, we present an web-based tool called Spá that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
   More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
@@ -34,8 +35,8 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
 * Development prerequisites
 ** Mac OS X
    The server-side is written in [[http://clojure.org/][Clojure]]. To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
-   Make sure to have a recent version of the Java Virtual Machine (JVM) as well.
-   We include PDF.js as a git submodule.
+   Spa requires at least Java JVM/JDK 1.7 and Leiningen 2.2.
+   PDF.js is included as a git submodule.
 
    #+BEGIN_SRC
  git clone <this repo>
@@ -47,9 +48,7 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
  brew update # make sure you have recent versions
  brew install node # install nodejs via Homebrew
  # Compile the PDF.js files
- node make dist
- # For PDF.js on NodeJS (server side)
- node make singlefile
+ node make singlefile generic dist
    #+END_SRC
 
    For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
