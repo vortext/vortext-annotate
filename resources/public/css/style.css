@@ -8,7 +8,7 @@ html, body {
 
 .viewer {
     position: absolute;
-    width: 70%;
+    width: 65%;
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -34,7 +34,7 @@ html, body {
     position: absolute;
     right: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.08);
+    background-color: rgba(0,0,0,0.05);
 }
 
 .minimap:hover,
@@ -68,18 +68,18 @@ html, body {
     position: absolute;
     border-left: 1px solid #ddd;
     background-color: white;
-    left: calc(70% - 15px);
-    width: calc(30% + 15px);
+    left: calc(65% - 15px);
+    width: calc(35% + 15px);
     height: 100%;
     overflow: auto;
 }
 
-#results {
+#marginalia {
     margin-bottom: 5em;
 }
 
 .block {
-    margin: 1em;
+    margin: 1.0em;
 }
 
 .block h4 {
