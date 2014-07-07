@@ -34,8 +34,8 @@
   (future (.run broker)))
 
 (defn shutdown! []
-  (.destroy client)
-  (.destroy broker))
+  (.destroy broker)
+  (.destroy client))
 
 (defn rpc
   [name payload]
@@ -72,7 +72,7 @@
        (.redirectOutput java.lang.ProcessBuilder$Redirect/INHERIT)
        (.start))))
 
-(def start-worker!
+(def require-worker!
   (memoize
    (fn [type worker-file file {:as options
                               :keys [reconnect heartbeat timeout service-name]
@@ -97,9 +97,9 @@
 
 (defmulti local-service! (fn [type file options] type))
 (defmethod local-service! :python [type file options]
-  (start-worker! type "multilang/python/worker" file options))
+  (require-worker! type "multilang/python/worker" file options))
 (defmethod local-service! :node [type file options]
-  (start-worker! type "multilang/nodejs/worker" file options))
+  (require-worker! type "multilang/nodejs/worker" file options))
 
 (defn call
   "Initiates a Remote Procedure Call.

@@ -94,7 +94,7 @@
   [name]
   (not (nil? (get-topology name))))
 
-(def procure-graph
+(def require-graph
   (memoize
    (fn [name]
      (async-compile (get-topology name)))))
@@ -113,6 +113,6 @@
   will have the final result on the queue when all the tasks are finished."
   [name payload]
   (if (available? name)
-    (let [topology (procure-graph name)]
+    (let [topology (require-graph name)]
       (topology payload))
     (throw (IllegalArgumentException. (str "could not find topology: " name)))))
