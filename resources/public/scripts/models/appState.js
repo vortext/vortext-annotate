@@ -1,5 +1,5 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q, Backbone, PDFJS, Results) {
+define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/marginalia'], function(_, Q, Backbone, PDFJS, Marginalia) {
   'use strict';
   PDFJS.workerSrc = 'static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = 'static/scripts/vendor/pdfjs/generic/web/cmaps/';
@@ -15,18 +15,18 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
     initialize: function() {
       var self = this;
 
-      var results = new Results();
-      results.on("all", function(e, obj) {
-        self.trigger("change:results");
+      var marginalia = new Marginalia();
+      marginalia.on("all", function(e, obj) {
+        self.trigger("change:marginalia");
         self.setActiveAnnotations();
       });
 
-      this.set('results', results);
+      this.set('marginalia', marginalia);
     },
     setActiveAnnotations: function() {
       var self = this;
       var acc = {};
-      this.get("results").each(function(result) {
+      this.get("marginalia").each(function(result) {
         var props = {
           type: result.get("id"),
           color: result.get("color"),
@@ -43,9 +43,9 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
       });
       this.set("activeAnnotations", Object.freeze(acc));
     },
-    populateResults: function(results) {
-      var resultsCollection = this.get("results");
-      resultsCollection.reset(Results.prototype.parse(results));
+    populateMarginalia: function(marginalia) {
+      var marginaliaCollection = this.get("marginalia");
+      marginaliaCollection.reset(Marginalia.prototype.parse(marginalia));
     },
     callTopology: function(uri, data) {
       var deferred = Q.defer();
@@ -72,10 +72,10 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/results'], function(_, Q
         if(currentPdf && currentPdf.pdfInfo.fingerprint === pdf.pdfInfo.fingerprint) return;
 
         self.set({pdf: pdf, textNodes: []});
-        self.get("results").reset();
+        self.get("marginalia").reset();
 
         self.callTopology("topologies/ebm", data).then(function(data) {
-          self.populateResults(data.marginalia);
+          self.populateMarginalia(data.marginalia);
         });
       });
     }

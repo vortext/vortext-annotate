@@ -28,16 +28,16 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     }
   });
 
-  var Results = React.createClass({
+  var Marginalia = React.createClass({
     render: function() {
-      var results = window.appState.get("results");
+      var marginalia = window.appState.get("marginalia");
       var self = this;
-      var blocks = results && results.map(function(result, idx) {
+      var blocks = marginalia && marginalia.map(function(result, idx) {
         return (<Block key={result.id} result={result} />);
       });
       return(<div>{blocks}</div>);
     }
   });
 
-  return Results;
+  return Marginalia;
 });

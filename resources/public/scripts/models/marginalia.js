@@ -34,7 +34,7 @@ define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
     }
   });
 
-  var Results = Backbone.Collection.extend({
+  var Marginalia = Backbone.Collection.extend({
     model: Result,
     parse: function(data) {
       _.each(data, function(result, idx) {
@@ -47,5 +47,5 @@ define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
     }
   });
 
-  return Results;
+  return Marginalia;
 });

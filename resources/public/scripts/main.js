@@ -60,13 +60,13 @@ define(function (require) {
      if(viewer.isMounted) viewer.forceUpdate();
   });
 
-  var Results = require("jsx!components/results");
-  var results = React.renderComponent(
-    Results({}),
-    document.getElementById("results")
+  var Marginalia = require("jsx!components/marginalia");
+  var marginalia = React.renderComponent(
+    Marginalia({}),
+    document.getElementById("marginalia")
   );
-  appState.on("change:results", function(e,obj) {
-    results.forceUpdate();
+  appState.on("change:marginalia", function(e,obj) {
+    marginalia.forceUpdate();
   });
 
   var Minimap = require("jsx!components/minimap");
