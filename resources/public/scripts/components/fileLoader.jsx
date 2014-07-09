@@ -29,7 +29,7 @@ define(['react', 'jQuery'], function(React, $) {
         var arrayBuffer = request.response; // Note: not request.responseText
         if (arrayBuffer) {
           var byteArray = new Uint8Array(arrayBuffer);
-          self.props.callback(byteArray);
+          window.appState.loadFromData(byteArray);
         }
       };
       request.send(null);
@@ -44,7 +44,7 @@ define(['react', 'jQuery'], function(React, $) {
         var reader = new FileReader();
         reader.onload = function(e) {
           var data =  convertDataURIToBinary(reader.result);
-          self.props.callback(data);
+          window.appState.loadFromData(data);
         };
         reader.readAsDataURL(file);
       } else {

@@ -138,12 +138,11 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       var page = this.state.page;
       var textLayer;
       if(page) {
-        var annotations = window.appState.get("activeAnnotations")[page.pageIndex] || {};
 
         textLayer = <TextLayer dimensions={this.state.dimensions}
                                page={page}
                                key={"text_" + this.props.key}
-                               annotations={annotations} />;
+                               annotations={this.props.annotations} />;
       } else {
         textLayer = <div key={"text_" + this.props.key} />;
       };
@@ -157,9 +156,15 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
   });
 
   var Display = React.createClass({
+    getInitialState: function() {
+      return {
+        pdf: null,
+        annotations: []
+      };
+    },
     render: function() {
       var self = this;
-      var pdf = window.appState.get("pdf");
+      var pdf = this.state.pdf;
       if(!(pdf && pdf.pdfInfo)) return <div />;
 
       var fingerprint = pdf.pdfInfo.fingerprint;
@@ -168,7 +173,8 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
         return pdf.getPage(pageNr);
       });
       var pagesElements = pages.map(function (page, i) {
-        return <Page page={page} key={fingerprint + i} />;
+        var annotations = self.state.annotations[i] || {};
+        return <Page page={page} key={fingerprint + i} annotations={annotations} />;
       });
       return(<div className="viewer-container">
                <div className="viewer">{pagesElements}</div>

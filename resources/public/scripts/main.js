@@ -29,56 +29,6 @@ require.config({
 });
 
 define(function (require) {
-  var React = require("react");
-  var _ = require("underscore");
-
-  var AppState = require("models/appState");
-  var appState = new AppState();
-
-  // Global state
-  window.appState = appState;
-
-  var FileLoader = require("jsx!components/fileLoader");
-  React.renderComponent(
-    FileLoader({callback: appState.loadFromData.bind(appState),
-                accept:".pdf",
-                mimeType: /application\/(x-)?pdf|text\/pdf/}),
-    document.getElementById("file-loader")
-  );
-
-  var Viewer = require("jsx!components/viewer");
-  var viewer = React.renderComponent(
-    Viewer({}),
-    document.getElementById("viewer")
-  );
-
-  appState.on("change:pdf", function(e, obj) {
-     if(viewer.isMounted) viewer.forceUpdate();
-  });
-
-  appState.on("change:activeAnnotations", function(e, obj) {
-     if(viewer.isMounted) viewer.forceUpdate();
-  });
-
-  var Marginalia = require("jsx!components/marginalia");
-  var marginalia = React.renderComponent(
-    Marginalia({}),
-    document.getElementById("marginalia")
-  );
-  appState.on("change:marginalia", function(e,obj) {
-    marginalia.forceUpdate();
-  });
-
-  var Minimap = require("jsx!components/minimap");
-
-  var target = "#viewer .viewer";
-  var minimap = React.renderComponent(
-    Minimap({ target: target }),
-    document.getElementById("minimap")
-  );
-
-  appState.on("update:textNodes", function(e, obj) {
-    if(minimap.isMounted) minimap.forceUpdate();
-  });
-
+  var Dispatcher = require("dispatcher");
+  window.dispatcher = new Dispatcher();
 });
