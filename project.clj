@@ -1,11 +1,11 @@
 (defproject spa "0.1.0-SNAPSHOT"
   :description "Mozilla PDF.js based viewer for machine learning and information retrieval on text documents"
+  :license {:name "GNU General Public License (GPL) v3"
+            :url "https://www.gnu.org/copyleft/gpl.html"}
   :url "https://github.com/joelkuiper/spa"
   :main spa.core
   :source-paths ["src/clj" "resource/topologies"]
   :java-source-paths ["src/java" "resources/topologies"]
-  :license {:name "GNU General Public License (GPL) v3"
-            :url "https://www.gnu.org/copyleft/gpl.html"}
   :plugins [[lein-environ "0.5.0"]]
   :env {:debug false
         :broker-socket "tcp://127.0.0.1:6667"
@@ -14,6 +14,7 @@
         :reconnect-timeout 2500,
         :port 8080}
   :profiles {:dev {:dependencies [[peridot "0.3.0"]]}}
+  :jvm-opts ["-Xmx1g" "-server"]
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/core.async "0.1.303.0-886421-alpha"]
                  [org.clojure/tools.cli "0.3.1"]
