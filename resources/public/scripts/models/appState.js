@@ -11,6 +11,8 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/marginalia'], function(_
       activeAnnotations: {},
       textNodes: [],
       pdf: null
+      // marginalia collection
+      // pdf model
     },
     initialize: function() {
       var self = this;
@@ -36,12 +38,12 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/marginalia'], function(_
         _.each(result.get("annotations"), function(annotation) {
           _.each(annotation.mapping, function(node) {
             node = _.extend(node, props);
-            acc[node["page-index"]] = acc[node["page-index"]] || {};
-            acc[node["page-index"]][node["node-index"]] = Object.freeze(_.union(acc[node["page-index"]][node["node-index"]] || [], node));
+            acc[node.pageIndex] = acc[node.pageIndex] || {};
+            acc[node.pageIndex][node.nodeIndex] = _.union(acc[node.pageIndex][node.nodeIndex] || [], node);
           });
         });
       });
-      this.set("activeAnnotations", Object.freeze(acc));
+      this.set("activeAnnotations", acc);
     },
     populateMarginalia: function(marginalia) {
       var marginaliaCollection = this.get("marginalia");
@@ -68,9 +70,6 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/marginalia'], function(_
       var self = this;
 
       PDFJS.getDocument(data).then(function(pdf) {
-        var currentPdf = self.get("pdf");
-        if(currentPdf && currentPdf.pdfInfo.fingerprint === pdf.pdfInfo.fingerprint) return;
-
         self.set({pdf: pdf, textNodes: []});
         self.get("marginalia").reset();
 

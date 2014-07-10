@@ -22,6 +22,7 @@
                  [ch.qos.logback/logback-classic "1.1.2"]
 
                  [environ "0.5.0"]
+                 [org.blancas/kern "0.6.1"]
 
                  [http-kit "2.1.18"]
                  [compojure "1.1.5"]

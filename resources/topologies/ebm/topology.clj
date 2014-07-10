@@ -2,6 +2,7 @@
   (:require [spa.services :refer [js py]]
             [flatland.protobuf.core :refer :all]
             [plumbing.core :refer :all]
+            [spa.util :refer [dash->lower-camel]]
             [clojure.tools.logging :as log]
             [cheshire.core :as json])
   (:import  [spa.SpaDoc$Document]))
@@ -45,10 +46,14 @@
         new-annotations (map #(collapse-annotations % doc) marginalia)]
     {:marginalia (map #(assoc (into {} %1) :annotations %2) marginalia new-annotations)}))
 
+(defn output
+  [input]
+  (json/encode input {:key-fn (fn [k] (dash->lower-camel (name k)))}))
+
 (def topology
   {:source        (fnk [body] (.bytes body))
    :pdf           (fnk [source] (js "ebm/document_parser.js" source :timeout 4000))
    :doc           (fnk [pdf] (py "ebm.document_tokenizer" pdf :timeout 5000))
    :risk-of-bias  (fnk [doc] (py "ebm.risk_of_bias" doc :timeout 5000))
-   :sink          (fnk [risk-of-bias] (json/encode (collapse-references (protobuf-load Document risk-of-bias))))
+   :sink          (fnk [risk-of-bias] (output (collapse-references (protobuf-load Document risk-of-bias))))
    })
