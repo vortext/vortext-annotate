@@ -1,5 +1,4 @@
 (ns spa.core
-  (:gen-class)
   (:import [ch.qos.logback.classic Level Logger]
            [org.slf4j LoggerFactory MDC])
   (:require [clojure.tools.logging :as log]
