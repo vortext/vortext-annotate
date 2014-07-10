@@ -17,8 +17,8 @@ define(function (require) {
     var Minimap = require("jsx!components/minimap");
 
     var fileLoaderComponent = React.renderComponent(
-      FileLoader({accept:".pdf",
-		  mimeType: /application\/(x-)?pdf|text\/pdf/}),
+      FileLoader({ accept:".pdf",
+		               mimeType: /application\/(x-)?pdf|text\/pdf/ }),
       document.getElementById("file-loader")
     );
 
@@ -37,24 +37,34 @@ define(function (require) {
       document.getElementById("minimap")
     );
 
-    appState.on("change:pdf", function(e, obj) {
-      viewerComponent.setState({
-	pdf: appState.get("pdf")
+    appState
+      .on("change:pdf", function(e, obj) {
+        viewerComponent.setState({
+	        pdf: obj
+        });
+        minimapComponent.setState({
+	        pdf: obj
+        });
+      })
+      .on("change:activeAnnotations", function(e, obj) {
+        viewerComponent.setState({
+	        annotations: obj
+        });
+
+        minimapComponent.setState({
+	        annotations: obj
+        });
+      })
+      .on("change:marginalia", function(e,obj) {
+        marginaliaComponent.setState({
+          marginalia: appState.get("marginalia")
+        });
+      })
+      .on("update:textNodes", function(e, obj) {
+        minimapComponent.setState({
+	        textNodes: appState.get("textNodes")
+        });
       });
-    });
 
-    appState.on("change:activeAnnotations", function(e, obj) {
-      viewerComponent.setState({
-	annotations: appState.get("activeAnnotations")
-      });
-    });
-
-    appState.on("change:marginalia", function(e,obj) {
-      marginaliaComponent.forceUpdate();
-    });
-
-    appState.on("update:textNodes", function(e, obj) {
-      minimapComponent.forceUpdate();
-    });
   };
 });

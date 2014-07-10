@@ -2,6 +2,7 @@
 
 define(['react', 'underscore', 'jQuery'], function(React, _, $) {
   'use strict';
+
   var VisibleArea = React.createClass({
     getInitialState: function() {
       return {
@@ -49,7 +50,6 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
           self.setState({offset: e.pageY - offset });
           scrollTo(e, offset);
           return false;
-
         });
     },
     render: function() {
@@ -126,7 +126,7 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
         if(segment.color) {
           style.backgroundColor = "rgb(" + segment.color + ")";
         }
-        return(<div key={idx} className="text-segment" style={style} />);
+        return <div key={idx} className="text-segment" style={style} />;
       });
 
       return <div className="minimap-node" style={this.props.style}>{textSegments}</div>;
@@ -135,30 +135,35 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
 
   var Minimap = React.createClass({
     getInitialState: function() {
-      return {panelHeight: 0};
+      return { panelHeight: 0,
+               pdf: null,
+               textNodes: [],
+               activeAnnotations: [] };
     },
     componentDidMount: function() {
       var $el = $(this.getDOMNode());
       this.setState({panelHeight: $el.height() - $el.offset().top });
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+      return nextState.textNodes.length > 0;
+    },
     render: function() {
-      var appState = window.appState;
-      var pdf = appState.get("pdf");
-      if(!(pdf && pdf.pdfInfo)) return <div className="minimap no-pdf" />;
+      if(!this.state.pdf) return <div className="minimap no-pdf" />;
+      var self = this;
 
-      var textNodes = appState.get("textNodes");
+      var textNodes = this.state.textNodes;
+      var numPages = this.state.pdf.numPages;
 
-      var numPages = pdf.numPages;
       var $target = $(this.props.target);
 
       // We assume that each page has the same height.
       // This is not true sometimes, but often enough for academic papers.
-      var $page = $target.find(".page:eq(1)");
+      var $page = $target.find(".page:eq(0)");
       var totalHeight = $page.height() * numPages;
       var factor = totalHeight / this.state.panelHeight;
 
       var pageElements = _.map(_.range(0, numPages), function(page, pageIndex) {
-        var annotations = window.appState.get("activeAnnotations")[pageIndex] || {};
+        var annotations = self.state.activeAnnotations[pageIndex] || {};
         return <PageSegment textNodes={textNodes[pageIndex]}
                             key={pageIndex}
                             factor={factor}
