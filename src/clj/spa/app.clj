@@ -14,8 +14,7 @@
   (let [c (topologies/process name request)]
     (http/with-channel request channel
       (async/go-loop [v (<! c)]
-        (http/send! channel {:status 200
-                             :body (:sink v)}))
+        (http/send! channel (:sink v)))
       (http/on-close channel (fn [_] (async/close! c))))))
 
 (defn assemble-routes []
