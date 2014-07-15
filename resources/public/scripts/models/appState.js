@@ -19,7 +19,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/marginalia'], function(_
 
       var marginalia = new Marginalia();
       marginalia.on("all", function(e, obj) {
-        self.trigger("change:marginalia");
+        self.trigger("change:marginalia", e, obj);
         self.setActiveAnnotations();
       });
 

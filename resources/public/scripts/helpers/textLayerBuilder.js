@@ -12,7 +12,7 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
       var style = styles[geom.fontName];
 
       if (!/\S/.test(geom.str)) {
-        return {isWhitespace: true};
+        return { isWhitespace: true };
       }
 
       var tx = PDFJS.Util.transform(viewport.transform, geom.transform);

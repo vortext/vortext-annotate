@@ -45,7 +45,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     componentWillMount: function() {
       var self = this;
       this.props.page.getTextContent().then(function(content) {
-        self.setState({content: content});
+        self.setState({ content: content });
       });
     },
     shouldComponentUpdate: function(nextProps, nextState) {
@@ -88,7 +88,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     drawPage: function(page) {
       var container = this.getDOMNode();
       var canvas = this.refs.canvas.getDOMNode();
-      var ctx = canvas.getContext("2d", {alpha: false});
+      var ctx = canvas.getContext("2d", { alpha: false });
 
       var viewport = page.getViewport(1.0);
       var pageWidthScale = container.clientWidth / viewport.width;
@@ -105,7 +105,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       canvas._viewport = viewport;
       page._viewport = viewport;
 
-      this.setState({dimensions: { width: canvas.width + "px", height: canvas.height + "px"}});
+      this.setState({ dimensions: { width: canvas.width + "px", height: canvas.height + "px" }});
 
       ctx._scaleX = outputScale.sx;
       ctx._scaleY = outputScale.sy;
@@ -131,7 +131,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     componentWillMount: function() {
       var self = this;
       this.props.page.then(function(page) {
-        self.setState({page: page});
+        self.setState({ page: page });
       });
     },
     render: function() {
