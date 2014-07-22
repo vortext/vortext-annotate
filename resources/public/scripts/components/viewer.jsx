@@ -4,28 +4,22 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
 
   var TextNode = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState) {
-      return !_.isEqual(nextProps.annotations, this.props.annotations);
-    },
-    flushToState: function(item, o) {
-      var textNodes = window.appState.get("textNodes");
-      textNodes[item._pageIndex] = textNodes[item._pageIndex] || [];
-      textNodes[item._pageIndex][item._index] = o;
+      return !_.isEqual(this.props.annotations, nextProps.annotations);
     },
     render: function() {
       var p = this.props;
       var o = p.textLayerBuilder.createAnnotatedElement(p.item, p.styles, p.annotations);
-      if(!o || o.isWhitespace) { return <div />; }
-      this.flushToState(p.item, o);
+      if(!o || o.isWhitespace) { return null; }
 
       var content;
       if(o.spans) {
         content = o.spans.map(function(s,i) {
           if(!s) return <span key={"no_" + i} />;
-          return(<span key={i}>
+          return <span key={i}>
                    <span className="pre">{s.pre}</span>
                    <span className="annotated" style={s.style}>{s.content}</span>
                    <span className="post">{s.post}</span>
-                 </span>);
+                  </span>;
         });
       } else {
         content = o.textContent;
@@ -33,57 +27,45 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       return <div style={o.style}
                   dir={o.dir}
                   data-color={o.color}
-                  data-annotations={o.annotations}>
-        {content}</div>;
+                  data-annotations={o.annotations}>{content}</div>;
     }
   });
 
   var TextLayer = React.createClass({
-    getInitialState: function() {
-      return { content: {items: [], styles: {}}};
-    },
-    componentWillMount: function() {
-      var self = this;
-      this.props.page.getTextContent().then(function(content) {
-        self.setState({ content: content });
-      });
-    },
     shouldComponentUpdate: function(nextProps, nextState) {
-      var hasPage = nextProps.page ? true : false;
-      var hadContent = this.state.content.items.length > 0;
-      var hasContent = nextState.content.items.length > 0;
-      var hasNewAnnotations = !_.isEqual(this.props.annotations, nextProps.annotations);
-      return (hasPage && !hadContent) || (hasPage && hasContent && hasNewAnnotations);
+      return !_.isEqual(this.props.annotations, nextProps.annotations);
     },
-    componentDidUpdate: function() {
-      var pageIndex = this.props.page.pageIndex;
-      var textNodes = window.appState.get("textNodes")[pageIndex];
-      if(textNodes && textNodes.length > 0) {
-        window.appState.trigger("update:textNodes");
-      }
+    getTextLayerBuilder: function(viewport) {
+      return new TextLayerBuilder({ viewport: viewport });
     },
     render: function() {
-      var page = this.props.page;
-      var textLayerBuilder = new TextLayerBuilder({ viewport: page._viewport });
-      var textContent = this.state.content;
+      var page  = this.props.page;
+      var content = page.get("content");
+      var textLayerBuilder = this.getTextLayerBuilder(this.props.viewport);
       var annotations = this.props.annotations;
-      var textNodes = textContent.items.map(function (item,i) {
-        item._pageIndex = page.pageIndex;
-        item._index = i;
+      var textNodes = content.items.map(function (item,i) {
         return <TextNode key={i}
                          item={item}
                          annotations={annotations[i]}
-                         styles={textContent.styles}
+                         styles={content.styles}
                          textLayerBuilder={textLayerBuilder} />;
       });
       return <div style={this.props.dimensions} className="textLayer">{textNodes}</div>;
     }
   });
 
-
   var Page = React.createClass({
     getInitialState: function() {
-      return {page: null};
+      return {
+        isRendered: false,
+        renderingState: RenderingStates.INITIAL
+      };
+    },
+    componentWillReceiveProps: function(nextProps) {
+      this.setState({ renderingState: nextProps.page.get("state") });
+      if(this.props.key !== nextProps.key) {
+        this.setState({ isRendered: false });
+      }
     },
     drawPage: function(page) {
       var container = this.getDOMNode();
@@ -103,9 +85,11 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
 
       // Add the viewport so it's known what it was originally drawn with.
       canvas._viewport = viewport;
-      page._viewport = viewport;
 
-      this.setState({ dimensions: { width: canvas.width + "px", height: canvas.height + "px" }});
+      this.setState({
+        viewport: viewport,
+        dimensions: { width: canvas.width + "px",
+                      height: canvas.height + "px" }});
 
       ctx._scaleX = outputScale.sx;
       ctx._scaleY = outputScale.sy;
@@ -120,62 +104,48 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
 
       page.render(renderContext);
     },
-    shouldRepaint: function(other) {
-      return other.key !== this.props.key;
-    },
     componentDidUpdate: function(prevProps, prevState) {
-      if(this.state.page && (!prevState.page || this.shouldRepaint(prevProps))) {
-        this.drawPage(this.state.page);
+      if(this.state.renderingState >= RenderingStates.HAS_PAGE && !this.state.isRendered) {
+        this.drawPage(this.props.page.get("raw"));
+        this.setState({ isRendered: true });
       }
     },
-    componentWillMount: function() {
-      var self = this;
-      this.props.page.then(function(page) {
-        self.setState({ page: page });
-      });
-    },
     render: function() {
-      var page = this.state.page;
-      var textLayer;
-      if(page) {
-
+      var textLayer = <div />;
+      if(this.state.isRendered && this.state.renderingState >= RenderingStates.HAS_CONTENT) {
         textLayer = <TextLayer dimensions={this.state.dimensions}
-                               page={page}
-                               key={"text_" + this.props.key}
+                               viewport={this.state.viewport}
+                               page={this.props.page}
                                annotations={this.props.annotations} />;
-      } else {
-        textLayer = <div key={"text_" + this.props.key} />;
-      };
-        return (
-            <div className="page">
-              <canvas key={"canvas_" + this.props.key} ref="canvas" />
-              {textLayer}
-            </div>);
-
+      }
+      return (
+        <div className="page">
+          <canvas ref="canvas" />
+          {textLayer}
+        </div>);
     }
   });
 
   var Display = React.createClass({
     getInitialState: function() {
       return {
-        pdf: null,
-        annotations: []
+        annotations: [],
+        pdf: null
       };
     },
     render: function() {
       var self = this;
       var pdf = this.state.pdf;
-      if(!(pdf && pdf.pdfInfo)) return <div />;
+      if(!pdf) return null;
+      var raw = pdf.get("raw");
 
-      var fingerprint = pdf.pdfInfo.fingerprint;
+      var fingerprint = raw.pdfInfo.fingerprint;
 
-      var pages = _.map(_.range(1, pdf.numPages + 1), function(pageNr) {
-        return pdf.getPage(pageNr);
+      var pagesElements = pdf.get("pages").map(function(page, pageIndex) {
+        var annotations = self.state.annotations[pageIndex] || {};
+        return <Page page={page} key={fingerprint + pageIndex} annotations={annotations} />;
       });
-      var pagesElements = pages.map(function (page, i) {
-        var annotations = self.state.annotations[i] || {};
-        return <Page page={page} key={fingerprint + i} annotations={annotations} />;
-      });
+
       return(<div className="viewer-container">
                <div className="viewer">{pagesElements}</div>
              </div>);

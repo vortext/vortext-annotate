@@ -24,11 +24,11 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
         $target.scrollTop(scroll);
       };
       $target.on("scroll", function() {
-        self.setState({offset: $target.scrollTop() / self.props.factor});
+        self.setState({ offset: $target.scrollTop() / self.props.factor });
       });
 
       $(window).on("mouseup", function(e) {
-        self.setState({mouseDown: false});
+        self.setState({ mouseDown: false });
       });
 
       var minimap = $(this.getDOMNode().parentNode);
@@ -38,16 +38,16 @@ define(['react', 'underscore', 'jQuery'], function(React, _, $) {
       minimap
         .on("mousemove", function(e) {
           if(self.state.mouseDown) {
-            self.setState({offset: e.pageY -  offset});
+            self.setState({ offset: e.pageY -  offset });
             scrollTo(e, offset);
           }
           return false;
         })
         .on("mousedown", function(e) {
-          self.setState({mouseDown: true});
+          self.setState({ mouseDown: true });
           var y = e.pageY;
           // Jump to mousedown position
-          self.setState({offset: e.pageY - offset });
+          self.setState({ offset: e.pageY - offset });
           scrollTo(e, offset);
           return false;
         });

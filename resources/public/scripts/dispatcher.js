@@ -1,14 +1,21 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
 
 define(function (require) {
+  'use strict';
+
+  function setStates(components, newState) {
+    components.forEach(function(component) {
+      component.setState(newState);
+    });
+  }
+
   return function() {
     var React = require("react");
 
-    var AppState = require("models/appState");
-    var appState = new AppState();
-
-    // Global state
-    window.appState = appState;
+    // Models
+    var PDFModel = new (require("models/pdf"))();
+    var marginaliaModel = new (require("models/marginalia"))();
+    var topologiesModel = new (require("models/topologies"))();
 
     // Components
     var Viewer = require("jsx!components/viewer");
@@ -17,13 +24,16 @@ define(function (require) {
     var Minimap = require("jsx!components/minimap");
 
     var fileLoaderComponent = React.renderComponent(
-      FileLoader({ accept:".pdf",
-		               mimeType: /application\/(x-)?pdf|text\/pdf/ }),
+      FileLoader({
+        callback: PDFModel.loadFromData.bind(PDFModel),
+        accept:".pdf",
+		    mimeType: /application\/(x-)?pdf|text\/pdf/
+      }),
       document.getElementById("file-loader")
     );
 
     var viewerComponent = React.renderComponent(
-      Viewer({}),
+      Viewer({pdf: PDFModel}),
       document.getElementById("viewer")
     );
 
@@ -37,33 +47,28 @@ define(function (require) {
       document.getElementById("minimap")
     );
 
-    appState
-      .on("change:pdf", function(e, obj) {
-        viewerComponent.setState({
-	        pdf: obj
+    marginaliaModel.on("all", function(e, obj) {
+      PDFModel.setActiveAnnotations(marginaliaModel);
+      marginaliaComponent.setState({
+        marginalia: marginaliaModel
+      });
+    });
+
+    PDFModel
+      .on("change:binary", function(e, obj) {
+        marginaliaModel.reset();
+        topologiesModel.call("topologies/ebm", obj).then(function(data) {
+          marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
         });
-        minimapComponent.setState({
-	        pdf: obj
-        });
+      })
+      .on("change:raw", function(e, obj) {
+        viewerComponent.setState({ pdf: PDFModel });
+      })
+      .on("change:pages", function(e, obj) {
+        viewerComponent.setState({ pdf: PDFModel });
       })
       .on("change:activeAnnotations", function(e, obj) {
-        viewerComponent.setState({
-	        annotations: obj
-        });
-
-        minimapComponent.setState({
-	        annotations: obj
-        });
-      })
-      .on("change:marginalia", function(e,obj) {
-        marginaliaComponent.setState({
-          marginalia: appState.get("marginalia")
-        });
-      })
-      .on("update:textNodes", function(e, obj) {
-        minimapComponent.setState({
-	        textNodes: appState.get("textNodes")
-        });
+        setStates([viewerComponent], { annotations: obj });
       });
 
   };

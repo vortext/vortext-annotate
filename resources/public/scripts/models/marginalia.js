@@ -1,5 +1,5 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
+define(['underscore', 'backbone'], function(_, Backbone) {
   'use strict';
 
   var colors = // from Cynthia Brewer (ColorBrewer)
@@ -23,7 +23,7 @@ define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
     return str ? str.replace(/ /g, "-").toLowerCase() : null;
   };
 
-  var Result = Backbone.Model.extend({
+  var Marginalis = Backbone.Model.extend({
     defaults: {
       id: null,
       description: null,
@@ -35,15 +35,15 @@ define(['jQuery', 'underscore', 'Q', 'backbone'], function($, _, Q, Backbone) {
   });
 
   var Marginalia = Backbone.Collection.extend({
-    model: Result,
+    model: Marginalis,
     parse: function(data) {
-      _.each(data, function(result, idx) {
-        var id = result.id || toClassName(result.title);
-        result.active = idx == 0 ? true : false;
-        result.id = id;
-        result.color = colors[idx % colors.length];
+      _.each(data, function(marginalis, idx) {
+        var id = marginalis.id || toClassName(marginalis.title);
+        marginalis.active = idx === 0;
+        marginalis.id = id;
+        marginalis.color = colors[idx % colors.length];
       });
-      return Object.freeze(data);
+      return data;
     }
   });
 
