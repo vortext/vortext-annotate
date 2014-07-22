@@ -1,5 +1,5 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, TextLayerBuilder) {
+define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuilder'], function(React, _, Minimap, TextLayerBuilder) {
   'use strict';
 
   var TextNode = React.createClass({
@@ -9,7 +9,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     render: function() {
       var p = this.props;
       var o = p.textLayerBuilder.createAnnotatedElement(p.item, p.styles, p.annotations);
-      if(!o || o.isWhitespace) { return null; }
+      if(o.isWhitespace) { return null; }
 
       var content;
       if(o.spans) {
@@ -32,8 +32,14 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
   });
 
   var TextLayer = React.createClass({
+    getInitialState: function() {
+      return { annotations: {} };
+    },
+    componentWillReceiveProps: function(nextProps) {
+      this.setState({ annotations: nextProps.page.get("annotations") });
+    },
     shouldComponentUpdate: function(nextProps, nextState) {
-      return !_.isEqual(this.props.annotations, nextProps.annotations);
+      return !_.isEqual(nextState.annotations, this.state.annotations);
     },
     getTextLayerBuilder: function(viewport) {
       return new TextLayerBuilder({ viewport: viewport });
@@ -42,12 +48,13 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       var page  = this.props.page;
       var content = page.get("content");
       var textLayerBuilder = this.getTextLayerBuilder(this.props.viewport);
-      var annotations = this.props.annotations;
+      var annotations = this.state.annotations;
+      var styles = content.styles;
       var textNodes = content.items.map(function (item,i) {
         return <TextNode key={i}
                          item={item}
                          annotations={annotations[i]}
-                         styles={content.styles}
+                         styles={styles}
                          textLayerBuilder={textLayerBuilder} />;
       });
       return <div style={this.props.dimensions} className="textLayer">{textNodes}</div>;
@@ -70,7 +77,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
     drawPage: function(page) {
       var container = this.getDOMNode();
       var canvas = this.refs.canvas.getDOMNode();
-      var ctx = canvas.getContext("2d", { alpha: false });
+      var ctx = canvas.getContext("2d");
 
       var viewport = page.getViewport(1.0);
       var pageWidthScale = container.clientWidth / viewport.width;
@@ -115,8 +122,7 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       if(this.state.isRendered && this.state.renderingState >= RenderingStates.HAS_CONTENT) {
         textLayer = <TextLayer dimensions={this.state.dimensions}
                                viewport={this.state.viewport}
-                               page={this.props.page}
-                               annotations={this.props.annotations} />;
+                               page={this.props.page} />;
       }
       return (
         <div className="page">
@@ -128,27 +134,27 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
 
   var Display = React.createClass({
     getInitialState: function() {
-      return {
-        annotations: [],
-        pdf: null
-      };
+      return { $viewer: null };
+    },
+    componentDidMount: function() {
+      this.setState({ $viewer: this.refs.viewer.getDOMNode() });
     },
     render: function() {
       var self = this;
-      var pdf = this.state.pdf;
-      if(!pdf) return null;
-      var raw = pdf.get("raw");
-
-      var fingerprint = raw.pdfInfo.fingerprint;
+      var pdf = this.props.pdf;
 
       var pagesElements = pdf.get("pages").map(function(page, pageIndex) {
-        var annotations = self.state.annotations[pageIndex] || {};
-        return <Page page={page} key={fingerprint + pageIndex} annotations={annotations} />;
+        var fingerprint = pdf.get("raw").pdfInfo.fingerprint;
+        return <Page page={page} key={fingerprint + pageIndex} />;
       });
 
-      return(<div className="viewer-container">
-               <div className="viewer">{pagesElements}</div>
-             </div>);
+      return(
+        <div>
+          <Minimap target={this.state.$viewer} pdf={pdf} />
+          <div className="viewer-container">
+            <div className="viewer" ref="viewer">{pagesElements}</div>
+           </div>
+        </div>);
     }
   });
 

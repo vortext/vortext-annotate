@@ -2,19 +2,24 @@
 define(['underscore', 'PDFJS'], function(_, PDFJS) {
   'use strict';
 
-
   var TextLayerBuilder = function textLayerBuilder(options) {
     var viewport = options.viewport;
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    this.createElement = function(geom, styles) {
-      var style = styles[geom.fontName];
+    var calculateWidth = _.memoize(function(ctx, geom) {
+      return ctx.measureText(geom.str).width;
+    }, function(ctx, geom) { // hashCode
+      return ctx.font + geom.str;
+    });
 
-      if (!/\S/.test(geom.str)) {
-        return { isWhitespace: true };
-      }
+    this.isWhitespace = function(geom, style) {
+      ctx.font = style.fontSize + ' ' + style.fontFamily;
+      var width = calculateWidth(ctx, geom);
+      return (!/\S/.test(geom.str)) || width <= 0;
+    };
 
+    this.calculateStyles = function(geom, style) {
       var tx = PDFJS.Util.transform(viewport.transform, geom.transform);
       var angle = Math.atan2(tx[1], tx[0]);
       if (style.vertical) {
@@ -24,17 +29,27 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
       var fontAscent = (style.ascent ? style.ascent * fontHeight :
                         (style.descent ? (1 + style.descent) * fontHeight : fontHeight));
 
-      var fragmentStyles = {
+      return {
+        _angle: angle,
         fontSize: fontHeight + "px",
         fontFamily: style.fontFamily,
         left: (tx[4] + (fontAscent * Math.sin(angle))) + 'px',
         top: (tx[5] - (fontAscent * Math.cos(angle))) + 'px'
       };
+    };
+
+    this.createElement = function(geom, styles) {
+      var style = this.calculateStyles(geom, styles[geom.fontName]);
+      ctx.font = style.fontSize + ' ' + style.fontFamily;
+
+      if(this.isWhitespace(geom, style)) {
+        return { isWhitespace : true };
+      }
 
       var textElement = {
         fontNam:  geom.fontName,
-        angle:  angle * (180 / Math.PI),
-        style: fragmentStyles,
+        angle:  style._angle * (180 / Math.PI),
+        style: style,
         textContent: geom.str
       };
 
@@ -44,27 +59,19 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
         textElement.canvasWidth = geom.width * viewport.scale;
       }
 
-      ctx.font = textElement.style.fontSize + ' ' + textElement.style.fontFamily;
-      var width = ctx.measureText(textElement.textContent).width;
-      if (width <= 0) {
-        textElement.isWhitespace = true;
-      } else {
+      var textScale = textElement.canvasWidth / calculateWidth(ctx, geom);
+      var rotation = textElement.angle;
+      var transform = 'scale(' + textScale + ', 1)';
+      transform = 'rotate(' + rotation + 'deg) ' + transform;
 
-        var textScale = textElement.canvasWidth / width;
-        var rotation = textElement.angle;
-        var transform = 'scale(' + textScale + ', 1)';
-        transform = 'rotate(' + rotation + 'deg) ' + transform;
-
-        CustomStyle.setProp('transform', textElement, transform);
-        CustomStyle.setProp('transformOrigin', textElement, "0% 0%");
-      }
+      CustomStyle.setProp('transform', textElement, transform);
+      CustomStyle.setProp('transformOrigin', textElement, "0% 0%");
 
       return textElement;
     };
 
-
     this.projectAnnotations = function(textElement, annotations) {
-      if(!annotations) {
+      if(!annotations || textElement.isWhitespace) {
         textElement.spans = textElement.annotations = null;
       } else {
         textElement.color = annotations[0].color;

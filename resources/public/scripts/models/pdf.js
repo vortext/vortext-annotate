@@ -17,6 +17,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
   var Page = Backbone.Model.extend({
     defaults: {
       raw: null,
+      annotations: {},
       content: null,
       state: RenderingStates.INITIAL
     }
@@ -57,21 +58,24 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
   var PDF = Backbone.Model.extend({
     defaults: {
       binary: null,
-      activeAnnotations: {},
       raw: null
     },
     initialize: function() {
       var self = this;
       var pages = new Pages();
-      pages.on("change:state", function(e, obj) {
-        self.trigger("change:pages", e, obj);
-      });
+      pages
+        .on("change:state", function(e, obj) {
+          self.trigger("change:pages", e, obj);
+        })
+        .on("change:annotations", function(e, obj) {
+          self.trigger("change:annotations", e, obj);
+        });
       this.set("pages", pages);
     },
     setActiveAnnotations: function(marginalia) {
       // FIXME: ugly hack to set the active nodes based on the response JSON and selection
+      var annotations = {};
       var self = this;
-      var acc = {};
       marginalia.each(function(result) {
         var props = {
           type: result.get("id"),
@@ -79,15 +83,18 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
           active: result.get("active")
         };
         if(!props.active) return; // only consider the active ones
-        _.each(result.get("annotations"), function(annotation) {
-          _.each(annotation.mapping, function(node) {
+        result.get("annotations").forEach(function(annotation) {
+          annotation.mapping.forEach(function(node) {
             node = _.extend(node, props);
-            acc[node.pageIndex] = acc[node.pageIndex] || {};
-            acc[node.pageIndex][node.nodeIndex] = _.union(acc[node.pageIndex][node.nodeIndex] || [], node);
+            annotations[node.pageIndex] = annotations[node.pageIndex] || {};
+            annotations[node.pageIndex][node.nodeIndex] = _.union(annotations[node.pageIndex][node.nodeIndex] || [], node);
           });
         });
       });
-      this.set("activeAnnotations", acc);
+
+      this.get("pages").map(function(page, pageIndex) {
+        page.set({annotations: annotations[pageIndex] || {}});
+      });
     },
     loadFromData: function(data) {
       var self = this;

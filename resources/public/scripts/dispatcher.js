@@ -21,7 +21,6 @@ define(function (require) {
     var Viewer = require("jsx!components/viewer");
     var FileLoader = require("jsx!components/fileLoader");
     var Marginalia = require("jsx!components/marginalia");
-    var Minimap = require("jsx!components/minimap");
 
     var fileLoaderComponent = React.renderComponent(
       FileLoader({
@@ -42,11 +41,6 @@ define(function (require) {
       document.getElementById("marginalia")
     );
 
-    var minimapComponent = React.renderComponent(
-      Minimap({ target: "#viewer .viewer" }),
-      document.getElementById("minimap")
-    );
-
     marginaliaModel.on("all", function(e, obj) {
       PDFModel.setActiveAnnotations(marginaliaModel);
       marginaliaComponent.setState({
@@ -62,13 +56,13 @@ define(function (require) {
         });
       })
       .on("change:raw", function(e, obj) {
-        viewerComponent.setState({ pdf: PDFModel });
+        viewerComponent.forceUpdate();
       })
       .on("change:pages", function(e, obj) {
-        viewerComponent.setState({ pdf: PDFModel });
+        viewerComponent.forceUpdate();
       })
-      .on("change:activeAnnotations", function(e, obj) {
-        setStates([viewerComponent], { annotations: obj });
+      .on("change:annotations", function(e, obj) {
+        viewerComponent.forceUpdate();
       });
 
   };
