@@ -76,14 +76,14 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
       // FIXME: ugly hack to set the active nodes based on the response JSON and selection
       var annotations = {};
       var self = this;
-      marginalia.each(function(result) {
+      marginalia.get("marginalia").each(function(marginalis) {
         var props = {
-          type: result.get("id"),
-          color: result.get("color"),
-          active: result.get("active")
+          type: marginalis.get("id"),
+          color: marginalis.get("color"),
+          active: marginalis.get("active")
         };
         if(!props.active) return; // only consider the active ones
-        result.get("annotations").forEach(function(annotation) {
+        marginalis.get("annotations").forEach(function(annotation) {
           annotation.mapping.forEach(function(node) {
             node = _.extend(node, props);
             annotations[node.pageIndex] = annotations[node.pageIndex] || {};
@@ -93,7 +93,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
       });
 
       this.get("pages").map(function(page, pageIndex) {
-        page.set({annotations: annotations[pageIndex] || {}});
+        page.set({ annotations: annotations[pageIndex] || {} });
       });
     },
     loadFromData: function(data) {

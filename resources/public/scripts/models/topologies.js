@@ -2,11 +2,29 @@
 define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
   'use strict';
 
+  function updateProgress (deferred, e) {
+    if (e.lengthComputable) {
+      var percentComplete = e.loaded / e.total;
+      deferred.notify(percentComplete);
+    } else {
+      console.log("Unable to compute progress information since the total size is unknown");
+    }
+  }
+
+  function transferComplete(deferred, e) {
+    deferred.notify(1.0);
+  }
+
   var Topologies = Backbone.Model.extend({
     defaults: {},
     call: function(uri, data) {
       var deferred = Q.defer();
       var xhr = new XMLHttpRequest();
+
+      xhr.upload.addEventListener("progress", _.partial(updateProgress, deferred), false);
+      xhr.upload.addEventListener("load", _.partial(updateProgress, deferred), false);
+      deferred.notify(0.0);
+
       xhr.open("POST", uri, true);
       xhr.onload = function (e) {
         if (xhr.status >= 200 && xhr.status < 400) {

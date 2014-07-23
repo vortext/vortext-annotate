@@ -122,9 +122,9 @@ define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuild
       }
     },
     render: function() {
-      var textLayer = <div />;
+      var textLayer = null;
       var renderingState = this.state.renderingState;
-      var isLoading = renderingState < RenderingStates.FINISHED || !this.state.isRendered;
+      var isLoading = !this.state.isRendered;
 
       if(this.state.viewport && renderingState >= RenderingStates.HAS_CONTENT) {
         textLayer = <TextLayer dimensions={this.state.dimensions}

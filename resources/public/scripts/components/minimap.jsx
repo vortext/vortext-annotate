@@ -108,7 +108,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
     },
     render: function() {
       var page = this.props.page;
-      var textSegments = [];
+      var textSegments = null;
 
       if(page.get("state") >= RenderingStates.HAS_CONTENT) {
         var factor = this.props.factor;

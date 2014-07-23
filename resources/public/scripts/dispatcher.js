@@ -32,31 +32,36 @@ define(function (require) {
     );
 
     var viewerComponent = React.renderComponent(
-      Viewer({pdf: PDFModel}),
+      Viewer({ pdf: PDFModel }),
       document.getElementById("viewer")
     );
 
     var marginaliaComponent = React.renderComponent(
-      Marginalia({}),
+      Marginalia({ marginalia: marginaliaModel }),
       document.getElementById("marginalia")
     );
 
     marginaliaModel.on("all", function(e, obj) {
       PDFModel.setActiveAnnotations(marginaliaModel);
-      marginaliaComponent.setState({
-        marginalia: marginaliaModel
-      });
+      marginaliaComponent.forceUpdate();
     });
 
     PDFModel
       .on("change:binary", function(e, obj) {
         marginaliaModel.reset();
-        topologiesModel.call("topologies/ebm", obj).then(function(data) {
-          marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
-        });
-      })
-      .on("change:raw", function(e, obj) {
-        viewerComponent.forceUpdate();
+        topologiesModel.call("topologies/ebm", obj)
+          .then(
+            function(data) {
+              var collection = marginaliaModel.get("marginalia");
+              collection.reset(collection.parse(data.marginalia));
+            },
+            function(error) {
+              console.log("failed to process", error);
+            },
+            function(progress) {
+              marginaliaModel.set({ progress: progress });
+            }
+          );
       })
       .on("change:pages", function(e, obj) {
         viewerComponent.forceUpdate();

@@ -4,41 +4,44 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
   var Block = React.createClass({
     toggleActivate: function(e) {
-      var result = this.props.result;
-      var isActive = !result.get("active");
-      result.set({"active": isActive});
+      var marginalis = this.props.marginalis;
+      var isActive = !marginalis.get("active");
+      marginalis.set({"active": isActive});
     },
     render: function() {
-      var result = this.props.result;
-      var description = result.get("description");
-      var isActive = result.get("active");
+      var marginalis = this.props.marginalis;
+      var description = marginalis.get("description");
+      var isActive = marginalis.get("active");
       var style = {
-        "backgroundColor": isActive ? "rgb(" + result.get("color") + ")" : "inherit",
+        "backgroundColor": isActive ? "rgb(" + marginalis.get("color") + ")" : "inherit",
         "color": isActive ? "white" : "inherit"
       };
 
-      return(<div className="block">
+      return <div className="block">
                <h4>
-                 <a onClick={this.toggleActivate} style={style}> {result.get("title")} </a>
+                 <a onClick={this.toggleActivate} style={style}> {marginalis.get("title")} </a>
                </h4>
                <div className="content">
                  <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
                </div>
-             </div>);
+             </div>;
     }
   });
 
   var Marginalia = React.createClass({
-    getInitialState: function() {
-      return { marginalia: null };
-    },
     render: function() {
-      var marginalia = this.state.marginalia;
-      var self = this;
-      var blocks = marginalia && marginalia.map(function(result, idx) {
-        return (<Block key={result.id} result={result} />);
+      var marginalia = this.props.marginalia.get("marginalia");
+      var progress =  this.props.marginalia.get("progress");
+      var isLoading = progress && progress < 1.0;
+
+      var blocks = marginalia && marginalia.map(function(marginalis, idx) {
+        return <Block key={marginalis.id} marginalis={marginalis} />;
       });
-      return(<div>{blocks}</div>);
+      return (
+        <div>
+          {blocks}
+          <div className="loading" style={{ display: isLoading ? "block" : "none" }}><img src="static/img/loader.gif" /></div>
+        </div>);
     }
   });
 
