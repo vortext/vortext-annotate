@@ -75,6 +75,7 @@ define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuild
       }
     },
     drawPage: function(page) {
+      var self = this;
       var container = this.getDOMNode();
       var canvas = this.refs.canvas.getDOMNode();
       var ctx = canvas.getContext("2d");
@@ -89,9 +90,6 @@ define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuild
       canvas.height = (Math.floor(viewport.height) * outputScale.sy) | 0;
       canvas.style.width = Math.floor(viewport.width) + 'px';
       canvas.style.height = Math.floor(viewport.height) + 'px';
-
-      // Add the viewport so it's known what it was originally drawn with.
-      canvas._viewport = viewport;
 
       this.setState({
         viewport: viewport,
@@ -109,23 +107,33 @@ define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuild
         viewport: viewport
       };
 
-      page.render(renderContext);
+      // Store a refer to the renderer
+      var pageRendering = page.render(renderContext);
+      // Hook into the pdf render complete event
+      var completeCallback = pageRendering.internalRenderTask.callback;
+      pageRendering.internalRenderTask.callback = function (error) {
+        completeCallback.call(this, error);
+        self.setState({ isRendered: true });
+      };
     },
     componentDidUpdate: function(prevProps, prevState) {
-      if(this.state.renderingState >= RenderingStates.HAS_PAGE && !this.state.isRendered) {
+      if(this.state.renderingState >= RenderingStates.HAS_PAGE && !this.state.viewport) {
         this.drawPage(this.props.page.get("raw"));
-        this.setState({ isRendered: true });
       }
     },
     render: function() {
       var textLayer = <div />;
-      if(this.state.isRendered && this.state.renderingState >= RenderingStates.HAS_CONTENT) {
+      var renderingState = this.state.renderingState;
+      var isLoading = renderingState < RenderingStates.FINISHED || !this.state.isRendered;
+
+      if(this.state.viewport && renderingState >= RenderingStates.HAS_CONTENT) {
         textLayer = <TextLayer dimensions={this.state.dimensions}
                                viewport={this.state.viewport}
                                page={this.props.page} />;
       }
       return (
         <div className="page">
+          <div className="loading" style={{ opacity: isLoading ? 1 : 0 }}><img src="static/img/loader.gif" /></div>
           <canvas ref="canvas" />
           {textLayer}
         </div>);
@@ -134,10 +142,10 @@ define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuild
 
   var Display = React.createClass({
     getInitialState: function() {
-      return { $viewer: null };
+      return { viewer: null };
     },
     componentDidMount: function() {
-      this.setState({ $viewer: this.refs.viewer.getDOMNode() });
+      this.setState({ viewer: this.refs.viewer.getDOMNode() });
     },
     render: function() {
       var self = this;
@@ -150,7 +158,7 @@ define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuild
 
       return(
         <div>
-          <Minimap target={this.state.$viewer} pdf={pdf} />
+          <Minimap viewer={this.state.viewer} pdf={pdf} />
           <div className="viewer-container">
             <div className="viewer" ref="viewer">{pagesElements}</div>
            </div>

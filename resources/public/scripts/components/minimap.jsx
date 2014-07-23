@@ -7,28 +7,28 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
     getInitialState: function() {
       return {
         mouseDown: false,
-        offset: $(this.props.target).scrollTop() / this.props.factor
+        offset: this.props.$viewer.scrollTop() / this.props.factor
       };
     },
     componentWillUnmount: function() {
-      $(this.props.target).off("scroll");
+      this.props.$viewer.off("scroll");
       $(this.getDOMNode().parentNode).off("mousedown mousemove");
       $(window).off("mouseup");
     },
-    scrollTo: function(e, $minimap, $target) {
+    scrollTo: function(e, $minimap, $viewer) {
       var document_offset = $minimap.offset().top;
       var offset = ((this.props.height / 2) + document_offset);
       var y = e.pageY;
       this.setState({ offset: y - offset });
 
       var scroll = (y - offset) * this.props.factor;
-      $target.scrollTop(scroll);
+      $viewer.scrollTop(scroll);
     },
     componentDidMount: function() {
       var self = this;
-      var $target =  $(this.props.target);
-      $target.on("scroll", function() {
-        self.setState({ offset: $target.scrollTop() / self.props.factor });
+      var $viewer =  this.props.$viewer;
+      $viewer.on("scroll", function() {
+        self.setState({ offset: $viewer.scrollTop() / self.props.factor });
       });
 
       $(window).on("mouseup", function(e) {
@@ -40,21 +40,21 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       $minimap
         .on("mousemove", function(e) {
           if(self.state.mouseDown) {
-            self.scrollTo(e, $minimap, $target);
+            self.scrollTo(e, $minimap, $viewer);
           }
           return false;
         })
         .on("mousedown", function(e) {
           self.setState({ mouseDown: true });
           // Jump to mousedown position
-          self.scrollTo(e, $minimap, $target);
+          self.scrollTo(e, $minimap, $viewer);
           return false;
         });
     },
     render: function() {
       var style = { height: this.props.height,
                     top: this.state.offset };
-      return(<div className="visible-area" style={style}></div>);
+      return <div className="visible-area" style={style}></div>;
     }
   });
 
@@ -109,10 +109,12 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
     render: function() {
       var page = this.props.page;
       var textSegments = [];
+
       if(page.get("state") >= RenderingStates.HAS_CONTENT) {
         var factor = this.props.factor;
+
         var viewport = page.get("raw").getViewport(1.0);
-        var pageWidthScale = this.props.$target.width() / viewport.width;
+        var pageWidthScale = this.props.$viewer.width() / viewport.width;
         viewport = page.get("raw").getViewport(pageWidthScale);
 
         var textLayerBuilder = new TextLayerBuilder({ viewport: viewport });
@@ -135,29 +137,30 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
 
   var Minimap = React.createClass({
     render: function() {
-      if(!this.props.target) return <div className="minimap" />; // wait for viewer to mount
-      var $target = $(this.props.target);
+      var viewer = this.props.viewer;
+      if(!viewer) return null; // wait for viewer to mount
+      var $viewer = $(viewer);
       var pages = this.props.pdf.get("pages");
       var numPages = pages.length;
 
       // We assume that each page has the same height.
       // This is not true sometimes, but often enough for academic papers.
-      var $page = $target.find(".page:eq(0)");
+      var $page = $viewer.find(".page:eq(0)");
       var totalHeight = $page.height() * numPages;
 
-      var offset = $target.offset().top;
-      var factor = totalHeight / ($target.height() - offset);
+      var offset = $viewer.offset().top;
+      var factor = totalHeight / ($viewer.height() - offset);
 
       var pageElements = pages.map(function(page, pageIndex) {
         return <PageSegment key={pageIndex}
                             page={page}
-                            $target={$target}
+                            $viewer={$viewer}
                             factor={factor}
                             style={{ height: (totalHeight / numPages) / factor }} />;
       });
 
       return (<div className="minimap">
-                <VisibleArea height={$target.height() / factor} target={this.props.target} factor={factor} />
+                <VisibleArea height={$viewer.height() / factor} $viewer={$viewer} factor={factor} />
                 {pageElements}
               </div>);
     }
