@@ -26,8 +26,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
   var Pages = Backbone.Collection.extend({
     model: Page,
     _requestPage: function(model, pagePromise) {
-
-      pagePromise
+      return pagePromise
         .then(function(raw) {
           model.set({
             raw: raw,
@@ -44,14 +43,23 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
     },
     populate: function(pdf) {
       var self  = this;
-      var pages = _.map(_.range(1, pdf.numPages + 1), function(pageNr) {
+      var pageQueue = _.range(0, pdf.numPages);
+      var pages = _.map(pageQueue, function(pageNr) {
         return new Page();
       });
       this.reset(pages); // set a bunch of empty pages
-      _.each(pages, function(page, pageIndex) {
+
+      var process = function(arr) {
+        if(arr.length === 0) return;
+        var pageIndex = _.first(arr);
+        var page = pages[pageIndex];
         page.set({ state: RenderingStates.RUNNING });
-        self._requestPage(page, pdf.getPage(pageIndex + 1));
-      });
+        var p = self._requestPage(page, pdf.getPage(pageIndex + 1));
+        p.then(function() {
+          process(_.rest(arr));
+        });
+      };
+      process(pageQueue);
     }
   });
 
