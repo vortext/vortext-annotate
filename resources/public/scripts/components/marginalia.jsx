@@ -29,12 +29,13 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
   });
 
   var Marginalia = React.createClass({
+    getInitialState: function() {
+      return { progress: null };
+    },
     render: function() {
-      var marginalia = this.props.marginalia.get("marginalia");
-      var progress =  this.props.marginalia.get("progress");
-      var isLoading = progress && progress < 1.0;
-
-      var blocks = marginalia && marginalia.map(function(marginalis, idx) {
+      var progress = this.state.progress;
+      var isLoading = progress && progress !== "done";
+      var blocks = this.props.marginalia.map(function(marginalis, idx) {
         return <Block key={marginalis.id} marginalis={marginalis} />;
       });
       return (

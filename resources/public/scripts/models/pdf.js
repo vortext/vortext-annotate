@@ -84,7 +84,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
       // FIXME: ugly hack to set the active nodes based on the response JSON and selection
       var annotations = {};
       var self = this;
-      marginalia.get("marginalia").each(function(marginalis) {
+      marginalia.each(function(marginalis) {
         var props = {
           type: marginalis.get("id"),
           color: marginalis.get("color"),

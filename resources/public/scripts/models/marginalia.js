@@ -34,7 +34,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     }
   });
 
-  var MarginaliaCollection = Backbone.Collection.extend({
+  var Marginalia = Backbone.Collection.extend({
     model: Marginalis,
     parse: function(data) {
       _.each(data, function(marginalis, idx) {
@@ -44,24 +44,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         marginalis.color = colors[idx % colors.length];
       });
       return data;
-    }
-  });
-
-  var Marginalia = Backbone.Model.extend({
-    defaults: {
-      progress: null
-    },
-    initialize: function() {
-      var self = this;
-      var marginalia = new MarginaliaCollection();
-      marginalia.on("all", function(e, obj) {
-        self.trigger("change:marginalia", e, obj);
-      });
-      this.set("marginalia", marginalia);
-    },
-    reset: function() {
-      this.set(this.defaults);
-      this.get("marginalia").reset();
     }
   });
 

@@ -49,17 +49,20 @@ define(function (require) {
     PDFModel
       .on("change:binary", function(e, obj) {
         marginaliaModel.reset();
+        marginaliaComponent.setState({ progress: "running" });
         topologiesModel.call("topologies/ebm", obj)
           .then(
             function(data) {
-              var collection = marginaliaModel.get("marginalia");
-              collection.reset(collection.parse(data.marginalia));
+              marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
+              marginaliaComponent.setState({ progress: "done" });
             },
             function(error) {
-              console.log("failed to process", error);
+              console.log(error);
+              marginaliaComponent.setState({ progress: "failed" });
             },
             function(progress) {
-              marginaliaModel.set({ progress: progress });
+              console.log(progress);
+              marginaliaComponent.setState({ progress: progress });
             }
           );
       })
