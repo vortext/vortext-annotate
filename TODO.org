@@ -1,33 +1,34 @@
-* IN PROGRESS Python SpaDoc
+* VERIFY Python SpaDoc
 ** VERIFY ProtocolBuffers
 *** VERIFY Define spec
 *** DONE Implement NodeJS
 *** DONE Implement Python
 *** DONE Implement Clojure
 ** DONE Use scikit word tokenizer
-** Write cache for all the Cochrane PDFs
-** Write small SpaDoc wrapper for training
+** DONE Write cache for all the Cochrane PDFs
+** DONE Write small SpaDoc wrapper for training
 * Client side
-** Rename results to marginalia
-** [[https://facebook.github.io/react/docs/flux-overview.html]["Flux" architecture]] refactor
-** Loading states
-*** Sequentially load pages (maintain loading state)
-*** Display loading indicators
+** DONE Rename results to marginalia
+** DONE [[https://facebook.github.io/react/docs/flux-overview.html]["Flux" architecture]] refactor
+** DONE Loading states
+*** DONE Sequentially load pages (maintain loading state)
+*** DONE Display loading indicators
 ** Show extracted annotations separately
 ** Embed UUID and highlight on hover
 * Annotations
+** Allow deletion of annotations
+** Scroll into view for annotations with proper URL
 ** Allow select-drag adding of annotations
-** W3C RDFa / Providence / Annotations
-** Scroll into view for annotations
-** Database (hash + Locality Sensitive Hashing)
+** Database/Persistence
 ** Write named destinations + stand-off markup
+** W3C RDFa / Providence / Annotations
 * Server side
 ** Documentation
 ** DONE Better CLI
 *** DONE Rename to workers
 *** DONE Put stand-alone stuff in workers
 *** DONE Write CLI for HTTP topology
-** IN PROGRESS Progress updates / async topologies
+** VERIFY Progress updates / async topologies
 *** DONE Channels for topologies
 *** DONE Async for HTTP-kit
 *** VERIFY Async for service calls

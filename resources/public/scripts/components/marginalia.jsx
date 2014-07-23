@@ -17,7 +17,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
   var Annotation = React.createClass({
     render: function() {
-      return <li><p className="small-text-left">{truncate(this.props.annotation.content, 250)}</p></li>;
+      return <li><p className="text-left">{truncate(this.props.annotation.content, 250)}</p></li>;
     }
   });
 
