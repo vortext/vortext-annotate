@@ -1,5 +1,5 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuilder'], function(React, _, Minimap, TextLayerBuilder) {
+define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuilder'], function(React, $, _, Minimap, TextLayerBuilder) {
   'use strict';
 
   var TextNode = React.createClass({
@@ -142,7 +142,13 @@ define(['react', 'underscore', 'jsx!components/minimap', 'helpers/textLayerBuild
 
   var Display = React.createClass({
     getInitialState: function() {
-      return { viewer: null };
+      return { fingerprint: null, viewer: null };
+    },
+    componentWillUpdate: function(nextProps, nextState) {
+      var viewer = this.state.viewer;
+      if(nextState.fingerprint !== this.state.fingerprint && viewer) {
+        $(this.state.viewer).scrollTop(0);
+      }
     },
     componentDidMount: function() {
       this.setState({ viewer: this.refs.viewer.getDOMNode() });

@@ -47,6 +47,11 @@ define(function (require) {
     });
 
     PDFModel
+      .on("change:raw", function(e, obj) {
+        viewerComponent.setState({
+          fingerprint: obj.pdfInfo.fingerprint
+        });
+      })
       .on("change:binary", function(e, obj) {
         marginaliaModel.reset();
         marginaliaComponent.setState({ progress: "running" });
