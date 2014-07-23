@@ -1,5 +1,6 @@
 html, body {
     overflow: hidden;
+    color: #505050;
 }
 
 .viewer-container {
@@ -80,6 +81,11 @@ html, body {
 
 .block {
     margin: 1.0em;
+}
+
+.block .annotations p {
+    font-size: small;
+    color: #777;
 }
 
 .block h4 {

@@ -79,7 +79,7 @@ class Handler(DocumentHandler):
             X_doc = doc_vec.builder_transform()
 
             document_prediction = "low" if doc_model.predict(X_doc)[0] == 1 else "uncertain"
-            template_text = "**Overall risk of bias prediction**: %s <br> **Supporting sentences**: %s"
-            marginalis.description = template_text % (document_prediction, len(positive_sents) or "*none*")
+            template_text = "**Overall risk of bias prediction**: %s"
+            marginalis.description = template_text % (document_prediction)
 
         return document

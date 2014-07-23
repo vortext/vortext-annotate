@@ -2,6 +2,25 @@
 define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked) {
   'use strict';
 
+  function truncate(str, length, truncateStr) {
+    if (str == null) return '';
+    str = String(str); truncateStr = truncateStr || '…';
+    length = ~~length;
+    if(str.length > length) {
+      var truncated = str.substr(0, length);
+      truncated = truncated.substr(0, Math.min(truncated.length, truncated.lastIndexOf(" ")));
+      return truncated + truncateStr;
+    } else {
+      return str;
+    }
+  }
+
+  var Annotation = React.createClass({
+    render: function() {
+      return <li><p className="small-text-left">{truncate(this.props.annotation.content, 350)}</p></li>;
+    }
+  });
+
   var Block = React.createClass({
     toggleActivate: function(e) {
       var marginalis = this.props.marginalis;
@@ -12,10 +31,15 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
       var marginalis = this.props.marginalis;
       var description = marginalis.get("description");
       var isActive = marginalis.get("active");
+
       var style = {
         "backgroundColor": isActive ? "rgb(" + marginalis.get("color") + ")" : "inherit",
         "color": isActive ? "white" : "inherit"
       };
+
+      var annotations = marginalis.get("annotations").map(function(annotation, idx) {
+        return <Annotation annotation={annotation} key={idx} />;
+      });
 
       return <div className="block">
                <h4>
@@ -23,6 +47,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
                </h4>
                <div className="content">
                  <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
+                 <ul className="annotations square">{annotations}</ul>
                </div>
              </div>;
     }
