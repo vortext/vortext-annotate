@@ -30,8 +30,8 @@
     ;; graceful shutdown: wait for existing requests to be finished
     (@server :timeout 100)
     (reset! server nil))
-  (services/shutdown!)
   (shutdown-agents)
+  (services/shutdown!)
   (log/info "… bye bye"))
 
 (defn start-server! [port debug?]

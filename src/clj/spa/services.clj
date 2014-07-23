@@ -31,7 +31,7 @@
 (defn start!
   "Start the service broker"
   []
-  (future (.run broker)))
+  (doto (Thread. broker) (.start)))
 
 (defn shutdown! []
   (.destroy broker)
