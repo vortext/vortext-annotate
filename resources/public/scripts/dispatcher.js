@@ -57,11 +57,9 @@ define(function (require) {
               marginaliaComponent.setState({ progress: "done" });
             },
             function(error) {
-              console.log(error);
               marginaliaComponent.setState({ progress: "failed" });
             },
             function(progress) {
-              console.log(progress);
               marginaliaComponent.setState({ progress: progress });
             }
           );

@@ -6,7 +6,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     toggleActivate: function(e) {
       var marginalis = this.props.marginalis;
       var isActive = !marginalis.get("active");
-      marginalis.set({"active": isActive});
+      marginalis.set({ "active": isActive });
     },
     render: function() {
       var marginalis = this.props.marginalis;
