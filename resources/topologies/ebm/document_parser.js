@@ -19,7 +19,7 @@ var builder = ProtoBuf.loadProtoFile(__dirname + "/SpaDoc.proto"), // somehow mu
     spa = builder.build("ebm.spa"),
     Document = spa.Document;
 
-function textContentToDocument(content) {
+function textContentToDocument(pdf, content) {
   var nodes = [];
   var pages = [];
   var text = "";
@@ -43,9 +43,13 @@ function textContentToDocument(content) {
     pages.push({ offset: totalLength, length: offset });
     totalLength += offset;
   }
-  return new Document({ "text": text,
-			"pages": pages,
-			"nodes": nodes });
+
+  var fingerprint = pdf.pdfInfo.fingerprint;
+  return new Document({
+    "fingerprint": fingerprint,
+    "text": text,
+    "pages": pages,
+    "nodes": nodes });
 }
 
 function convertToDocument(payload) {
@@ -57,7 +61,7 @@ function convertToDocument(payload) {
     return Q.all(_.invoke(pages, "then", function(page) {
       return page.getTextContent();
     })).then(function(contents) {
-      return textContentToDocument(contents);
+      return textContentToDocument(pdf, contents);
     });
   });
 };
