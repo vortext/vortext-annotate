@@ -32,6 +32,7 @@ class Handler(DocumentHandler):
     def add_annotation(self, marginalis, type, index, label="biased", content=None):
         annotation = marginalis.annotations.add()
         annotation.label = label
+        annotation.uuid = str(uuid.uuid1())
         annotation.content = content
         annotation.mapping.key = type
         annotation.mapping.index = index
