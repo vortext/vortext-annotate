@@ -6,8 +6,9 @@ message Document {
     required uint32 lower = 2;
   }
 
-  required string text = 1;
-  optional string uri = 2;
+  required string fingerprint = 1;
+  required string text = 2;
+  optional string uri = 3;
 
   message Node {
     required uint32 page_index = 1;
@@ -15,14 +16,14 @@ message Document {
     required Document.Interval interval = 3;
   }
 
-  repeated Node nodes = 3;
+  repeated Node nodes = 4;
 
   message Page {
     required uint32 length = 1;
     required uint32 offset = 2;
   }
 
-  repeated Page pages = 4;
+  repeated Page pages = 5;
 
   message Mapping {
     message Element {
@@ -32,8 +33,8 @@ message Document {
     repeated Element elements = 1;
   }
 
-  repeated Mapping words = 5;
-  repeated Mapping sentences = 6;
+  repeated Mapping words = 6;
+  repeated Mapping sentences = 7;
 
   message Marginalis {
     optional string type = 1; // could be a RDF/RDFa type
@@ -41,7 +42,7 @@ message Document {
     optional string description = 3; // a markdown string
 
     message Annotation {
-      optional string uri = 1;
+      required string uuid = 1;
       optional string label = 2;
       optional string content = 3;
 
@@ -54,5 +55,5 @@ message Document {
     repeated Annotation annotations = 4;
   }
 
-  repeated Marginalis marginalia = 7; // stores the added marginalia and its annotations
+  repeated Marginalis marginalia = 8; // stores the added marginalia and its annotations
 }

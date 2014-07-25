@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='SpaDoc.proto',
   package='ebm.spa',
-  serialized_pb='\n\x0cSpaDoc.proto\x12\x07\x65\x62m.spa\"\xdc\x06\n\x08\x44ocument\x12\x0c\n\x04text\x18\x01 \x02(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12%\n\x05nodes\x18\x03 \x03(\x0b\x32\x16.ebm.spa.Document.Node\x12%\n\x05pages\x18\x04 \x03(\x0b\x32\x16.ebm.spa.Document.Page\x12(\n\x05words\x18\x05 \x03(\x0b\x32\x19.ebm.spa.Document.Mapping\x12,\n\tsentences\x18\x06 \x03(\x0b\x32\x19.ebm.spa.Document.Mapping\x12\x30\n\nmarginalia\x18\x07 \x03(\x0b\x32\x1c.ebm.spa.Document.Marginalis\x1a(\n\x08Interval\x12\r\n\x05upper\x18\x01 \x02(\r\x12\r\n\x05lower\x18\x02 \x02(\r\x1a\\\n\x04Node\x12\x12\n\npage_index\x18\x01 \x02(\r\x12\x12\n\nnode_index\x18\x02 \x02(\r\x12,\n\x08interval\x18\x03 \x02(\x0b\x32\x1a.ebm.spa.Document.Interval\x1a&\n\x04Page\x12\x0e\n\x06length\x18\x01 \x02(\r\x12\x0e\n\x06offset\x18\x02 \x02(\r\x1a\x88\x01\n\x07Mapping\x12\x33\n\x08\x65lements\x18\x01 \x03(\x0b\x32!.ebm.spa.Document.Mapping.Element\x1aH\n\x07\x45lement\x12\x12\n\nnode_index\x18\x01 \x02(\r\x12)\n\x05range\x18\x02 \x02(\x0b\x32\x1a.ebm.spa.Document.Interval\x1a\xa1\x02\n\nMarginalis\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12<\n\x0b\x61nnotations\x18\x04 \x03(\x0b\x32\'.ebm.spa.Document.Marginalis.Annotation\x1a\xa2\x01\n\nAnnotation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12@\n\x07mapping\x18\x04 \x01(\x0b\x32/.ebm.spa.Document.Marginalis.Annotation.Mapping\x1a%\n\x07Mapping\x12\x0b\n\x03key\x18\x01 \x02(\t\x12\r\n\x05index\x18\x02 \x02(\r')
+  serialized_pb='\n\x0cSpaDoc.proto\x12\x07\x65\x62m.spa\"\xf2\x06\n\x08\x44ocument\x12\x13\n\x0b\x66ingerprint\x18\x01 \x02(\t\x12\x0c\n\x04text\x18\x02 \x02(\t\x12\x0b\n\x03uri\x18\x03 \x01(\t\x12%\n\x05nodes\x18\x04 \x03(\x0b\x32\x16.ebm.spa.Document.Node\x12%\n\x05pages\x18\x05 \x03(\x0b\x32\x16.ebm.spa.Document.Page\x12(\n\x05words\x18\x06 \x03(\x0b\x32\x19.ebm.spa.Document.Mapping\x12,\n\tsentences\x18\x07 \x03(\x0b\x32\x19.ebm.spa.Document.Mapping\x12\x30\n\nmarginalia\x18\x08 \x03(\x0b\x32\x1c.ebm.spa.Document.Marginalis\x1a(\n\x08Interval\x12\r\n\x05upper\x18\x01 \x02(\r\x12\r\n\x05lower\x18\x02 \x02(\r\x1a\\\n\x04Node\x12\x12\n\npage_index\x18\x01 \x02(\r\x12\x12\n\nnode_index\x18\x02 \x02(\r\x12,\n\x08interval\x18\x03 \x02(\x0b\x32\x1a.ebm.spa.Document.Interval\x1a&\n\x04Page\x12\x0e\n\x06length\x18\x01 \x02(\r\x12\x0e\n\x06offset\x18\x02 \x02(\r\x1a\x88\x01\n\x07Mapping\x12\x33\n\x08\x65lements\x18\x01 \x03(\x0b\x32!.ebm.spa.Document.Mapping.Element\x1aH\n\x07\x45lement\x12\x12\n\nnode_index\x18\x01 \x02(\r\x12)\n\x05range\x18\x02 \x02(\x0b\x32\x1a.ebm.spa.Document.Interval\x1a\xa2\x02\n\nMarginalis\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12<\n\x0b\x61nnotations\x18\x04 \x03(\x0b\x32\'.ebm.spa.Document.Marginalis.Annotation\x1a\xa3\x01\n\nAnnotation\x12\x0c\n\x04uuid\x18\x01 \x02(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12@\n\x07mapping\x18\x04 \x01(\x0b\x32/.ebm.spa.Document.Marginalis.Annotation.Mapping\x1a%\n\x07Mapping\x12\x0b\n\x03key\x18\x01 \x02(\t\x12\r\n\x05index\x18\x02 \x02(\r')
 
 
 
@@ -48,8 +48,8 @@ _DOCUMENT_INTERVAL = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=281,
-  serialized_end=321,
+  serialized_start=302,
+  serialized_end=342,
 )
 
 _DOCUMENT_NODE = _descriptor.Descriptor(
@@ -89,8 +89,8 @@ _DOCUMENT_NODE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=323,
-  serialized_end=415,
+  serialized_start=344,
+  serialized_end=436,
 )
 
 _DOCUMENT_PAGE = _descriptor.Descriptor(
@@ -123,8 +123,8 @@ _DOCUMENT_PAGE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=417,
-  serialized_end=455,
+  serialized_start=438,
+  serialized_end=476,
 )
 
 _DOCUMENT_MAPPING_ELEMENT = _descriptor.Descriptor(
@@ -157,8 +157,8 @@ _DOCUMENT_MAPPING_ELEMENT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=522,
-  serialized_end=594,
+  serialized_start=543,
+  serialized_end=615,
 )
 
 _DOCUMENT_MAPPING = _descriptor.Descriptor(
@@ -184,8 +184,8 @@ _DOCUMENT_MAPPING = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=458,
-  serialized_end=594,
+  serialized_start=479,
+  serialized_end=615,
 )
 
 _DOCUMENT_MARGINALIS_ANNOTATION_MAPPING = _descriptor.Descriptor(
@@ -218,8 +218,8 @@ _DOCUMENT_MARGINALIS_ANNOTATION_MAPPING = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=849,
-  serialized_end=886,
+  serialized_start=871,
+  serialized_end=908,
 )
 
 _DOCUMENT_MARGINALIS_ANNOTATION = _descriptor.Descriptor(
@@ -230,8 +230,8 @@ _DOCUMENT_MARGINALIS_ANNOTATION = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uri', full_name='ebm.spa.Document.Marginalis.Annotation.uri', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='uuid', full_name='ebm.spa.Document.Marginalis.Annotation.uuid', index=0,
+      number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -266,8 +266,8 @@ _DOCUMENT_MARGINALIS_ANNOTATION = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=724,
-  serialized_end=886,
+  serialized_start=745,
+  serialized_end=908,
 )
 
 _DOCUMENT_MARGINALIS = _descriptor.Descriptor(
@@ -314,8 +314,8 @@ _DOCUMENT_MARGINALIS = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=597,
-  serialized_end=886,
+  serialized_start=618,
+  serialized_end=908,
 )
 
 _DOCUMENT = _descriptor.Descriptor(
@@ -326,50 +326,57 @@ _DOCUMENT = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='text', full_name='ebm.spa.Document.text', index=0,
+      name='fingerprint', full_name='ebm.spa.Document.fingerprint', index=0,
       number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='uri', full_name='ebm.spa.Document.uri', index=1,
-      number=2, type=9, cpp_type=9, label=1,
+      name='text', full_name='ebm.spa.Document.text', index=1,
+      number=2, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='nodes', full_name='ebm.spa.Document.nodes', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='uri', full_name='ebm.spa.Document.uri', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='pages', full_name='ebm.spa.Document.pages', index=3,
+      name='nodes', full_name='ebm.spa.Document.nodes', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='words', full_name='ebm.spa.Document.words', index=4,
+      name='pages', full_name='ebm.spa.Document.pages', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='sentences', full_name='ebm.spa.Document.sentences', index=5,
+      name='words', full_name='ebm.spa.Document.words', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='marginalia', full_name='ebm.spa.Document.marginalia', index=6,
+      name='sentences', full_name='ebm.spa.Document.sentences', index=6,
       number=7, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='marginalia', full_name='ebm.spa.Document.marginalia', index=7,
+      number=8, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -384,7 +391,7 @@ _DOCUMENT = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=26,
-  serialized_end=886,
+  serialized_end=908,
 )
 
 _DOCUMENT_INTERVAL.containing_type = _DOCUMENT;

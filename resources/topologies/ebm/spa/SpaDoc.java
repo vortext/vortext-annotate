@@ -11,139 +11,154 @@ public final class SpaDoc {
   public interface DocumentOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required string text = 1;
+    // required string fingerprint = 1;
     /**
-     * <code>required string text = 1;</code>
+     * <code>required string fingerprint = 1;</code>
+     */
+    boolean hasFingerprint();
+    /**
+     * <code>required string fingerprint = 1;</code>
+     */
+    java.lang.String getFingerprint();
+    /**
+     * <code>required string fingerprint = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getFingerprintBytes();
+
+    // required string text = 2;
+    /**
+     * <code>required string text = 2;</code>
      */
     boolean hasText();
     /**
-     * <code>required string text = 1;</code>
+     * <code>required string text = 2;</code>
      */
     java.lang.String getText();
     /**
-     * <code>required string text = 1;</code>
+     * <code>required string text = 2;</code>
      */
     com.google.protobuf.ByteString
         getTextBytes();
 
-    // optional string uri = 2;
+    // optional string uri = 3;
     /**
-     * <code>optional string uri = 2;</code>
+     * <code>optional string uri = 3;</code>
      */
     boolean hasUri();
     /**
-     * <code>optional string uri = 2;</code>
+     * <code>optional string uri = 3;</code>
      */
     java.lang.String getUri();
     /**
-     * <code>optional string uri = 2;</code>
+     * <code>optional string uri = 3;</code>
      */
     com.google.protobuf.ByteString
         getUriBytes();
 
-    // repeated .ebm.spa.Document.Node nodes = 3;
+    // repeated .ebm.spa.Document.Node nodes = 4;
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     java.util.List<ebm.spa.SpaDoc.Document.Node> 
         getNodesList();
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     ebm.spa.SpaDoc.Document.Node getNodes(int index);
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     int getNodesCount();
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     java.util.List<? extends ebm.spa.SpaDoc.Document.NodeOrBuilder> 
         getNodesOrBuilderList();
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     ebm.spa.SpaDoc.Document.NodeOrBuilder getNodesOrBuilder(
         int index);
 
-    // repeated .ebm.spa.Document.Page pages = 4;
+    // repeated .ebm.spa.Document.Page pages = 5;
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     java.util.List<ebm.spa.SpaDoc.Document.Page> 
         getPagesList();
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     ebm.spa.SpaDoc.Document.Page getPages(int index);
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     int getPagesCount();
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     java.util.List<? extends ebm.spa.SpaDoc.Document.PageOrBuilder> 
         getPagesOrBuilderList();
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     ebm.spa.SpaDoc.Document.PageOrBuilder getPagesOrBuilder(
         int index);
 
-    // repeated .ebm.spa.Document.Mapping words = 5;
+    // repeated .ebm.spa.Document.Mapping words = 6;
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     java.util.List<ebm.spa.SpaDoc.Document.Mapping> 
         getWordsList();
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     ebm.spa.SpaDoc.Document.Mapping getWords(int index);
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     int getWordsCount();
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     java.util.List<? extends ebm.spa.SpaDoc.Document.MappingOrBuilder> 
         getWordsOrBuilderList();
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     ebm.spa.SpaDoc.Document.MappingOrBuilder getWordsOrBuilder(
         int index);
 
-    // repeated .ebm.spa.Document.Mapping sentences = 6;
+    // repeated .ebm.spa.Document.Mapping sentences = 7;
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     java.util.List<ebm.spa.SpaDoc.Document.Mapping> 
         getSentencesList();
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     ebm.spa.SpaDoc.Document.Mapping getSentences(int index);
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     int getSentencesCount();
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     java.util.List<? extends ebm.spa.SpaDoc.Document.MappingOrBuilder> 
         getSentencesOrBuilderList();
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     ebm.spa.SpaDoc.Document.MappingOrBuilder getSentencesOrBuilder(
         int index);
 
-    // repeated .ebm.spa.Document.Marginalis marginalia = 7;
+    // repeated .ebm.spa.Document.Marginalis marginalia = 8;
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -152,7 +167,7 @@ public final class SpaDoc {
     java.util.List<ebm.spa.SpaDoc.Document.Marginalis> 
         getMarginaliaList();
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -160,7 +175,7 @@ public final class SpaDoc {
      */
     ebm.spa.SpaDoc.Document.Marginalis getMarginalia(int index);
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -168,7 +183,7 @@ public final class SpaDoc {
      */
     int getMarginaliaCount();
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -177,7 +192,7 @@ public final class SpaDoc {
     java.util.List<? extends ebm.spa.SpaDoc.Document.MarginalisOrBuilder> 
         getMarginaliaOrBuilderList();
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -239,50 +254,55 @@ public final class SpaDoc {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              text_ = input.readBytes();
+              fingerprint_ = input.readBytes();
               break;
             }
             case 18: {
               bitField0_ |= 0x00000002;
-              uri_ = input.readBytes();
+              text_ = input.readBytes();
               break;
             }
             case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-                nodes_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Node>();
-                mutable_bitField0_ |= 0x00000004;
-              }
-              nodes_.add(input.readMessage(ebm.spa.SpaDoc.Document.Node.PARSER, extensionRegistry));
+              bitField0_ |= 0x00000004;
+              uri_ = input.readBytes();
               break;
             }
             case 34: {
               if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                pages_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Page>();
+                nodes_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Node>();
                 mutable_bitField0_ |= 0x00000008;
               }
-              pages_.add(input.readMessage(ebm.spa.SpaDoc.Document.Page.PARSER, extensionRegistry));
+              nodes_.add(input.readMessage(ebm.spa.SpaDoc.Document.Node.PARSER, extensionRegistry));
               break;
             }
             case 42: {
               if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-                words_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Mapping>();
+                pages_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Page>();
                 mutable_bitField0_ |= 0x00000010;
               }
-              words_.add(input.readMessage(ebm.spa.SpaDoc.Document.Mapping.PARSER, extensionRegistry));
+              pages_.add(input.readMessage(ebm.spa.SpaDoc.Document.Page.PARSER, extensionRegistry));
               break;
             }
             case 50: {
               if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
-                sentences_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Mapping>();
+                words_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Mapping>();
                 mutable_bitField0_ |= 0x00000020;
               }
-              sentences_.add(input.readMessage(ebm.spa.SpaDoc.Document.Mapping.PARSER, extensionRegistry));
+              words_.add(input.readMessage(ebm.spa.SpaDoc.Document.Mapping.PARSER, extensionRegistry));
               break;
             }
             case 58: {
               if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
-                marginalia_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Marginalis>();
+                sentences_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Mapping>();
                 mutable_bitField0_ |= 0x00000040;
+              }
+              sentences_.add(input.readMessage(ebm.spa.SpaDoc.Document.Mapping.PARSER, extensionRegistry));
+              break;
+            }
+            case 66: {
+              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+                marginalia_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Marginalis>();
+                mutable_bitField0_ |= 0x00000080;
               }
               marginalia_.add(input.readMessage(ebm.spa.SpaDoc.Document.Marginalis.PARSER, extensionRegistry));
               break;
@@ -295,19 +315,19 @@ public final class SpaDoc {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
           nodes_ = java.util.Collections.unmodifiableList(nodes_);
         }
-        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
           pages_ = java.util.Collections.unmodifiableList(pages_);
         }
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
           words_ = java.util.Collections.unmodifiableList(words_);
         }
-        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
           sentences_ = java.util.Collections.unmodifiableList(sentences_);
         }
-        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
           marginalia_ = java.util.Collections.unmodifiableList(marginalia_);
         }
         this.unknownFields = unknownFields.build();
@@ -3542,20 +3562,20 @@ public final class SpaDoc {
       public interface AnnotationOrBuilder
           extends com.google.protobuf.MessageOrBuilder {
 
-        // optional string uri = 1;
+        // required string uuid = 1;
         /**
-         * <code>optional string uri = 1;</code>
+         * <code>required string uuid = 1;</code>
          */
-        boolean hasUri();
+        boolean hasUuid();
         /**
-         * <code>optional string uri = 1;</code>
+         * <code>required string uuid = 1;</code>
          */
-        java.lang.String getUri();
+        java.lang.String getUuid();
         /**
-         * <code>optional string uri = 1;</code>
+         * <code>required string uuid = 1;</code>
          */
         com.google.protobuf.ByteString
-            getUriBytes();
+            getUuidBytes();
 
         // optional string label = 2;
         /**
@@ -3654,7 +3674,7 @@ public final class SpaDoc {
                 }
                 case 10: {
                   bitField0_ |= 0x00000001;
-                  uri_ = input.readBytes();
+                  uuid_ = input.readBytes();
                   break;
                 }
                 case 18: {
@@ -4336,20 +4356,20 @@ public final class SpaDoc {
         }
 
         private int bitField0_;
-        // optional string uri = 1;
-        public static final int URI_FIELD_NUMBER = 1;
-        private java.lang.Object uri_;
+        // required string uuid = 1;
+        public static final int UUID_FIELD_NUMBER = 1;
+        private java.lang.Object uuid_;
         /**
-         * <code>optional string uri = 1;</code>
+         * <code>required string uuid = 1;</code>
          */
-        public boolean hasUri() {
+        public boolean hasUuid() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>optional string uri = 1;</code>
+         * <code>required string uuid = 1;</code>
          */
-        public java.lang.String getUri() {
-          java.lang.Object ref = uri_;
+        public java.lang.String getUuid() {
+          java.lang.Object ref = uuid_;
           if (ref instanceof java.lang.String) {
             return (java.lang.String) ref;
           } else {
@@ -4357,22 +4377,22 @@ public final class SpaDoc {
                 (com.google.protobuf.ByteString) ref;
             java.lang.String s = bs.toStringUtf8();
             if (bs.isValidUtf8()) {
-              uri_ = s;
+              uuid_ = s;
             }
             return s;
           }
         }
         /**
-         * <code>optional string uri = 1;</code>
+         * <code>required string uuid = 1;</code>
          */
         public com.google.protobuf.ByteString
-            getUriBytes() {
-          java.lang.Object ref = uri_;
+            getUuidBytes() {
+          java.lang.Object ref = uuid_;
           if (ref instanceof java.lang.String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
                     (java.lang.String) ref);
-            uri_ = b;
+            uuid_ = b;
             return b;
           } else {
             return (com.google.protobuf.ByteString) ref;
@@ -4488,7 +4508,7 @@ public final class SpaDoc {
         }
 
         private void initFields() {
-          uri_ = "";
+          uuid_ = "";
           label_ = "";
           content_ = "";
           mapping_ = ebm.spa.SpaDoc.Document.Marginalis.Annotation.Mapping.getDefaultInstance();
@@ -4498,6 +4518,10 @@ public final class SpaDoc {
           byte isInitialized = memoizedIsInitialized;
           if (isInitialized != -1) return isInitialized == 1;
 
+          if (!hasUuid()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
           if (hasMapping()) {
             if (!getMapping().isInitialized()) {
               memoizedIsInitialized = 0;
@@ -4512,7 +4536,7 @@ public final class SpaDoc {
                             throws java.io.IOException {
           getSerializedSize();
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            output.writeBytes(1, getUriBytes());
+            output.writeBytes(1, getUuidBytes());
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             output.writeBytes(2, getLabelBytes());
@@ -4534,7 +4558,7 @@ public final class SpaDoc {
           size = 0;
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeBytesSize(1, getUriBytes());
+              .computeBytesSize(1, getUuidBytes());
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             size += com.google.protobuf.CodedOutputStream
@@ -4665,7 +4689,7 @@ public final class SpaDoc {
 
           public Builder clear() {
             super.clear();
-            uri_ = "";
+            uuid_ = "";
             bitField0_ = (bitField0_ & ~0x00000001);
             label_ = "";
             bitField0_ = (bitField0_ & ~0x00000002);
@@ -4708,7 +4732,7 @@ public final class SpaDoc {
             if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
               to_bitField0_ |= 0x00000001;
             }
-            result.uri_ = uri_;
+            result.uuid_ = uuid_;
             if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
               to_bitField0_ |= 0x00000002;
             }
@@ -4741,9 +4765,9 @@ public final class SpaDoc {
 
           public Builder mergeFrom(ebm.spa.SpaDoc.Document.Marginalis.Annotation other) {
             if (other == ebm.spa.SpaDoc.Document.Marginalis.Annotation.getDefaultInstance()) return this;
-            if (other.hasUri()) {
+            if (other.hasUuid()) {
               bitField0_ |= 0x00000001;
-              uri_ = other.uri_;
+              uuid_ = other.uuid_;
               onChanged();
             }
             if (other.hasLabel()) {
@@ -4764,6 +4788,10 @@ public final class SpaDoc {
           }
 
           public final boolean isInitialized() {
+            if (!hasUuid()) {
+              
+              return false;
+            }
             if (hasMapping()) {
               if (!getMapping().isInitialized()) {
                 
@@ -4792,76 +4820,76 @@ public final class SpaDoc {
           }
           private int bitField0_;
 
-          // optional string uri = 1;
-          private java.lang.Object uri_ = "";
+          // required string uuid = 1;
+          private java.lang.Object uuid_ = "";
           /**
-           * <code>optional string uri = 1;</code>
+           * <code>required string uuid = 1;</code>
            */
-          public boolean hasUri() {
+          public boolean hasUuid() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
           }
           /**
-           * <code>optional string uri = 1;</code>
+           * <code>required string uuid = 1;</code>
            */
-          public java.lang.String getUri() {
-            java.lang.Object ref = uri_;
+          public java.lang.String getUuid() {
+            java.lang.Object ref = uuid_;
             if (!(ref instanceof java.lang.String)) {
               java.lang.String s = ((com.google.protobuf.ByteString) ref)
                   .toStringUtf8();
-              uri_ = s;
+              uuid_ = s;
               return s;
             } else {
               return (java.lang.String) ref;
             }
           }
           /**
-           * <code>optional string uri = 1;</code>
+           * <code>required string uuid = 1;</code>
            */
           public com.google.protobuf.ByteString
-              getUriBytes() {
-            java.lang.Object ref = uri_;
+              getUuidBytes() {
+            java.lang.Object ref = uuid_;
             if (ref instanceof String) {
               com.google.protobuf.ByteString b = 
                   com.google.protobuf.ByteString.copyFromUtf8(
                       (java.lang.String) ref);
-              uri_ = b;
+              uuid_ = b;
               return b;
             } else {
               return (com.google.protobuf.ByteString) ref;
             }
           }
           /**
-           * <code>optional string uri = 1;</code>
+           * <code>required string uuid = 1;</code>
            */
-          public Builder setUri(
+          public Builder setUuid(
               java.lang.String value) {
             if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-            uri_ = value;
+            uuid_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string uri = 1;</code>
+           * <code>required string uuid = 1;</code>
            */
-          public Builder clearUri() {
+          public Builder clearUuid() {
             bitField0_ = (bitField0_ & ~0x00000001);
-            uri_ = getDefaultInstance().getUri();
+            uuid_ = getDefaultInstance().getUuid();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string uri = 1;</code>
+           * <code>required string uuid = 1;</code>
            */
-          public Builder setUriBytes(
+          public Builder setUuidBytes(
               com.google.protobuf.ByteString value) {
             if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-            uri_ = value;
+            uuid_ = value;
             onChanged();
             return this;
           }
@@ -6191,17 +6219,60 @@ public final class SpaDoc {
     }
 
     private int bitField0_;
-    // required string text = 1;
-    public static final int TEXT_FIELD_NUMBER = 1;
-    private java.lang.Object text_;
+    // required string fingerprint = 1;
+    public static final int FINGERPRINT_FIELD_NUMBER = 1;
+    private java.lang.Object fingerprint_;
     /**
-     * <code>required string text = 1;</code>
+     * <code>required string fingerprint = 1;</code>
      */
-    public boolean hasText() {
+    public boolean hasFingerprint() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string text = 1;</code>
+     * <code>required string fingerprint = 1;</code>
+     */
+    public java.lang.String getFingerprint() {
+      java.lang.Object ref = fingerprint_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          fingerprint_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string fingerprint = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getFingerprintBytes() {
+      java.lang.Object ref = fingerprint_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        fingerprint_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required string text = 2;
+    public static final int TEXT_FIELD_NUMBER = 2;
+    private java.lang.Object text_;
+    /**
+     * <code>required string text = 2;</code>
+     */
+    public boolean hasText() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string text = 2;</code>
      */
     public java.lang.String getText() {
       java.lang.Object ref = text_;
@@ -6218,7 +6289,7 @@ public final class SpaDoc {
       }
     }
     /**
-     * <code>required string text = 1;</code>
+     * <code>required string text = 2;</code>
      */
     public com.google.protobuf.ByteString
         getTextBytes() {
@@ -6234,17 +6305,17 @@ public final class SpaDoc {
       }
     }
 
-    // optional string uri = 2;
-    public static final int URI_FIELD_NUMBER = 2;
+    // optional string uri = 3;
+    public static final int URI_FIELD_NUMBER = 3;
     private java.lang.Object uri_;
     /**
-     * <code>optional string uri = 2;</code>
+     * <code>optional string uri = 3;</code>
      */
     public boolean hasUri() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional string uri = 2;</code>
+     * <code>optional string uri = 3;</code>
      */
     public java.lang.String getUri() {
       java.lang.Object ref = uri_;
@@ -6261,7 +6332,7 @@ public final class SpaDoc {
       }
     }
     /**
-     * <code>optional string uri = 2;</code>
+     * <code>optional string uri = 3;</code>
      */
     public com.google.protobuf.ByteString
         getUriBytes() {
@@ -6277,155 +6348,155 @@ public final class SpaDoc {
       }
     }
 
-    // repeated .ebm.spa.Document.Node nodes = 3;
-    public static final int NODES_FIELD_NUMBER = 3;
+    // repeated .ebm.spa.Document.Node nodes = 4;
+    public static final int NODES_FIELD_NUMBER = 4;
     private java.util.List<ebm.spa.SpaDoc.Document.Node> nodes_;
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     public java.util.List<ebm.spa.SpaDoc.Document.Node> getNodesList() {
       return nodes_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     public java.util.List<? extends ebm.spa.SpaDoc.Document.NodeOrBuilder> 
         getNodesOrBuilderList() {
       return nodes_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     public int getNodesCount() {
       return nodes_.size();
     }
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     public ebm.spa.SpaDoc.Document.Node getNodes(int index) {
       return nodes_.get(index);
     }
     /**
-     * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+     * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
      */
     public ebm.spa.SpaDoc.Document.NodeOrBuilder getNodesOrBuilder(
         int index) {
       return nodes_.get(index);
     }
 
-    // repeated .ebm.spa.Document.Page pages = 4;
-    public static final int PAGES_FIELD_NUMBER = 4;
+    // repeated .ebm.spa.Document.Page pages = 5;
+    public static final int PAGES_FIELD_NUMBER = 5;
     private java.util.List<ebm.spa.SpaDoc.Document.Page> pages_;
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     public java.util.List<ebm.spa.SpaDoc.Document.Page> getPagesList() {
       return pages_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     public java.util.List<? extends ebm.spa.SpaDoc.Document.PageOrBuilder> 
         getPagesOrBuilderList() {
       return pages_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     public int getPagesCount() {
       return pages_.size();
     }
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     public ebm.spa.SpaDoc.Document.Page getPages(int index) {
       return pages_.get(index);
     }
     /**
-     * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+     * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
      */
     public ebm.spa.SpaDoc.Document.PageOrBuilder getPagesOrBuilder(
         int index) {
       return pages_.get(index);
     }
 
-    // repeated .ebm.spa.Document.Mapping words = 5;
-    public static final int WORDS_FIELD_NUMBER = 5;
+    // repeated .ebm.spa.Document.Mapping words = 6;
+    public static final int WORDS_FIELD_NUMBER = 6;
     private java.util.List<ebm.spa.SpaDoc.Document.Mapping> words_;
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     public java.util.List<ebm.spa.SpaDoc.Document.Mapping> getWordsList() {
       return words_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     public java.util.List<? extends ebm.spa.SpaDoc.Document.MappingOrBuilder> 
         getWordsOrBuilderList() {
       return words_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     public int getWordsCount() {
       return words_.size();
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     public ebm.spa.SpaDoc.Document.Mapping getWords(int index) {
       return words_.get(index);
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+     * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
      */
     public ebm.spa.SpaDoc.Document.MappingOrBuilder getWordsOrBuilder(
         int index) {
       return words_.get(index);
     }
 
-    // repeated .ebm.spa.Document.Mapping sentences = 6;
-    public static final int SENTENCES_FIELD_NUMBER = 6;
+    // repeated .ebm.spa.Document.Mapping sentences = 7;
+    public static final int SENTENCES_FIELD_NUMBER = 7;
     private java.util.List<ebm.spa.SpaDoc.Document.Mapping> sentences_;
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     public java.util.List<ebm.spa.SpaDoc.Document.Mapping> getSentencesList() {
       return sentences_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     public java.util.List<? extends ebm.spa.SpaDoc.Document.MappingOrBuilder> 
         getSentencesOrBuilderList() {
       return sentences_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     public int getSentencesCount() {
       return sentences_.size();
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     public ebm.spa.SpaDoc.Document.Mapping getSentences(int index) {
       return sentences_.get(index);
     }
     /**
-     * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+     * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
      */
     public ebm.spa.SpaDoc.Document.MappingOrBuilder getSentencesOrBuilder(
         int index) {
       return sentences_.get(index);
     }
 
-    // repeated .ebm.spa.Document.Marginalis marginalia = 7;
-    public static final int MARGINALIA_FIELD_NUMBER = 7;
+    // repeated .ebm.spa.Document.Marginalis marginalia = 8;
+    public static final int MARGINALIA_FIELD_NUMBER = 8;
     private java.util.List<ebm.spa.SpaDoc.Document.Marginalis> marginalia_;
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -6435,7 +6506,7 @@ public final class SpaDoc {
       return marginalia_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -6446,7 +6517,7 @@ public final class SpaDoc {
       return marginalia_;
     }
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -6456,7 +6527,7 @@ public final class SpaDoc {
       return marginalia_.size();
     }
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -6466,7 +6537,7 @@ public final class SpaDoc {
       return marginalia_.get(index);
     }
     /**
-     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+     * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
      *
      * <pre>
      * stores the added marginalia and its annotations
@@ -6478,6 +6549,7 @@ public final class SpaDoc {
     }
 
     private void initFields() {
+      fingerprint_ = "";
       text_ = "";
       uri_ = "";
       nodes_ = java.util.Collections.emptyList();
@@ -6491,6 +6563,10 @@ public final class SpaDoc {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
+      if (!hasFingerprint()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasText()) {
         memoizedIsInitialized = 0;
         return false;
@@ -6533,25 +6609,28 @@ public final class SpaDoc {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getTextBytes());
+        output.writeBytes(1, getFingerprintBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getUriBytes());
+        output.writeBytes(2, getTextBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getUriBytes());
       }
       for (int i = 0; i < nodes_.size(); i++) {
-        output.writeMessage(3, nodes_.get(i));
+        output.writeMessage(4, nodes_.get(i));
       }
       for (int i = 0; i < pages_.size(); i++) {
-        output.writeMessage(4, pages_.get(i));
+        output.writeMessage(5, pages_.get(i));
       }
       for (int i = 0; i < words_.size(); i++) {
-        output.writeMessage(5, words_.get(i));
+        output.writeMessage(6, words_.get(i));
       }
       for (int i = 0; i < sentences_.size(); i++) {
-        output.writeMessage(6, sentences_.get(i));
+        output.writeMessage(7, sentences_.get(i));
       }
       for (int i = 0; i < marginalia_.size(); i++) {
-        output.writeMessage(7, marginalia_.get(i));
+        output.writeMessage(8, marginalia_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -6564,31 +6643,35 @@ public final class SpaDoc {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getTextBytes());
+          .computeBytesSize(1, getFingerprintBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getUriBytes());
+          .computeBytesSize(2, getTextBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getUriBytes());
       }
       for (int i = 0; i < nodes_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, nodes_.get(i));
+          .computeMessageSize(4, nodes_.get(i));
       }
       for (int i = 0; i < pages_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, pages_.get(i));
+          .computeMessageSize(5, pages_.get(i));
       }
       for (int i = 0; i < words_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, words_.get(i));
+          .computeMessageSize(6, words_.get(i));
       }
       for (int i = 0; i < sentences_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, sentences_.get(i));
+          .computeMessageSize(7, sentences_.get(i));
       }
       for (int i = 0; i < marginalia_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, marginalia_.get(i));
+          .computeMessageSize(8, marginalia_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6711,37 +6794,39 @@ public final class SpaDoc {
 
       public Builder clear() {
         super.clear();
-        text_ = "";
+        fingerprint_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        uri_ = "";
+        text_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        uri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         if (nodesBuilder_ == null) {
           nodes_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           nodesBuilder_.clear();
         }
         if (pagesBuilder_ == null) {
           pages_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
         } else {
           pagesBuilder_.clear();
         }
         if (wordsBuilder_ == null) {
           words_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
         } else {
           wordsBuilder_.clear();
         }
         if (sentencesBuilder_ == null) {
           sentences_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000040);
         } else {
           sentencesBuilder_.clear();
         }
         if (marginaliaBuilder_ == null) {
           marginalia_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
         } else {
           marginaliaBuilder_.clear();
         }
@@ -6776,51 +6861,55 @@ public final class SpaDoc {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.text_ = text_;
+        result.fingerprint_ = fingerprint_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
+        result.text_ = text_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
         result.uri_ = uri_;
         if (nodesBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
             nodes_ = java.util.Collections.unmodifiableList(nodes_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000008);
           }
           result.nodes_ = nodes_;
         } else {
           result.nodes_ = nodesBuilder_.build();
         }
         if (pagesBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
             pages_ = java.util.Collections.unmodifiableList(pages_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000010);
           }
           result.pages_ = pages_;
         } else {
           result.pages_ = pagesBuilder_.build();
         }
         if (wordsBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
             words_ = java.util.Collections.unmodifiableList(words_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
           }
           result.words_ = words_;
         } else {
           result.words_ = wordsBuilder_.build();
         }
         if (sentencesBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
             sentences_ = java.util.Collections.unmodifiableList(sentences_);
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000040);
           }
           result.sentences_ = sentences_;
         } else {
           result.sentences_ = sentencesBuilder_.build();
         }
         if (marginaliaBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
             marginalia_ = java.util.Collections.unmodifiableList(marginalia_);
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000080);
           }
           result.marginalia_ = marginalia_;
         } else {
@@ -6842,13 +6931,18 @@ public final class SpaDoc {
 
       public Builder mergeFrom(ebm.spa.SpaDoc.Document other) {
         if (other == ebm.spa.SpaDoc.Document.getDefaultInstance()) return this;
-        if (other.hasText()) {
+        if (other.hasFingerprint()) {
           bitField0_ |= 0x00000001;
+          fingerprint_ = other.fingerprint_;
+          onChanged();
+        }
+        if (other.hasText()) {
+          bitField0_ |= 0x00000002;
           text_ = other.text_;
           onChanged();
         }
         if (other.hasUri()) {
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
           uri_ = other.uri_;
           onChanged();
         }
@@ -6856,7 +6950,7 @@ public final class SpaDoc {
           if (!other.nodes_.isEmpty()) {
             if (nodes_.isEmpty()) {
               nodes_ = other.nodes_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000008);
             } else {
               ensureNodesIsMutable();
               nodes_.addAll(other.nodes_);
@@ -6869,7 +6963,7 @@ public final class SpaDoc {
               nodesBuilder_.dispose();
               nodesBuilder_ = null;
               nodes_ = other.nodes_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000008);
               nodesBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getNodesFieldBuilder() : null;
@@ -6882,7 +6976,7 @@ public final class SpaDoc {
           if (!other.pages_.isEmpty()) {
             if (pages_.isEmpty()) {
               pages_ = other.pages_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
             } else {
               ensurePagesIsMutable();
               pages_.addAll(other.pages_);
@@ -6895,7 +6989,7 @@ public final class SpaDoc {
               pagesBuilder_.dispose();
               pagesBuilder_ = null;
               pages_ = other.pages_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
               pagesBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getPagesFieldBuilder() : null;
@@ -6908,7 +7002,7 @@ public final class SpaDoc {
           if (!other.words_.isEmpty()) {
             if (words_.isEmpty()) {
               words_ = other.words_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
             } else {
               ensureWordsIsMutable();
               words_.addAll(other.words_);
@@ -6921,7 +7015,7 @@ public final class SpaDoc {
               wordsBuilder_.dispose();
               wordsBuilder_ = null;
               words_ = other.words_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
               wordsBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getWordsFieldBuilder() : null;
@@ -6934,7 +7028,7 @@ public final class SpaDoc {
           if (!other.sentences_.isEmpty()) {
             if (sentences_.isEmpty()) {
               sentences_ = other.sentences_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000040);
             } else {
               ensureSentencesIsMutable();
               sentences_.addAll(other.sentences_);
@@ -6947,7 +7041,7 @@ public final class SpaDoc {
               sentencesBuilder_.dispose();
               sentencesBuilder_ = null;
               sentences_ = other.sentences_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000040);
               sentencesBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getSentencesFieldBuilder() : null;
@@ -6960,7 +7054,7 @@ public final class SpaDoc {
           if (!other.marginalia_.isEmpty()) {
             if (marginalia_.isEmpty()) {
               marginalia_ = other.marginalia_;
-              bitField0_ = (bitField0_ & ~0x00000040);
+              bitField0_ = (bitField0_ & ~0x00000080);
             } else {
               ensureMarginaliaIsMutable();
               marginalia_.addAll(other.marginalia_);
@@ -6973,7 +7067,7 @@ public final class SpaDoc {
               marginaliaBuilder_.dispose();
               marginaliaBuilder_ = null;
               marginalia_ = other.marginalia_;
-              bitField0_ = (bitField0_ & ~0x00000040);
+              bitField0_ = (bitField0_ & ~0x00000080);
               marginaliaBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getMarginaliaFieldBuilder() : null;
@@ -6987,6 +7081,10 @@ public final class SpaDoc {
       }
 
       public final boolean isInitialized() {
+        if (!hasFingerprint()) {
+          
+          return false;
+        }
         if (!hasText()) {
           
           return false;
@@ -7043,16 +7141,90 @@ public final class SpaDoc {
       }
       private int bitField0_;
 
-      // required string text = 1;
-      private java.lang.Object text_ = "";
+      // required string fingerprint = 1;
+      private java.lang.Object fingerprint_ = "";
       /**
-       * <code>required string text = 1;</code>
+       * <code>required string fingerprint = 1;</code>
        */
-      public boolean hasText() {
+      public boolean hasFingerprint() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string text = 1;</code>
+       * <code>required string fingerprint = 1;</code>
+       */
+      public java.lang.String getFingerprint() {
+        java.lang.Object ref = fingerprint_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          fingerprint_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string fingerprint = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getFingerprintBytes() {
+        java.lang.Object ref = fingerprint_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          fingerprint_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string fingerprint = 1;</code>
+       */
+      public Builder setFingerprint(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        fingerprint_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string fingerprint = 1;</code>
+       */
+      public Builder clearFingerprint() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fingerprint_ = getDefaultInstance().getFingerprint();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string fingerprint = 1;</code>
+       */
+      public Builder setFingerprintBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        fingerprint_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required string text = 2;
+      private java.lang.Object text_ = "";
+      /**
+       * <code>required string text = 2;</code>
+       */
+      public boolean hasText() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string text = 2;</code>
        */
       public java.lang.String getText() {
         java.lang.Object ref = text_;
@@ -7066,7 +7238,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>required string text = 1;</code>
+       * <code>required string text = 2;</code>
        */
       public com.google.protobuf.ByteString
           getTextBytes() {
@@ -7082,51 +7254,51 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>required string text = 1;</code>
+       * <code>required string text = 2;</code>
        */
       public Builder setText(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         text_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string text = 1;</code>
+       * <code>required string text = 2;</code>
        */
       public Builder clearText() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         text_ = getDefaultInstance().getText();
         onChanged();
         return this;
       }
       /**
-       * <code>required string text = 1;</code>
+       * <code>required string text = 2;</code>
        */
       public Builder setTextBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         text_ = value;
         onChanged();
         return this;
       }
 
-      // optional string uri = 2;
+      // optional string uri = 3;
       private java.lang.Object uri_ = "";
       /**
-       * <code>optional string uri = 2;</code>
+       * <code>optional string uri = 3;</code>
        */
       public boolean hasUri() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional string uri = 2;</code>
+       * <code>optional string uri = 3;</code>
        */
       public java.lang.String getUri() {
         java.lang.Object ref = uri_;
@@ -7140,7 +7312,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>optional string uri = 2;</code>
+       * <code>optional string uri = 3;</code>
        */
       public com.google.protobuf.ByteString
           getUriBytes() {
@@ -7156,48 +7328,48 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>optional string uri = 2;</code>
+       * <code>optional string uri = 3;</code>
        */
       public Builder setUri(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         uri_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string uri = 2;</code>
+       * <code>optional string uri = 3;</code>
        */
       public Builder clearUri() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         uri_ = getDefaultInstance().getUri();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string uri = 2;</code>
+       * <code>optional string uri = 3;</code>
        */
       public Builder setUriBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         uri_ = value;
         onChanged();
         return this;
       }
 
-      // repeated .ebm.spa.Document.Node nodes = 3;
+      // repeated .ebm.spa.Document.Node nodes = 4;
       private java.util.List<ebm.spa.SpaDoc.Document.Node> nodes_ =
         java.util.Collections.emptyList();
       private void ensureNodesIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
           nodes_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Node>(nodes_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000008;
          }
       }
 
@@ -7205,7 +7377,7 @@ public final class SpaDoc {
           ebm.spa.SpaDoc.Document.Node, ebm.spa.SpaDoc.Document.Node.Builder, ebm.spa.SpaDoc.Document.NodeOrBuilder> nodesBuilder_;
 
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Node> getNodesList() {
         if (nodesBuilder_ == null) {
@@ -7215,7 +7387,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public int getNodesCount() {
         if (nodesBuilder_ == null) {
@@ -7225,7 +7397,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public ebm.spa.SpaDoc.Document.Node getNodes(int index) {
         if (nodesBuilder_ == null) {
@@ -7235,7 +7407,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder setNodes(
           int index, ebm.spa.SpaDoc.Document.Node value) {
@@ -7252,7 +7424,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder setNodes(
           int index, ebm.spa.SpaDoc.Document.Node.Builder builderForValue) {
@@ -7266,7 +7438,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder addNodes(ebm.spa.SpaDoc.Document.Node value) {
         if (nodesBuilder_ == null) {
@@ -7282,7 +7454,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder addNodes(
           int index, ebm.spa.SpaDoc.Document.Node value) {
@@ -7299,7 +7471,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder addNodes(
           ebm.spa.SpaDoc.Document.Node.Builder builderForValue) {
@@ -7313,7 +7485,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder addNodes(
           int index, ebm.spa.SpaDoc.Document.Node.Builder builderForValue) {
@@ -7327,7 +7499,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder addAllNodes(
           java.lang.Iterable<? extends ebm.spa.SpaDoc.Document.Node> values) {
@@ -7341,12 +7513,12 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder clearNodes() {
         if (nodesBuilder_ == null) {
           nodes_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
         } else {
           nodesBuilder_.clear();
@@ -7354,7 +7526,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public Builder removeNodes(int index) {
         if (nodesBuilder_ == null) {
@@ -7367,14 +7539,14 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public ebm.spa.SpaDoc.Document.Node.Builder getNodesBuilder(
           int index) {
         return getNodesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public ebm.spa.SpaDoc.Document.NodeOrBuilder getNodesOrBuilder(
           int index) {
@@ -7384,7 +7556,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public java.util.List<? extends ebm.spa.SpaDoc.Document.NodeOrBuilder> 
            getNodesOrBuilderList() {
@@ -7395,14 +7567,14 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public ebm.spa.SpaDoc.Document.Node.Builder addNodesBuilder() {
         return getNodesFieldBuilder().addBuilder(
             ebm.spa.SpaDoc.Document.Node.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public ebm.spa.SpaDoc.Document.Node.Builder addNodesBuilder(
           int index) {
@@ -7410,7 +7582,7 @@ public final class SpaDoc {
             index, ebm.spa.SpaDoc.Document.Node.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Node nodes = 3;</code>
+       * <code>repeated .ebm.spa.Document.Node nodes = 4;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Node.Builder> 
            getNodesBuilderList() {
@@ -7423,7 +7595,7 @@ public final class SpaDoc {
           nodesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               ebm.spa.SpaDoc.Document.Node, ebm.spa.SpaDoc.Document.Node.Builder, ebm.spa.SpaDoc.Document.NodeOrBuilder>(
                   nodes_,
-                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  ((bitField0_ & 0x00000008) == 0x00000008),
                   getParentForChildren(),
                   isClean());
           nodes_ = null;
@@ -7431,13 +7603,13 @@ public final class SpaDoc {
         return nodesBuilder_;
       }
 
-      // repeated .ebm.spa.Document.Page pages = 4;
+      // repeated .ebm.spa.Document.Page pages = 5;
       private java.util.List<ebm.spa.SpaDoc.Document.Page> pages_ =
         java.util.Collections.emptyList();
       private void ensurePagesIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
           pages_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Page>(pages_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
          }
       }
 
@@ -7445,7 +7617,7 @@ public final class SpaDoc {
           ebm.spa.SpaDoc.Document.Page, ebm.spa.SpaDoc.Document.Page.Builder, ebm.spa.SpaDoc.Document.PageOrBuilder> pagesBuilder_;
 
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Page> getPagesList() {
         if (pagesBuilder_ == null) {
@@ -7455,7 +7627,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public int getPagesCount() {
         if (pagesBuilder_ == null) {
@@ -7465,7 +7637,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public ebm.spa.SpaDoc.Document.Page getPages(int index) {
         if (pagesBuilder_ == null) {
@@ -7475,7 +7647,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder setPages(
           int index, ebm.spa.SpaDoc.Document.Page value) {
@@ -7492,7 +7664,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder setPages(
           int index, ebm.spa.SpaDoc.Document.Page.Builder builderForValue) {
@@ -7506,7 +7678,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder addPages(ebm.spa.SpaDoc.Document.Page value) {
         if (pagesBuilder_ == null) {
@@ -7522,7 +7694,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder addPages(
           int index, ebm.spa.SpaDoc.Document.Page value) {
@@ -7539,7 +7711,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder addPages(
           ebm.spa.SpaDoc.Document.Page.Builder builderForValue) {
@@ -7553,7 +7725,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder addPages(
           int index, ebm.spa.SpaDoc.Document.Page.Builder builderForValue) {
@@ -7567,7 +7739,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder addAllPages(
           java.lang.Iterable<? extends ebm.spa.SpaDoc.Document.Page> values) {
@@ -7581,12 +7753,12 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder clearPages() {
         if (pagesBuilder_ == null) {
           pages_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
           onChanged();
         } else {
           pagesBuilder_.clear();
@@ -7594,7 +7766,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public Builder removePages(int index) {
         if (pagesBuilder_ == null) {
@@ -7607,14 +7779,14 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public ebm.spa.SpaDoc.Document.Page.Builder getPagesBuilder(
           int index) {
         return getPagesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public ebm.spa.SpaDoc.Document.PageOrBuilder getPagesOrBuilder(
           int index) {
@@ -7624,7 +7796,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public java.util.List<? extends ebm.spa.SpaDoc.Document.PageOrBuilder> 
            getPagesOrBuilderList() {
@@ -7635,14 +7807,14 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public ebm.spa.SpaDoc.Document.Page.Builder addPagesBuilder() {
         return getPagesFieldBuilder().addBuilder(
             ebm.spa.SpaDoc.Document.Page.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public ebm.spa.SpaDoc.Document.Page.Builder addPagesBuilder(
           int index) {
@@ -7650,7 +7822,7 @@ public final class SpaDoc {
             index, ebm.spa.SpaDoc.Document.Page.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Page pages = 4;</code>
+       * <code>repeated .ebm.spa.Document.Page pages = 5;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Page.Builder> 
            getPagesBuilderList() {
@@ -7663,7 +7835,7 @@ public final class SpaDoc {
           pagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               ebm.spa.SpaDoc.Document.Page, ebm.spa.SpaDoc.Document.Page.Builder, ebm.spa.SpaDoc.Document.PageOrBuilder>(
                   pages_,
-                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  ((bitField0_ & 0x00000010) == 0x00000010),
                   getParentForChildren(),
                   isClean());
           pages_ = null;
@@ -7671,13 +7843,13 @@ public final class SpaDoc {
         return pagesBuilder_;
       }
 
-      // repeated .ebm.spa.Document.Mapping words = 5;
+      // repeated .ebm.spa.Document.Mapping words = 6;
       private java.util.List<ebm.spa.SpaDoc.Document.Mapping> words_ =
         java.util.Collections.emptyList();
       private void ensureWordsIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
           words_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Mapping>(words_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
          }
       }
 
@@ -7685,7 +7857,7 @@ public final class SpaDoc {
           ebm.spa.SpaDoc.Document.Mapping, ebm.spa.SpaDoc.Document.Mapping.Builder, ebm.spa.SpaDoc.Document.MappingOrBuilder> wordsBuilder_;
 
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Mapping> getWordsList() {
         if (wordsBuilder_ == null) {
@@ -7695,7 +7867,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public int getWordsCount() {
         if (wordsBuilder_ == null) {
@@ -7705,7 +7877,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping getWords(int index) {
         if (wordsBuilder_ == null) {
@@ -7715,7 +7887,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder setWords(
           int index, ebm.spa.SpaDoc.Document.Mapping value) {
@@ -7732,7 +7904,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder setWords(
           int index, ebm.spa.SpaDoc.Document.Mapping.Builder builderForValue) {
@@ -7746,7 +7918,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder addWords(ebm.spa.SpaDoc.Document.Mapping value) {
         if (wordsBuilder_ == null) {
@@ -7762,7 +7934,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder addWords(
           int index, ebm.spa.SpaDoc.Document.Mapping value) {
@@ -7779,7 +7951,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder addWords(
           ebm.spa.SpaDoc.Document.Mapping.Builder builderForValue) {
@@ -7793,7 +7965,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder addWords(
           int index, ebm.spa.SpaDoc.Document.Mapping.Builder builderForValue) {
@@ -7807,7 +7979,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder addAllWords(
           java.lang.Iterable<? extends ebm.spa.SpaDoc.Document.Mapping> values) {
@@ -7821,12 +7993,12 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder clearWords() {
         if (wordsBuilder_ == null) {
           words_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
           onChanged();
         } else {
           wordsBuilder_.clear();
@@ -7834,7 +8006,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public Builder removeWords(int index) {
         if (wordsBuilder_ == null) {
@@ -7847,14 +8019,14 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping.Builder getWordsBuilder(
           int index) {
         return getWordsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public ebm.spa.SpaDoc.Document.MappingOrBuilder getWordsOrBuilder(
           int index) {
@@ -7864,7 +8036,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public java.util.List<? extends ebm.spa.SpaDoc.Document.MappingOrBuilder> 
            getWordsOrBuilderList() {
@@ -7875,14 +8047,14 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping.Builder addWordsBuilder() {
         return getWordsFieldBuilder().addBuilder(
             ebm.spa.SpaDoc.Document.Mapping.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping.Builder addWordsBuilder(
           int index) {
@@ -7890,7 +8062,7 @@ public final class SpaDoc {
             index, ebm.spa.SpaDoc.Document.Mapping.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping words = 5;</code>
+       * <code>repeated .ebm.spa.Document.Mapping words = 6;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Mapping.Builder> 
            getWordsBuilderList() {
@@ -7903,7 +8075,7 @@ public final class SpaDoc {
           wordsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               ebm.spa.SpaDoc.Document.Mapping, ebm.spa.SpaDoc.Document.Mapping.Builder, ebm.spa.SpaDoc.Document.MappingOrBuilder>(
                   words_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  ((bitField0_ & 0x00000020) == 0x00000020),
                   getParentForChildren(),
                   isClean());
           words_ = null;
@@ -7911,13 +8083,13 @@ public final class SpaDoc {
         return wordsBuilder_;
       }
 
-      // repeated .ebm.spa.Document.Mapping sentences = 6;
+      // repeated .ebm.spa.Document.Mapping sentences = 7;
       private java.util.List<ebm.spa.SpaDoc.Document.Mapping> sentences_ =
         java.util.Collections.emptyList();
       private void ensureSentencesIsMutable() {
-        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
           sentences_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Mapping>(sentences_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
          }
       }
 
@@ -7925,7 +8097,7 @@ public final class SpaDoc {
           ebm.spa.SpaDoc.Document.Mapping, ebm.spa.SpaDoc.Document.Mapping.Builder, ebm.spa.SpaDoc.Document.MappingOrBuilder> sentencesBuilder_;
 
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Mapping> getSentencesList() {
         if (sentencesBuilder_ == null) {
@@ -7935,7 +8107,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public int getSentencesCount() {
         if (sentencesBuilder_ == null) {
@@ -7945,7 +8117,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping getSentences(int index) {
         if (sentencesBuilder_ == null) {
@@ -7955,7 +8127,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder setSentences(
           int index, ebm.spa.SpaDoc.Document.Mapping value) {
@@ -7972,7 +8144,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder setSentences(
           int index, ebm.spa.SpaDoc.Document.Mapping.Builder builderForValue) {
@@ -7986,7 +8158,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder addSentences(ebm.spa.SpaDoc.Document.Mapping value) {
         if (sentencesBuilder_ == null) {
@@ -8002,7 +8174,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder addSentences(
           int index, ebm.spa.SpaDoc.Document.Mapping value) {
@@ -8019,7 +8191,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder addSentences(
           ebm.spa.SpaDoc.Document.Mapping.Builder builderForValue) {
@@ -8033,7 +8205,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder addSentences(
           int index, ebm.spa.SpaDoc.Document.Mapping.Builder builderForValue) {
@@ -8047,7 +8219,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder addAllSentences(
           java.lang.Iterable<? extends ebm.spa.SpaDoc.Document.Mapping> values) {
@@ -8061,12 +8233,12 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder clearSentences() {
         if (sentencesBuilder_ == null) {
           sentences_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000040);
           onChanged();
         } else {
           sentencesBuilder_.clear();
@@ -8074,7 +8246,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public Builder removeSentences(int index) {
         if (sentencesBuilder_ == null) {
@@ -8087,14 +8259,14 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping.Builder getSentencesBuilder(
           int index) {
         return getSentencesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public ebm.spa.SpaDoc.Document.MappingOrBuilder getSentencesOrBuilder(
           int index) {
@@ -8104,7 +8276,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public java.util.List<? extends ebm.spa.SpaDoc.Document.MappingOrBuilder> 
            getSentencesOrBuilderList() {
@@ -8115,14 +8287,14 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping.Builder addSentencesBuilder() {
         return getSentencesFieldBuilder().addBuilder(
             ebm.spa.SpaDoc.Document.Mapping.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public ebm.spa.SpaDoc.Document.Mapping.Builder addSentencesBuilder(
           int index) {
@@ -8130,7 +8302,7 @@ public final class SpaDoc {
             index, ebm.spa.SpaDoc.Document.Mapping.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Mapping sentences = 6;</code>
+       * <code>repeated .ebm.spa.Document.Mapping sentences = 7;</code>
        */
       public java.util.List<ebm.spa.SpaDoc.Document.Mapping.Builder> 
            getSentencesBuilderList() {
@@ -8143,7 +8315,7 @@ public final class SpaDoc {
           sentencesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               ebm.spa.SpaDoc.Document.Mapping, ebm.spa.SpaDoc.Document.Mapping.Builder, ebm.spa.SpaDoc.Document.MappingOrBuilder>(
                   sentences_,
-                  ((bitField0_ & 0x00000020) == 0x00000020),
+                  ((bitField0_ & 0x00000040) == 0x00000040),
                   getParentForChildren(),
                   isClean());
           sentences_ = null;
@@ -8151,13 +8323,13 @@ public final class SpaDoc {
         return sentencesBuilder_;
       }
 
-      // repeated .ebm.spa.Document.Marginalis marginalia = 7;
+      // repeated .ebm.spa.Document.Marginalis marginalia = 8;
       private java.util.List<ebm.spa.SpaDoc.Document.Marginalis> marginalia_ =
         java.util.Collections.emptyList();
       private void ensureMarginaliaIsMutable() {
-        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
+        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
           marginalia_ = new java.util.ArrayList<ebm.spa.SpaDoc.Document.Marginalis>(marginalia_);
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
          }
       }
 
@@ -8165,7 +8337,7 @@ public final class SpaDoc {
           ebm.spa.SpaDoc.Document.Marginalis, ebm.spa.SpaDoc.Document.Marginalis.Builder, ebm.spa.SpaDoc.Document.MarginalisOrBuilder> marginaliaBuilder_;
 
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8179,7 +8351,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8193,7 +8365,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8207,7 +8379,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8228,7 +8400,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8246,7 +8418,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8266,7 +8438,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8287,7 +8459,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8305,7 +8477,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8323,7 +8495,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8341,7 +8513,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8350,7 +8522,7 @@ public final class SpaDoc {
       public Builder clearMarginalia() {
         if (marginaliaBuilder_ == null) {
           marginalia_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
           onChanged();
         } else {
           marginaliaBuilder_.clear();
@@ -8358,7 +8530,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8375,7 +8547,7 @@ public final class SpaDoc {
         return this;
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8386,7 +8558,7 @@ public final class SpaDoc {
         return getMarginaliaFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8400,7 +8572,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8415,7 +8587,7 @@ public final class SpaDoc {
         }
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8426,7 +8598,7 @@ public final class SpaDoc {
             ebm.spa.SpaDoc.Document.Marginalis.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8438,7 +8610,7 @@ public final class SpaDoc {
             index, ebm.spa.SpaDoc.Document.Marginalis.getDefaultInstance());
       }
       /**
-       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 7;</code>
+       * <code>repeated .ebm.spa.Document.Marginalis marginalia = 8;</code>
        *
        * <pre>
        * stores the added marginalia and its annotations
@@ -8455,7 +8627,7 @@ public final class SpaDoc {
           marginaliaBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               ebm.spa.SpaDoc.Document.Marginalis, ebm.spa.SpaDoc.Document.Marginalis.Builder, ebm.spa.SpaDoc.Document.MarginalisOrBuilder>(
                   marginalia_,
-                  ((bitField0_ & 0x00000040) == 0x00000040),
+                  ((bitField0_ & 0x00000080) == 0x00000080),
                   getParentForChildren(),
                   isClean());
           marginalia_ = null;
@@ -8528,29 +8700,29 @@ public final class SpaDoc {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014SpaDoc.proto\022\007ebm.spa\"\334\006\n\010Document\022\014\n\004" +
-      "text\030\001 \002(\t\022\013\n\003uri\030\002 \001(\t\022%\n\005nodes\030\003 \003(\0132\026" +
-      ".ebm.spa.Document.Node\022%\n\005pages\030\004 \003(\0132\026." +
-      "ebm.spa.Document.Page\022(\n\005words\030\005 \003(\0132\031.e" +
-      "bm.spa.Document.Mapping\022,\n\tsentences\030\006 \003" +
-      "(\0132\031.ebm.spa.Document.Mapping\0220\n\nmargina" +
-      "lia\030\007 \003(\0132\034.ebm.spa.Document.Marginalis\032" +
-      "(\n\010Interval\022\r\n\005upper\030\001 \002(\r\022\r\n\005lower\030\002 \002(" +
-      "\r\032\\\n\004Node\022\022\n\npage_index\030\001 \002(\r\022\022\n\nnode_in" +
-      "dex\030\002 \002(\r\022,\n\010interval\030\003 \002(\0132\032.ebm.spa.Do",
-      "cument.Interval\032&\n\004Page\022\016\n\006length\030\001 \002(\r\022" +
-      "\016\n\006offset\030\002 \002(\r\032\210\001\n\007Mapping\0223\n\010elements\030" +
-      "\001 \003(\0132!.ebm.spa.Document.Mapping.Element" +
-      "\032H\n\007Element\022\022\n\nnode_index\030\001 \002(\r\022)\n\005range" +
-      "\030\002 \002(\0132\032.ebm.spa.Document.Interval\032\241\002\n\nM" +
-      "arginalis\022\014\n\004type\030\001 \001(\t\022\r\n\005title\030\002 \002(\t\022\023" +
-      "\n\013description\030\003 \001(\t\022<\n\013annotations\030\004 \003(\013" +
-      "2\'.ebm.spa.Document.Marginalis.Annotatio" +
-      "n\032\242\001\n\nAnnotation\022\013\n\003uri\030\001 \001(\t\022\r\n\005label\030\002" +
-      " \001(\t\022\017\n\007content\030\003 \001(\t\022@\n\007mapping\030\004 \001(\0132/",
-      ".ebm.spa.Document.Marginalis.Annotation." +
-      "Mapping\032%\n\007Mapping\022\013\n\003key\030\001 \002(\t\022\r\n\005index" +
-      "\030\002 \002(\r"
+      "\n\014SpaDoc.proto\022\007ebm.spa\"\362\006\n\010Document\022\023\n\013" +
+      "fingerprint\030\001 \002(\t\022\014\n\004text\030\002 \002(\t\022\013\n\003uri\030\003" +
+      " \001(\t\022%\n\005nodes\030\004 \003(\0132\026.ebm.spa.Document.N" +
+      "ode\022%\n\005pages\030\005 \003(\0132\026.ebm.spa.Document.Pa" +
+      "ge\022(\n\005words\030\006 \003(\0132\031.ebm.spa.Document.Map" +
+      "ping\022,\n\tsentences\030\007 \003(\0132\031.ebm.spa.Docume" +
+      "nt.Mapping\0220\n\nmarginalia\030\010 \003(\0132\034.ebm.spa" +
+      ".Document.Marginalis\032(\n\010Interval\022\r\n\005uppe" +
+      "r\030\001 \002(\r\022\r\n\005lower\030\002 \002(\r\032\\\n\004Node\022\022\n\npage_i" +
+      "ndex\030\001 \002(\r\022\022\n\nnode_index\030\002 \002(\r\022,\n\010interv",
+      "al\030\003 \002(\0132\032.ebm.spa.Document.Interval\032&\n\004" +
+      "Page\022\016\n\006length\030\001 \002(\r\022\016\n\006offset\030\002 \002(\r\032\210\001\n" +
+      "\007Mapping\0223\n\010elements\030\001 \003(\0132!.ebm.spa.Doc" +
+      "ument.Mapping.Element\032H\n\007Element\022\022\n\nnode" +
+      "_index\030\001 \002(\r\022)\n\005range\030\002 \002(\0132\032.ebm.spa.Do" +
+      "cument.Interval\032\242\002\n\nMarginalis\022\014\n\004type\030\001" +
+      " \001(\t\022\r\n\005title\030\002 \002(\t\022\023\n\013description\030\003 \001(\t" +
+      "\022<\n\013annotations\030\004 \003(\0132\'.ebm.spa.Document" +
+      ".Marginalis.Annotation\032\243\001\n\nAnnotation\022\014\n" +
+      "\004uuid\030\001 \002(\t\022\r\n\005label\030\002 \001(\t\022\017\n\007content\030\003 ",
+      "\001(\t\022@\n\007mapping\030\004 \001(\0132/.ebm.spa.Document." +
+      "Marginalis.Annotation.Mapping\032%\n\007Mapping" +
+      "\022\013\n\003key\030\001 \002(\t\022\r\n\005index\030\002 \002(\r"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -8562,7 +8734,7 @@ public final class SpaDoc {
           internal_static_ebm_spa_Document_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_ebm_spa_Document_descriptor,
-              new java.lang.String[] { "Text", "Uri", "Nodes", "Pages", "Words", "Sentences", "Marginalia", });
+              new java.lang.String[] { "Fingerprint", "Text", "Uri", "Nodes", "Pages", "Words", "Sentences", "Marginalia", });
           internal_static_ebm_spa_Document_Interval_descriptor =
             internal_static_ebm_spa_Document_descriptor.getNestedTypes().get(0);
           internal_static_ebm_spa_Document_Interval_fieldAccessorTable = new
@@ -8604,7 +8776,7 @@ public final class SpaDoc {
           internal_static_ebm_spa_Document_Marginalis_Annotation_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_ebm_spa_Document_Marginalis_Annotation_descriptor,
-              new java.lang.String[] { "Uri", "Label", "Content", "Mapping", });
+              new java.lang.String[] { "Uuid", "Label", "Content", "Mapping", });
           internal_static_ebm_spa_Document_Marginalis_Annotation_Mapping_descriptor =
             internal_static_ebm_spa_Document_Marginalis_Annotation_descriptor.getNestedTypes().get(0);
           internal_static_ebm_spa_Document_Marginalis_Annotation_Mapping_fieldAccessorTable = new
