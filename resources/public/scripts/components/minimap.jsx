@@ -27,6 +27,8 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
     componentDidMount: function() {
       var self = this;
       var $viewer =  this.props.$viewer;
+      var $minimap = $(this.getDOMNode().parentNode);
+
       $viewer.on("scroll", function() {
         self.setState({ offset: $viewer.scrollTop() / self.props.factor });
       });
@@ -34,8 +36,6 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       $(window).on("mouseup", function(e) {
         self.setState({ mouseDown: false });
       });
-
-      var $minimap = $(this.getDOMNode().parentNode);
 
       $minimap
         .on("mousemove", function(e) {
@@ -63,8 +63,8 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       // The basic idea here is using a sweepline to
       // project the 2D structure of the PDF onto a 1D minimap
       var self = this;
-      var content = this.props.page.get("content");
-      var annotations = this.props.page.get("annotations");
+      var content = page.get("content");
+      var annotations = page.get("annotations");
 
       var nodes = content.items.map(function(geom, idx) {
         var style = textLayerBuilder.calculateStyles(geom, content.styles[geom.fontName]);
@@ -81,7 +81,6 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       var sortedByPosition = _.sortBy(nodes, function(n) { return n.position; });
       for(var i = 0; i < sortedByPosition.length; i++) {
         var node = sortedByPosition[i];
-        if(!node) continue;
         var prevSegment = segments.slice(-1).pop(); // peek
         if(segments.length === 0) {
           segments.push(node);
@@ -108,14 +107,15 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
     },
     render: function() {
       var page = this.props.page;
+      var raw = page.get("raw");
       var textSegments = null;
 
       if(page.get("state") >= RenderingStates.HAS_CONTENT) {
         var factor = this.props.factor;
 
-        var viewport = page.get("raw").getViewport(1.0);
+        var viewport = raw.getViewport(1.0);
         var pageWidthScale = this.props.$viewer.width() / viewport.width;
-        viewport = page.get("raw").getViewport(pageWidthScale);
+        viewport = raw.getViewport(pageWidthScale);
 
         var textLayerBuilder = new TextLayerBuilder({ viewport: viewport });
         var textNodes = this.projectTextNodes(page, textLayerBuilder, factor);
@@ -140,13 +140,14 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       var viewer = this.props.viewer;
       if(!viewer) return null; // wait for viewer to mount
       var $viewer = $(viewer);
+
       var pages = this.props.pdf.get("pages");
       var numPages = pages.length;
 
       // We assume that each page has the same height.
       // This is not true sometimes, but often enough for academic papers.
-      var $page = $viewer.find(".page:eq(0)");
-      var totalHeight = $page.height() * numPages;
+      var $firstPage = $viewer.find(".page:eq(0)");
+      var totalHeight = $firstPage.height() * numPages;
 
       var offset = $viewer.offset().top;
       var factor = totalHeight / ($viewer.height() - offset);
