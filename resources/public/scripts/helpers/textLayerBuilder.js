@@ -7,16 +7,12 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    var calculateWidth = _.memoize(function(ctx, geom) {
+    var calculateWidth = function(ctx, geom) {
       return ctx.measureText(geom.str).width;
-    }, function(ctx, geom) { // hashCode
-      return ctx.font + geom.str;
-    });
+    };
 
     this.isWhitespace = function(geom, style) {
-      ctx.font = style.fontSize + ' ' + style.fontFamily;
-      var width = calculateWidth(ctx, geom);
-      return (!/\S/.test(geom.str)) || width <= 0;
+      return (!/\S/.test(geom.str));
     };
 
     this.calculateStyles = function(geom, style) {

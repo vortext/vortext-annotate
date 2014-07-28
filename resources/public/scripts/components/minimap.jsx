@@ -129,7 +129,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
           if(segment.color) {
             style.backgroundColor = "rgb(" + segment.color + ")";
           }
-          return <div key={idx} data-uuid={segment.uuid} className="text-segment" style={style} />;
+          return <div key={idx} className="text-segment" style={style} />;
         });
       }
       return <div className="minimap-node" style={this.props.style}>{textSegments}</div>;

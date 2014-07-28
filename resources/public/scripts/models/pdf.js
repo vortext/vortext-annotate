@@ -4,7 +4,6 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
   PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
   PDFJS.cMapPacked = true;
-  PDFJS.disableWebGL = !Modernizr.webgl;
 
   var RenderingStates = window.RenderingStates = {
     INITIAL: 0,
