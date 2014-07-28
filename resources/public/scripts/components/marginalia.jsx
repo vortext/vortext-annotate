@@ -29,12 +29,13 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
       var destroy = _.partial(this.destroy, annotation);
       var highlight = _.partial(this.highlight, annotation);
 
-      var content = this.props.isActive ? <a href="#" title="Jump to annotation" onClick={highlight}>{text}</a> : text;
+      var isActive = this.props.isActive;
+      var content = isActive ? <a href="#" title="Jump to annotation" onClick={highlight}>{text}</a> : text;
 
       return <li data-uuid={annotation.get("uuid")}>
                <p className="text-left">
                  {content}
-                 <a href="#" onClick={destroy}><img src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" /></a>
+                 {isActive ? <a href="#" onClick={destroy}><img className="icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" /></a> : null}
                </p>
              </li>;
     }

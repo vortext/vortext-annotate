@@ -203,3 +203,12 @@ canvas {
 ::-moz-selection {
     background-color: rgba(0,0,255,0.2);
 }
+
+a img.icon {
+    vertical-align: middle;
+    margin-left: 5px;
+    opacity: 0.5;
+}
+a:hover img.icon {
+    opacity: 1.0;
+}

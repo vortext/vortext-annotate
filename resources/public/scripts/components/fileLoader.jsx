@@ -22,7 +22,7 @@ define(['react', 'jQuery'], function(React, $) {
       var self = this;
       // From http://stackoverflow.com/questions/18447468/jquery-ajax-downloading-incomplete-binary-file
       var request = new XMLHttpRequest();
-      request.open("GET", "/static/examples/TestDocument1.pdf", true);
+      request.open("GET", "/static/examples/TestDocument5.pdf", true);
       request.responseType = "arraybuffer";
 
       request.onload = function (e) {
