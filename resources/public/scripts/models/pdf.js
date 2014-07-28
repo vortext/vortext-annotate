@@ -1,8 +1,8 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
 define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS) {
   'use strict';
-  PDFJS.workerSrc = 'static/scripts/vendor/pdfjs/pdf.worker.js';
-  PDFJS.cMapUrl = 'static/scripts/vendor/pdfjs/generic/web/cmaps/';
+  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
+  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
   PDFJS.cMapPacked = true;
   PDFJS.disableWebGL = !Modernizr.webgl;
 
@@ -65,6 +65,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
 
   var PDF = Backbone.Model.extend({
     defaults: {
+      fingerprint: null,
       binary: null,
       raw: null
     },
@@ -108,7 +109,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
       var self = this;
       this.set({binary: data});
       PDFJS.getDocument(data).then(function(pdf) {
-        self.set({raw: pdf});
+        self.set({raw: pdf, fingerprint: pdf.pdfInfo.fingerprint});
         self.get("pages").populate(pdf);
       });
     }

@@ -131,7 +131,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       }
       return (
         <div className="page">
-          <div className="loading" style={{opacity: isLoading ? 1 : 0}}><img src="static/img/loader.gif" /></div>
+          <div className="loading" style={{opacity: isLoading ? 1 : 0}}><img src="/static/img/loader.gif" /></div>
           <canvas ref="canvas" />
           {textLayer}
         </div>);
@@ -143,9 +143,14 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       return {fingerprint: null, viewer: null};
     },
     componentWillUpdate: function(nextProps, nextState) {
-      var viewer = this.state.viewer;
-      if(viewer && nextState.fingerprint !== this.state.fingerprint) {
-        $(viewer).scrollTop(0);
+      var $viewer = $(this.state.viewer);
+      if($viewer) {
+        if(nextState.fingerprint !== this.state.fingerprint) {
+          $viewer.scrollTop(0);
+        } else if(nextState.highlight !== this.state.highlight) {
+          var delta = $viewer.find("[data-uuid*="+ nextState.highlight + "]").offset().top;
+          $viewer.animate({scrollTop: $viewer.scrollTop() + delta - ($viewer.height() / 2)}, "slow");
+        }
       }
     },
     componentDidMount: function() {
@@ -156,7 +161,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       var pdf = this.props.pdf;
 
       var pagesElements = pdf.get("pages").map(function(page, pageIndex) {
-        var fingerprint = pdf.get("raw").pdfInfo.fingerprint;
+        var fingerprint = self.state.fingerprint;
         return <Page page={page} key={fingerprint + pageIndex} />;
       });
 

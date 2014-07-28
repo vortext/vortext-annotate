@@ -29,8 +29,10 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       label: "",
       type: "",
       content: "",
-      highlighted: false,
       mapping: {}
+    },
+    highlight: function() {
+      this.trigger("highlight", this.get("uuid"));
     }
   });
 
@@ -51,7 +53,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       var annotations = new Annotations(data.annotations);
       this.set("annotations", annotations);
       annotations.on("all", function(e, obj)  {
-        self.trigger("change:annotations", e, obj);
+        self.trigger(e, obj);
       });
     }
   });

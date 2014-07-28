@@ -17,11 +17,17 @@
         (http/send! channel (:sink v)))
       (http/on-close channel (fn [_] (async/close! c))))))
 
+(defn base
+  []
+  (response/resource-response "index.html" {:root "public"}))
+
 (defn assemble-routes []
   (->
    (routes
     (POST "/topologies/:name" [name :as request] (topology-handler name request))
-    (GET "/" [] (response/resource-response "index.html" {:root "public"}))
+    (GET "/" [] (base))
+    (GET "/view/:fingerprint" []  (base))
+    (GET "/view/:fingerprint/a/:annotation" [] (base))
     (route/resources "/static")
     (route/not-found "Page not found"))))
 

@@ -3,14 +3,11 @@
 define(function (require) {
   'use strict';
 
-  function setStates(components, newState) {
-    components.forEach(function(component) {
-      component.setState(newState);
-    });
-  }
+  var Backbone = require("backbone");
+  var React = require("react");
 
   return function() {
-    var React = require("react");
+    var self = this;
 
     // Models
     var PDFModel = new (require("models/pdf"))();
@@ -41,28 +38,53 @@ define(function (require) {
       document.getElementById("marginalia")
     );
 
-    marginaliaModel.on("all", function(e, obj) {
-      PDFModel.setActiveAnnotations(marginaliaModel);
-      marginaliaComponent.forceUpdate();
+    // Routes
+    var Router = Backbone.Router.extend({
+      routes: {
+        "view/:fingerprint":               "view",
+        "view/:fingerprint/a/annotation":  "view"
+      },
+      view: function(fingerprint, annotation) {
+        console.log(fingerprint, annotation);
+      }
     });
+
+    this.router = new Router();
+
+    // Dispatch logic
+    // Listen to model change callbacks -> trigger updates to components
+    marginaliaModel.on("all", function(e, obj) {
+      switch(e) {
+      case "highlight":
+        var fingerprint = PDFModel.get("fingerprint");
+        viewerComponent.setState({highlight: obj});
+        self.router.navigate("view/" + fingerprint + "/a/" + obj);
+        break;
+      default:
+        PDFModel.setActiveAnnotations(marginaliaModel);
+        marginaliaComponent.forceUpdate();
+      }
+   });
 
     PDFModel
       .on("change:raw", function(e, obj) {
+        var fingerprint = obj.pdfInfo.fingerprint;
+        self.router.navigate("view/" + fingerprint);
         viewerComponent.setState({
-          fingerprint: obj.pdfInfo.fingerprint
+          fingerprint: fingerprint
         });
       })
       .on("change:binary", function(e, obj) {
         marginaliaModel.reset();
         marginaliaComponent.setState({progress: "running"});
-        topologiesModel.call("topologies/ebm", obj)
+        topologiesModel.fetch("ebm", obj)
           .then(
             function(data) {
               marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
               marginaliaComponent.setState({progress: "done"});
             },
             function(error) {
-              marginaliaComponent.setState({progress: "failed" });
+              marginaliaComponent.setState({progress: "failed"});
             },
             function(progress) {
               marginaliaComponent.setState({progress: progress});
@@ -76,5 +98,6 @@ define(function (require) {
         viewerComponent.forceUpdate();
       });
 
+    Backbone.history.start({pushState: true});
   };
 });

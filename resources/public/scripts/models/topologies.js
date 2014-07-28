@@ -17,7 +17,8 @@ define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
 
   var Topologies = Backbone.Model.extend({
     defaults: {},
-    call: function(uri, data) {
+    fetch: function(topology, data) {
+      var uri = "/topologies/" + topology;
       var deferred = Q.defer();
       var xhr = new XMLHttpRequest();
 

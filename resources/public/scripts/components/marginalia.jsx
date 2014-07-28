@@ -16,10 +16,20 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
   }
 
   var Annotation = React.createClass({
+    destroy: function(annotation) {
+      annotation.destroy();
+    },
+    highlight: function(annotation) {
+      annotation.highlight();
+    },
     render: function() {
       var annotation = this.props.annotation;
       var text = truncate(annotation.get("content"), 250);
-      return <li data-uuid={annotation.get("uuid")}><p className="text-left">{text}</p></li>;
+      return <li data-uuid={annotation.get("uuid")}>
+               <p className="text-left">{text}</p>
+               <a href="#" onClick={_.partial(this.destroy, annotation)}>DELETE</a>
+               <a href="#" onClick={_.partial(this.highlight, annotation)}>HIGHLIGHT</a>
+             </li>;
     }
   });
 
@@ -68,7 +78,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
       return (
         <div>
           {blocks}
-          <div className="loading" style={{display: isLoading ? "block" : "none"}}><img src="static/img/loader.gif" /></div>
+          <div className="loading" style={{display: isLoading ? "block" : "none"}}><img src="/static/img/loader.gif" /></div>
         </div>);
     }
   });
