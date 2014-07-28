@@ -1,36 +1,21 @@
-* VERIFY Python SpaDoc
-** VERIFY ProtocolBuffers
-*** VERIFY Define spec
-*** DONE Implement NodeJS
-*** DONE Implement Python
-*** DONE Implement Clojure
-** DONE Use scikit word tokenizer
-** DONE Write cache for all the Cochrane PDFs
-** DONE Write small SpaDoc wrapper for training
 * Client side
-** DONE Rename results to marginalia
-** DONE [[https://facebook.github.io/react/docs/flux-overview.html]["Flux" architecture]] refactor
-** DONE Loading states
-*** DONE Sequentially load pages (maintain loading state)
-*** DONE Display loading indicators
-** Show extracted annotations separately
-** Embed UUID and highlight on hover
+** DONE Show extracted annotations separately
+** IN PROGRESS Embed UUID and highlight on hover
+** DONE Click to scroll into view
 * Annotations
-** Allow deletion of annotations
-** Scroll into view for annotations with proper URL
+** IN PROGRESS Allow deletion of annotations
 ** Allow select-drag adding of annotations
-** Database/Persistence
-** Write named destinations + stand-off markup
+** Database/Persistence (save + load)
 ** W3C RDFa / Providence / Annotations
+** Write named destinations + stand-off markup
+* Project view
+** Users with projects
+*** Login (check HTTPS)
+*** CRUD projects
+** Show results for multiple PDFs
 * Server side
 ** Documentation
-** DONE Better CLI
-*** DONE Rename to workers
-*** DONE Put stand-alone stuff in workers
-*** DONE Write CLI for HTTP topology
 ** VERIFY Progress updates / async topologies
-*** DONE Channels for topologies
-*** DONE Async for HTTP-kit
 *** VERIFY Async for service calls
 **** DONE Generate unique IDs
 **** DONE Update MDP protocol
@@ -43,6 +28,3 @@
 *** Handle errors during processing
 *** Handle exceptions during worker startup
 ** Dockerfiles + Deploy
-* Project view
-** Users / projects?
-** Show results for multiple PDFs
