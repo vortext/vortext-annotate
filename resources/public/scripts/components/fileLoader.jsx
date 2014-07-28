@@ -22,7 +22,7 @@ define(['react', 'jQuery'], function(React, $) {
       var self = this;
       // From http://stackoverflow.com/questions/18447468/jquery-ajax-downloading-incomplete-binary-file
       var request = new XMLHttpRequest();
-      request.open("GET", "/static/examples/TestDocument5.pdf", true);
+      request.open("GET", "/static/examples/TestDocument1.pdf", true);
       request.responseType = "arraybuffer";
 
       request.onload = function (e) {
@@ -48,7 +48,7 @@ define(['react', 'jQuery'], function(React, $) {
         };
         reader.readAsDataURL(file);
       } else {
-        alert("File not supported! Probably not a PDF");
+        alert("File not supported! Probably not a " + this.props.accept + " file");
       }
       return false;
     },
@@ -57,7 +57,7 @@ define(['react', 'jQuery'], function(React, $) {
         <ul className="right">
           <input accept={this.props.accept} style={{display:"none"}} name="file" type="file" ref="file" onChange={this.loadFile} />
           <li><a onClick={this.loadExample}>Example</a></li>
-          <li className="active"><a onClick={this.triggerFileUpload}>Upload PDF</a></li>
+          <li className="active"><a onClick={this.triggerFileUpload}>Upload</a></li>
         </ul>);
     }
   });
