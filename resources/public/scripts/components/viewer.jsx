@@ -149,7 +149,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
           $viewer.scrollTop(0);
         } else if(nextState.highlight !== this.state.highlight) {
           var delta = $viewer.find("[data-uuid*="+ nextState.highlight + "]").offset().top;
-          $viewer.animate({scrollTop: $viewer.scrollTop() + delta - ($viewer.height() / 2)}, "slow");
+          $viewer.animate({scrollTop: $viewer.scrollTop() + delta - (($viewer.height() / 2) - 100)}, "slow");
         }
       }
     },

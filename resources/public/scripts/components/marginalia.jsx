@@ -25,10 +25,17 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     render: function() {
       var annotation = this.props.annotation;
       var text = truncate(annotation.get("content"), 250);
+
+      var destroy = _.partial(this.destroy, annotation);
+      var highlight = _.partial(this.highlight, annotation);
+
+      var content = this.props.isActive ? <a href="#" title="Jump to annotation" onClick={highlight}>{text}</a> : text;
+
       return <li data-uuid={annotation.get("uuid")}>
-               <p className="text-left">{text}</p>
-               <a href="#" onClick={_.partial(this.destroy, annotation)}>DELETE</a>
-               <a href="#" onClick={_.partial(this.highlight, annotation)}>HIGHLIGHT</a>
+               <p className="text-left">
+                 {content}
+                 <a href="#" onClick={destroy}><img src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" /></a>
+               </p>
              </li>;
     }
   });
@@ -50,15 +57,16 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
       };
 
       var annotations = marginalis.get("annotations").map(function(annotation, idx) {
-        return <Annotation annotation={annotation} key={idx} />;
+        return <Annotation annotation={annotation} isActive={isActive} key={idx} />;
       });
 
       return <div className="block">
                <h4>
-                 <a onClick={this.toggleActivate} style={style}> {marginalis.get("title")} </a>
+                 <a onClick={this.toggleActivate} style={style}>{marginalis.get("title")} </a>
                </h4>
                <div className="content">
                  <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
+                 {annotations.length > 0 ? <hr /> : null}
                  <ul className="annotations square">{annotations}</ul>
                </div>
              </div>;
