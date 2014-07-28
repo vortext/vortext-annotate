@@ -16,10 +16,10 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       $(window).off("mouseup");
     },
     scrollTo: function(e, $minimap, $viewer) {
-      var document_offset = $minimap.offset().top;
-      var offset = ((this.props.height / 2) + document_offset);
+      var documentOffset = $minimap.offset().top;
+      var offset = ((this.props.height / 2) + documentOffset);
       var y = e.pageY;
-      this.setState({ offset: y - offset });
+      this.setState({offset: y - offset});
 
       var scroll = (y - offset) * this.props.factor;
       $viewer.scrollTop(scroll);
@@ -30,11 +30,11 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       var $minimap = $(this.getDOMNode().parentNode);
 
       $viewer.on("scroll", function() {
-        self.setState({ offset: $viewer.scrollTop() / self.props.factor });
+        self.setState({offset: $viewer.scrollTop() / self.props.factor});
       });
 
       $(window).on("mouseup", function(e) {
-        self.setState({ mouseDown: false });
+        self.setState({mouseDown: false});
       });
 
       $minimap
@@ -45,7 +45,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
           return false;
         })
         .on("mousedown", function(e) {
-          self.setState({ mouseDown: true });
+          self.setState({mouseDown: true});
           // Jump to mousedown position
           self.scrollTo(e, $minimap, $viewer);
           return false;
@@ -73,7 +73,8 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
         return {
           height: parseInt(style.fontSize, 10) / factor,
           position: parseInt(style.top, 10) / factor,
-          color: elementAnnotations && elementAnnotations[0].color || null
+          color: elementAnnotations && elementAnnotations[0].color,
+          uuid: _.pluck(elementAnnotations, "uuid")
         };
       });
 
@@ -98,7 +99,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
             position: prevSegment.position,
             color: nextColor
           };
-          segments.push(nextSegment);
+          segments.push(_.extend(node, nextSegment));
         } else {
           segments.push(node);
         }
@@ -117,7 +118,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
         var pageWidthScale = this.props.$viewer.width() / viewport.width;
         viewport = raw.getViewport(pageWidthScale);
 
-        var textLayerBuilder = new TextLayerBuilder({ viewport: viewport });
+        var textLayerBuilder = new TextLayerBuilder({viewport: viewport});
         var textNodes = this.projectTextNodes(page, textLayerBuilder, factor);
 
         textSegments = textNodes.map(function(segment, idx) {
@@ -128,7 +129,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
           if(segment.color) {
             style.backgroundColor = "rgb(" + segment.color + ")";
           }
-          return <div key={idx} className="text-segment" style={style} />;
+          return <div key={idx} data-uuid={segment.uuid} className="text-segment" style={style} />;
         });
       }
       return <div className="minimap-node" style={this.props.style}>{textSegments}</div>;
@@ -157,7 +158,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
                             page={page}
                             $viewer={$viewer}
                             factor={factor}
-                            style={{ height: (totalHeight / numPages) / factor }} />;
+                            style={{height: (totalHeight / numPages) / factor}} />;
       });
 
       return (<div className="minimap">

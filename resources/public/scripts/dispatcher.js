@@ -32,12 +32,12 @@ define(function (require) {
     );
 
     var viewerComponent = React.renderComponent(
-      Viewer({ pdf: PDFModel }),
+      Viewer({pdf: PDFModel}),
       document.getElementById("viewer")
     );
 
     var marginaliaComponent = React.renderComponent(
-      Marginalia({ marginalia: marginaliaModel }),
+      Marginalia({marginalia: marginaliaModel}),
       document.getElementById("marginalia")
     );
 
@@ -54,18 +54,18 @@ define(function (require) {
       })
       .on("change:binary", function(e, obj) {
         marginaliaModel.reset();
-        marginaliaComponent.setState({ progress: "running" });
+        marginaliaComponent.setState({progress: "running"});
         topologiesModel.call("topologies/ebm", obj)
           .then(
             function(data) {
               marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
-              marginaliaComponent.setState({ progress: "done" });
+              marginaliaComponent.setState({progress: "done"});
             },
             function(error) {
-              marginaliaComponent.setState({ progress: "failed" });
+              marginaliaComponent.setState({progress: "failed" });
             },
             function(progress) {
-              marginaliaComponent.setState({ progress: progress });
+              marginaliaComponent.setState({progress: progress});
             }
           );
       })

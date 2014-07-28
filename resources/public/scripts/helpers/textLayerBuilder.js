@@ -75,7 +75,6 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
         textElement.spans = textElement.annotations = null;
       } else {
         textElement.color = annotations[0].color;
-        textElement.annotations = _.pluck(annotations, "type");
 
         var sorted = _.sortBy(annotations, function(ann) {// sorted by range offset
           return ann.range.lower;
@@ -102,7 +101,8 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
             pre: text.slice(start, left),
             content:text.slice(left, right),
             post: text.slice(right, end),
-            style: style
+            style: style,
+            uuid: _.pluck(annotations, "uuid")
           };
         });
         textElement.spans = spans;

@@ -14,10 +14,10 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       var content;
       if(o.spans) {
         content = o.spans.map(function(s,i) {
-          if(!s) return <span key={"no_" + i} />;
+          if(!s) return null;
           return <span key={i}>
                    <span className="pre">{s.pre}</span>
-                   <span className="annotated" style={s.style}>{s.content}</span>
+                   <span className="annotated" style={s.style} data-uuid={s.uuid}>{s.content}</span>
                    <span className="post">{s.post}</span>
                   </span>;
         });
@@ -25,24 +25,22 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
         content = o.textContent;
       };
       return <div style={o.style}
-                  dir={o.dir}
-                  data-color={o.color}
-                  data-annotations={o.annotations}>{content}</div>;
+                  dir={o.dir}>{content}</div>;
     }
   });
 
   var TextLayer = React.createClass({
     getInitialState: function() {
-      return { annotations: {} };
+      return {annotations: {}};
     },
     componentWillReceiveProps: function(nextProps) {
-      this.setState({ annotations: nextProps.page.get("annotations") });
+      this.setState({annotations: nextProps.page.get("annotations")});
     },
     shouldComponentUpdate: function(nextProps, nextState) {
       return !_.isEqual(nextState.annotations, this.state.annotations);
     },
     getTextLayerBuilder: function(viewport) {
-      return new TextLayerBuilder({ viewport: viewport });
+      return new TextLayerBuilder({viewport: viewport});
     },
     render: function() {
       var page  = this.props.page;
@@ -69,9 +67,9 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       };
     },
     componentWillReceiveProps: function(nextProps) {
-      this.setState({ renderingState: nextProps.page.get("state") });
+      this.setState({renderingState: nextProps.page.get("state")});
       if(this.props.key !== nextProps.key) {
-        this.setState({ isRendered: false });
+        this.setState({isRendered: false});
       }
     },
     drawPage: function(page) {
@@ -113,7 +111,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       var completeCallback = pageRendering.internalRenderTask.callback;
       pageRendering.internalRenderTask.callback = function (error) {
         completeCallback.call(this, error);
-        self.setState({ isRendered: true });
+        self.setState({isRendered: true});
       };
     },
     componentDidUpdate: function(prevProps, prevState) {
@@ -133,7 +131,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       }
       return (
         <div className="page">
-          <div className="loading" style={{ opacity: isLoading ? 1 : 0 }}><img src="static/img/loader.gif" /></div>
+          <div className="loading" style={{opacity: isLoading ? 1 : 0}}><img src="static/img/loader.gif" /></div>
           <canvas ref="canvas" />
           {textLayer}
         </div>);
@@ -142,16 +140,16 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
   var Display = React.createClass({
     getInitialState: function() {
-      return { fingerprint: null, viewer: null };
+      return {fingerprint: null, viewer: null};
     },
     componentWillUpdate: function(nextProps, nextState) {
       var viewer = this.state.viewer;
-      if(nextState.fingerprint !== this.state.fingerprint && viewer) {
-        $(this.state.viewer).scrollTop(0);
+      if(viewer && nextState.fingerprint !== this.state.fingerprint) {
+        $(viewer).scrollTop(0);
       }
     },
     componentDidMount: function() {
-      this.setState({ viewer: this.refs.viewer.getDOMNode() });
+      this.setState({viewer: this.refs.viewer.getDOMNode()});
     },
     render: function() {
       var self = this;

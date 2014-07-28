@@ -17,7 +17,9 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
   var Annotation = React.createClass({
     render: function() {
-      return <li><p className="text-left">{truncate(this.props.annotation.content, 250)}</p></li>;
+      var annotation = this.props.annotation;
+      var text = truncate(annotation.get("content"), 250);
+      return <li data-uuid={annotation.get("uuid")}><p className="text-left">{text}</p></li>;
     }
   });
 
@@ -25,7 +27,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     toggleActivate: function(e) {
       var marginalis = this.props.marginalis;
       var isActive = !marginalis.get("active");
-      marginalis.set({ "active": isActive });
+      marginalis.set({"active": isActive});
     },
     render: function() {
       var marginalis = this.props.marginalis;
@@ -66,7 +68,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
       return (
         <div>
           {blocks}
-          <div className="loading" style={{ display: isLoading ? "block" : "none" }}><img src="static/img/loader.gif" /></div>
+          <div className="loading" style={{display: isLoading ? "block" : "none"}}><img src="static/img/loader.gif" /></div>
         </div>);
     }
   });

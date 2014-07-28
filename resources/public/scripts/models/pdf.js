@@ -25,7 +25,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
 
   var Pages = Backbone.Collection.extend({
     model: Page,
-    _requestPage: function(model, pagePromise) {
+    __requestPage: function(model, pagePromise) {
       return pagePromise
         .then(function(raw) {
           model.set({
@@ -53,8 +53,8 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
         if(arr.length === 0) return;
         var pageIndex = _.first(arr);
         var page = pages[pageIndex];
-        page.set({ state: RenderingStates.RUNNING });
-        var p = self._requestPage(page, pdf.getPage(pageIndex + 1));
+        page.set({state: RenderingStates.RUNNING});
+        var p = self.__requestPage(page, pdf.getPage(pageIndex + 1));
         p.then(function() {
           process(_.rest(arr));
         });
@@ -91,9 +91,9 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
           active: marginalis.get("active")
         };
         if(!props.active) return; // only consider the active ones
-        marginalis.get("annotations").forEach(function(annotation) {
-          annotation.mapping.forEach(function(node) {
-            node = _.extend(node, props);
+        marginalis.get("annotations").each(function(annotation) {
+          annotation.get("mapping").forEach(function(node) {
+            node = _.extend(_.clone(node), props, annotation.toJSON());
             annotations[node.pageIndex] = annotations[node.pageIndex] || {};
             annotations[node.pageIndex][node.nodeIndex] = _.union(annotations[node.pageIndex][node.nodeIndex] || [], node);
           });
@@ -101,14 +101,14 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
       });
 
       this.get("pages").map(function(page, pageIndex) {
-        page.set({ annotations: annotations[pageIndex] || {} });
+        page.set({annotations: annotations[pageIndex] || {}});
       });
     },
     loadFromData: function(data) {
       var self = this;
-      this.set({ binary: data });
+      this.set({binary: data});
       PDFJS.getDocument(data).then(function(pdf) {
-        self.set({ raw: pdf });
+        self.set({raw: pdf});
         self.get("pages").populate(pdf);
       });
     }

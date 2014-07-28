@@ -20,8 +20,23 @@ define(['underscore', 'backbone'], function(_, Backbone) {
          [102,102,102]];
 
   function toClassName(str) {
-    return str ? str.replace(/ /g, "-").toLowerCase() : null;
+    return str.replace(/ /g, "-").toLowerCase();
   };
+
+  var Annotation =  Backbone.Model.extend({
+    defaults: {
+      uuid: null,
+      label: "",
+      type: "",
+      content: "",
+      highlighted: false,
+      mapping: {}
+    }
+  });
+
+  var Annotations = Backbone.Collection.extend({
+    model: Annotation
+  });
 
   var Marginalis = Backbone.Model.extend({
     defaults: {
@@ -29,14 +44,21 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       description: null,
       color: null,
       title: null,
-      active: false,
-      annotations: []
+      active: false
+    },
+    initialize: function(data) {
+      var self = this;
+      var annotations = new Annotations(data.annotations);
+      this.set("annotations", annotations);
+      annotations.on("all", function(e, obj)  {
+        self.trigger("change:annotations", e, obj);
+      });
     }
   });
 
   var Marginalia = Backbone.Collection.extend({
     model: Marginalis,
-    parse: function(data) {
+    parse: function(data, options) {
       _.each(data, function(marginalis, idx) {
         var id = marginalis.id || toClassName(marginalis.title);
         marginalis.active = idx === 0;
