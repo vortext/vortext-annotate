@@ -67,8 +67,8 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
                </h4>
                <div className="content">
                  <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
-                 {annotations.length > 0 ? <hr /> : null}
-                 <ul className="annotations square">{annotations}</ul>
+                 {annotations.length > 0 ? <div className="divider">annotations</div> : null}
+                 <ul className="annotations no-bullet">{annotations}</ul>
                </div>
              </div>;
     }
