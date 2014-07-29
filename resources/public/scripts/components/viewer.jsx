@@ -31,7 +31,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
   var TextLayer = React.createClass({
     getInitialState: function() {
-      return {annotations: {}};
+      return {annotations: []};
     },
     componentWillReceiveProps: function(nextProps) {
       this.setState({annotations: nextProps.page.get("annotations")});
@@ -149,7 +149,9 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
           $viewer.scrollTop(0);
         } else if(nextState.highlight !== this.state.highlight) {
           var delta = $viewer.find("[data-uuid*="+ nextState.highlight + "]").offset().top;
-          $viewer.animate({scrollTop: $viewer.scrollTop() + delta - (($viewer.height() / 2) - 100)}, "slow");
+          var viewerHeight = $viewer.height();
+          var center = (viewerHeight / 2) - (viewerHeight / 4);
+          $viewer.animate({scrollTop: $viewer.scrollTop() + delta - center}, "slow");
         }
       }
     },

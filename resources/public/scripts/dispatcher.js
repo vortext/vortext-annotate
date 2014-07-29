@@ -41,8 +41,8 @@ define(function (require) {
     // Routes
     var Router = Backbone.Router.extend({
       routes: {
-        "view/:fingerprint":               "view",
-        "view/:fingerprint/a/annotation":  "view"
+        "view/:fingerprint":                "view",
+        "view/:fingerprint/a/:annotation":  "view"
       },
       view: function(fingerprint, annotation) {
         console.log(fingerprint, annotation);
