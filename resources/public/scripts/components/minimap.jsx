@@ -58,13 +58,22 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
     }
   });
 
-  var PageSegment = React.createClass({
+  var TextSegments = React.createClass({
+    getInitialState: function() {
+      return {annotations: []};
+    },
+    componentWillReceiveProps: function(nextProps) {
+      this.setState({annotations: nextProps.page.get("annotations")});
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+      return !_.isEqual(nextState.annotations, this.state.annotations);
+    },
     projectTextNodes: function(page, textLayerBuilder, factor) {
       // The basic idea here is using a sweepline to
       // project the 2D structure of the PDF onto a 1D minimap
       var self = this;
       var content = page.get("content");
-      var annotations = page.get("annotations");
+      var annotations = this.state.annotations;
 
       var nodes = content.items.map(function(geom, idx) {
         var style = textLayerBuilder.calculateStyles(geom, content.styles[geom.fontName]);
@@ -106,31 +115,43 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       }
       return segments;
     },
+
     render: function() {
       var page = this.props.page;
       var raw = page.get("raw");
+
+      var factor = this.props.factor;
+
+      var viewport = raw.getViewport(1.0);
+      var pageWidthScale = this.props.$viewer.width() / viewport.width;
+      viewport = raw.getViewport(pageWidthScale);
+
+      var textLayerBuilder = new TextLayerBuilder({viewport: viewport});
+      var textNodes = this.projectTextNodes(page, textLayerBuilder, factor);
+
+      var textSegments = textNodes.map(function(segment, idx) {
+        var style = {
+          "top": (Math.ceil(segment.position) | 0) + "px",
+          "height": (Math.ceil(segment.height) | 0) + "px"
+        };
+        if(segment.color) {
+          style.backgroundColor = "rgb(" + segment.color + ")";
+        }
+        return <div key={idx} className="text-segment" style={style} />;
+      });
+
+      return <div>{textSegments}</div>;
+    }
+  });
+
+  var PageSegment = React.createClass({
+    render: function() {
+      var page = this.props.page;
+      var raw = page.get("raw");
+
       var textSegments = null;
-
       if(page.get("state") >= RenderingStates.HAS_CONTENT) {
-        var factor = this.props.factor;
-
-        var viewport = raw.getViewport(1.0);
-        var pageWidthScale = this.props.$viewer.width() / viewport.width;
-        viewport = raw.getViewport(pageWidthScale);
-
-        var textLayerBuilder = new TextLayerBuilder({viewport: viewport});
-        var textNodes = this.projectTextNodes(page, textLayerBuilder, factor);
-
-        textSegments = textNodes.map(function(segment, idx) {
-          var style = {
-            "top": (Math.ceil(segment.position) | 0) + "px",
-            "height": (Math.ceil(segment.height) | 0) + "px"
-          };
-          if(segment.color) {
-            style.backgroundColor = "rgb(" + segment.color + ")";
-          }
-          return <div key={idx} className="text-segment" style={style} />;
-        });
+        textSegments = <TextSegments page={page} factor={this.props.factor} $viewer={this.props.$viewer} />;
       }
       return <div className="minimap-node" style={this.props.style}>{textSegments}</div>;
     }
