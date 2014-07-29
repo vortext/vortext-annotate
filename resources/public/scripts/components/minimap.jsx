@@ -159,9 +159,8 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
 
   var Minimap = React.createClass({
     render: function() {
-      var viewer = this.props.viewer;
-      if(!viewer) return null; // wait for viewer to mount
-      var $viewer = $(viewer);
+      var $viewer = this.props.$viewer;
+      if(!$viewer) return null; // wait for viewer to mount
 
       var pages = this.props.pdf.get("pages");
       var numPages = pages.length;

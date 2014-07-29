@@ -142,10 +142,10 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
   var Display = React.createClass({
     getInitialState: function() {
-      return {fingerprint: null, viewer: null};
+      return {fingerprint: null, $viewer: null};
     },
     componentWillUpdate: function(nextProps, nextState) {
-      var $viewer = $(this.state.viewer);
+      var $viewer = this.state.$viewer;
       if($viewer) {
         if(nextState.fingerprint !== this.state.fingerprint) {
           $viewer.scrollTop(0);
@@ -157,8 +157,21 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
         }
       }
     },
+    getSelection: function() {
+      var text = "";
+      if (window.getSelection) {
+        text = window.getSelection().toString();
+      } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+      }
+      if(text) {
+        console.log(text);
+      }
+      return text;
+    },
     componentDidMount: function() {
-      this.setState({viewer: this.refs.viewer.getDOMNode()});
+      var $viewer = $(this.refs.viewer.getDOMNode());
+      this.setState({$viewer: $viewer});
     },
     render: function() {
       var self = this;
@@ -171,9 +184,9 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
       return(
         <div>
-          <Minimap viewer={this.state.viewer} pdf={pdf} />
+          <Minimap $viewer={this.state.$viewer} pdf={pdf} />
           <div className="viewer-container">
-            <div className="viewer" ref="viewer">{pagesElements}</div>
+             <div className="viewer" onMouseUp={self.getSelection} ref="viewer">{pagesElements}</div>
            </div>
         </div>);
     }

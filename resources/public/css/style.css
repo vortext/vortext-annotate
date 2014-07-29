@@ -176,16 +176,10 @@ canvas {
 }
 
 .textLayer .annotated {
-    cursor: pointer;
     margin: -1px;
     padding: 1px;
 }
 
-
-.textLayer .annotated.highlighted {
-    outline-width: 1px;
-    outline-style: solid;
-}
 
 .loading {
     width: 100%;
