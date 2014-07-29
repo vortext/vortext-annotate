@@ -1,6 +1,11 @@
+
 html, body {
     overflow: hidden;
     color: #505050;
+}
+
+.antialiased {
+    -moz-osx-font-smoothing: greyscale;
 }
 
 .viewer-container {
@@ -233,4 +238,7 @@ a:hover img.icon {
     width: 100%;
     top: 50%;
     margin-left: 10px;
+}
+
+.tooltip.annotate {
 }

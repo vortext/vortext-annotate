@@ -142,7 +142,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
   var Display = React.createClass({
     getInitialState: function() {
-      return {fingerprint: null, $viewer: null};
+      return {fingerprint: null, $viewer: null, popup: {x: 0, y: 0, visible: false}};
     },
     componentWillUpdate: function(nextProps, nextState) {
       var $viewer = this.state.$viewer;
@@ -157,17 +157,16 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
         }
       }
     },
-    getSelection: function() {
+    getSelection: function(e) {
       var text = "";
       if (window.getSelection) {
         text = window.getSelection().toString();
       } else if (document.selection && document.selection.type != "Control") {
         text = document.selection.createRange().text;
       }
-      if(text) {
-        console.log(text);
+      if(text && text.length > 20) {
+
       }
-      return text;
     },
     componentDidMount: function() {
       var $viewer = $(this.refs.viewer.getDOMNode());
@@ -184,6 +183,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
       return(
         <div>
+          <span className="tooltip annotate" style={{"display": "block"}}>foobar<span className="nub"></span></span>
           <Minimap $viewer={this.state.$viewer} pdf={pdf} />
           <div className="viewer-container">
              <div className="viewer" onMouseUp={self.getSelection} ref="viewer">{pagesElements}</div>

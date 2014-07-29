@@ -6,6 +6,13 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
   PDFJS.cMapPacked = true;
   PDFJS.disableWebGL = !Modernizr.webgl;
 
+  var pseudoUUID = function() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
+  };
+
   var RenderingStates = window.RenderingStates = {
     INITIAL: 0,
     RUNNING: 1,
@@ -39,10 +46,60 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
             content: content,
             state: RenderingStates.FINISHED
           });
+          return content;
         });
+    },
+    __buildCache: function() {
+      this.__cache = { totalLength: 0, nodes: [], pages: [], text: "" };
+    },
+    __appendCache: function(pageIndex, pageContent) {
+      var totalLength = this.__cache.totalLength;
+      var offset = 0;
+      var items = pageContent.items;
+      for (var j = 0; j < items.length; j++) {
+        var item = items[j];
+        var nextOffset = offset + item.str.length;
+        var node = { pageIndex: pageIndex,
+		                 nodeIndex: j,
+		                 interval: { lower: totalLength + offset,
+			                           upper: totalLength + nextOffset }};
+        this.__cache.text += (item.str + "\n");
+        offset = nextOffset + 1; // 1 added for the extra space in text join
+        this.__cache.nodes.push(node);
+      }
+      this.__cache.pages.push({ offset: totalLength, length: offset });
+      this.__cache.totalLength += offset;
+    },
+    getAnnotation: function(str) {
+      var lower = this.__cache.text.indexOf(str);
+      var upper = lower + str.length;
+      var mapping = [];
+
+      var nodes =  this.__cache.nodes;
+      var pages = this.__cache.pages;
+      var nrNodes = nodes.length;
+      for(var i = 0; i < nrNodes; ++i) {
+        var node = nodes[i];
+        if(node.interval.lower < upper && lower < node.interval.upper) {
+          var pageOffset = pages[node.pageIndex],offset;
+          var interval = {lower: node.interval.lower - pageOffset, upper: node.interval.upper - pageOffset};
+          mapping.push(_.extend(node, {range: _.clone(interval), interval: _.clone(interval)}));
+        }
+      }
+      mapping[0].range.lower = lower - pages[mapping[0].pageIndex].offset;
+      mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
+
+      return {
+        content: str,
+        mapping: mapping,
+        uuid: pseudoUUID()
+      };
     },
     populate: function(pdf) {
       var self  = this;
+
+      this.__buildCache();
+
       var pageQueue = _.range(0, pdf.numPages);
       var pages = _.map(pageQueue, function(pageNr) {
         return new Page();
@@ -55,8 +112,9 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
         var page = pages[pageIndex];
         page.set({state: RenderingStates.RUNNING});
         var p = self.__requestPage(page, pdf.getPage(pageIndex + 1));
-        p.then(function() {
+        p.then(function(content) {
           process(_.rest(arr));
+          self.__appendCache(pageIndex, content);
         });
       };
       process(pageQueue);
@@ -80,6 +138,9 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
           self.trigger("change:annotations", e, obj);
         });
       this.set("pages", pages);
+    },
+    getAnnotation: function(str) {
+      console.log(this.get("pages").getAnnotation(str));
     },
     setActiveAnnotations: function(marginalia) {
       // FIXME: ugly hack to set the active nodes based on the response JSON and selection
