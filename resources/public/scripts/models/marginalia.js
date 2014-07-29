@@ -28,11 +28,16 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       uuid: null,
       label: "",
       type: "",
+      highlighted: false,
       content: "",
       mapping: {}
     },
     highlight: function() {
-      this.trigger("highlight", this.get("uuid"));
+      var highlighted = !this.get("highlighted");
+      this.set({ highlighted: highlighted });
+    },
+    select: function() {
+      this.trigger("select", this.get("uuid"));
     }
   });
 

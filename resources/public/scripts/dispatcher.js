@@ -55,9 +55,9 @@ define(function (require) {
     // Listen to model change callbacks -> trigger updates to components
     marginaliaModel.on("all", function(e, obj) {
       switch(e) {
-      case "highlight":
+      case "select":
         var fingerprint = PDFModel.get("fingerprint");
-        viewerComponent.setState({highlight: obj});
+        viewerComponent.setState({select: obj});
         self.router.navigate("view/" + fingerprint + "/a/" + obj);
         break;
       default:

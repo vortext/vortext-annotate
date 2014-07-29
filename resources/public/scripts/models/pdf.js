@@ -86,15 +86,12 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
       var annotations = {};
       var self = this;
       marginalia.each(function(marginalis) {
-        var props = {
-          type: marginalis.get("id"),
-          color: marginalis.get("color"),
-          active: marginalis.get("active")
-        };
-        if(!props.active) return; // only consider the active ones
+        if(!marginalis.get("active")) return; // only consider the active ones
+        var m =  marginalis.toJSON();
         marginalis.get("annotations").each(function(annotation) {
+          var a =  annotation.toJSON();
           annotation.get("mapping").forEach(function(node) {
-            node = _.extend(_.clone(node), props, annotation.toJSON());
+            node = _.extend(_.clone(node), m, a);
             annotations[node.pageIndex] = annotations[node.pageIndex] || {};
             annotations[node.pageIndex][node.nodeIndex] = _.union(annotations[node.pageIndex][node.nodeIndex] || [], node);
           });

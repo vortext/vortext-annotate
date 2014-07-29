@@ -16,26 +16,26 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
   }
 
   var Annotation = React.createClass({
-    destroy: function(annotation) {
-      annotation.destroy();
+    destroy: function() {
+      this.props.annotation.destroy();
     },
-    highlight: function(annotation) {
-      annotation.highlight();
+    select: function(annotation) {
+      this.props.annotation.select();
+    },
+    toggleHighlight: function() {
+      this.props.annotation.highlight();
     },
     render: function() {
       var annotation = this.props.annotation;
       var text = truncate(annotation.get("content"), 100);
 
-      var destroy = _.partial(this.destroy, annotation);
-      var highlight = _.partial(this.highlight, annotation);
-
       var isActive = this.props.isActive;
-      var content = isActive ? <a href="#" title="Jump to annotation" onClick={highlight}>{text}</a> : text;
+      var content = isActive ? <a href="#" title="Jump to annotation" onClick={this.select}>{text}</a> : text;
 
       return <li>
-               <p className="text-left">
+               <p className="text-left" onMouseEnter={this.toggleHighlight} onMouseLeave={this.toggleHighlight}>
                  {content}
-                 {isActive ? <a href="#" onClick={destroy}><img className="icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" /></a> : null}
+                 {isActive ? <a href="#" onClick={this.destroy}><img className="icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" /></a> : null}
                </p>
              </li>;
     }

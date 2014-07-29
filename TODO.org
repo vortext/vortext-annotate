@@ -1,6 +1,6 @@
 * Client side
 ** DONE Show extracted annotations separately
-** IN PROGRESS Embed UUID and highlight on hover
+** DONE Embed UUID and highlight on hover
 ** DONE Click to scroll into view
 * Annotations
 ** IN PROGRESS Allow deletion of annotations
@@ -12,6 +12,8 @@
 ** Users with projects
 *** Login (check HTTPS)
 *** CRUD projects
+** Make extraction categories configurable
+** Allow hooking up prediction models
 ** Show results for multiple PDFs
 * Server side
 ** Documentation

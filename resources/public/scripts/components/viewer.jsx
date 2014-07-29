@@ -8,7 +8,9 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
     },
     render: function() {
       var p = this.props;
+      var self = this;
       var o = p.textLayerBuilder.createAnnotatedElement(p.item, p.styles, p.annotations);
+
       if(o.isWhitespace) { return null; }
 
       var content;
@@ -31,7 +33,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
   var TextLayer = React.createClass({
     getInitialState: function() {
-      return {annotations: []};
+      return {annotations: {}};
     },
     componentWillReceiveProps: function(nextProps) {
       this.setState({annotations: nextProps.page.get("annotations")});
@@ -147,8 +149,8 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       if($viewer) {
         if(nextState.fingerprint !== this.state.fingerprint) {
           $viewer.scrollTop(0);
-        } else if(nextState.highlight !== this.state.highlight) {
-          var delta = $viewer.find("[data-uuid*="+ nextState.highlight + "]").offset().top;
+        } else if(nextState.select !== this.state.select) {
+          var delta = $viewer.find("[data-uuid*="+ nextState.select + "]").offset().top;
           var viewerHeight = $viewer.height();
           var center = (viewerHeight / 2) - (viewerHeight / 4);
           $viewer.animate({scrollTop: $viewer.scrollTop() + delta - center}, "slow");

@@ -60,7 +60,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
 
   var TextSegments = React.createClass({
     getInitialState: function() {
-      return {annotations: []};
+      return {annotations: {}};
     },
     componentWillReceiveProps: function(nextProps) {
       this.setState({annotations: nextProps.page.get("annotations")});
