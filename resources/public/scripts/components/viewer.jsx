@@ -20,13 +20,8 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
       }
     },
     getSelection: function() {
-      var text = "";
-      if (window.getSelection) {
-        text = window.getSelection().toString();
-      } else if (document.selection && document.selection.type != "Control") {
-        text = document.selection.createRange().text;
-      }
-      return text;
+      var selection = window.getSelection().getRangeAt(0);
+      return selection.toString();
     },
     respondToSelection: function(e) {
       var selection = this.getSelection();
