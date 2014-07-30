@@ -55,6 +55,10 @@ define(['underscore', 'backbone', 'models/annotation'], function(_, Backbone, An
         marginalis.color = colors[idx % colors.length];
       });
       return data;
+    },
+    setActive: function(marginalia) {
+      this.each(function(marginalis) { marginalis.set("active", false, {silent: true}); });
+      this.get(marginalia.cid).set("active", true);
     }
   });
 

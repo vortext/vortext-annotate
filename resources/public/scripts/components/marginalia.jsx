@@ -43,9 +43,8 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
   var Block = React.createClass({
     toggleActivate: function(e) {
-      var marginalis = this.props.marginalis;
-      var isActive = !marginalis.get("active");
-      marginalis.set({"active": isActive});
+      var marginalia = this.props.marginalia;
+      marginalia.setActive(this.props.marginalis);
     },
     render: function() {
       var marginalis = this.props.marginalis;
@@ -81,8 +80,9 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     render: function() {
       var progress = this.state.progress;
       var isLoading = progress && progress !== "done";
-      var blocks = this.props.marginalia.map(function(marginalis, idx) {
-        return <Block key={marginalis.id} marginalis={marginalis} />;
+      var marginalia = this.props.marginalia;
+      var blocks = marginalia.map(function(marginalis, idx) {
+        return <Block key={idx} marginalia={marginalia} marginalis={marginalis}  />;
       });
       return (
         <div>

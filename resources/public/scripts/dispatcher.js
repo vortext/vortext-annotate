@@ -95,7 +95,7 @@ define(function (require) {
           );
         break;
       case "annotation:add":
-        var model = marginaliaModel.first().get("annotations");
+        var model = marginaliaModel.findWhere({"active": true}).get("annotations");
         model.add(obj);
         break;
       case "pages:change:state":

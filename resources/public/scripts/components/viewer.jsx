@@ -52,10 +52,13 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
       this.setState({$viewer: $viewer});
     },
     emitAnnotation: function() {
-      this.props.pdf.emitAnnotation(this.state.selection);
-      // Clear text selection
-      window.getSelection().removeAllRanges();
-      this.setState({popup: { visible: false }});
+      var selection = this.state.selection;
+      if(selection) {
+        this.props.pdf.emitAnnotation(this.state.selection);
+        // Clear text selection
+        window.getSelection().removeAllRanges();
+        this.setState({popup: { visible: false }, selection: null});
+      }
     },
     render: function() {
       var self = this;

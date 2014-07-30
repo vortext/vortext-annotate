@@ -63,8 +63,8 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
 		                 nodeIndex: j,
 		                 interval: { lower: totalLength + offset,
 			                           upper: totalLength + nextOffset }};
-        this.__cache.text += (item.str + "\n");
-        offset = nextOffset + 1; // 1 added for the extra space in text join
+        this.__cache.text += (item.str + '\n');
+        offset = (nextOffset + 1);
         this.__cache.nodes.push(node);
       }
       this.__cache.pages.push({ offset: totalLength, length: offset });
@@ -79,7 +79,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
       var pages = this.__cache.pages;
       var nrNodes = nodes.length;
       for(var i = 0; i < nrNodes; ++i) {
-        var node = nodes[i];
+        var node = _.clone(nodes[i]);
         if(node.interval.lower < upper && lower < node.interval.upper) {
           var pageOffset = pages[node.pageIndex].offset;
           var interval = {lower: node.interval.lower - pageOffset, upper: node.interval.upper - pageOffset};
