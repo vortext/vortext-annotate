@@ -92,7 +92,7 @@ define(['underscore', 'PDFJS'], function(_, PDFJS) {
               right = text.length + (ann.range.upper - ann.interval.upper),
               end = next ?  right : text.length,
               style = {
-                "backgroundColor": "rgba(" + ann.color.join(",") + "," + (ann.highlighted ? 0.3 : 0.15) + ")"
+                "backgroundColor": "rgba(" + ann.color.join(",") + "," + (ann.highlighted ? 0.350 : 0.125) + ")"
               };
 
           return {
