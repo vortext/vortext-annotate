@@ -21,11 +21,12 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
     },
     getSelection: function() {
       var selection = window.getSelection().getRangeAt(0);
-      return selection.toString();
+      return selection && selection.toString() || "";
     },
     respondToSelection: function(e) {
       var selection = this.getSelection();
-      if(selection) {
+      // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
+      if(/(\w{2,}\W{1,6}){3}/.test(selection)) {
         var offset = this.state.$viewer.scrollTop();
         this.setState({
           popup: { x: e.pageX,
