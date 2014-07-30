@@ -20,19 +20,28 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
       }
     },
     getSelection: function() {
-      var selection = window.getSelection().getRangeAt(0);
-      return selection && selection.toString() || "";
+       return window.getSelection().getRangeAt(0);
     },
     respondToSelection: function(e) {
       var selection = this.getSelection();
       // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
-      if(/(\w{2,}\W{1,6}){3}/.test(selection)) {
-        var offset = this.state.$viewer.scrollTop();
+      if(/(\w{2,}\W{1,6}){3}/.test(selection.toString())) {
+        var $viewer = this.state.$viewer;
+        var $popup = this.state.$popup;
+
+        var selectionBox = selection.getBoundingClientRect();
+        var selectionTop = selectionBox.top + $viewer.scrollTop();
+        var selectionLeft = selectionBox.left + $viewer.scrollLeft();
+        var popupWidth = $popup.outerWidth();
+        var popupHeight = $popup.outerHeight();
+
+        var x = Math.min(Math.max(e.pageX, selectionLeft+popupWidth/2), selectionLeft+selectionBox.width-popupWidth/2);
+
         this.setState({
-          popup: { x: e.pageX,
-                   y: offset + e.pageY,
+          popup: { x: x - (popupWidth/2) | 0,
+                   y: selectionTop - 2.125 * popupHeight | 0,
                    visible: true },
-          selection: selection
+          selection: selection.toString()
         });
       }
     },
@@ -41,11 +50,12 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
     },
     componentDidMount: function() {
       var $viewer = $(this.refs.viewer.getDOMNode());
+      var $popup = $(this.refs.popup.getDOMNode());
       var self = this;
       $("body").on("mouseup.popup", function() {
         self.setState({popup: { visible: false }});
       });
-      this.setState({$viewer: $viewer});
+      this.setState({$viewer: $viewer, $popup: $popup});
     },
     emitAnnotation: function() {
       var selection = this.state.selection;
@@ -70,7 +80,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
           <Minimap $viewer={this.state.$viewer} pdf={pdf} />
           <div className="viewer-container">
             <div className="viewer" onMouseUp={this.respondToSelection} ref="viewer">
-               <Popup options={this.state.popup} callback={this.emitAnnotation} />
+               <Popup options={this.state.popup} callback={this.emitAnnotation} ref="popup" />
                {pagesElements}
              </div>
            </div>

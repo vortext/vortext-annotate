@@ -6,13 +6,13 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
     render: function() {
       var options = this.props.options;
       var style = {
-	display: options.visible ? "block" : "none",
-	top: options.y - 34, // minus height
-	left: options.x - 45 // minus width
+	      display: options.visible ? "block" : "none",
+	      top: options.y,
+	      left: options.x
       };
-      return <span className="tooltip annotate" onClick={this.props.callback} style={style}>
-	<img src="/static/img/pencil_ffffff_18.png" title="Annotate this" />
-	<span className="nub"></span></span>;
+      return <span className="tooltip tip-top annotate" onClick={this.props.callback} style={style}>
+	        <img src="/static/img/pencil_ffffff_18.png" title="Annotate this" />
+	      <span className="nub"></span></span>;
     }
   });
 
