@@ -71,8 +71,11 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
       this.__cache.totalLength += offset;
     },
     getAnnotation: function(str) {
-      var pattern = str.replace(/\n|\r\n/g, "");
-      var match = this.__cache.text.match(pattern);
+      function escapeRegExp(s) {
+        return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      }
+      var pattern = str.replace(/(\r\n|\n|\r)/gm,"");
+      var match = this.__cache.text.match(new RegExp(escapeRegExp(pattern)));
       if(!match) return null;
 
       var lower = match.index;
