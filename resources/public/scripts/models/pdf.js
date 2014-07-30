@@ -63,16 +63,21 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
 		                 nodeIndex: j,
 		                 interval: { lower: totalLength + offset,
 			                           upper: totalLength + nextOffset }};
-        this.__cache.text += (item.str + '\n');
-        offset = (nextOffset + 1);
+        this.__cache.text += item.str;
+        offset = nextOffset;
         this.__cache.nodes.push(node);
       }
       this.__cache.pages.push({ offset: totalLength, length: offset });
       this.__cache.totalLength += offset;
     },
     getAnnotation: function(str) {
-      var lower = this.__cache.text.indexOf(str);
-      var upper = lower + str.length;
+      var pattern = str.replace(/\n|\r\n/g, "");
+      var match = this.__cache.text.match(pattern);
+      if(!match) return null;
+
+      var lower = match.index;
+      var upper = lower + pattern.length;
+
       var mapping = [];
 
       var nodes =  this.__cache.nodes;
