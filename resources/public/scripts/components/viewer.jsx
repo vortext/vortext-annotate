@@ -41,7 +41,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
 
         this.setState({
           popup: { x: x - (popupWidth/2) | 0,
-                   y: selectionTop - 2.125 * popupHeight | 0,
+                   y: selectionTop - 2.25 * popupHeight | 0,
                    visible: true },
           selection: selection.toString()
         });
