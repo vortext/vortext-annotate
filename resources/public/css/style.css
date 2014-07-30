@@ -124,10 +124,10 @@ html, body {
     color: #444;
 
     -webkit-transition-property: box-shadow;
-    -webkit-transition-duration: 300ms;
+    -webkit-transition-duration: 100ms;
     -webkit-transition-timing-function: ease-out;
     transition-property: box-shadow;
-    transition-duration: 300ms;
+    transition-duration: 100ms;
     transition-timing-function: ease-out;
 }
 
@@ -248,6 +248,14 @@ a:hover img.icon {
     -moz-box-shadow:    0 0 5px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
     box-shadow:         0 0 5px rgba(0,0,0,0.3);
+
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 100ms;
+    -webkit-transition-timing-function: all;
+    transition-property: opacity;
+    transition-duration: 100ms;
+    transition-timing-function: all;
+
 
 }
 

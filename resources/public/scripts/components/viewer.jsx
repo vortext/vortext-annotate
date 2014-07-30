@@ -35,7 +35,9 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
         var popupWidth = $popup.outerWidth();
         var popupHeight = $popup.outerHeight();
 
-        var x = Math.min(Math.max(e.pageX, selectionLeft+popupWidth/2), selectionLeft+selectionBox.width-popupWidth/2);
+        var x = Math.min(
+          Math.max(e.pageX, selectionLeft+popupWidth/2),
+          selectionLeft+selectionBox.width-popupWidth/2);
 
         this.setState({
           popup: { x: x - (popupWidth/2) | 0,
