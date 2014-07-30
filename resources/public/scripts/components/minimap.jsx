@@ -13,7 +13,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
     componentWillUnmount: function() {
       this.props.$viewer.off("scroll");
       $(this.getDOMNode().parentNode).off("mousedown mousemove");
-      $(window).off("mouseup");
+      $("body").off("mouseup.minimap");
     },
     scrollTo: function(e, $minimap, $viewer) {
       var documentOffset = $minimap.offset().top;
@@ -33,7 +33,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
         self.setState({offset: $viewer.scrollTop() / self.props.factor});
       });
 
-      $(window).on("mouseup", function(e) {
+      $("body").on("mouseup.minimap", function(e) {
         self.setState({mouseDown: false});
       });
 

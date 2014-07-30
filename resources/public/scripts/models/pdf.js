@@ -1,5 +1,5 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS) {
+define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_, Q, Backbone, PDFJS, Annotation) {
   'use strict';
   PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
@@ -81,19 +81,22 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
       for(var i = 0; i < nrNodes; ++i) {
         var node = nodes[i];
         if(node.interval.lower < upper && lower < node.interval.upper) {
-          var pageOffset = pages[node.pageIndex],offset;
+          var pageOffset = pages[node.pageIndex].offset;
           var interval = {lower: node.interval.lower - pageOffset, upper: node.interval.upper - pageOffset};
           mapping.push(_.extend(node, {range: _.clone(interval), interval: _.clone(interval)}));
         }
       }
-      mapping[0].range.lower = lower - pages[mapping[0].pageIndex].offset;
-      mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
+      if(!_.isEmpty(mapping)) {
+        mapping[0].range.lower = lower - pages[mapping[0].pageIndex].offset;
+        mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
 
-      return {
-        content: str,
-        mapping: mapping,
-        uuid: pseudoUUID()
-      };
+        return new Annotation({
+          content: str,
+          mapping: mapping,
+          uuid: pseudoUUID()
+        });
+      }
+      return null;
     },
     populate: function(pdf) {
       var self  = this;
@@ -130,17 +133,14 @@ define(['underscore', 'Q', 'backbone', 'PDFJS'], function(_, Q, Backbone, PDFJS)
     initialize: function() {
       var self = this;
       var pages = new Pages();
-      pages
-        .on("change:state", function(e, obj) {
-          self.trigger("change:pages", e, obj);
-        })
-        .on("change:annotations", function(e, obj) {
-          self.trigger("change:annotations", e, obj);
-        });
       this.set("pages", pages);
+      pages.on("all", function(e, obj) {
+        self.trigger("pages:" + e, obj);
+      });
     },
-    getAnnotation: function(str) {
-      console.log(this.get("pages").getAnnotation(str));
+    emitAnnotation: function(str) {
+      var annotation = this.get("pages").getAnnotation(str);
+      this.trigger("annotation:add", annotation);
     },
     setActiveAnnotations: function(marginalia) {
       // FIXME: ugly hack to set the active nodes based on the response JSON and selection

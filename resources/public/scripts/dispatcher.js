@@ -55,10 +55,12 @@ define(function (require) {
     // Listen to model change callbacks -> trigger updates to components
     marginaliaModel.on("all", function(e, obj) {
       switch(e) {
-      case "select":
+      case "annotations:select":
         var fingerprint = PDFModel.get("fingerprint");
         viewerComponent.setState({select: obj});
         self.router.navigate("view/" + fingerprint + "/a/" + obj);
+        break;
+      case "annotations:change":
         break;
       default:
         PDFModel.setActiveAnnotations(marginaliaModel);
@@ -66,18 +68,19 @@ define(function (require) {
       }
    });
 
-    PDFModel
-      .on("change:raw", function(e, obj) {
-        var fingerprint = obj.pdfInfo.fingerprint;
+    PDFModel.on("all", function(e, obj) {
+      switch(e) {
+      case "change:raw":
+        var fingerprint = obj.changed.raw.pdfInfo.fingerprint;
         self.router.navigate("view/" + fingerprint);
         viewerComponent.setState({
           fingerprint: fingerprint
         });
-      })
-      .on("change:binary", function(e, obj) {
+        break;
+      case "change:binary":
         marginaliaModel.reset();
         marginaliaComponent.setState({progress: "running"});
-        topologiesModel.fetch("ebm", obj)
+        topologiesModel.fetch("ebm", obj.changed.binary)
           .then(
             function(data) {
               marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
@@ -90,13 +93,21 @@ define(function (require) {
               marginaliaComponent.setState({progress: progress});
             }
           );
-      })
-      .on("change:pages", function(e, obj) {
+        break;
+      case "annotation:add":
+        var model = marginaliaModel.first().get("annotations");
+        model.add(obj);
+        break;
+      case "pages:change:state":
         viewerComponent.forceUpdate();
-      })
-      .on("change:annotations", function(e, obj) {
+        break;
+      case "pages:change:annotations":
         viewerComponent.forceUpdate();
-      });
+        break;
+      default:
+        break;
+      }
+    });
 
     Backbone.history.start({pushState: true});
   };

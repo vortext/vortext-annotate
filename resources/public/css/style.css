@@ -241,4 +241,16 @@ a:hover img.icon {
 }
 
 .tooltip.annotate {
+    cursor: pointer;
+    width: 35px;
+    padding: 9px;
+    opacity: 0.85;
+    -moz-box-shadow:    0 0 5px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    box-shadow:         0 0 5px rgba(0,0,0,0.1);
+
+}
+
+.tooltip.annotate:hover {
+    opacity: 1.0;
 }

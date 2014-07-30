@@ -1,5 +1,5 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-define(['underscore', 'backbone'], function(_, Backbone) {
+define(['underscore', 'backbone', 'models/annotation'], function(_, Backbone, Annotation) {
   'use strict';
 
   var colors = // from Cynthia Brewer (ColorBrewer)
@@ -23,24 +23,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     return str.replace(/ /g, "-").toLowerCase();
   };
 
-  var Annotation =  Backbone.Model.extend({
-    defaults: {
-      uuid: null,
-      label: "",
-      type: "",
-      highlighted: false,
-      content: "",
-      mapping: {}
-    },
-    highlight: function() {
-      var highlighted = !this.get("highlighted");
-      this.set({ highlighted: highlighted });
-    },
-    select: function() {
-      this.trigger("select", this.get("uuid"));
-    }
-  });
-
   var Annotations = Backbone.Collection.extend({
     model: Annotation
   });
@@ -58,7 +40,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       var annotations = new Annotations(data.annotations);
       this.set("annotations", annotations);
       annotations.on("all", function(e, obj)  {
-        self.trigger(e, obj);
+        self.trigger("annotations:" + e, obj);
       });
     }
   });

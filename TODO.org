@@ -3,18 +3,21 @@
 ** DONE Embed UUID and highlight on hover
 ** DONE Click to scroll into view
 * Annotations
-** IN PROGRESS Allow deletion of annotations
+** DONE Allow deletion of annotations
 ** Allow select-drag adding of annotations
+*** Build text cache
+*** Create new annotation
 ** Database/Persistence (save + load)
 ** W3C RDFa / Providence / Annotations
-** Write named destinations + stand-off markup
+** Write to PDF + stand-off markup?
 * Project view
 ** Users with projects
-*** Login (check HTTPS)
+*** Create user and login
 *** CRUD projects
 ** Make extraction categories configurable
 ** Allow hooking up prediction models
 ** Show results for multiple PDFs
+** Export in tabulated format
 * Server side
 ** Documentation
 ** VERIFY Progress updates / async topologies
