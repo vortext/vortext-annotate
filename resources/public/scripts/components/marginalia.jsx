@@ -8,7 +8,6 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     length = ~~length;
     if(str.length > length) {
       var truncated = str.substr(0, length);
-      truncated = truncated.substr(0, Math.min(truncated.length, truncated.lastIndexOf(" ")));
       return truncated + truncateStr;
     } else {
       return str;
