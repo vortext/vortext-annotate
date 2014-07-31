@@ -33,6 +33,7 @@ import org.zeromq.ZFrame;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMsg;
 
+
 /**
  *  Majordomo Protocol broker
  *  A minimal implementation of http://rfc.zeromq.org/spec:7 and spec:8
@@ -95,6 +96,7 @@ public class Broker implements Runnable {
         this.heartbeatAt = System.currentTimeMillis() + HEARTBEAT_INTERVAL;
         this.ctx = new ZContext();
         this.socket = ctx.createSocket(ZMQ.ROUTER);
+        this.socket.setLinger(0);
         this.bind(endpoint);
     }
 
@@ -144,7 +146,7 @@ public class Broker implements Runnable {
         for (Worker worker : deleteList) {
             deleteWorker(worker, true);
         }
-        ctx.destroy();
+        this.ctx.destroy();
     }
 
     /**

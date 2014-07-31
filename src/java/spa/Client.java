@@ -62,6 +62,7 @@ public class Client {
             ctx.destroySocket(client);
         }
         client = ctx.createSocket(ZMQ.DEALER);
+        client.setLinger(0);
         client.connect(broker);
     }
 
@@ -112,8 +113,8 @@ public class Client {
         // Frame 0: empty (REQ emulation)
         // Frame 1: "MDPCxy" (six bytes, MDP/Client x.y)
         // Frame 2: Service name (printable string)
-	// Frame 3: Request id
-	request.addFirst(id);
+        // Frame 3: Request id
+        request.addFirst(id);
         request.addFirst(service);
         request.addFirst(MDP.C_CLIENT.newFrame());
         request.addFirst("");
