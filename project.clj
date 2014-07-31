@@ -36,13 +36,13 @@
                  [noir-exception "0.2.2"]
 
                  [environ "0.5.0"]
-                 [org.blancas/kern "0.6.1"]
+                 [org.blancas/kern "0.7.0"]
 
                  [http-kit "2.1.18"]
                  [compojure "1.1.5"]
                  [ring/ring-devel "1.3.0"]
 
-                 [prismatic/plumbing "0.3.2"]
+                 [prismatic/plumbing "0.3.3"]
 
                  ;; serialization libraries
                  [org.flatland/protobuf "0.8.1"]
