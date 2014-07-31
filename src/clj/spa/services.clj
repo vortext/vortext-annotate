@@ -33,9 +33,7 @@
   []
   (doto (Thread. broker) (.start)))
 
-(defn shutdown! []
-  (.destroy broker)
-  (.destroy client))
+(defn shutdown! [])
 
 (defn rpc
   [name payload]

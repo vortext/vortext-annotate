@@ -61,7 +61,7 @@ def main():
         else:
           print handler.handle(contents)
     else:
-      log.info("Hail to the king %s on %s" % (VERSION, options.socket))
+      log.info("responding to Spa version %s on %s" % (VERSION, options.socket))
       run_server(options, handler)
 
 if __name__ == '__main__':
