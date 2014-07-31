@@ -33,9 +33,6 @@ import org.zeromq.ZFrame;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMsg;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  *  Majordomo Protocol broker
  *  A minimal implementation of http://rfc.zeromq.org/spec:7 and spec:8
@@ -87,7 +84,6 @@ public class Broker implements Runnable {
     private Map<String, Worker> workers;// known workers
     private Deque<Worker> waiting;// idle workers
 
-    Logger log = LoggerFactory.getLogger(Broker.class);
 
     /**
      * Initialize broker state.
@@ -126,7 +122,6 @@ public class Broker implements Runnable {
                 } else if (MDP.W_WORKER.frameEquals(header))
                     processWorker(sender, msg);
                 else {
-                    log.error("Invalid message");
                     msg.destroy();
                 }
 
@@ -145,7 +140,6 @@ public class Broker implements Runnable {
      * Disconnect all workers, destroy context.
      */
     public void destroy() {
-        log.debug("Destroying broker");
         Collection<Worker> deleteList = workers.values();
         for (Worker worker : deleteList) {
             deleteWorker(worker, true);
@@ -189,7 +183,6 @@ public class Broker implements Runnable {
                 // Attach worker to service and mark as idle
                 ZFrame serviceFrame = msg.pop();
                 worker.service = requireService(serviceFrame);
-                log.debug("Ready from " + worker.service.name);
                 workerWaiting(worker);
                 serviceFrame.destroy();
             }
@@ -215,9 +208,7 @@ public class Broker implements Runnable {
         } else if (MDP.W_DISCONNECT.frameEquals(command)) {
             deleteWorker(worker, false);
         } else {
-            Formatter stdout = new Formatter(System.out);
-            log.error("Invalid message");
-            msg.dump(stdout.out());
+	    // Handle me
         }
         msg.destroy();
     }
@@ -227,7 +218,6 @@ public class Broker implements Runnable {
      */
     private void deleteWorker(Worker worker, boolean disconnect) {
         assert (worker != null);
-        log.debug("Deleting worker " + worker.service.name + (disconnect ? " and sending DISCONNECT" : ""));
         if (disconnect) {
             sendToWorker(worker, MDP.W_DISCONNECT, null, null);
         }
@@ -272,7 +262,6 @@ public class Broker implements Runnable {
      */
     private void bind(String endpoint) {
         socket.bind(endpoint);
-        log.info("MDP broker/0.1.1 is active at " + endpoint);
     }
 
     /**
@@ -315,7 +304,6 @@ public class Broker implements Runnable {
         for (Worker w = waiting.peekFirst(); w != null
                  && w.expiry < System.currentTimeMillis(); w = waiting
                  .peekFirst()) {
-            log.info("Deleting expired worker:" + w.identity);
             deleteWorker(waiting.pollFirst(), false);
         }
     }

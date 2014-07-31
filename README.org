@@ -54,21 +54,23 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
    For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
 
    #+BEGIN_SRC
- brew install zeromq
+ brew install pkg-config zeromq
  pip install protobuf pyzmq argparse # and other dependencies by the topology
  npm -g install underscore q zmq atob commander protobufjs
    #+END_SRC
 
-  **Note: if npm complains that "No package 'libzmq' found", you can explicitly pass this path along:
+  *Note*: if npm complains that "No package 'libzmq' found", you can explicitly pass this path along:
   #+BEGIN_SRC
   sudo PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" npm install zmq -g
   #+END_SRC
-  
+ *Note*: if after installing the modules you still get errors that they can't be found check your NODE_PATH,
+ setting it explicitly in =.bashrc= with =export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules= might be necessary.
+
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
  lein deps # retrieve project dependencies
- lein run -- start # will run the server
- DEBUG=true lein run -- start # will run in debug mode
+ lein trampoline run start # will run the server
+ DEV=true lein trampoline run start # will run in debug mode
    #+END_SRC
 
    The requirements for the evidence-based medicine processing topology are specified within that directory.

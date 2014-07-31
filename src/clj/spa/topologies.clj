@@ -1,6 +1,5 @@
 (ns spa.topologies
   (:require
-   [clojure.tools.logging :as log]
    [clojure.java.io :as io]
    [clojure.string :only [join split replace] :as s]
    [clojure.core.async :as async :refer [go <! >!]]

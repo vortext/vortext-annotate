@@ -28,9 +28,6 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMsg;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Majordomo Protocol Client API, asynchronous Java version. Implements the
  * MDP/Worker spec at http://rfc.zeromq.org/spec:7.
@@ -42,7 +39,6 @@ public class Client {
     private ZMQ.Socket client;
     private long timeout = 10000;
 
-    private Logger log = LoggerFactory.getLogger(Client.class);
 
     public long getTimeout() {
         return timeout;
@@ -67,7 +63,6 @@ public class Client {
         }
         client = ctx.createSocket(ZMQ.DEALER);
         client.connect(broker);
-        log.info("connecting to broker at " + broker);
     }
 
     /**
@@ -126,7 +121,6 @@ public class Client {
     }
 
     public void destroy() {
-        log.info("Destroying client session");
         ctx.destroy();
     }
 }

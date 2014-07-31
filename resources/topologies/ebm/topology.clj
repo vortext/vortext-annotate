@@ -3,7 +3,6 @@
             [flatland.protobuf.core :refer :all]
             [plumbing.core :refer :all]
             [spa.util :refer [dash->lower-camel]]
-            [clojure.tools.logging :as log]
             [cheshire.core :as json])
   (:import  [spa.SpaDoc$Document]))
 
