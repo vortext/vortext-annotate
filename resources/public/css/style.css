@@ -73,6 +73,7 @@ html, body {
 #side {
     position: absolute;
     border-left: 1px solid #ddd;
+    z-index: 1000;
     background-color: white;
     left: calc(65% - 15px);
     width: calc(35% + 15px);
