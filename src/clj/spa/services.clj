@@ -14,7 +14,7 @@
 
 (def listen-for
   ((fn []
-     (let [replies (chan (sliding-buffer 32))
+     (let [replies (chan (sliding-buffer 64))
            mult (mult replies)]
        (go (loop [reply (.recv client)]
              (when-not (nil? reply)
