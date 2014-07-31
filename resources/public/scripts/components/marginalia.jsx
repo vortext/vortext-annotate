@@ -30,11 +30,12 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
       var isActive = this.props.isActive;
       var content = isActive ? <a href="#" title="Jump to annotation" onClick={this.select}>{text}</a> : text;
+      var trashcan = <img className="icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" />;
 
       return <li>
                <p className="text-left" onMouseEnter={this.toggleHighlight} onMouseLeave={this.toggleHighlight}>
                  {content}
-                 {isActive ? <a href="#" onClick={this.destroy}><img className="icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" /></a> : null}
+                 {isActive ? <a href="#" onClick={this.destroy}>{trashcan}</a> : null}
                </p>
              </li>;
     }
