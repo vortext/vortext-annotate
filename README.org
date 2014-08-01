@@ -51,7 +51,7 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
  node make singlefile generic dist
    #+END_SRC
 
-   For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with JSON as the default serialization format.
+   For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with [[https://developers.google.com/protocol-buffers/][ProtocolBuffers]] as the serialization format.
 
    #+BEGIN_SRC
  brew install pkg-config zeromq
@@ -64,16 +64,16 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
   sudo PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" npm install zmq -g
   #+END_SRC
  *Note*: if after installing the modules you still get errors that they can't be found check your NODE_PATH,
- setting it explicitly in =.bashrc= with =export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules= might be necessary.
+ setting it explicitly in =.bashrc= (or equivalent) with =export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules= might be necessary.
 
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
  lein deps # retrieve project dependencies
  lein trampoline run start # will run the server
- DEV=true lein trampoline run start # will run in debug mode
+ DEV=true lein trampoline run start # will run in development mode
    #+END_SRC
 
-   The requirements for the evidence-based medicine processing topology are specified within that directory.
+ The requirements for the evidence-based medicine processing topology are specified within that directory.
 * Future work
   See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
