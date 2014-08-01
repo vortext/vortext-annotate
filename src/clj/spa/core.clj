@@ -5,14 +5,14 @@
             [ring.middleware.reload :as reload]
             [environ.core :refer [env]]
             [org.httpkit.server :as http-kit]
-            [spa.handler :refer [app init destroy]]))
+            [spa.handler :refer [app init! destroy!]]))
 
 (def cli-options
   [["-p" "--port PORT" "Port number"
     :default (env :port)
     :parse-fn #(Integer/parseInt %)
     :validate [#(< 0 % 0x10000) "Must be a number between 0 and 65536"]]
-   ["-d" "--debug" "Run server in debug mode, will attempt to hot reload code"
+   ["-d" "--dev" "Run server in development mode, will attempt to hot reload code"
     :default (Boolean/valueOf (env :dev))
     :default-desc "false"
     :flag true]
@@ -48,7 +48,7 @@
     ;; Execute program with options
     (case (first arguments)
       "start" (do (http-kit/run-server
-                   (if (:debug options) (reload/wrap-reload app) app) {:port (:port options)})
-                  (init)
-                  (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (destroy)))))
+                   (if (:dev options) (reload/wrap-reload app) app) {:port (:port options)})
+                  (init!)
+                  (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (destroy!)))))
       (exit 1 (usage summary)))))

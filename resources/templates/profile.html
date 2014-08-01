@@ -1,0 +1,26 @@
+{% extends "templates/base.html" %}
+{% block content %}
+<div class="row">
+  <div class="large-6 columns">
+
+    <h3>User details for {{user.id}}</h3>
+    <form action="{{servlet-context}}/update-profile" method="POST">
+      <div class="form-group col-lg-3">
+	<label for="id">First name</label>
+	<p>
+          <input class="form-control" name="first-name" tabindex="1" type="text" value={{user.first_name}}></input>
+	</p>
+	<label for="id">Last name</label>
+	<p>
+          <input class="form-control" name="last-name" tabindex="1" type="text" value={{user.last_name}}></input>
+	</p>
+	<label for="id">Email</label>
+	<p>
+          <input class="form-control" name="email" tabindex="1" type="text" value={{user.email}}></input>
+	</p>
+	<input class="button small" tabindex="4" type="submit" value="Update Profile">
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

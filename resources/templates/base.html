@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sp&aacute;</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <link href="/static/css/main.css" rel="stylesheet" />
+    <script src="/static/scripts/vendor/modernizr.js"></script>
+    {% if bootstrap-script %}<script data-main="/static/scripts/{{bootstrap-script}}" src="/static/scripts/require.js"></script>{% endif %}
+  </head>
+
+  <body class="antialiased">
+    <nav class="top-bar">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="{{servlet-context}}/">Spá</a></h1>
+        </li>
+      </ul>
+
+      <section class="top-bar-section">
+        {% block menu %}
+	  {% block left-menu %}{% endblock %}
+          {% include "templates/menu.html" %}
+        {% endblock %}
+      </section>
+    </nav>
+
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+  </body>
+
+</html>

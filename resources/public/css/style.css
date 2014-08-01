@@ -1,11 +1,5 @@
-
 html, body {
-    overflow: hidden;
     color: #505050;
-}
-
-.antialiased {
-    -moz-osx-font-smoothing: greyscale;
 }
 
 .viewer-container {
@@ -221,7 +215,7 @@ a:hover img.icon {
     opacity: 1.0;
 }
 
-.divider {
+.block .divider {
     position: relative;
     overflow: hidden;
     font-size: small;
@@ -230,7 +224,7 @@ a:hover img.icon {
 }
 
 
-.divider:after {
+.block .divider:after {
     display: inline-block;
     content: "";
     height: 1px;
@@ -262,4 +256,13 @@ a:hover img.icon {
 
 .tooltip.annotate:hover {
     opacity: 1.0;
+}
+
+/* FIXME https://github.com/zurb/foundation/issues/5547 */
+
+.top-bar input, .top-bar a.button {
+    height: 1.8rem;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    font-size: 0.77778rem !important;
 }

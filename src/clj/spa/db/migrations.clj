@@ -3,7 +3,7 @@
   (:require [environ.core :refer :all]
             [ragtime.main :as ragtime]))
 
-(def db-spec (str "jdbc:postgresql:" (env :database-spec)
+(def database (str "jdbc:postgresql:" (env :database-spec)
                   "?user=" (env :database-user)
                   "&password=" (env :database-password)))
 
@@ -12,6 +12,6 @@
 (defn -main [& args]
   (apply ragtime/-main
          "-r" "ragtime.sql.database"
-         "-d" db-spec
+         "-d" database
          "-m" migrations
          args))
