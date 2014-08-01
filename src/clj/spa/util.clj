@@ -1,18 +1,7 @@
 (ns spa.util
-  (:require [cheshire.generate :refer [add-encoder remove-encoder]]
-            [clojure.string :as string]
+  (:require [clojure.string :as string]
             [clojure.walk :as walk]
-            [blancas.kern.core :refer :all])
-  (:import [com.fasterxml.jackson.core JsonGenerator]))
-
-(add-encoder java.lang.Exception
-             (fn [^Exception e ^JsonGenerator jg]
-               (.writeStartObject jg)
-               (.writeFieldName jg "exception")
-               (.writeString jg (.getName (class e)))
-               (.writeFieldName jg "message")
-               (.writeString jg (.getMessage e))
-               (.writeEndObject jg)))
+            [blancas.kern.core :refer :all]))
 
 ;; from https://github.com/jeremyheiler/wharf
 ;; A Clojure library for transforming map keys.
@@ -48,44 +37,44 @@
 (defn camel->dash
   [s]
   (->> s
-       (parse-camel-case)
-       (string/join "-")))
+     (parse-camel-case)
+     (string/join "-")))
 
 (defn camel->underscore
   [s]
   (->> s
-       (parse-camel-case)
-       (string/join "_")))
+     (parse-camel-case)
+     (string/join "_")))
 
 (defn dash->upper-camel
   [s]
   (->> s
-       (parse-dash-case)
-       (map capitalize)
-       (string/join)))
+     (parse-dash-case)
+     (map capitalize)
+     (string/join)))
 
 (defn dash->lower-camel
   [s]
   (->> s
-       (parse-dash-case)
-       (map capitalize)
-       (string/join)
-       (uncapitalize)))
+     (parse-dash-case)
+     (map capitalize)
+     (string/join)
+     (uncapitalize)))
 
 (defn underscore->upper-camel
   [s]
   (->> s
-       (parse-underscore-case)
-       (map capitalize)
-       (string/join)))
+     (parse-underscore-case)
+     (map capitalize)
+     (string/join)))
 
 (defn underscore->lower-camel
   [s]
   (->> s
-       (parse-underscore-case)
-       (map capitalize)
-       (string/join)
-       (uncapitalize)))
+     (parse-underscore-case)
+     (map capitalize)
+     (string/join)
+     (uncapitalize)))
 
 (defn dash->underscore
   "Converts s from dash-case to underscore-case."
