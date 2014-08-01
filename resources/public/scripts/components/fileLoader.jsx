@@ -54,11 +54,11 @@ define(['react', 'jQuery'], function(React, $) {
     },
     render: function() {
       return(
-        <ul className="right">
+        <div>
           <input accept={this.props.accept} style={{display:"none"}} name="file" type="file" ref="file" onChange={this.loadFile} />
           <li><a onClick={this.loadExample}>Example</a></li>
-          <li className="active"><a onClick={this.triggerFileUpload}>Upload</a></li>
-        </ul>);
+          <li><a onClick={this.triggerFileUpload}>Upload</a></li>
+        </div>);
     }
   });
 

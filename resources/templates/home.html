@@ -1,8 +1,16 @@
 {% extends "templates/base.html" %}
 {% block content %}
+
 <div class="row">
-  <div class="large-12 columns" style="height: 4rem"></div>
+  <div class="large-12 columns" style="height: 2rem"></div>
 </div>
+
+<div class="row">
+  {%if logged-out? %}
+  <div class="alert-box warning">You were logged-out</div>
+  {% endif %}
+</div>
+
 <div class="row">
   <div class="large-8 columns">
     <h1>Welcome to Spá</h1>
@@ -10,9 +18,9 @@
       <div class="large-9 columns">
 	<p>
 	  Summarizing evidence in bio-medical research is an immense undertaking, in part because unstructured PDF documents remain the main vehicle for disseminating scientific findings.
-	  Clinicians and researchers spend <em>ages</em> extracting information from these PDFs.
+	  Clinicians and researchers spend <em>ages</em> extracting information from PDFs.
 	  <br>
-	  We introduce Spá&mdash;from the Old Norse word spá or spæ referring to prophesying&mdash;a web-based viewer that enables <strong>automated annotation</strong> and summarisation of PDFs via <strong>machine learning</strong>.
+	  We introduce Spá&mdash;from the Old Norse word spá or spæ referring to prophesying&mdash;a web-based viewer that enables <strong>automated data extraction</strong> from PDFs with <strong>machine learning</strong>.
 	</p>
       </div>
     </div>

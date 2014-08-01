@@ -9,13 +9,13 @@
 
 (defn valid? [id pass pass1]
   (vali/rule (vali/has-value? id)
-             [:id "user ID is required"])
+             [:id "Username is required"])
   (vali/rule (not (db/get-user id))
-             [:id "duplicated user ID"])
+             [:id "Username already taken"])
   (vali/rule (vali/min-length? pass 5)
-             [:pass "password must be at least 5 characters"])
+             [:pass "Password must be at least 5 characters"])
   (vali/rule (= pass pass1)
-             [:pass1 "entered passwords do not match"])
+             [:pass1 "Entered passwords do not match"])
   (not (vali/errors? :id :pass :pass1)))
 
 (defn register [& [id]]
@@ -57,6 +57,7 @@
 
 (defn logout []
   (session/clear!)
+  (session/flash-put! :logged-out true)
   (resp/redirect "/"))
 
 (defroutes auth-routes
