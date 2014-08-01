@@ -92,8 +92,10 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
         var node = _.clone(nodes[i]);
         if(node.interval.lower < upper && lower < node.interval.upper) {
           var pageOffset = pages[node.pageIndex].offset;
-          var interval = {lower: node.interval.lower - pageOffset, upper: node.interval.upper - pageOffset};
-          mapping.push(_.extend(node, {range: _.clone(interval), interval: _.clone(interval)}));
+          var interval = {lower: node.interval.lower - pageOffset,
+                          upper: node.interval.upper - pageOffset};
+          mapping.push(_.extend(node, {range: _.clone(interval),
+                                       interval: _.clone(interval)}));
         }
       }
       if(!_.isEmpty(mapping)) {
