@@ -14,10 +14,7 @@
         :port 8080
         :dev true}
   :profiles {:uberjar {:aot :all}
-             :production {:env {:dev false}
-                          :ring {:open-browser? false
-                                 :stacktraces? false
-                                 :auto-reload? false}}
+             :production {:env {:dev false}}
              :dev {:dependencies [[peridot "0.3.0"]]}}
   :jvm-opts ["-server"]
   :dependencies [[org.clojure/clojure "1.6.0"]
