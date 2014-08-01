@@ -37,14 +37,14 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
         .then(function(raw) {
           model.set({
             raw: raw,
-            state: RenderingStates.RUNNING
+            state: RenderingStates.HAS_PAGE
           });
           return raw.getTextContent();
         })
         .then(function(content) {
           model.set({
             content: content,
-            state: RenderingStates.FINISHED
+            state: RenderingStates.HAS_CONTENT
           });
           return content;
         });
@@ -130,7 +130,10 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
           self.__appendCache(pageIndex, content);
         });
       };
-      process(pageQueue);
+      var partitions = _.partition(pageQueue, function(pageIndex) { return pageIndex % 2 == 0; });
+      _.each(partitions, function(partition) {
+        process(partition);
+      });
     }
   });
 
