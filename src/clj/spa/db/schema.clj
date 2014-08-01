@@ -1,9 +1,8 @@
-(ns spa.db.schema)
+(ns spa.db.schema
+  (:require [environ.core :refer :all]))
 
 (def db-spec
   {:subprotocol "postgresql"
-   :subname "//localhost/spa"
-   :user "db_user_name_here"
-   :password "db_user_password_here"})
-
-
+   :subname (env :database-spec)
+   :user  (env :database-user)
+   :password (env :database-password)})

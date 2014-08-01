@@ -1,4 +1,5 @@
 (ns spa.core
+  (:gen-class)
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.string :as str]
             [ring.middleware.reload :as reload]

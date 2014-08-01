@@ -11,12 +11,18 @@
         :default-timeout 2500,
         :heartbeat-interval 2500,
         :reconnect-timeout 2500,
+
+        :database-spec "//localhost:5432/spa"
+        :database-user "spa"
+        :database-password "develop"
+
         :port 8080
         :dev true}
   :profiles {:uberjar {:aot :all}
-             :production {:env {:dev false}}
-             :dev {:dependencies [[peridot "0.3.0"]]}}
+             :production {:env {:dev false}}}
   :jvm-opts ["-server"]
+  :aliases {"migrate" ["trampoline" "run" "-m" "spa.db.migrations" "migrate"]
+            "rollback" ["trampoline" "run" "-m" "spa.db.migrations" "rollback"]}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/core.async "0.1.303.0-886421-alpha"]
                  [org.clojure/tools.cli "0.3.1"]
@@ -45,5 +51,11 @@
                  [org.flatland/protobuf "0.8.1"]
                  [cheshire "5.3.1"]
 
+                 ;; Database connectivity
+                 [korma "0.3.2"]
+                 [postgresql/postgresql "9.1-901-1.jdbc4"]
+                 [ragtime "0.3.7"] ; migrations
+
+                 ;; ZeroMQ
                  [org.zeromq/jeromq "0.3.4"]
                  [org.zeromq/cljzmq "0.1.4" :exclusions [org.zeromq/jzmq]]])
