@@ -82,8 +82,7 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
         return {
           height: parseInt(style.fontSize, 10) / factor,
           position: parseInt(style.top, 10) / factor,
-          color: elementAnnotations && elementAnnotations[0].color,
-          uuid: _.pluck(elementAnnotations, "uuid")
+          color: elementAnnotations && elementAnnotations[0].color
         };
       });
 
