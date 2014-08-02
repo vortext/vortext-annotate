@@ -44,6 +44,7 @@
                  [http-kit "2.1.18"]
                  [compojure "1.1.5"]
                  [ring/ring-devel "1.3.0"]
+                 [ring/ring-anti-forgery "1.0.0"]
 
                  [prismatic/plumbing "0.3.3"]
 

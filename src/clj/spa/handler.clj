@@ -16,6 +16,8 @@
             [spa.routes.home :refer [home-routes]]
             [spa.routes.view :refer [view-routes]]
             [cronj.core :as cronj]
+            [selmer.parser :refer [add-tag!]]
+            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
             [spa.services :as services]))
 
 (defroutes
@@ -39,6 +41,7 @@
    {:path "spa.log", :max-size (* 512 1024), :backlog 10})
   (services/start!)
   (if (env :dev) (parser/cache-off!))
+  (add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)
   (timbre/info "spa started successfully"))
 

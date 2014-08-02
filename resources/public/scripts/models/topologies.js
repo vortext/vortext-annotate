@@ -16,7 +16,6 @@ define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
   }
 
   var Topologies = Backbone.Model.extend({
-    defaults: {},
     fetch: function(topology, data) {
       var uri = "/topologies/" + topology;
       var deferred = Q.defer();
@@ -27,6 +26,8 @@ define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
       deferred.notify(0.0);
 
       xhr.open("POST", uri, true);
+      xhr.setRequestHeader('X-CSRF-Token', window.csrfToken);
+
       xhr.onload = function (e) {
         if (xhr.status >= 200 && xhr.status < 400) {
           var data = JSON.parse(xhr.responseText);
