@@ -2,6 +2,10 @@ html, body {
     color: #505050;
 }
 
+html.view, html.view body {
+    overflow: hidden;
+}
+
 .viewer-container {
     overflow: hidden;
 }

@@ -5,7 +5,7 @@
 (defroutes view-routes)
 
 (defn viewer-page []
-  (layout/render "viewer.html" {:bootstrap-script "main"}))
+  (layout/render "viewer.html" {:bootstrap-script "main" :page-type "view"}))
 
 (defroutes view-routes
   (GET "/view" [] (viewer-page))
