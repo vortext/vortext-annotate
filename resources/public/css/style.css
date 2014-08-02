@@ -16,7 +16,7 @@ html.home {
 }
 
 html.home fieldset {
-    border-radius: 3px;
+    border-radius: 2px;
     border: 1px solid #eee;
     padding: 1em;
     margin-bottom: -1em;

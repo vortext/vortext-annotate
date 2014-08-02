@@ -21,7 +21,8 @@
 (defn register [& [id]]
   (layout/render
     "home.html"
-    {:id id
+    {:page-type "home"
+     :id id
      :id-error (vali/on-error :id first)
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
@@ -53,7 +54,9 @@
       (do
         (session/put! :user-id id)
         (resp/redirect "/"))
-      (layout/render "home.html" {:login-error "Invalid username or password"}))))
+      (layout/render "home.html"
+                     {:page-type "home"
+                      :login-error "Invalid username or password"}))))
 
 (defn logout []
   (session/clear!)
