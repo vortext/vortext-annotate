@@ -66,7 +66,12 @@ define(['react', 'underscore', 'jQuery', 'helpers/textLayerBuilder'], function(R
       this.setState({annotations: nextProps.page.get("annotations")});
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-      return !_.isEqual(nextState.annotations, this.state.annotations);
+      function getNestedProperties(array, props) {
+        return _.map(_.flatten(_.values(array)), function(el) { return _.pick(el, props); });
+      }
+      var alpha = getNestedProperties(this.state.annotations, ["id"]);
+      var beta = getNestedProperties(nextState.annotations, ["id"]);
+      return !_.isEqual(alpha, beta);
     },
     projectTextNodes: function(page, textLayerBuilder, factor) {
       // The basic idea here is using a sweepline to

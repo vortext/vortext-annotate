@@ -5,6 +5,7 @@ define(function (require) {
 
   var Backbone = require("backbone");
   var React = require("react");
+  var _ = require("underscore");
 
   return function() {
     var self = this;
@@ -102,7 +103,9 @@ define(function (require) {
         viewerComponent.forceUpdate();
         break;
       case "pages:change:annotations":
-        viewerComponent.forceUpdate();
+        var annotations = marginaliaModel.pluck("annotations");
+        var highlighted = _.find(annotations, function(annotation) { return annotation.findWhere({highlighted: true});});
+        viewerComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
         break;
       default:
         break;

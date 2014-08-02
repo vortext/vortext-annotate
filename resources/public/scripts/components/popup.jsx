@@ -3,15 +3,26 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
   'use strict';
 
   var Popup = React.createClass({
+    getInitialState: function() {
+      return { visible: false };
+    },
+    setVisible: function() {
+      this.setState({visible: true});
+    },
+    setHidden: function() {
+      this.setState({visible: false});
+    },
     render: function() {
       var options = this.props.options;
       var style = {
-	      display: options.visible ? "block" : "none",
+	      display: options.visible || this.state.visible ? "block" : "none",
 	      top: options.y,
 	      left: options.x
       };
-      return <span className="tooltip tip-top annotate" onClick={this.props.callback} style={style}>
-	        <img src="/static/img/pencil_ffffff_18.png" title="Annotate this" />
+      var action = options.action || this.props.action;
+      var image = options.image || this.props.image;
+      return <span onMouseEnter={this.setVisible} onMouseLeave={this.setHidden} className="tooltip tip-top annotate" onClick={action} style={style}>
+	      <img src={image} title="Annotate this" />
 	      <span className="nub"></span></span>;
     }
   });

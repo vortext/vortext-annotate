@@ -4,7 +4,10 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
 
   var Display = React.createClass({
     getInitialState: function() {
-      return {fingerprint: null, $viewer: null, popup: {x: 0, y: 0, visible: false}};
+      return {fingerprint: null,
+              $viewer: null,
+              highlightPopup: {x: 0, y: 0, visible: false},
+              annotationPopup: {x: 0, y: 0, visible: false}};
     },
     componentWillUpdate: function(nextProps, nextState) {
       var $viewer = this.state.$viewer;
@@ -19,43 +22,70 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
         }
       }
     },
+    componentWillReceiveProps: function(nextProps) {
+      this.respondToHighlight(nextProps.highlighted);
+    },
+    respondToHighlight: function(highlighted) {
+      if(highlighted) {
+        window.clearTimeout(this.timeout);
+        var $el = this.state.$viewer.find("[data-uuid*="+highlighted.get("uuid")+"]");
+        var boundingBox = { top: $el.offset().top, left: $el.offset().left, width: $el.width()};
+        var position = this.calculatePopupCoordinates(boundingBox);
+        this.setState({
+          highlightPopup: {
+            x: position.x,
+            y: position.y,
+            action: highlighted.destroy.bind(highlighted),
+            visible: true }});
+      } else {
+        this.timeout = _.delay(function(self) {
+          var newPopup = _.extend(self.state.highlightPopup, {visible: false});
+          self.setState({highlightPopup: newPopup});
+        }, 500, this);
+      }
+    },
     getSelection: function() {
        return window.getSelection().getRangeAt(0);
+    },
+    calculatePopupCoordinates: function(boundingBox, e) {
+      var $viewer = this.state.$viewer;
+      var $popup = this.state.$popup;
+
+      var boxTop = boundingBox.top + $viewer.scrollTop();
+      var boxLeft = boundingBox.left + $viewer.scrollLeft();
+      var popupWidth = $popup.outerWidth();
+      var popupHeight = $popup.outerHeight();
+
+      var left = Math.min(Math.max(e && e.pageX || 0, boxLeft+popupWidth/2), boxLeft+boundingBox.width-popupWidth/2);
+      return { x: left | 0, y: boxTop - 2.25 * popupHeight | 0};
+
     },
     respondToSelection: function(e) {
       var selection = this.getSelection();
       // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
       if(/(\w{2,}\W{1,6}){3}/.test(selection.toString())) {
-        var $viewer = this.state.$viewer;
-        var $popup = this.state.$popup;
 
         var selectionBox = selection.getBoundingClientRect();
-        var selectionTop = selectionBox.top + $viewer.scrollTop();
-        var selectionLeft = selectionBox.left + $viewer.scrollLeft();
-        var popupWidth = $popup.outerWidth();
-        var popupHeight = $popup.outerHeight();
-
-        var x = Math.min(
-          Math.max(e.pageX, selectionLeft+popupWidth/2),
-          selectionLeft+selectionBox.width-popupWidth/2);
+        var position = this.calculatePopupCoordinates(selectionBox, e);
 
         this.setState({
-          popup: { x: x - (popupWidth/2) | 0,
-                   y: selectionTop - 2.25 * popupHeight | 0,
-                   visible: true },
+          annotationPopup: {
+            x: position.x,
+            y: position.y,
+            visible: true },
           selection: selection.toString()
         });
       }
     },
     componentWillUnmount: function() {
-      $("body").off("mouseup.popup");
+      $("body").off("mouseup.popup.annotate");
     },
     componentDidMount: function() {
       var $viewer = $(this.refs.viewer.getDOMNode());
       var $popup = $(this.refs.popup.getDOMNode());
       var self = this;
-      $("body").on("mouseup.popup", function() {
-        self.setState({popup: { visible: false }});
+      $("body").on("mouseup.popup.annotate", function() {
+        self.setState({annotationPopup: { visible: false }});
       });
       this.setState({$viewer: $viewer, $popup: $popup});
     },
@@ -65,7 +95,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
         this.props.pdf.emitAnnotation(this.state.selection);
         // Clear text selection
         window.getSelection().removeAllRanges();
-        this.setState({popup: { visible: false }, selection: null});
+        this.setState({annotatePopup: { visible: false }, selection: null});
       }
     },
     render: function() {
@@ -82,7 +112,8 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
           <Minimap $viewer={this.state.$viewer} pdf={pdf} />
           <div className="viewer-container">
             <div className="viewer" onMouseUp={this.respondToSelection} ref="viewer">
-               <Popup options={this.state.popup} callback={this.emitAnnotation} ref="popup" />
+               <Popup options={this.state.annotationPopup} image="/static/img/pencil_ffffff_18.png" action={this.emitAnnotation} ref="popup" />
+               <Popup options={this.state.highlightPopup} image="/static/img/trash-o_ffffff_18.png" ref="popup2" />
                {pagesElements}
              </div>
            </div>

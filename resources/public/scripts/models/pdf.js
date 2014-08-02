@@ -158,7 +158,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
       this.trigger("annotation:add", annotation);
     },
     setActiveAnnotations: function(marginalia) {
-      // FIXME: ugly hack to set the active nodes based on the response JSON and selection
+      // FIXME: UGLY HACK to set the active nodes based on the response JSON and selection
       var annotations = {};
       var self = this;
       marginalia.each(function(marginalis) {
@@ -167,9 +167,13 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
         marginalis.get("annotations").each(function(annotation) {
           var a =  annotation.toJSON();
           annotation.get("mapping").forEach(function(node) {
-            node = _.extend(_.clone(node), m, a);
+            var element = _.extend(_.clone(node), m, a);
+            element.highlight = annotation.highlight.bind(annotation);
+            element.destroy = annotation.destroy.bind(annotation);
+            element.select = annotation.select.bind(annotation);
+
             annotations[node.pageIndex] = annotations[node.pageIndex] || {};
-            annotations[node.pageIndex][node.nodeIndex] = _.union(annotations[node.pageIndex][node.nodeIndex] || [], node);
+            annotations[node.pageIndex][node.nodeIndex] = _.union(annotations[node.pageIndex][node.nodeIndex] || [], element);
           });
         });
       });

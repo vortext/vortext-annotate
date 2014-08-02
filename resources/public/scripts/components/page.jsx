@@ -1,10 +1,12 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, TextLayerBuilder) {
+define(['react', 'jQuery', 'underscore', 'helpers/textLayerBuilder', 'jsx!components/popup'], function(React, $, _, TextLayerBuilder, Popup) {
   'use strict';
 
   var TextNode = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState) {
-      return !_.isEqual(this.props.annotations, nextProps.annotations);
+      var alpha = _.map(this.props.annotations, function(el) { return _.pick(el, "id", "highlight"); });
+      var beta = _.map(nextProps.annotations, function(el) { return _.pick(el, "id", "highlight"); });
+      return !_.isEqual(alpha, beta);
     },
     render: function() {
       var p = this.props;
@@ -17,17 +19,19 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       if(o.spans) {
         content = o.spans.map(function(s,i) {
           if(!s) return null;
+          var highlight = p.annotations[0].highlight;
+          var select = p.annotations[0].select;
+
           return <span key={i}>
                    <span className="pre">{s.pre}</span>
-                   <span className="annotated" style={s.style} data-uuid={s.uuid}>{s.content}</span>
+                   <span className="annotated" onClick={select} onMouseEnter={highlight} onMouseLeave={highlight} style={s.style} data-uuid={s.uuid}>{s.content}</span>
                    <span className="post">{s.post}</span>
                   </span>;
         });
       } else {
         content = o.textContent;
       };
-      return <div style={o.style}
-                  dir={o.dir}>{content}</div>;
+      return <div style={o.style} dir={o.dir}>{content}</div>;
     }
   });
 
@@ -39,13 +43,19 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
       this.setState({annotations: nextProps.page.get("annotations")});
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-      return !_.isEqual(nextState.annotations, this.state.annotations);
+      function getNestedProperties(array, props) {
+        return _.map(_.flatten(_.values(array)), function(el) { return _.pick(el, props); });
+      }
+      var alpha = getNestedProperties(this.state.annotations, ["id", "highlighted"]);
+      var beta = getNestedProperties(nextState.annotations, ["id", "highlighted"]);
+      return !_.isEqual(alpha, beta);
     },
     getTextLayerBuilder: function(viewport) {
       return new TextLayerBuilder({viewport: viewport});
     },
     render: function() {
       var page  = this.props.page;
+      var self = this;
       var content = page.get("content");
       var textLayerBuilder = this.getTextLayerBuilder(this.props.viewport);
       var annotations = this.state.annotations;
@@ -57,7 +67,10 @@ define(['react', 'underscore', 'helpers/textLayerBuilder'], function(React, _, T
                          styles={styles}
                          textLayerBuilder={textLayerBuilder} />;
       });
-      return <div style={this.props.dimensions} className="textLayer">{textNodes}</div>;
+      return (
+        <div style={this.props.dimensions} className="textLayer">
+          {textNodes}
+        </div>);
     }
   });
 
