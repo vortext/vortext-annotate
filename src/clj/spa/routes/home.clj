@@ -7,7 +7,8 @@
 (defn home-page []
   (if (session/get :user-id)
     (view/viewer-page)
-    (layout/render "home.html" {:logged-out? (session/flash-get :logged-out)})))
+    (layout/render "home.html" {:page-type "home"
+                                :logged-out? (session/flash-get :logged-out)})))
 
 (defn about-page []
   (layout/render "about.html"))

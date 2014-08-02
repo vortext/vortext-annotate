@@ -7,86 +7,86 @@
 
 <div class="row">
   {%if logged-out? %}
-  <div class="alert-box warning">You are succesfully logged-out</div>
+  <div class="alert-box warning">You are succesfully logged out</div>
   {% endif %}
 </div>
 
 <div class="row">
   <div class="large-8 columns">
-    <h1>Welcome to Spá</h1>
+    <h1>Welcome to Spá.</h1>
     <div class="row">
       <div class="large-9 columns">
-	<p>
-	  Summarizing evidence in bio-medical research is an immense undertaking, in part because unstructured PDF documents remain the main vehicle for disseminating scientific findings.
-	  Clinicians and researchers spend <em>ages</em> extracting information from PDFs.
-	  <br>
-	  We introduce Spá&mdash;from the Old Norse word spá or spæ referring to prophesying&mdash;a web-based viewer that enables <strong>automated data extraction</strong> from PDFs with <strong>machine learning</strong>.
-	</p>
+	      <p>
+	        Summarizing evidence in bio-medical research is an immense undertaking, in part because unstructured PDF documents remain the main vehicle for disseminating scientific findings.
+	        Clinicians and researchers spend <em>ages</em> extracting information from PDFs.
+	        <br>
+	        We introduce Spá&mdash;from the Old Norse word spá or spæ referring to prophesying&mdash;a web-based viewer that enables <strong>automated data extraction</strong> from PDFs with <strong>machine learning</strong>.
+	      </p>
       </div>
     </div>
   </div>
   <div class="large-4 columns">
     <div class="row">
       <div class="large-12 columns">
-	<form action="{{servlet-context}}/login" method="POST">
-	  <fieldset>
-	    <legend>Login</legend>
-	    <div class="row">
-	      <div class="large-12 columns">
-		<input type="text" tabindex="1" name="id" placeholder="Username" class="{% if login-error %}error{% endif %}">
-		{% if login-error %}
-		<small class="error">{{login-error}}</small>
-		{% endif %}
-	      </div>
-	    </div>
-	    <div class="row collapse">
-	      <div class="large-9 columns">
-		<input type="password" tabindex="2" name="pass" placeholder="Password">
-	      </div>
-	      <div class="large-3 columns">
-		<input type="submit" tabindex="3" class="button expand postfix" value="Login">
-	      </div>
-	    </div>
-	  </fieldset>
-	</form>
+	      <form action="{{servlet-context}}/login" method="POST">
+	        <fieldset>
+	          <div class="row">
+	            <div class="large-12 columns">
+		            <input type="text" tabindex="1" name="id" placeholder="Username" class="{% if login-error %}error{% endif %}">
+		            {% if login-error %}
+		            <small class="error">{{login-error}}</small>
+		            {% endif %}
+	            </div>
+	          </div>
+	          <div class="row collapse">
+	            <div class="large-8 columns fourty">
+		            <input type="password" tabindex="2" name="pass" placeholder="Password">
+	            </div>
+	            <div class="large-3 offset-1 columns fourty">
+		            <input type="submit" tabindex="3" class="button expand postfix" value="Login">
+	            </div>
+	          </div>
+	        </fieldset>
+	      </form>
       </div>
     </div>
     <div class="row">
       <div class="large-12 columns">
-	<form action="{{servlet-context}}/register" method="POST">
-	  <fieldset>
-	    <legend>New to Spa? Register</legend>
-	    <div class="row">
-	      <div class="large-12 columns">
-		<input type="text" name="id" value="{{id}}" placeholder="Username" class="{% if id-error %}error{% endif %}">
-		{% if id-error %}
-		<small class="error">{{id-error}}</small>
-		{% endif %}
-	      </div>
-	    </div>
-	    <div class="row">
-	      <div class="large-12 columns">
-		<input type="password" name="pass" placeholder="Password" class="{% if pass-error %}error{% endif %}">
-		{% if pass-error %}
-		<small class="error">{{pass-error}}</small>
-		{% endif %}
-	      </div>
-	    </div>
-	    <div class="row">
-	      <div class="large-12 columns">
-		<input type="password" name="pass1" placeholder="Retype password" class="{% if pass1-error %}error{% endif %}">
-		{% if pass1-error %}
-		<small class="error">{{pass1-error}}</small>
-		{% endif %}
-	      </div>
-	    </div>
-	    <div class="row">
-	      <div class="large-4 large-offset-8 columns">
-		<input type="submit" class="button postfix expand" value="Register">
-	      </div>
-	    </div>
-	  </fieldset>
-	</form>
+	      <form action="{{servlet-context}}/register" method="POST">
+	        <fieldset>
+	          <h5>New to Spa? Sign up</h5>
+            <hr>
+	          <div class="row">
+	            <div class="large-12 columns">
+		            <input type="text" name="id" value="{{id}}" placeholder="Username" class="{% if id-error %}error{% endif %}">
+		            {% if id-error %}
+		            <small class="error">{{id-error}}</small>
+		            {% endif %}
+	            </div>
+	          </div>
+	          <div class="row">
+	            <div class="large-12 columns">
+		            <input type="password" name="pass" placeholder="Password" class="{% if pass-error %}error{% endif %}">
+		            {% if pass-error %}
+		            <small class="error">{{pass-error}}</small>
+		            {% endif %}
+	            </div>
+	          </div>
+	          <div class="row">
+	            <div class="large-12 columns">
+		            <input type="password" name="pass1" placeholder="Retype password" class="{% if pass1-error %}error{% endif %}">
+		            {% if pass1-error %}
+		            <small class="error">{{pass1-error}}</small>
+		            {% endif %}
+	            </div>
+	          </div>
+	          <div class="row">
+	            <div class="large-6 large-offset-6 columns fourty">
+		            <input type="submit" class="button success postfix expand" value="Sign up for Spá">
+	            </div>
+	          </div>
+	        </fieldset>
+	      </form>
       </div>
     </div>
 

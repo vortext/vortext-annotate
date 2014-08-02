@@ -1,9 +1,37 @@
 html, body {
     color: #505050;
+    background-color: transparent;
 }
 
 html.view, html.view body {
     overflow: hidden;
+}
+
+html.home {
+  background: url(/static/img/bg.jpg) no-repeat top center fixed transparent;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+html.home fieldset {
+    border-radius: 3px;
+    border: 1px solid #eee;
+    padding: 1em;
+    margin-bottom: -1em;
+    -moz-box-shadow:    0 0 5px rgba(0,0,0,0.6);
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.6);
+    box-shadow:         0 0 5px rgba(0,0,0,0.6);
+    background-color: white;
+}
+
+html.home p, html.home h1 {
+    color: white;
+}
+
+.columns.fourty {
+    height: 40px !important
 }
 
 .viewer-container {
