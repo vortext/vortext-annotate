@@ -1,6 +1,7 @@
 html, body {
     color: #505050;
     background-color: transparent;
+    font-family: 'Source Sans Pro', Helvetica, Arial, Verdana, sans-serif;
 }
 
 html.view, html.view body {
@@ -28,6 +29,11 @@ html.home fieldset {
 
 html.home p, html.home h1 {
     color: white;
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+  font-family: 'Montserrat', 'Source Sans Pro', 'Helvetica', sans-serif;
+  font-weight: 700;
 }
 
 .columns.fourty {
@@ -122,6 +128,7 @@ html.home p, html.home h1 {
 
 .block h4 {
     margin: 0;
+    font-weight: 400;
     padding: 0;
     cursor: pointer;
     -webkit-user-select: none; /* Chrome/Safari */
