@@ -6,8 +6,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
     getInitialState: function() {
       return {fingerprint: null,
               $viewer: null,
-              highlightPopup: {x: 0, y: 0, visible: false},
-              annotationPopup: {x: 0, y: 0, visible: false}};
+              popup: {x: 0, y: 0, visible: false}};
     },
     componentWillUpdate: function(nextProps, nextState) {
       var $viewer = this.state.$viewer;
@@ -34,21 +33,23 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
         var self = this;
         _.delay(function(self) {
           self.setState({
-            highlightPopup: {
+            popup: {
               x: position.x,
               y: position.y,
+              title: "Remove this annotation",
+              image: "/static/img/trash-o_ffffff_18.png",
               action: highlighted.destroy.bind(highlighted),
               visible: true }});
         }, 500, this);
       } else {
         this.timeout = _.delay(function(self) {
-          var newPopup = _.extend(self.state.highlightPopup, {visible: false});
-          self.setState({highlightPopup: newPopup});
+          self.setState({popup: _.extend(self.state.popup, {visible: false})});
         }, 500, this);
       }
     },
     getSelection: function() {
-       return window.getSelection().getRangeAt(0);
+      var selection = window.getSelection();
+      return selection.type !== "None" && selection.getRangeAt(0) || null;
     },
     calculatePopupCoordinates: function(boundingBox, e) {
       var $viewer = this.state.$viewer;
@@ -66,13 +67,16 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
     respondToSelection: function(e) {
       var selection = this.getSelection();
       // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
-      if(/(\w{2,}\W{1,6}){3}/.test(selection.toString())) {
+      if(selection && /(\w{2,}\W{1,6}){3}/.test(selection.toString())) {
 
         var selectionBox = selection.getBoundingClientRect();
         var position = this.calculatePopupCoordinates(selectionBox, e);
 
         this.setState({
-          annotationPopup: {
+          popup: {
+            action: this.emitAnnotation,
+            title: "Annotate this",
+            image: "/static/img/pencil_ffffff_18.png",
             x: position.x,
             y: position.y,
             visible: true },
@@ -81,14 +85,14 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
       }
     },
     componentWillUnmount: function() {
-      $("body").off("mouseup.popup.annotate");
+      $("body").off("mouseup.popup");
     },
     componentDidMount: function() {
       var $viewer = $(this.refs.viewer.getDOMNode());
       var $popup = $(this.refs.popup.getDOMNode());
       var self = this;
-      $("body").on("mouseup.popup.annotate", function() {
-        self.setState({annotationPopup: { visible: false }});
+      $("body").on("mouseup.popup", function() {
+        self.setState({popup: _.extend(self.state.popup, {visible: false})});
       });
       this.setState({$viewer: $viewer, $popup: $popup});
     },
@@ -98,7 +102,8 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
         this.props.pdf.emitAnnotation(this.state.selection);
         // Clear text selection
         window.getSelection().removeAllRanges();
-        this.setState({annotatePopup: { visible: false }, selection: null});
+        this.setState({popup: _.extend(this.state.popup, {visible: false}),
+                       selection: null});
       }
     },
     render: function() {
@@ -115,8 +120,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
           <Minimap $viewer={this.state.$viewer} pdf={pdf} />
           <div className="viewer-container">
             <div className="viewer" onMouseUp={this.respondToSelection} ref="viewer">
-               <Popup options={this.state.annotationPopup} image="/static/img/pencil_ffffff_18.png" title="Annotate this" action={this.emitAnnotation} ref="popup" />
-               <Popup options={this.state.highlightPopup} image="/static/img/trash-o_ffffff_18.png" title="Delete annotation" ref="popup2" />
+               <Popup options={this.state.popup} action={this.emitAnnotation} ref="popup" />
                {pagesElements}
              </div>
            </div>

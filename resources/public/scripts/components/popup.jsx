@@ -4,7 +4,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
 
   var Popup = React.createClass({
     getInitialState: function() {
-      return { visible: false };
+      return {visible: false};
     },
     setVisible: function() {
       this.setState({visible: true});
@@ -21,8 +21,9 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       };
       var action = options.action || this.props.action;
       var image = options.image || this.props.image;
+      var title = options.title || this.props.title;
       return <span onMouseEnter={this.setVisible} onMouseLeave={this.setHidden} className="tooltip tip-top annotate" onClick={action} style={style}>
-	      <img src={image} title={this.props.title} />
+	      <img src={image} title={title} />
 	      <span className="nub"></span></span>;
     }
   });
