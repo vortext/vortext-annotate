@@ -25,13 +25,14 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
       this.respondToHighlight(nextProps.highlighted);
     },
     respondToHighlight: function(highlighted) {
+      window.clearTimeout(this.timeout);
       if(highlighted) {
-        window.clearTimeout(this.timeout);
         var $el = this.state.$viewer.find("[data-uuid*="+highlighted.get("uuid")+"]");
+        if(!$el) return;
         var boundingBox = { top: $el.offset().top, left: $el.offset().left, width: $el.width()};
         var position = this.calculatePopupCoordinates(boundingBox);
         var self = this;
-        _.delay(function(self) {
+        this.timeout = _.delay(function(self) {
           self.setState({
             popup: {
               x: position.x,
@@ -49,7 +50,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
     },
     getSelection: function() {
       var selection = window.getSelection();
-      return selection.type !== "None" && selection.getRangeAt(0) || null;
+      return (selection.type !== "None" && selection.getRangeAt(0)) || null;
     },
     calculatePopupCoordinates: function(boundingBox, e) {
       var $viewer = this.state.$viewer;
