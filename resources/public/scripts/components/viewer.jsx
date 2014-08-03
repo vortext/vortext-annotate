@@ -31,12 +31,15 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
         var $el = this.state.$viewer.find("[data-uuid*="+highlighted.get("uuid")+"]");
         var boundingBox = { top: $el.offset().top, left: $el.offset().left, width: $el.width()};
         var position = this.calculatePopupCoordinates(boundingBox);
-        this.setState({
-          highlightPopup: {
-            x: position.x,
-            y: position.y,
-            action: highlighted.destroy.bind(highlighted),
-            visible: true }});
+        var self = this;
+        _.delay(function(self) {
+          self.setState({
+            highlightPopup: {
+              x: position.x,
+              y: position.y,
+              action: highlighted.destroy.bind(highlighted),
+              visible: true }});
+        }, 500, this);
       } else {
         this.timeout = _.delay(function(self) {
           var newPopup = _.extend(self.state.highlightPopup, {visible: false});
@@ -112,8 +115,8 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
           <Minimap $viewer={this.state.$viewer} pdf={pdf} />
           <div className="viewer-container">
             <div className="viewer" onMouseUp={this.respondToSelection} ref="viewer">
-               <Popup options={this.state.annotationPopup} image="/static/img/pencil_ffffff_18.png" action={this.emitAnnotation} ref="popup" />
-               <Popup options={this.state.highlightPopup} image="/static/img/trash-o_ffffff_18.png" ref="popup2" />
+               <Popup options={this.state.annotationPopup} image="/static/img/pencil_ffffff_18.png" title="Annotate this" action={this.emitAnnotation} ref="popup" />
+               <Popup options={this.state.highlightPopup} image="/static/img/trash-o_ffffff_18.png" title="Delete annotation" ref="popup2" />
                {pagesElements}
              </div>
            </div>

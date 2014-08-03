@@ -24,7 +24,12 @@ define(['react', 'jQuery', 'underscore', 'helpers/textLayerBuilder', 'jsx!compon
 
           return <span key={i}>
                    <span className="pre">{s.pre}</span>
-                   <span className="annotated" onClick={select} onMouseEnter={highlight} onMouseLeave={highlight} style={s.style} data-uuid={s.uuid}>{s.content}</span>
+                   <span className="annotated"
+                         onClick={select}
+                         onMouseEnter={highlight}
+                         onMouseLeave={highlight}
+                         style={s.style}
+                         data-uuid={s.uuid}>{s.content}</span>
                    <span className="post">{s.post}</span>
                   </span>;
         });

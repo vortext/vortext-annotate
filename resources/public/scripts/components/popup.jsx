@@ -22,7 +22,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'helpers/text
       var action = options.action || this.props.action;
       var image = options.image || this.props.image;
       return <span onMouseEnter={this.setVisible} onMouseLeave={this.setHidden} className="tooltip tip-top annotate" onClick={action} style={style}>
-	      <img src={image} title="Annotate this" />
+	      <img src={image} title={this.props.title} />
 	      <span className="nub"></span></span>;
     }
   });

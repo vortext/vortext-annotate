@@ -215,6 +215,7 @@ canvas {
 }
 
 .textLayer .annotated {
+    cursor: pointer;
     margin: -1px;
     padding: 1px;
 }
