@@ -3,6 +3,8 @@
             [flatland.protobuf.core :refer :all]
             [plumbing.core :refer :all]
             [spa.util :refer [dash->lower-camel]]
+            [noir.session :as session]
+            [spa.db.core :as db]
             [cheshire.core :as json])
   (:import  [spa.SpaDoc$Document]))
 
@@ -49,10 +51,14 @@
   [input]
   (json/encode input {:key-fn (fn [k] (dash->lower-camel (name k)))}))
 
+
 (def topology
   {:source        (fnk [body] (.bytes body))
    :pdf           (fnk [source] (js "ebm/document_parser.js" source :timeout 4000))
    :doc           (fnk [pdf] (py "ebm.document_tokenizer" pdf :timeout 5000))
    :risk-of-bias  (fnk [doc] (py "ebm.risk_of_bias" doc :timeout 5000))
-   :sink          (fnk [risk-of-bias] (output (collapse-references (protobuf-load Document risk-of-bias))))
+   :document      (fnk [risk-of-bias] (protobuf-load Document risk-of-bias))
+   :json-output   (fnk [document] (output (collapse-references document)))
+   :store         (fnk [document source json-output] (db/store-document (session/get :user-id) (:fingerprint document) source json-output))
+   :sink          (fnk [json-output] json-output)
    })

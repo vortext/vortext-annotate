@@ -28,7 +28,7 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
       window.clearTimeout(this.timeout);
       if(highlighted) {
         var $el = this.state.$viewer.find("[data-uuid*="+highlighted.get("uuid")+"]");
-        if(!$el) return;
+        if($el.length === 0) return;
         var boundingBox = { top: $el.offset().top, left: $el.offset().left, width: $el.width()};
         var position = this.calculatePopupCoordinates(boundingBox);
         var self = this;
@@ -41,11 +41,11 @@ define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!componen
               image: "/static/img/trash-o_ffffff_18.png",
               action: highlighted.destroy.bind(highlighted),
               visible: true }});
-        }, 500, this);
+        }, 750, this);
       } else {
         this.timeout = _.delay(function(self) {
           self.setState({popup: _.extend(self.state.popup, {visible: false})});
-        }, 500, this);
+        }, 750, this);
       }
     },
     getSelection: function() {

@@ -34,7 +34,7 @@
          (go v))))
    (pfnk/io-schemata f)))
 
-(defn async-compile
+(defn ^:private async-compile
   "From https://github.com/Prismatic/plumbing/blob/master/src/plumbing/graph_async.cljx
 
    Compile a hierarchical graph with (some) async fnks into an channel that

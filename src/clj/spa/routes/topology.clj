@@ -2,6 +2,7 @@
   (:require [compojure.core :refer :all]
             [clojure.core.async :as async :refer [go <! >!]]
             [spa.topologies :as topologies]
+            [noir.util.route :refer [def-restricted-routes]]
             [org.httpkit.server :as http]))
 
 (defn topology-handler
@@ -12,5 +13,5 @@
         (http/send! channel (:sink v)))
       (http/on-close channel (fn [_] (async/close! c))))))
 
-(defroutes topology-routes
+(def-restricted-routes topology-routes
   (POST "/topologies/:name" [name :as request] (topology-handler name request)))

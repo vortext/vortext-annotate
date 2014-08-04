@@ -33,6 +33,11 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
    The user can interactively activate and inspect specific results.
 
 * Development prerequisites
+** Database
+   We're using PostgreSQL as the database.
+   The database settings can be configured with the environment variables specified by environ in project.clj.
+   The default database is =spa= with user/pass =spa/develop=. You'll obviously need to change this in production.
+   To populate the database tables run =lein migrate=.
 ** Mac OS X
    The server-side is written in [[http://clojure.org/][Clojure]]. To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
    Spa requires at least Java JVM/JDK 1.7 and Leiningen 2.2.

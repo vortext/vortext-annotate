@@ -55,7 +55,7 @@
                  ;; Database connectivity
                  [korma "0.3.2"]
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
-                 [ragtime "0.3.7"] ; migrations
+                 [ragtime "0.3.6"] ; migrations
 
                  ;; ZeroMQ
                  [org.zeromq/jeromq "0.3.4"]
