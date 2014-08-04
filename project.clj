@@ -18,7 +18,7 @@
 
         :port 8080
         :dev true}
-  :profiles {:dev {:dependencies [org.zeromq/jeromq "0.3.4"]}
+  :profiles {:dev {:dependencies  [[org.zeromq/jeromq "0.3.4"]]}
              :production {:dependencies [[org.zeromq/jzmq "3.1.0"]]
                           :jvm-opts ["-Djava.library.path=/usr/lib:/usr/local/lib"]
                           :env {:dev false}}}
