@@ -18,7 +18,10 @@
 
         :port 8080
         :dev true}
-  :profiles {:production {:env {:dev false}}}
+  :profiles {:dev {:dependencies [org.zeromq/jeromq "0.3.4"]}
+             :production {:dependencies [[org.zeromq/jzmq "3.1.0"]]
+                          :jvm-opts ["-Djava.library.path=/usr/lib:/usr/local/lib"]
+                          :env {:dev false}}}
   :jvm-opts ["-server"]
   :aot [spa.core]
   :aliases {"migrate" ["trampoline" "run" "-m" "spa.db.migrations" "migrate"]
@@ -58,5 +61,4 @@
                  [ragtime "0.3.6"] ; migrations
 
                  ;; ZeroMQ
-                 [org.zeromq/jeromq "0.3.4"]
                  [org.zeromq/cljzmq "0.1.4" :exclusions [org.zeromq/jzmq]]])
