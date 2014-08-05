@@ -101,7 +101,7 @@ define(function (require) {
               marginaliaComponent.setState({progress: "done"});
             },
             function(error) {
-              marginaliaComponent.setState({progress: "failed"});
+              marginaliaComponent.setState({progress: "failed", error: error});
             },
             function(progress) {
               marginaliaComponent.setState({progress: progress});

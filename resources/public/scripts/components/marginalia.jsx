@@ -79,15 +79,28 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
     },
     render: function() {
       var progress = this.state.progress;
+      var isError = progress === "failed";
+
+      if(isError) {
+        var error = this.state.error;
+        return (
+            <div className="alert-box alert" style={{"color": "white"}}>
+            <div dangerouslySetInnerHTML={{__html: Marked(error.message)}} />
+            </div>
+        );
+      }
+
       var isLoading = progress && progress !== "done";
       var marginalia = this.props.marginalia;
+      var progressPercent = progress && progress.progress !== 1.0 ? progress.progress * 100 + "%" : "";
+      var message = <span style={{fontSize: "x-small"}}>{isLoading ? progress.message + " " + progressPercent : ""}</span>;
       var blocks = marginalia.map(function(marginalis, idx) {
         return <Block key={idx} marginalia={marginalia} marginalis={marginalis}  />;
       });
       return (
         <div>
           {blocks}
-          <div className="loading" style={{display: isLoading ? "block" : "none"}}><img src="/static/img/loader.gif" /></div>
+          <div className="loading" style={{display: isLoading ? "block" : "none"}}><img src="/static/img/loader.gif" /><br />{message}</div>
         </div>);
     }
   });
