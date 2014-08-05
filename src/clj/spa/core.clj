@@ -1,4 +1,5 @@
 (ns spa.core
+  (:gen-class)
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.string :as str]
             [ring.middleware.reload :as reload]
@@ -38,17 +39,16 @@
   (System/exit status))
 
 (defn -main [& args]
-  (when-not *compile-files*
-    (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
-      ;; Handle help and error conditions
-      (cond
-       (:help options) (exit 0 (usage summary))
-       (not= (count arguments) 1) (exit 1 (usage summary))
-       errors (exit 1 (error-msg errors)))
-      ;; Execute program with options
-      (case (first arguments)
-        "start" (do (http-kit/run-server
-                     (if (:dev options) (reload/wrap-reload app) app) {:port (:port options)})
-                    (init!)
-                    (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (destroy!)))))
-        (exit 1 (usage summary))))))
+  (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
+    ;; Handle help and error conditions
+    (cond
+     (:help options) (exit 0 (usage summary))
+     (not= (count arguments) 1) (exit 1 (usage summary))
+     errors (exit 1 (error-msg errors)))
+    ;; Execute program with options
+    (case (first arguments)
+      "start" (do (http-kit/run-server
+                   (if (:dev options) (reload/wrap-reload app) app) {:port (:port options)})
+                  (init!)
+                  (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (destroy!)))))
+      (exit 1 (usage summary)))))

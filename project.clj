@@ -20,7 +20,6 @@
         :dev true}
   :profiles {:production {:env {:dev false}}}
   :jvm-opts ["-server"]
-  :aot [spa.core]
   :aliases {"migrate" ["trampoline" "run" "-m" "spa.db.migrations" "migrate"]
             "rollback" ["trampoline" "run" "-m" "spa.db.migrations" "rollback"]}
   :dependencies [[org.clojure/clojure "1.6.0"]

@@ -1,10 +1,6 @@
-* Client side
-** DONE Show extracted annotations separately
-** DONE Embed UUID and highlight on hover
-** DONE Click to scroll into view
 * Annotations
 ** DONE Allow deletion of annotations
-** Allow select-drag adding of annotations
+** DONE Allow select-drag adding of annotations
 *** Build text cache
 *** Create new annotation
 ** Database/Persistence (save + load)
@@ -12,7 +8,7 @@
 ** Write to PDF + stand-off markup?
 * Project view
 ** Users with projects
-*** Create user and login
+*** DONE Create user and login
 *** CRUD projects
 ** Make extraction categories configurable
 ** Allow hooking up prediction models
@@ -22,10 +18,6 @@
 ** Documentation
 ** VERIFY Progress updates / async topologies
 *** VERIFY Async for service calls
-**** DONE Generate unique IDs
-**** DONE Update MDP protocol
-**** DONE NodeJS worker
-**** DONE Python worker
 *** Implement MDP/2 (partial results)
 *** Websockets to subscribe to updates?
 ** R RPC Worker

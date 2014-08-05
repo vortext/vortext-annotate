@@ -2,15 +2,15 @@
 <html class="{{page-type}}">
   <head>
     <title>Sp&aacute;</title>
-    <meta name="csrf-token" content="{% csrf-token %}" />
+    <meta name="csrf-token" content="{% csrf-token %}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel="stylesheet">
-    <link href="/static/css/main.css" rel="stylesheet" />
-    <script src="/static/scripts/vendor/modernizr.js"></script>
+    <link href="{{servlet-context}}/static/css/main.css" rel="stylesheet">
+    <script src="{{servlet-context}}/static/scripts/vendor/modernizr.js"></script>
     {% if bootstrap-script %}
-    <script data-main="/static/scripts/{{bootstrap-script}}" src="/static/scripts/require.js"></script>
+    <script data-main="{{servlet-context}}/static/scripts/{{bootstrap-script}}" src="{{servlet-context}}/static/scripts/require.js"></script>
     {% endif %}
   </head>
 
