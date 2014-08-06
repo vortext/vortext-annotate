@@ -75,24 +75,24 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
 
   var Marginalia = React.createClass({
     getInitialState: function() {
-      return { progress: null };
+      return { progress: {completed: 0, message: "", state: NaN}};
     },
     render: function() {
       var progress = this.state.progress;
-      var isError = progress === "failed";
+      var isError = _.has(this.state, "error");
 
       if(isError) {
         var error = this.state.error;
         return (
-            <div className="alert-box alert" style={{"color": "white"}}>
-            <div dangerouslySetInnerHTML={{__html: Marked(error.message)}} />
+            <div className="alert-box alert">
+              <div dangerouslySetInnerHTML={{__html: Marked(error.message)}} />
             </div>
         );
       }
 
-      var isLoading = progress && progress !== "done";
       var marginalia = this.props.marginalia;
-      var progressPercent = progress && progress.progress !== 1.0 ? progress.progress * 100 + "%" : "";
+      var isLoading = progress.state == "loading";
+      var progressPercent = progress && progress.completed < 1.0 ? progress.completed * 100 + "%" : "";
       var message = <span style={{fontSize: "x-small"}}>{isLoading ? progress.message + " " + progressPercent : ""}</span>;
       var blocks = marginalia.map(function(marginalis, idx) {
         return <Block key={idx} marginalia={marginalia} marginalis={marginalis}  />;

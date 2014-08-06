@@ -93,15 +93,13 @@ define(function (require) {
         break;
       case "change:binary":
         marginaliaModel.reset();
-        marginaliaComponent.setState({progress: "running"});
         topologiesModel.fetch("ebm", obj.changed.binary)
           .then(
             function(data) {
               marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
-              marginaliaComponent.setState({progress: "done"});
             },
             function(error) {
-              marginaliaComponent.setState({progress: "failed", error: error});
+              marginaliaComponent.setState({error: error});
             },
             function(progress) {
               marginaliaComponent.setState({progress: progress});

@@ -7,8 +7,6 @@
             [noir.session :as session]
             [spa.layout :as layout]))
 
-(defroutes viewer-routes)
-
 (defn viewer-page []
   (layout/render "viewer.html" {:bootstrap-script "main" :page-type "view"}))
 

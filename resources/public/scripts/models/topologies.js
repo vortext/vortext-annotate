@@ -6,9 +6,9 @@ define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
     if (e.lengthComputable) {
       var percentComplete = e.loaded / e.total;
       if(percentComplete > 0.95) {
-        deferred.notify({message: "Processing…"});
+        deferred.notify({state: "loading", message: "Processing…", completed: 1.0});
       } else {
-        deferred.notify({message: "Uploading file", progress: percentComplete.toPrecision(2)});
+        deferred.notify({state: "loading", message: "Uploading file", completed: percentComplete.toPrecision(2)});
       }
     } else {
       console.log("Unable to compute progress information since the total size is unknown");
@@ -16,7 +16,7 @@ define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
   }
 
   function transferComplete(deferred, e) {
-    deferred.notify({message: "Processing…"});
+    deferred.notify({state: "loading", message: "Processing…", completed: NaN});
   }
 
   var Topologies = Backbone.Model.extend({
@@ -27,7 +27,7 @@ define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
 
       xhr.upload.addEventListener("progress", _.partial(updateProgress, deferred), false);
       xhr.upload.addEventListener("load", _.partial(updateProgress, deferred), false);
-      deferred.notify({message: "Uploading file", progress: 0.0});
+      deferred.notify({message: "Uploading file", progress: NaN, state: "loading"});
 
       xhr.open("POST", uri, true);
       xhr.setRequestHeader('X-CSRF-Token', window.csrfToken);
@@ -35,7 +35,7 @@ define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
       xhr.onload = function (e) {
         if (xhr.status >= 200 && xhr.status < 400) {
           var data = JSON.parse(xhr.responseText);
-          deferred.notify({message: "Done", progress: 1.0});
+          deferred.notify({message: "Done", progress: 1.0, state: "done"});
           deferred.resolve(data);
         } else {
           deferred.reject({status: xhr.status, message: xhr.responseText});
