@@ -45,3 +45,5 @@ target/
 .lein-failures
 node_modules
 
+build
+resources/topologies/*/models/*
