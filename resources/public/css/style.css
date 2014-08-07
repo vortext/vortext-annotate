@@ -126,6 +126,14 @@ h1, h2, h3, h4, h5, h6, h7 {
     color: #777;
 }
 
+.block ul.annotations {
+    margin-bottom: 0;
+
+	  -webkit-transition: max-height 0.5s;
+	  -moz-transition: max-height 0.5s;
+	  transition: max-height 0.5s;
+}
+
 .block h4 {
     margin: 0;
     font-weight: 400;

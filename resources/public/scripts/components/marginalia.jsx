@@ -42,15 +42,21 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
   });
 
   var Block = React.createClass({
+    getInitialState: function() {
+      return { annotationsActive: false };
+    },
     toggleActivate: function(e) {
       var marginalia = this.props.marginalia;
       marginalia.setActive(this.props.marginalis);
+    },
+    foldAnnotations: function() {
+      this.setState({annotationsActive: !this.state.annotationsActive});
     },
     render: function() {
       var marginalis = this.props.marginalis;
       var description = marginalis.get("description");
       var isActive = marginalis.get("active");
-
+      var annotationsActive = this.state.annotationsActive;
       var style = {
         "backgroundColor": isActive ? "rgb(" + marginalis.get("color") + ")" : "inherit",
         "color": isActive ? "white" : "inherit"
@@ -66,8 +72,8 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
                </h4>
                <div className="content">
                  <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
-                 {annotations.length > 0 ? <div className="divider">annotations</div> : null}
-                 <ul className="annotations no-bullet">{annotations}</ul>
+                   <div className="divider"><a href="#" onClick={this.foldAnnotations}> {annotationsActive ? "▾" : "▸"}  annotations ({annotations.length})</a></div>
+                   <ul className="annotations no-bullet" style={{"maxHeight": annotationsActive ? 1000 : 0, "overflow": "hidden"}} >{annotations}</ul>
                </div>
              </div>;
     }

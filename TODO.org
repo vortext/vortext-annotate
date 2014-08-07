@@ -1,9 +1,12 @@
 * Annotations
 ** DONE Allow deletion of annotations
 ** DONE Allow select-drag adding of annotations
-*** Build text cache
-*** Create new annotation
+*** DONE Build text cache
+*** DONE Create new annotation
 ** Database/Persistence (save + load)
+*** Get rid of the setActiveAnnotations()
+*** Get rid of Korma (just use SQL)
+*** Properly serialize the Marginalia to JSON
 ** W3C RDFa / Providence / Annotations
 ** Write to PDF + stand-off markup?
 * Project view

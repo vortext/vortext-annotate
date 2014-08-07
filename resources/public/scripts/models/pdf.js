@@ -8,7 +8,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
 
   var pseudoUUID = function() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      var r = Math.random() * 16|0, v = c == 'x' ? r : (r&0x3|0x8);
       return v.toString(16);
     });
   };
@@ -32,7 +32,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
 
   var Pages = Backbone.Collection.extend({
     model: Page,
-    __requestPage: function(model, pagePromise) {
+    _requestPage: function(model, pagePromise) {
       return pagePromise
         .then(function(raw) {
           model.set({
@@ -49,11 +49,11 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
           return content;
         });
     },
-    __buildCache: function() {
-      this.__cache = { totalLength: 0, nodes: [], pages: [], text: "" };
+    _buildCache: function() {
+      this._cache = { totalLength: 0, nodes: [], pages: [], text: "" };
     },
-    __appendCache: function(pageIndex, pageContent) {
-      var totalLength = this.__cache.totalLength;
+    _appendCache: function(pageIndex, pageContent) {
+      var totalLength = this._cache.totalLength;
       var offset = 0;
       var items = pageContent.items;
       for (var j = 0; j < items.length; j++) {
@@ -63,12 +63,12 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
 		                 nodeIndex: j,
 		                 interval: { lower: totalLength + offset,
 			                           upper: totalLength + nextOffset }};
-        this.__cache.text += item.str;
+        this._cache.text += item.str;
         offset = nextOffset;
-        this.__cache.nodes.push(node);
+        this._cache.nodes.push(node);
       }
-      this.__cache.pages.push({ offset: totalLength, length: offset });
-      this.__cache.totalLength += offset;
+      this._cache.pages.push({ offset: totalLength, length: offset });
+      this._cache.totalLength += offset;
     },
     getAnnotation: function(str) {
       function escapeRegExp(str) {
@@ -77,7 +77,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
 
       var pattern = str.replace(/(\r\n|\n|\r)/gm,"");
 
-      var match = this.__cache.text.match(new RegExp(escapeRegExp(pattern)));
+      var match = this._cache.text.match(new RegExp(escapeRegExp(pattern)));
       if(!match) return null;
 
       var lower = match.index;
@@ -85,8 +85,8 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
 
       var mapping = [];
 
-      var nodes =  this.__cache.nodes;
-      var pages = this.__cache.pages;
+      var nodes =  this._cache.nodes;
+      var pages = this._cache.pages;
       var nrNodes = nodes.length;
       for(var i = 0; i < nrNodes; ++i) {
         var node = _.clone(nodes[i]);
@@ -102,8 +102,10 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
         mapping[0].range.lower = lower - pages[mapping[0].pageIndex].offset;
         mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
 
+        var displayString = str.replace(/(\r\n|\n|\r)/gm, " ");
+
         return new Annotation({
-          content: str,
+          content: displayString,
           mapping: mapping,
           uuid: pseudoUUID()
         });
@@ -113,7 +115,7 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
     populate: function(pdf) {
       var self  = this;
 
-      this.__buildCache();
+      this._buildCache();
 
       var pageQueue = _.range(0, pdf.numPages);
       var pages = _.map(pageQueue, function(pageNr) {
@@ -126,10 +128,10 @@ define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_
         var pageIndex = _.first(arr);
         var page = pages[pageIndex];
         page.set({state: RenderingStates.RUNNING});
-        var p = self.__requestPage(page, pdf.getPage(pageIndex + 1));
+        var p = self._requestPage(page, pdf.getPage(pageIndex + 1));
         p.then(function(content) {
           process(_.rest(arr));
-          self.__appendCache(pageIndex, content);
+          self._appendCache(pageIndex, content);
         });
       };
       var partitions = _.partition(pageQueue, function(pageIndex) { return pageIndex % 2 == 0; });

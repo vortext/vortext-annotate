@@ -47,13 +47,12 @@ define(function (require) {
       },
       view: function(fingerprint, annotation) {
         marginaliaModel.reset();
-        marginaliaComponent.setState({progress: "running"});
         var request = new XMLHttpRequest();
         request.open("GET", "/document/" + fingerprint, true);
         request.responseType = "arraybuffer";
 
         request.onload = function (e) {
-          var arrayBuffer = request.response; // Note: not request.responseText
+          var arrayBuffer = request.response;
           if (arrayBuffer) {
             var byteArray = new Uint8Array(arrayBuffer);
             PDFModel.loadFromData(byteArray);
