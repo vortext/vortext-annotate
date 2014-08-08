@@ -97,7 +97,7 @@ define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked
       }
 
       var marginalia = this.props.marginalia;
-      var isLoading = progress.state == "loading";
+      var isLoading = progress.state === "loading";
       var progressPercent = progress && progress.completed < 1.0 ? progress.completed * 100 + "%" : "";
       var message = <span style={{fontSize: "x-small"}}>{isLoading ? progress.message + " " + progressPercent : ""}</span>;
       var blocks = marginalia.map(function(marginalis, idx) {
