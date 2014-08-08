@@ -66,7 +66,7 @@ define(function (require) {
                <div className="content">
                  <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
                    <div className="divider"><a href="#" onClick={this.foldAnnotations}> {annotationsActive ? "▾" : "▸"}  annotations ({annotations.length})</a></div>
-                   <ul className="annotations no-bullet" style={{"maxHeight": annotationsActive ? 1000 : 0, "overflow": "hidden"}} >{annotations}</ul>
+                   <ul className="no-bullet annotations" style={{"maxHeight": annotationsActive ? 500 : 0}} >{annotations}</ul>
                </div>
              </div>;
     }

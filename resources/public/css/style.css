@@ -121,22 +121,25 @@ h1, h2, h3, h4, h5, h6, h7 {
     margin: 1.0em;
 }
 
-.block .annotations p {
-    font-size: small;
-    color: #777;
-}
 
 .block ul.annotations {
     margin-bottom: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
 
 	  -webkit-transition: max-height 0.5s;
 	  -moz-transition: max-height 0.5s;
 	  transition: max-height 0.5s;
 }
 
+.block .annotations p {
+    font-size: small;
+    color: #777;
+}
+
 .block ul.annotations li .wrap {
     display: inline-block;
-    width: 90%;
+    width: 85%;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: middle;
