@@ -23,7 +23,7 @@ define(function (require) {
         } else if(nextState.select !== this.state.select) {
           var delta = $viewer.find("[data-uuid*="+ nextState.select + "]").offset().top;
           var viewerHeight = $viewer.height();
-          var center = (viewerHeight / 2) - (viewerHeight / 4);
+          var center = viewerHeight / 2;
           $viewer.animate({scrollTop: $viewer.scrollTop() + delta - center});
         }
       }
@@ -44,7 +44,7 @@ define(function (require) {
             popup: {
               x: position.x,
               y: position.y,
-              title: "Remove this annotation",
+              title: "Remove annotation",
               image: "/static/img/trash-o_ffffff_18.png",
               action: highlighted.destroy.bind(highlighted),
               visible: true }});

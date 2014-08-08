@@ -134,6 +134,15 @@ h1, h2, h3, h4, h5, h6, h7 {
 	  transition: max-height 0.5s;
 }
 
+.block ul.annotations li .wrap {
+    display: inline-block;
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+}
+
 .block h4 {
     margin: 0;
     font-weight: 400;

@@ -42,7 +42,7 @@ define(function (require) {
       ctx.font = style.fontSize + ' ' + style.fontFamily;
 
       if(this.isWhitespace(geom, style)) {
-        return { isWhitespace : true };
+        return {isWhitespace : true};
       }
 
       var textElement = {

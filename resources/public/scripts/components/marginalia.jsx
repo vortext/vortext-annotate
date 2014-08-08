@@ -7,19 +7,6 @@ define(function (require) {
   var React = require("react");
   var Marked = require("marked");
 
-
-  function truncate(str, length, truncateStr) {
-    if (str == null) return '';
-    str = String(str); truncateStr = truncateStr || '…';
-    length = ~~length;
-    if(str.length > length) {
-      var truncated = str.substr(0, length);
-      return truncated + truncateStr;
-    } else {
-      return str;
-    }
-  }
-
   var Annotation = React.createClass({
     destroy: function() {
       this.props.annotation.destroy();
@@ -32,10 +19,10 @@ define(function (require) {
     },
     render: function() {
       var annotation = this.props.annotation;
-      var text = truncate(annotation.get("content"), 100);
+      var text = annotation.get("content");
 
       var isActive = this.props.isActive;
-      var content = isActive ? <a href="#" title="Jump to annotation" onClick={this.select}>{text}</a> : text;
+      var content = isActive ? <a href="#" className="wrap" title="Jump to annotation" onClick={this.select}>{text}</a> : <span className="wrap">{text}</span>;
       var trashcan = <img className="trashcan icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" />;
 
       return <li>
