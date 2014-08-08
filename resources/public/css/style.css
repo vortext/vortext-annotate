@@ -127,9 +127,9 @@ h1, h2, h3, h4, h5, h6, h7 {
     overflow-y: hidden;
     overflow-x: auto;
 
-	  -webkit-transition: max-height 0.5s;
-	  -moz-transition: max-height 0.5s;
-	  transition: max-height 0.5s;
+	  -webkit-transition: max-height 0.3s ease-in-out;
+	  -moz-transition: max-height 0.3s ease-in-out;
+	  transition: max-height 0.3s ease-in-out;
 }
 
 .block .annotations p {
@@ -321,11 +321,14 @@ a:hover img.icon {
     opacity: 1.0;
 }
 
-/* FIXME https://github.com/zurb/foundation/issues/5547 */
-
-.top-bar input, .top-bar a.button {
-    height: 1.8rem;
-    padding-top: 0.35rem;
-    padding-bottom: 0.35rem;
-    font-size: 0.77778rem !important;
+.popup {
+    background: url('/static/img/pencil-trash-sprite.png') no-repeat top left;
+    width: 18px;
+    height: 18px;
+}
+.popup.pencil {
+    background-position: 0px 0px;
+}
+.popup.trash {
+    background-position: -28px 0px;
 }

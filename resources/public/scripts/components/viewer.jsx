@@ -45,9 +45,9 @@ define(function (require) {
               x: position.x,
               y: position.y,
               title: "Remove annotation",
-              image: "/static/img/trash-o_ffffff_18.png",
+              sprite: "popup trash",
               action: highlighted.destroy.bind(highlighted),
-              visible: true }});
+              visible: true}});
         }, 750, this);
       } else {
         this.timeout = _.delay(function(self) {
@@ -83,8 +83,8 @@ define(function (require) {
         this.setState({
           popup: {
             action: this.emitAnnotation,
+            sprite: "popup pencil",
             title: "Annotate this",
-            image: "/static/img/pencil_ffffff_18.png",
             x: position.x,
             y: position.y,
             visible: true },

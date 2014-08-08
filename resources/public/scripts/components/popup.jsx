@@ -22,10 +22,9 @@ define(function (require) {
 	      left: options.x
       };
       var action = options.action || this.props.action;
-      var image = options.image || this.props.image;
       var title = options.title || this.props.title;
-      return <span onMouseEnter={this.setVisible} onMouseLeave={this.setHidden} className="tooltip tip-top annotate" onClick={action} style={style}>
-	      <img src={image} title={title} />
+      return <span onMouseEnter={this.setVisible} onMouseLeave={this.setHidden} className="tooltip tip-top annotate" onClick={action} style={style} title={title}>
+        <div className={options.sprite} />
 	      <span className="nub"></span></span>;
     }
   });
