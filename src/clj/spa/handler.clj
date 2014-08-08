@@ -16,6 +16,7 @@
             [spa.routes.auth :refer [auth-routes]]
             [spa.routes.home :refer [home-routes]]
             [spa.routes.viewer :refer [viewer-routes]]
+            [spa.flake :as flake]
             [cronj.core :as cronj]
             [selmer.parser :refer [add-tag!]]
             [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
@@ -41,6 +42,7 @@
    [:shared-appender-config :rotor]
    {:path "spa.log", :max-size (* 512 1024), :backlog 10})
   (services/start!)
+  (flake/init!)
   (if (env :dev) (parser/cache-off!))
   (add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)

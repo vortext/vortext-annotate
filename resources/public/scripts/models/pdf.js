@@ -129,7 +129,7 @@ define(function (require) {
       var pages = _.map(pageQueue, function(pageNr) {
         return new Page();
       });
-      this.reset(pages); // set a bunch of empty pages
+      this.reset(pages, {silent: true}); // set a bunch of empty pages
 
       var process = function(arr) {
         if(arr.length === 0) return;

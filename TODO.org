@@ -7,6 +7,7 @@
 *** Get rid of the setActiveAnnotations()
 *** Get rid of Korma (just use SQL)
 *** Properly serialize the Marginalia to JSON
+*** Write "cache-able" topologies
 ** W3C RDFa / Providence / Annotations
 ** Write to PDF + stand-off markup?
 * Project view
@@ -18,7 +19,7 @@
 ** Show results for multiple PDFs
 ** Export in tabulated format
 * Server side
-** Documentation
+** Documentation && Split up
 ** VERIFY Progress updates / async topologies
 *** VERIFY Async for service calls
 *** Implement MDP/2 (partial results)

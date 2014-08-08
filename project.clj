@@ -47,6 +47,10 @@
 
                  [prismatic/plumbing "0.3.3"]
 
+                 [potemkin "0.3.4"]
+                 [primitive-math "0.1.3"]
+                 [commons-codec/commons-codec "1.9"]
+
                  ;; serialization libraries
                  [org.flatland/protobuf "0.8.1"]
                  [cheshire "5.3.1"]

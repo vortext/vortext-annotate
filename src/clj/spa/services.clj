@@ -1,10 +1,11 @@
 (ns spa.services
   (:import [spa Broker Client]
            [org.zeromq ZMsg])
-  (:require   [taoensso.timbre :as timbre]
-              [environ.core :refer :all]
-              [clojure.core.async :as async :refer [mult map< filter< tap chan sliding-buffer go <! >!]]
-              [clojure.java.io :as io]))
+  (:require [taoensso.timbre :as timbre]
+            [environ.core :refer :all]
+            [clojure.core.async :as async :refer [mult map< filter< tap chan sliding-buffer go <! >!]]
+            [spa.flake :as flake]
+            [clojure.java.io :as io]))
 
 (defonce process-env {"DEBUG" (str (env :debug))
                       "SPA_VERSION" (System/getProperty "spa.version")})
@@ -38,7 +39,7 @@
 (defn rpc
   [name payload]
   (let [c (chan)
-        id (str (java.util.UUID/randomUUID))
+        id (flake/url-safe-id)
         request (doto (ZMsg.) (.add payload))]
     (timbre/debug "sending request to" name "with id" id)
     (.send client name (.getBytes id) request)
