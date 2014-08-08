@@ -1,6 +1,10 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-define(['underscore', 'Q', 'backbone'], function(_, Q, Backbone) {
+define(function (require) {
   'use strict';
+
+  var Q = require("Q");
+  var _ = require("underscore");
+  var Backbone = require("backbone");
 
   function updateProgress (deferred, e) {
     if (e.lengthComputable) {

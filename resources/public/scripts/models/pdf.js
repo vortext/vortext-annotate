@@ -1,5 +1,14 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['underscore', 'Q', 'backbone', 'PDFJS', 'models/annotation'], function(_, Q, Backbone, PDFJS, Annotation) {
+define(function (require) {
+  'use strict';
+
+  require('PDFJS');
+
+  var Q = require("Q");
+  var _ = require("underscore");
+  var Backbone = require("backbone");
+  var Annotation = require('models/annotation');
+
   'use strict';
   PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';

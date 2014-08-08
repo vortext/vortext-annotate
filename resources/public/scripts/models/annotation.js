@@ -1,6 +1,9 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-define(['underscore', 'backbone'], function(_, Backbone) {
+define(function (require) {
   'use strict';
+
+  var _ = require("underscore");
+  var Backbone = require("backbone");
 
   var Annotation =  Backbone.Model.extend({
     defaults: {
@@ -21,6 +24,4 @@ define(['underscore', 'backbone'], function(_, Backbone) {
   });
 
   return Annotation;
-
-
 });

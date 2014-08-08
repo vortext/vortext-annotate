@@ -1,6 +1,12 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2 -*- */
-define(['jQuery', 'underscore', 'react', 'marked'], function($, _, React, Marked) {
+define(function (require) {
   'use strict';
+
+  var _ = require("underscore");
+  var $ = require("jQuery");
+  var React = require("react");
+  var Marked = require("marked");
+
 
   function truncate(str, length, truncateStr) {
     if (str == null) return '';

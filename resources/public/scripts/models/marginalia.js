@@ -1,6 +1,10 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-define(['underscore', 'backbone', 'models/annotation'], function(_, Backbone, Annotation) {
+define(function (require) {
   'use strict';
+
+  var _ = require("underscore");
+  var Backbone = require("backbone");
+  var Annotation = require('models/annotation');
 
   var colors = // from Cynthia Brewer (ColorBrewer)
         [[102,166,30],

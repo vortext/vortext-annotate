@@ -1,6 +1,9 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-define(['underscore', 'PDFJS'], function(_, PDFJS) {
+define(function (require) {
   'use strict';
+
+  var _ = require("underscore");
+  require("PDFJS");
 
   var TextLayerBuilder = function textLayerBuilder(options) {
     var viewport = options.viewport;

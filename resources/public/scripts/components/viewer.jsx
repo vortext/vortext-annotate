@@ -1,6 +1,13 @@
 /* -*- mode: js2; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js2-basic-offset: 2 -*- */
-define(['react', 'jQuery', 'underscore', 'jsx!components/minimap', 'jsx!components/page', 'jsx!components/popup'], function(React, $, _, Minimap, Page, Popup) {
+define(function (require) {
   'use strict';
+
+  var _ = require("underscore");
+  var $ = require("jQuery");
+  var React = require("react");
+  var Popup = require("jsx!components/popup");
+  var Minimap = require("jsx!components/minimap");
+  var Page = require("jsx!components/page");
 
   var Display = React.createClass({
     getInitialState: function() {
