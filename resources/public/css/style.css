@@ -322,11 +322,6 @@ a:hover img.icon {
 }
 
 .popup {
-    image-rendering: -moz-crisp-edges;         /* Firefox */
-    image-rendering:   -o-crisp-edges;         /* Opera */
-    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
     background: url('/static/img/pencil-trash-sprite.png') no-repeat top left;
     width: 18px;
     height: 18px;
@@ -335,6 +330,8 @@ a:hover img.icon {
 .popup.pencil {
     background-position: 0px 0px;
 }
+
 .popup.trash {
-    background-position: -28px 0px;
+    background-position: -28px -1px;
+    width: 15px;
 }
