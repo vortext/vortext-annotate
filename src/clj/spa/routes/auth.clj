@@ -1,16 +1,17 @@
 (ns spa.routes.auth
   (:use compojure.core)
   (:require [spa.layout :as layout]
+            [taoensso.timbre :as timbre]
             [noir.session :as session]
             [noir.response :as resp]
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
-            [spa.db.core :as db]))
+            [spa.db.users :as users]))
 
 (defn valid? [id pass pass1]
   (vali/rule (vali/has-value? id)
              [:id "Username is required"])
-  (vali/rule (not (db/get-user id))
+  (vali/rule (not (users/get id))
              [:id "Username already taken"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "Password must be at least 5 characters"])
@@ -31,10 +32,11 @@
   (if (valid? id pass pass1)
     (try
       (do
-        (db/create-user {:id id :pass (crypt/encrypt pass)})
+        (users/create! id (crypt/encrypt pass))
         (session/put! :user-id id)
         (resp/redirect "/"))
       (catch Exception ex
+        (timbre/error ex)
         (vali/rule false [:id (.getMessage ex)])
         (register)))
     (register id)))
@@ -42,14 +44,14 @@
 (defn profile []
   (layout/render
     "profile.html"
-    {:user (db/get-user (session/get :user-id))}))
+    {:user (users/get (session/get :user-id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
-  (db/update-user (session/get :user-id) first-name last-name email)
+  (users/update! (session/get :user-id) first-name last-name email)
   (profile))
 
 (defn handle-login [id pass]
-  (let [user (db/get-user id)]
+  (let [user (users/get id)]
     (if (and user (crypt/compare pass (:pass user)))
       (do
         (session/put! :user-id id)

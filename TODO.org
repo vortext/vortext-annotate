@@ -19,7 +19,7 @@
 ** Show results for multiple PDFs
 ** Export in tabulated format
 * Server side
-** Documentation && Split up
+** Documentation and Split up
 ** VERIFY Progress updates / async topologies
 *** VERIFY Async for service calls
 *** Implement MDP/2 (partial results)

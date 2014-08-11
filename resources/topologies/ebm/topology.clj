@@ -4,7 +4,7 @@
             [plumbing.core :refer :all]
             [spa.util :refer [dash->lower-camel]]
             [noir.session :as session]
-            [spa.db.core :as db]
+            ; [spa.db.core :as db]
             [cheshire.core :as json])
   (:import  [spa.SpaDoc$Document]))
 
@@ -59,6 +59,6 @@
    :risk-of-bias  (fnk [doc] (py "ebm.risk_of_bias" doc :timeout 5000))
    :document      (fnk [risk-of-bias] (protobuf-load Document risk-of-bias))
    :json-output   (fnk [document] (output (collapse-references document)))
-   :store         (fnk [document source json-output] (db/store-document (session/get :user-id) (:fingerprint document) source json-output))
+   ;; :store         (fnk [document source json-output] (db/store-document (session/get :user-id) (:fingerprint document) source json-output))
    :sink          (fnk [json-output] json-output)
    })

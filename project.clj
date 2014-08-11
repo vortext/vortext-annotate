@@ -56,7 +56,7 @@
                  [cheshire "5.3.1"]
 
                  ;; Database connectivity
-                 [korma "0.3.2"]
+                 [yesql "0.4.0"]
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
                  [ragtime "0.3.6"] ; migrations
 
