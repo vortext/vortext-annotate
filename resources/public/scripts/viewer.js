@@ -29,7 +29,7 @@ require.config({
 });
 
 define(function (require) {
-  var Dispatcher = require("dispatcher");
+  var Dispatcher = require("dispatchers/viewer");
   window.dispatcher = new Dispatcher();
   window.csrfToken = document.querySelector("meta[name='csrf-token']").content;
 });
