@@ -34,6 +34,9 @@
       {% block content %}
       {% endblock %}
     </main>
+    <script>
+     window.csrfToken = "{% csrf-token %}";
+    </script>
   </body>
 
 </html>
