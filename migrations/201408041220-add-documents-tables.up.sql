@@ -6,12 +6,17 @@ COMMENT ON COLUMN "documents" ("id") IS 'fingerprint produced by PDF.js';
 
 CREATE TABLE "projects" (
        "id" bigserial,
-       "users_id" varchar REFERENCES users (id),
        "title" varchar,
        "description text,
        PRIMARY KEY ("id", "users_id")
 );
 CREATE INDEX ON "projects" ("users_id");
+
+CREATE TABLE "users_projects" (
+       "users_id" varchar REFERENCES users (id),
+       "projects_id" bigint REFERENCES projects (id),
+       PRIMARY KEY ("users_id", "projects_id")
+);
 
 CREATE TABLE "documents_projects" (
        "documents_id" REFERENCES documents (id),

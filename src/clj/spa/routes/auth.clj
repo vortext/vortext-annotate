@@ -21,12 +21,12 @@
 
 (defn register [& [id]]
   (layout/render
-    "home.html"
-    {:page-type "home"
-     :id id
-     :id-error (vali/on-error :id first)
-     :pass-error (vali/on-error :pass first)
-     :pass1-error (vali/on-error :pass1 first)}))
+   "home.html"
+   {:page-type "home"
+    :id id
+    :id-error (vali/on-error :id first)
+    :pass-error (vali/on-error :pass first)
+    :pass1-error (vali/on-error :pass1 first)}))
 
 (defn handle-registration [id pass pass1]
   (if (valid? id pass pass1)
@@ -43,8 +43,8 @@
 
 (defn profile []
   (layout/render
-    "profile.html"
-    {:user (users/get (session/get :user-id))}))
+   "profile.html"
+   {:user (users/get (session/get :user-id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
   (users/update! (session/get :user-id) first-name last-name email)
@@ -77,4 +77,4 @@
         (handle-login id pass))
 
   (GET "/logout" []
-        (logout)))
+       (logout)))
