@@ -168,7 +168,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 .block h4 a {
     font-family: 'Montserrat', 'Source Sans Pro', sans-serif;
-    text-shadow: text-shadow: 1px 1px 1px #fff;
+    text-shadow: 1px 1px 1px #fff;
     display: block;
     background-color: inherit;
     min-height: 60px;
