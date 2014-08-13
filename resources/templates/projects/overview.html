@@ -1,0 +1,17 @@
+{% extends "templates/base.html" %}
+{% block content %}
+<div class="row">
+  <div class="large-12 columns">
+    <h2>Welcome to Spá.</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
+    <a href="{{servlet-context}}/projects/view" class="button success">Just a one-off</a>
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+    <hr>
+    <h3>Projects</h3>
+    <a href="/projects/edit?project=new" class="button primary small">Create</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 (ns spa.routes.auth
-  (:use compojure.core)
   (:require [spa.layout :as layout]
             [taoensso.timbre :as timbre]
+            [compojure.core :refer :all]
             [noir.session :as session]
             [noir.response :as resp]
             [noir.validation :as vali]

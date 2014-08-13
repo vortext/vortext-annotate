@@ -9,5 +9,5 @@
 (defn viewer-page []
   (layout/render "viewer.html" {:bootstrap-script "viewer" :page-type "view"}))
 
-(def-restricted-routes viewer-routes
-  (GET "/view/" [] (viewer-page)))
+; (def-restricted-routes viewer-routes
+;  (GET "/viewer" [] (viewer-page)))

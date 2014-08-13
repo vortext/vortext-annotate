@@ -5,7 +5,6 @@
             [spa.session-manager :as session-manager]
             [noir.session :as session]
             [noir.response :refer [redirect]]
-            [ring.util.response :as response]
             [noir.util.middleware :refer [app-handler]]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
@@ -15,10 +14,9 @@
             [spa.routes.topology :refer [topology-routes]]
             [spa.routes.auth :refer [auth-routes]]
             [spa.routes.home :refer [home-routes]]
-            [spa.routes.viewer :refer [viewer-routes]]
+            [spa.routes.projects :refer [projects-routes]]
             [spa.flake :as flake]
             [cronj.core :as cronj]
-            [selmer.parser :refer [add-tag!]]
             [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
             [spa.services :as services]))
 
@@ -33,10 +31,8 @@
   []
   (timbre/set-config!
    [:appenders :rotor]
-   {:min-level :info,
-    :enabled? true,
+   {:enabled? true,
     :async? false,
-    :max-message-per-msecs nil,
     :fn rotor/appender-fn})
   (timbre/set-config!
    [:shared-appender-config :rotor]
@@ -44,7 +40,7 @@
   (services/start!)
   (flake/init!)
   (if (env :dev) (parser/cache-off!))
-  (add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
+  (parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)
   (timbre/info "spa started successfully"))
 
@@ -61,7 +57,7 @@
 (def web-routes
   [auth-routes
    topology-routes
-   viewer-routes
+   projects-routes
    home-routes
    app-routes])
 
@@ -74,5 +70,4 @@
    :middleware (load-middleware)
    :session-options {:timeout (* 60 30), :timeout-response (redirect "/")}
    :access-rules [{:uri "/topology/*" :rule user-access}
-                  {:uri "/document/*" :rule user-access}
-                  {:uri "/view/*" :rule user-access}]))
+                  {:uri "/projects/*" :rule user-access}]))

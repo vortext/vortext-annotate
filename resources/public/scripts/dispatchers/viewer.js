@@ -42,10 +42,10 @@ define(function (require) {
     // Routes
     var Router = Backbone.Router.extend({
       routes: {
-        "view/:fingerprint":                "view",
-        "view/:fingerprint/a/:annotation":  "view"
+        "projects/:project/view/:fingerprint":                "view",
+        "projects/:project/view/:fingerprint/a/:annotation":  "view"
       },
-      view: function(fingerprint, annotation) {
+      view: function(project, fingerprint, annotation) {
         marginaliaModel.reset();
         var request = new XMLHttpRequest();
         request.open("GET", "/document/" + fingerprint, true);
@@ -71,7 +71,7 @@ define(function (require) {
       case "annotations:select":
         var fingerprint = PDFModel.get("fingerprint");
         viewerComponent.setState({select: obj});
-        self.router.navigate("view/" + fingerprint + "/a/" + obj);
+        //self.router.navigate("view/" + fingerprint + "/a/" + obj);
         break;
       case "annotations:change":
         break;
@@ -85,7 +85,7 @@ define(function (require) {
       switch(e) {
       case "change:raw":
         var fingerprint = obj.changed.raw.pdfInfo.fingerprint;
-        self.router.navigate("view/" + fingerprint);
+        //self.router.navigate("view/" + fingerprint);
         viewerComponent.setState({
           fingerprint: fingerprint
         });
