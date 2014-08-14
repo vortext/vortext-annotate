@@ -1,4 +1,5 @@
 (ns spa.layout
+  (:gen-class)
   (:require [selmer.parser :as parser]
             [clojure.string :as s]
             [ring.util.response :refer [content-type response]]
@@ -28,3 +29,7 @@
 
 (defn render [template & [params]]
   (RenderableTemplate. template params))
+
+(defn render-to-response
+  [template & [params]]
+  (.render (render template params) {}))

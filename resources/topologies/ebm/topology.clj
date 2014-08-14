@@ -47,8 +47,7 @@
         new-annotations (map #(collapse-annotations % doc) marginalia)]
     {:marginalia (map #(assoc (into {} %1) :annotations %2) marginalia new-annotations)}))
 
-(defn output
-  [input]
+(defn output [input]
   (json/encode input {:key-fn (fn [k] (dash->lower-camel (name k)))}))
 
 

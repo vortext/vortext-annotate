@@ -1,4 +1,33 @@
 {% extends "templates/base.html" %}
 {% block content %}
-EDIT ME
+<div class="row">
+  <div class="columns large-12">
+    <h2>Create project</h2>
+
+    <form action="{{servlet-context}}/projects/edit" method="POST">
+      <div class="row">
+        <div class="large-5 columns">
+          <label>Title
+            <input type="text" name="title" placeholder="Title" />
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-5 columns">
+          <label>Description
+            <textarea name="description" placeholder="Description"></textarea>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-5 columns">
+          <input type="hidden" name="__anti-forgery-token" value="{% csrf-token %}">
+          <input type="submit" class="button" value="Create"></input>
+          <button class="button secondary">Cancel</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
 {% endblock %}
