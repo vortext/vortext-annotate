@@ -1,13 +1,15 @@
 CREATE TABLE "documents" (
        "id" varchar PRIMARY KEY,
-       "file" bytea
+       "file" bytea,
+       "last_updated" timestamp DEFAULT current_timestamp
 );
 COMMENT ON COLUMN "documents".id IS 'fingerprint produced by PDF.js';
 
 CREATE TABLE "projects" (
        "id" bigserial PRIMARY KEY,
        "title" varchar,
-       "description" text
+       "description" text,
+       "last_updated" timestamp DEFAULT current_timestamp
 );
 
 CREATE TABLE "users_projects" (

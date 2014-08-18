@@ -10,12 +10,9 @@
             [spa.db.projects :as projects]
             [spa.layout :as layout]))
 
-(defn parse-int [s]
-   (Integer. (re-find  #"\d+" s )))
+(defn parse-int [s] (Integer. (re-find  #"\d+" s )))
 
-(defn current-user
-  []
-  (session/get :user-id))
+(defn current-user [] (session/get :user-id))
 
 (defn overview-page []
   (layout/render "projects/overview.html"
@@ -27,9 +24,6 @@
   (when (projects/has? user-id project-id)
     (projects/get project-id)))
 
-(defn create-new []
-  (layout/render "projects/edit.html" {:project-id "new"}))
-
 (defn edit-existing
   [project-id]
   (if-let [project (get-project (current-user) project-id)]
@@ -37,28 +31,28 @@
                                          :project project})
     (response/not-found (str "could not find project " project-id " for you"))))
 
+(defn create-new []
+  (layout/render "projects/edit.html" {:project-id "new"}))
+
 (defn edit-page
-  [req]
-  (let [project-id (get-in req [:query-params "project"])]
-    (if (= project-id "new")
-      (create-new)
-      (edit-existing (parse-int project-id)))))
+  [id req]
+  (if (= id "new")
+    (create-new)
+    (edit-existing (parse-int id))))
 
 (defn handle-edit
-  [{:keys [params] :as req}]
-  (let [{:keys [project-id title description]} params]
-    (timbre/debug project-id title description)
-    (if (= project-id "new")
+  [id {:keys [params] :as req}]
+  (let [{:keys [title description]} params]
+    (if (= id "new")
       (do
         (projects/create! (current-user) title description)
         (redirect "/"))
       (do
-        (projects/edit! (parse-int project-id) title description)
+        (projects/edit! (parse-int id) title description)
         (redirect "/")))))
 
 (defroutes projects-routes
   (context "/projects" []
            (GET "/" [] (restricted (overview-page)))
-           (GET "/view" [] (restricted (viewer/viewer-page)))
-           (GET "/edit" [:as req] (restricted (edit-page req)))
-           (POST "/edit" [:as req] (restricted (handle-edit req)))))
+           (GET "/edit/:id" [id :as req] (restricted (edit-page id req)))
+           (POST "/edit/:id" [id :as req] (restricted (handle-edit id req)))))

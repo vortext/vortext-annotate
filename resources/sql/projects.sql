@@ -8,7 +8,8 @@ INSERT INTO users_projects ("users_id", "projects_id") (SELECT :user_id, id FROM
 UPDATE projects
 SET
   title = :title,
-  description = :description
+  description = :description,
+  last_updated = current_timestamp
 WHERE id = :id
 
 -- name: delete-project!

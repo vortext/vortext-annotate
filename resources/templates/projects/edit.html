@@ -3,7 +3,7 @@
 <div class="row">
   <div class="columns large-12">
     <h2>{% ifequal project-id "new" %}Create project{% else %}Edit {{project.title}}{% endifequal %}</h2>
-    <form action="{{servlet-context}}/projects/edit" method="POST">
+    <form action="{{servlet-context}}/projects/edit/{{project-id}}" method="POST">
       <div class="row">
         <div class="large-5 columns">
           <label>Title
@@ -27,7 +27,7 @@
           {% else %}
           <input type="submit" class="button" value="Edit"></input>
           {% endifequal %}
-          <button class="button secondary">Cancel</button>
+          <a href="{{servlet-context}}/" class="button secondary">Cancel</a>
         </div>
       </div>
     </form>

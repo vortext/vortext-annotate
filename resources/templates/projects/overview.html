@@ -4,7 +4,6 @@
   <div class="large-12 columns">
     <h2>Welcome to Spá.</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
-    <a href="{{servlet-context}}/projects/view" class="button">Just a one-off</a>
   </div>
 </div>
 <div class="row">
@@ -16,21 +15,23 @@
         <tr>
           <th width="200">Title</th>
           <th>Description</th>
+          <th>Last updated</th>
           <th width="150">&nbsp;</th>
         </tr>
       </thead>
-      {% for project in projects %}
-      <tr>
-        <td>{{project.title}}</td>
-        <td>{{project.description}}</td>
-        <td><a href="{{servlet-context}}/projects/edit?project={{project.id}}">[edit]</a></td>
-      </tr>
-      {% endfor %}
       <tbody>
+        {% for project in projects %}
+        <tr>
+          <td>{{project.title}}</td>
+          <td>{{project.description}}</td>
+          <td>{{project.last_updated|date:mediumDate}}</td>
+          <td><a href="{{servlet-context}}/projects/edit/{{project.id}}">[edit]</a></td>
+        </tr>
+        {% endfor %}
       </tbody>
     </table>
 
-    <a href="{{servlet-context}}/projects/edit?project=new" class="button secondary small">Create</a>
+    <a href="{{servlet-context}}/projects/edit/new" class="button secondary small">Create</a>
   </div>
 </div>
 {% endblock %}
