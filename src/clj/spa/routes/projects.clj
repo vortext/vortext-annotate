@@ -18,18 +18,12 @@
   (layout/render "projects/overview.html"
                  {:projects (projects/for-user (current-user))}))
 
-(defn get-project
-  "Gets the project if the project_id belongs to the user_id"
-  [user-id project-id]
-  (when (projects/has? user-id project-id)
-    (projects/get project-id)))
-
 (defn edit-existing
   [project-id]
-  (if-let [project (get-project (current-user) project-id)]
+  (if-let [project (projects/get project-id)]
     (layout/render "projects/edit.html" {:project-id project-id
                                          :project project})
-    (response/not-found (str "could not find project " project-id " for you"))))
+    (response/not-found (str "could not find project " project-id))))
 
 (defn create-new []
   (layout/render "projects/edit.html" {:project-id "new"}))
@@ -44,15 +38,36 @@
   [id {:keys [params] :as req}]
   (let [{:keys [title description]} params]
     (if (= id "new")
-      (do
-        (projects/create! (current-user) title description)
-        (redirect "/"))
+      (let [new-project (projects/create! (current-user) title description)]
+        (redirect (str "/projects/" (:projects_id new-project))))
       (do
         (projects/edit! (parse-int id) title description)
-        (redirect "/")))))
+        (redirect (str "/projects/" id))))))
+
+(defn view
+  [id]
+  (layout/render "projects/view.html"
+                 {:project (projects/get (parse-int id))}))
 
 (defroutes projects-routes
   (context "/projects" []
            (GET "/" [] (restricted (overview-page)))
+           (GET "/:id" [id] (restricted (view id)))
            (GET "/edit/:id" [id :as req] (restricted (edit-page id req)))
            (POST "/edit/:id" [id :as req] (restricted (handle-edit id req)))))
+
+;; Access rules
+(defn logged-in? [req]
+  (not (nil? (current-user))))
+
+(defn is-owner? [req]
+  (let [project-id (get-in req [:params :id])]
+    (if (and project-id and (not= project-id "new"))
+      (projects/has? (current-user) (parse-int ))
+      true)))
+
+(def projects-access
+  [{:uri "/projects/:id" :rules [logged-in? is-owner?]}
+   {:uri "/projects/edit/:id" :rules [logged-in? is-owner?]}
+   {:uri "/projects/*" :rules [logged-in?]}
+   {:uri "/projects" :rules [logged-in?]}])
