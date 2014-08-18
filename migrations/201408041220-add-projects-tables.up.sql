@@ -1,6 +1,7 @@
 CREATE TABLE "documents" (
        "id" varchar PRIMARY KEY,
        "file" bytea,
+       "meta" json,
        "last_updated" timestamp DEFAULT current_timestamp
 );
 COMMENT ON COLUMN "documents".id IS 'fingerprint produced by PDF.js';
@@ -28,6 +29,6 @@ CREATE TABLE "documents_projects" (
 CREATE TABLE "marginalia" (
        "documents_id" varchar REFERENCES documents (id),
        "projects_id" bigint REFERENCES projects (id),
-       "marginalis" json,
+       "marginalia" json,
        PRIMARY KEY ("documents_id", "projects_id")
 );
