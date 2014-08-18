@@ -3,7 +3,7 @@
 <div class="row">
   <div class="large-12 columns">
     <h2>Welcome to Spá.</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
+    <p>Here you can define projects which will allow you to swiftly extract information from documents.</p>
   </div>
 </div>
 <div class="row">
@@ -20,9 +20,12 @@
         </tr>
       </thead>
       <tbody>
-        {% for project in projects %}
+        {% if projects|length = 0 %}
+        <tr><td colspan="4" class="text-center">You have no projects yet.</td></tr>
+        {% endif %}
+        {% for project in projects|sort-by:last_updated %}
         <tr>
-          <td>{{project.title}}</td>
+          <td><a href="{{servlet-context}}/projects/{{project.id}}">{{project.title}}</a></td>
           <td>{{project.description}}</td>
           <td>{{project.last_updated|date:mediumDate}}</td>
           <td><a href="{{servlet-context}}/projects/edit/{{project.id}}">[edit]</a></td>

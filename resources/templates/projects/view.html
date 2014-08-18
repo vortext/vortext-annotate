@@ -1,4 +1,18 @@
 {% extends "templates/base.html" %}
 {% block content %}
-VIEW ME
+<div class="row">
+  <div class="large-12 columns">
+    <div class="row">
+      <div class="large-8 columns clearfix last">
+        <h2 class="left">{{project.title}}</h2>
+        <a style="margin-top: 1.115em" href="{{servlet-context}}/projects/edit/{{project.id}}" class="right secondary tiny button">edit</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-6 columns">
+        <p>{{project.description}}</p>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

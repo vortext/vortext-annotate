@@ -62,8 +62,8 @@
 
 (defn is-owner? [req]
   (let [project-id (get-in req [:params :id])]
-    (if (and project-id and (not= project-id "new"))
-      (projects/has? (current-user) (parse-int ))
+    (if (and project-id (not= project-id "new"))
+      (projects/has? (current-user) (parse-int project-id))
       true)))
 
 (def projects-access
