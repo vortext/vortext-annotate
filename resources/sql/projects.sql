@@ -30,4 +30,4 @@ SELECT EXISTS(SELECT 1 FROM projects AND id = :project_id)
 
 -- name: select-projects-by-user
 -- Returns the projects that are owned by the user with user_id
-SELECT projects.* FROM projects, users_projects WHERE users_projects.users_id = :user_id GROUP BY projects.id
+SELECT projects.* FROM projects, users_projects WHERE users_projects.users_id = :user_id AND projects.id = users_projects.projects_id
