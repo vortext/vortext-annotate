@@ -2,31 +2,34 @@
 {% block content %}
 <div class="row">
   <div class="columns large-12">
-    <h2>Create project</h2>
-
+    <h2>{% ifequal project-id "new" %}Create project{% else %}Edit {{project.title}}{% endifequal %}</h2>
     <form action="{{servlet-context}}/projects/edit" method="POST">
       <div class="row">
         <div class="large-5 columns">
           <label>Title
-            <input type="text" name="title" placeholder="Title" />
+            <input type="text" name="title" placeholder="Title" value="{{project.title}}" />
           </label>
         </div>
       </div>
       <div class="row">
         <div class="large-5 columns">
           <label>Description
-            <textarea name="description" placeholder="Description"></textarea>
+            <textarea name="description" placeholder="Description">{{project.description}}</textarea>
           </label>
         </div>
       </div>
       <div class="row">
         <div class="large-5 columns">
+          <input type="hidden" name="project-id" value="{{project-id}}">
           <input type="hidden" name="__anti-forgery-token" value="{% csrf-token %}">
+          {% ifequal project-id "new" %}
           <input type="submit" class="button" value="Create"></input>
+          {% else %}
+          <input type="submit" class="button" value="Edit"></input>
+          {% endifequal %}
           <button class="button secondary">Cancel</button>
         </div>
       </div>
-
     </form>
   </div>
 </div>

@@ -22,7 +22,12 @@ define(function (require) {
       var text = annotation.get("content");
 
       var isActive = this.props.isActive;
-      var content = isActive ? <a href="#" className="wrap" title="Jump to annotation" onClick={this.select}>{text}</a> : <span className="wrap">{text}</span>;
+      var content;
+      if(isActive) {
+        content = <a href="#" className="wrap" title="Jump to annotation" onClick={this.select}>{text}</a> ;
+      } else {
+        content = <span className="wrap">{text}</span>;
+      }
       var trashcan = <img className="trashcan icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" />;
 
       return <li>
@@ -91,7 +96,7 @@ define(function (require) {
 
       var marginalia = this.props.marginalia;
       var isLoading = progress.state === "loading";
-      var progressPercent = progress && progress.completed < 1.0 ? progress.completed * 100 + "%" : "";
+      var progressPercent = progress.completed ? progress.completed * 100 + "%" : "";
       var message = <span style={{fontSize: "x-small"}}>{isLoading ? progress.message + " " + progressPercent : ""}</span>;
       var blocks = marginalia.map(function(marginalis, idx) {
         return <Block key={idx} marginalia={marginalia} marginalis={marginalis}  />;

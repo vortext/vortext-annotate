@@ -9,7 +9,7 @@ define(function (require) {
   function updateProgress (deferred, e) {
     if (e.lengthComputable) {
       var percentComplete = e.loaded / e.total;
-      if(percentComplete > 0.95) {
+      if(percentComplete > 0.99) {
         deferred.notify({state: "loading", message: "Processing…", completed: 1.0});
       } else {
         deferred.notify({state: "loading", message: "Uploading file", completed: percentComplete.toPrecision(2)});

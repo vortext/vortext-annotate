@@ -1,31 +1,37 @@
 * Annotations
-** DONE Allow deletion of annotations
-** DONE Allow select-drag adding of annotations
-*** DONE Build text cache
-*** DONE Create new annotation
 ** Database/Persistence (save + load)
-*** Get rid of the setActiveAnnotations()
-*** Get rid of Korma (just use SQL)
 *** Properly serialize the Marginalia to JSON
-*** Write "cache-able" topologies
-** W3C RDFa / Providence / Annotations
+** Get rid of the setActiveAnnotations()
+** W3C RDFa / Provenance / Annotations
 ** Write to PDF + stand-off markup?
 * Project view
 ** Users with projects
 *** DONE Create user and login
 *** CRUD projects
+**** DONE Show project page on login
+**** Create/edit project page
+**** Show documents in project
+**** Be able to click to annotation/document (fix backbone routes)
+**** Breadcrumbs
+*** Add documents to projects
+** Export in tabulated format
 ** Make extraction categories configurable
+*** Merge marginalia?
 ** Allow hooking up prediction models
 ** Show results for multiple PDFs
-** Export in tabulated format
 * Server side
-** Documentation and Split up
+** Documentation and split-up
 ** VERIFY Progress updates / async topologies
 *** VERIFY Async for service calls
 *** Implement MDP/2 (partial results)
 *** Websockets to subscribe to updates?
 ** R RPC Worker
+** Java RPC Worker
 ** Better exception handling
 *** Handle errors during processing
 *** Handle exceptions during worker startup
 ** Dockerfiles + Deploy
+* Polish
+** About page
+** More info on home page
+** Drag&Drop to upload

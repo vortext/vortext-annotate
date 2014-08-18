@@ -1,4 +1,4 @@
-(ns spa.db.users
+(ns spa.db.documents
   (:refer-clojure :exclude [get])
   (:require [spa.db.schema :refer [db-spec]]
             [clojure.java.io :as io]

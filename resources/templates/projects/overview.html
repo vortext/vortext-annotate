@@ -16,33 +16,21 @@
         <tr>
           <th width="200">Title</th>
           <th>Description</th>
-          <th>#documents</th>
           <th width="150">&nbsp;</th>
         </tr>
       </thead>
+      {% for project in projects %}
+      <tr>
+        <td>{{project.title}}</td>
+        <td>{{project.description}}</td>
+        <td><a href="{{servlet-context}}/projects/edit?project={{project.id}}">[edit]</a></td>
+      </tr>
+      {% endfor %}
       <tbody>
-        <tr>
-          <td>Content Goes Here</td>
-          <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-          <td>Content Goes Here</td>
-          <td>Content Goes Here</td>
-        </tr>
-        <tr>
-          <td>Content Goes Here</td>
-          <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-          <td>Content Goes Here</td>
-          <td>Content Goes Here</td>
-        </tr>
-        <tr>
-          <td>Content Goes Here</td>
-          <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-          <td>Content Goes Here</td>
-          <td>Content Goes Here</td>
-        </tr>
       </tbody>
     </table>
 
-    <a href="/projects/edit?project=new" class="button secondary small">Create</a>
+    <a href="{{servlet-context}}/projects/edit?project=new" class="button secondary small">Create</a>
   </div>
 </div>
 {% endblock %}
