@@ -1,5 +1,5 @@
 * Annotations
-** Database/Persistence (save + load)
+** IN PROGRESS Database/Persistence (save + load)
 *** Properly serialize the Marginalia to JSON
 ** Get rid of the setActiveAnnotations()
 ** W3C RDFa / Provenance / Annotations
@@ -9,18 +9,17 @@
 *** DONE Create user and login
 *** CRUD projects
 **** DONE Show project page on login
-**** Create/edit project page
+**** DONE Create/edit project page
+**** Add documents to projects
 **** Show documents in project
-**** Be able to click to annotation/document (fix backbone routes)
 **** Breadcrumbs
-*** Add documents to projects
-** Export in tabulated format
 ** Make extraction categories configurable
-*** Merge marginalia?
 ** Allow hooking up prediction models
 ** Show results for multiple PDFs
+*** Be able to click to annotation/document (fix backbone routes)
+** Export in tabulated format
 * Server side
-** Documentation and split-up
+** Documentation and split-up topology system
 ** VERIFY Progress updates / async topologies
 *** VERIFY Async for service calls
 *** Implement MDP/2 (partial results)
