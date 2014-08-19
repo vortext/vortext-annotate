@@ -2,7 +2,7 @@
 {% block content %}
 <div class="row">
   <div class="columns large-12">
-    <h2>{% ifequal project-id "new" %}Create project{% else %}Edit {{project.title|title}}{% endifequal %}</h2>
+    <h2>{% ifequal project-id "new" %}Create project{% else %}Edit: {{project.title|title}}{% endifequal %}</h2>
     <form action="{{servlet-context}}/projects/edit/{{project-id}}" method="POST">
       <div class="row">
         <div class="large-5 columns">
