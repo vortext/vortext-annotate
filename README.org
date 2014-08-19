@@ -17,29 +17,38 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
   More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
 
 * Example
-  You can try the visualizer at [[http://spa.clinici.co]] and use one of the Randomized Clinical Trials from the [[https://github.com/joelkuiper/spa/tree/master/examples][examples]] folder.
+  You can it at [[http://spa.clinici.co]] and use one of the Randomized Clinical Trials from the [[https://github.com/joelkuiper/spa/tree/master/examples][examples]] folder.
 
 * Technical overview
 ** Server side
-   The server-side is written on the principles of [[https://en.wikipedia.org/wiki/Polyglot_%28computing%29][polyglot programming]] by using graphs as an abstraction of computing.
-   In essence, it's a poor-mans [[https://storm.incubator.apache.org/][Apache Storm]].
-
+   The server side is written in [[http://clojure.org/][Clojure]] and requires PostgreSQL as the database.
+   None of the machine learning is done within this project.
+   To handle the machine learning we send a simple HTTP request with the binary PDF.
+   In our case that request gets handled with [[https://github.com/joelkuiper/svar][Svar]], which allows us to succinctly use various programming languages.
+   The response of these HTTP requests contains the side notes (called [[http://en.wikipedia.org/wiki/Marginalia][marginalia]]) and their accompanying annotations as JSON.
+   Any server that knows how to generate the appropriate response can be used instead of Svar.
+   The Spá client-side knows how to deal with this JSON and renders it appropriately, the server side merely caches the responses in the database.
 ** Client side
    Spá relies on [[http://mozilla.github.io/pdf.js][Mozilla PDF.js]] for visualization of the document and text extraction.
    The results of the text extraction are processed server-side.
    Results are communicated back to the browser and displayed using [[http://facebook.github.io/react][React]].
 
    For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by [[http://substance.io/beta/][substance.io]], that acts as a mini-map is projected to show where it resides within the document.
-   The user can interactively activate and inspect specific results.
 
 * Development prerequisites
 ** Database
    We're using PostgreSQL as the database.
    The database settings can be configured with the environment variables specified by environ in project.clj.
    The default database is =spa= with user/pass =spa/develop=. You'll obviously need to change this in production.
+
+   #+BEGIN_SRC
+  CREATE DATABASE spa;
+  GRANT ALL PRIVILEGES ON DATABASE spa TO spa;
+   #+END_SRC
+
    To populate the database tables run =lein migrate=.
 ** Mac OS X
-   The server-side is written in [[http://clojure.org/][Clojure]]. To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
+   To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
    Spa requires at least Java JVM/JDK 1.7 and Leiningen 2.2.
    PDF.js is included as a git submodule.
 
@@ -53,23 +62,8 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
  brew update # make sure you have recent versions
  brew install node # install nodejs via Homebrew
  # Compile the PDF.js files
- node make singlefile generic dist
+ node make generic dist
    #+END_SRC
-
-   For the [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]] functionality we rely on [[http://zeromq.org/][ZeroMQ]] with [[https://developers.google.com/protocol-buffers/][ProtocolBuffers]] as the serialization format.
-
-   #+BEGIN_SRC
- brew install pkg-config zeromq
- pip install protobuf pyzmq argparse # and other dependencies by the topology
- npm -g install underscore q zmq atob commander protobufjs
-   #+END_SRC
-
-  *Note*: if npm complains that "No package 'libzmq' found", you can explicitly pass this path along:
-  #+BEGIN_SRC
-  sudo PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" npm install zmq -g
-  #+END_SRC
- *Note*: if after installing the modules you still get errors that they can't be found check your NODE_PATH,
- setting it explicitly in =.bashrc= (or equivalent) with =export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules= might be necessary.
 
    #+BEGIN_SRC
  brew install leiningen # install via Homebrew
@@ -78,7 +72,6 @@ From the Old Norse word spá or spæ referring to prophesying and which is cogna
  DEV=true lein trampoline run start # will run in development mode
    #+END_SRC
 
- The requirements for the evidence-based medicine processing topology are specified within that directory.
 * Future work
   See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
