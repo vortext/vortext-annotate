@@ -29,6 +29,6 @@ require.config({
 });
 
 define(function (require) {
-  var Dispatcher = require("dispatchers/viewer");
+  var Dispatcher = require("dispatchers/document");
   window.dispatcher = new Dispatcher();
 });

@@ -1,4 +1,4 @@
-(ns spa.routes.viewer
+(ns spa.routes.document
   (:require [compojure.core :refer :all]
             [taoensso.timbre :as timbre]
             [compojure.route :as route]
@@ -6,8 +6,5 @@
             [noir.session :as session]
             [spa.layout :as layout]))
 
-(defn viewer-page []
-  (layout/render "viewer.html" {:bootstrap-script "viewer" :page-type "view"}))
-
-; (def-restricted-routes viewer-routes
-;  (GET "/viewer" [] (viewer-page)))
+(defn document-page []
+  (layout/render "document.html" {:bootstrap-script "document" :page-type "document"}))
