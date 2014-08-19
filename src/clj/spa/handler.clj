@@ -14,7 +14,7 @@
             [spa.routes.topology :refer [topology-routes]]
             [spa.routes.auth :refer [auth-routes]]
             [spa.routes.home :refer [home-routes]]
-            [spa.routes.projects :refer [projects-routes projects-access]]
+            [spa.routes.project :refer [project-routes project-access]]
             [spa.flake :as flake]
             [cronj.core :as cronj]
             [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
@@ -57,7 +57,7 @@
 (def web-routes
   [auth-routes
    topology-routes
-   projects-routes
+   project-routes
    home-routes
    app-routes])
 
@@ -66,4 +66,4 @@
    web-routes
    :middleware (load-middleware)
    :session-options {:timeout (* 60 30), :timeout-response (redirect "/")}
-   :access-rules (concat projects-access)))
+   :access-rules (concat project-access)))

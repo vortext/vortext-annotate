@@ -1,12 +1,12 @@
-(ns spa.routes.projects
-  (:require [compojure.core :refer :all :include-macros true]
+(ns spa.routes.project
+  (:require [compojure.core :refer :all]
             [taoensso.timbre :as timbre]
             [ring.util.response :as response]
             [noir.response :refer [redirect]]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [taoensso.timbre :as timbre]
-            [spa.routes.viewer :as viewer]
+            [spa.routes.document :as document]
             [spa.db.projects :as projects]
             [spa.layout :as layout]))
 
@@ -49,14 +49,17 @@
   (layout/render "projects/view.html"
                  {:project (projects/get (parse-int id))}))
 
-(defroutes projects-routes
+(defroutes project-routes
   (context "/projects" []
            (GET "/" [] (restricted (overview-page)))
            (GET "/:id" [id] (restricted (view id)))
            (GET "/edit/:id" [id :as req] (restricted (edit-page id req)))
            (POST "/edit/:id" [id :as req] (restricted (handle-edit id req)))))
 
+;;;;;;;;;;;;;;;
 ;; Access rules
+;;;;;;;;;;;;;;;
+
 (defn logged-in? [req]
   (not (nil? (current-user))))
 
@@ -66,7 +69,7 @@
       (projects/has? (current-user) (parse-int project-id))
       true)))
 
-(def projects-access
+(def project-access
   [{:uri "/projects/:id" :rules [logged-in? is-owner?]}
    {:uri "/projects/edit/:id" :rules [logged-in? is-owner?]}
    {:uri "/projects/*" :rules [logged-in?]}
