@@ -11,14 +11,11 @@
             [taoensso.timbre.appenders.rotor :as rotor]
             [selmer.parser :as parser]
             [environ.core :refer [env]]
-            [spa.routes.topology :refer [topology-routes]]
             [spa.routes.auth :refer [auth-routes]]
             [spa.routes.home :refer [home-routes]]
             [spa.routes.project :refer [project-routes project-access]]
-            [spa.flake :as flake]
             [cronj.core :as cronj]
-            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
-            [spa.services :as services]))
+            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]))
 
 (defroutes
   app-routes
@@ -37,8 +34,6 @@
   (timbre/set-config!
    [:shared-appender-config :rotor]
    {:path "spa.log", :max-size (* 512 1024), :backlog 10})
-  (services/start!)
-  (flake/init!)
   (if (env :dev) (parser/cache-off!))
   (parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)
@@ -49,14 +44,12 @@
   shuts down, put any clean up code here"
   []
   (timbre/info "spa is shutting down...")
-  (services/shutdown!)
   (cronj/shutdown! session-manager/cleanup-job)
   (shutdown-agents)
   (timbre/info "shutdown complete!"))
 
 (def web-routes
   [auth-routes
-   topology-routes
    project-routes
    home-routes
    app-routes])

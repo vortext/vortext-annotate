@@ -4,15 +4,10 @@
             :url "https://www.gnu.org/copyleft/gpl.html"}
   :url "https://github.com/joelkuiper/spa"
   :main spa.core
-  :source-paths ["src/clj" "resource/topologies"]
-  :java-source-paths ["src/java" "resources/topologies"]
+  :source-paths ["src/clj"]
+  :java-source-paths ["src/java"]
   :plugins [[lein-environ "0.5.0"]]
-  :env {:broker-socket "tcp://127.0.0.1:6667"
-        :default-timeout 2500,
-        :heartbeat-interval 2500,
-        :reconnect-timeout 2500,
-
-        :database-spec "//localhost:5432/spa"
+  :env {:database-spec "//localhost:5432/spa"
         :database-user "spa"
         :database-password "develop"
 
@@ -23,7 +18,6 @@
   :aliases {"migrate" ["trampoline" "run" "-m" "spa.db.migrations" "migrate"]
             "rollback" ["trampoline" "run" "-m" "spa.db.migrations" "rollback"]}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/core.async "0.1.303.0-886421-alpha"]
                  [org.clojure/tools.cli "0.3.1"]
 
                  [log4j "1.2.17" :exclusions [javax.mail/mail
@@ -45,21 +39,8 @@
                  [ring/ring-devel "1.3.0"]
                  [ring/ring-anti-forgery "1.0.0"]
 
-                 [prismatic/plumbing "0.3.3"]
-
-                 [potemkin "0.3.4"]
-                 [primitive-math "0.1.3"]
-                 [commons-codec/commons-codec "1.9"]
-
-                 ;; serialization libraries
-                 [org.flatland/protobuf "0.8.1"]
-                 [cheshire "5.3.1"]
-
                  ;; Database connectivity
                  [yesql "0.4.0"]
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
                  [ragtime "0.3.6"] ; migrations
-
-                 ;; ZeroMQ
-                 [org.zeromq/jeromq "0.3.4"]
-                 [org.zeromq/cljzmq "0.1.4" :exclusions [org.zeromq/jzmq]]])
+                 ])
