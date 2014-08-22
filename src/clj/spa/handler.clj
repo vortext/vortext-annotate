@@ -1,16 +1,14 @@
 (ns spa.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [spa.middleware :refer [load-middleware]]
-            [spa.session-manager :as session-manager]
             [noir.session :as session]
             [noir.response :refer [redirect]]
             [noir.util.middleware :refer [app-handler]]
-            [compojure.route :as route]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.rotor :as rotor]
-            [selmer.parser :as parser]
             [environ.core :refer [env]]
+            [spa.middleware :refer [load-middleware]]
+            [spa.session-manager :as session-manager]
             [spa.routes.auth :refer [auth-routes]]
             [spa.routes.home :refer [home-routes]]
             [spa.routes.project :refer [project-routes project-access]]
@@ -34,8 +32,8 @@
   (timbre/set-config!
    [:shared-appender-config :rotor]
    {:path "spa.log", :max-size (* 512 1024), :backlog 10})
-  (if (env :dev) (parser/cache-off!))
-  (parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
+  (if (env :dev) (selmer.parser/cache-off!))
+  (selmer.parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)
   (timbre/info "spa started successfully"))
 

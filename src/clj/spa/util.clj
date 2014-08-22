@@ -1,7 +1,10 @@
 (ns spa.util
   (:require [clojure.string :as string]
             [clojure.walk :as walk]
+            [clojure.java.shell :refer [sh]]
             [blancas.kern.core :refer :all]))
+
+(def last-commit (string/trim-newline (:out (sh "git" "rev-parse" "HEAD"))))
 
 ;; from https://github.com/jeremyheiler/wharf
 ;; A Clojure library for transforming map keys.

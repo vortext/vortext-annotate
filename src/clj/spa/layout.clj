@@ -5,6 +5,7 @@
             [ring.util.response :refer [content-type response]]
             [compojure.response :refer [Renderable]]
             [environ.core :refer [env]]
+            [spa.util :refer [last-commit]]
             [noir.session :as session]))
 
 (def template-path "templates/")
@@ -18,6 +19,7 @@
             params (keyword (s/replace template #".html" "-selected"))
             "active"
             :dev (env :dev)
+            :last-commit last-commit
             :servlet-context (if-let [context (:servlet-context request)]
                                (try
                                  (.getContextPath context)

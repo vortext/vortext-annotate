@@ -16,7 +16,8 @@
 
 (defn overview-page []
   (layout/render "projects/overview.html"
-                 {:projects (projects/for-user (current-user))}))
+                 {:bootstrap-script "document"
+                  :projects (projects/for-user (current-user))}))
 
 (defn edit-existing
   [project-id]
