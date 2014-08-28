@@ -2,7 +2,6 @@
 <html class="{{page-type}}">
   <head>
     <title>Sp&aacute;</title>
-    <meta name="csrf-token" content="{% csrf-token %}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
@@ -12,7 +11,7 @@
     <link href="{{servlet-context}}/static/css/main.css?{{last-commit}}" rel="stylesheet">
     <script src="{{servlet-context}}/static/scripts/vendor/modernizr.js"></script>
     {% if bootstrap-script %}
-    <script data-main="{{servlet-context}}/static/scripts/{{bootstrap-script}}?{{last-commit}}" src="{{servlet-context}}/static/scripts/require.js"></script>
+    <script data-main="{{servlet-context}}/static/scripts/{{bootstrap-script}}" src="{{servlet-context}}/static/scripts/require.js"></script>
     {% endif %}
   </head>
 
@@ -38,7 +37,7 @@
     </main>
     <script>
      window.csrfToken = "{% csrf-token %}";
+     window.lastCommit = "{{last-commit}}";
     </script>
   </body>
-
 </html>

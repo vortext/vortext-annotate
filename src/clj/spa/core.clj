@@ -19,7 +19,7 @@
    ["-h" "--help"]])
 
 (defn usage [options-summary]
-  (->> ["Runs the server (including a system for serving polyglot processing topologies over HTTP)"
+  (->> ["Runs the server"
       ""
       "Usage: program-name [options] action"
       ""

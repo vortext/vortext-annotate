@@ -16,8 +16,7 @@
 
 (defn overview-page []
   (layout/render "projects/overview.html"
-                 {:bootstrap-script "document"
-                  :projects (projects/for-user (current-user))}))
+                 {:projects (projects/for-user (current-user))}))
 
 (defn edit-existing
   [project-id]
@@ -48,7 +47,8 @@
 (defn view
   [id]
   (layout/render "projects/view.html"
-                 {:project (projects/get (parse-int id))}))
+                 {:bootstrap-script "project"
+                  :project (projects/get (parse-int id))}))
 
 (defroutes project-routes
   (context "/projects" []

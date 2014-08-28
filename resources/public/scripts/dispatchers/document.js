@@ -79,7 +79,7 @@ define(function (require) {
         PDFModel.setActiveAnnotations(marginaliaModel);
         marginaliaComponent.forceUpdate();
       }
-   });
+    });
 
     PDFModel.on("all", function(e, obj) {
       switch(e) {
@@ -123,5 +123,7 @@ define(function (require) {
     });
 
     Backbone.history.start({pushState: true});
+
+    return this;
   };
 });

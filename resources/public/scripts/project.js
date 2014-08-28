@@ -11,25 +11,21 @@ require.config({
     'underscore': 'vendor/underscore',
     'Q': 'vendor/q',
     'react': 'vendor/react',
-    'marked': 'vendor/marked',
     'JSXTransformer': 'vendor/JSXTransformer',
-    'backbone': 'vendor/backbone',
-    'PDFJS': 'vendor/pdfjs/pdf'
+    'backbone': 'vendor/backbone'
   },
   shim: {
     'jQuery': { exports : 'jQuery' },
     'underscore': { exports : '_' },
     "backbone": {
       deps: ["jQuery", "underscore"],
-      exports: "Backbone" },
-    'PDFJS': {
-      exports: 'PDFJS',
-      deps: ['vendor/pdfjs/generic/web/compatibility', 'vendor/ui_utils'] }
+      exports: "Backbone"
+    }
   },
   urlArgs: window.lastCommit
 });
 
 define(function (require) {
-  var Dispatcher = require("dispatchers/document");
+  var Dispatcher = require("dispatchers/project");
   window.dispatcher = new Dispatcher();
 });
