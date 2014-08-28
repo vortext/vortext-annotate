@@ -12,6 +12,7 @@
 **** DONE Create/edit project page
 **** Add documents to projects
 **** Show documents in project
+**** Remove documents from project
 **** Breadcrumbs
 ** Make extraction categories configurable
 ** Allow hooking up prediction models
@@ -19,18 +20,12 @@
 *** Be able to click to annotation/document (fix backbone routes)
 ** Export in tabulated format
 * Server side
-** Documentation and split-up topology system
-** VERIFY Progress updates / async topologies
-*** VERIFY Async for service calls
-*** Implement MDP/2 (partial results)
-*** Websockets to subscribe to updates?
-** R RPC Worker
-** Java RPC Worker
-** Better exception handling
-*** Handle errors during processing
-*** Handle exceptions during worker startup
-** Dockerfiles + Deploy
+** IN PROGRESS Documentation and split-up topology system
+** Dockerfiles and automated deploy
 * Polish
 ** About page
 ** More info on home page
 ** Drag&Drop to upload
+** In place edits
+* Refactor
+** Get rid of backbone (use flux + immutable)
