@@ -37,7 +37,7 @@ define(function (require) {
       };
       request.send(null);
     },
-    triggerFileUpload: function() {
+    trigger: function() {
       this.refs.file.getDOMNode().click();
     },
     loadFile: function() {
@@ -60,7 +60,7 @@ define(function (require) {
         <div>
           <input accept={this.props.accept} style={{display:"none"}} name="file" type="file" ref="file" onChange={this.loadFile} />
           <li><a onClick={this.loadExample}>Example</a></li>
-          <li><a onClick={this.triggerFileUpload}>Upload</a></li>
+          <li><a onClick={this.trigger}>Upload</a></li>
         </div>);
     }
   });

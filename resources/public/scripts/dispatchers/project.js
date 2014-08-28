@@ -21,7 +21,6 @@ define(function (require) {
       document.getElementById("project")
     );
 
-
     // Dispatch logic
     // Listen to model change callbacks -> trigger updates to components
     projectModel.on("all", function(e, obj) {

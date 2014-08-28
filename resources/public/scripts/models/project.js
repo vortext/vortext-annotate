@@ -5,7 +5,14 @@ define(function (require) {
   var _ = require("underscore");
   var Backbone = require("backbone");
 
-  var Project = Backbone.Model.extend({
+  var Document = Backbone.Model.extend({
+    defaults: {
+      name: null
+    }
+  });
+
+  var Project = Backbone.Collection.extend({
+    model: Document
   });
 
   return Project;
