@@ -96,8 +96,8 @@ define(function (require) {
 
       var marginalia = this.props.marginalia;
       var isLoading = progress.state === "loading";
-      var progressPercent = progress.completed ? progress.completed * 100 + "%" : "";
-      var message = <span style={{fontSize: "x-small"}}>{isLoading ? progress.message + " " + progressPercent : ""}</span>;
+      var progressPercent = progress.completed * 100 + "%";
+      var message = <span style={{fontSize: "x-small"}}>{isLoading ? progress.message + " " + progressPercent : progress.message}</span>;
       var blocks = marginalia.map(function(marginalis, idx) {
         return <Block key={idx} marginalia={marginalia} marginalis={marginalis}  />;
       });

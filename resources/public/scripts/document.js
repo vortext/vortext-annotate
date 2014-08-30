@@ -30,6 +30,14 @@ require.config({
 });
 
 define(function (require) {
+  require('PDFJS'); // attaches to window
+
+  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
+  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
+  PDFJS.cMapPacked = true;
+  PDFJS.disableWebGL = !Modernizr.webgl;
+
+
   var Dispatcher = require("dispatchers/document");
   window.dispatcher = new Dispatcher();
 });

@@ -4,21 +4,7 @@ define(function (require) {
 
   var $ = require("jQuery");
   var React = require("react");
-
-  // from http://stackoverflow.com/questions/12092633/pdf-js-rendering-a-pdf-file-using-a-base64-file-source-instead-of-url
-  var BASE64_MARKER = ';base64,';
-  function convertDataURIToBinary(dataURI) {
-    var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-    var base64 = dataURI.substring(base64Index);
-    var raw = window.atob(base64);
-    var rawLength = raw.length;
-    var array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for(var i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
-  }
+  var FileUtil = require("helpers/fileUtil");
 
   return React.createClass({
     loadExample: function() {
@@ -44,12 +30,9 @@ define(function (require) {
       var self = this;
       var file = this.refs.file.getDOMNode().files[0];
       if (file.type.match(this.props.mimeType)) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var data =  convertDataURIToBinary(reader.result);
+        FileUtil.readFileAsBinary(file).then(function(data) {
           self.props.callback(data);
-        };
-        reader.readAsDataURL(file);
+        });
       } else {
         alert("File not supported! Probably not a " + this.props.accept + " file");
       }

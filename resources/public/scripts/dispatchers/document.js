@@ -11,9 +11,8 @@ define(function (require) {
     var self = this;
 
     // Models
-    var PDFModel = new (require("models/pdf"))();
+    var documentModel = new (require("models/document"))();
     var marginaliaModel = new (require("models/marginalia"))();
-    var topologiesModel = new (require("models/topologies"))();
 
     // Components
     var Viewer = require("jsx!components/viewer");
@@ -22,7 +21,7 @@ define(function (require) {
 
     var fileLoaderComponent = React.renderComponent(
       FileLoader({
-        callback: PDFModel.loadFromData.bind(PDFModel),
+        callback: documentModel.loadFromData.bind(documentModel),
         accept:".pdf",
 		    mimeType: /application\/(x-)?pdf|text\/pdf/
       }),
@@ -30,7 +29,7 @@ define(function (require) {
     );
 
     var viewerComponent = React.renderComponent(
-      Viewer({pdf: PDFModel}),
+      Viewer({pdf: documentModel}),
       document.getElementById("viewer")
     );
 
@@ -55,7 +54,7 @@ define(function (require) {
           var arrayBuffer = request.response;
           if (arrayBuffer) {
             var byteArray = new Uint8Array(arrayBuffer);
-            PDFModel.loadFromData(byteArray);
+            documentModel.loadFromData(byteArray);
           }
         };
         request.send(null);
@@ -69,19 +68,19 @@ define(function (require) {
     marginaliaModel.on("all", function(e, obj) {
       switch(e) {
       case "annotations:select":
-        var fingerprint = PDFModel.get("fingerprint");
+        var fingerprint = documentModel.get("fingerprint");
         viewerComponent.setState({select: obj});
         //self.router.navigate("view/" + fingerprint + "/a/" + obj);
         break;
       case "annotations:change":
         break;
       default:
-        PDFModel.setActiveAnnotations(marginaliaModel);
+        documentModel.setActiveAnnotations(marginaliaModel);
         marginaliaComponent.forceUpdate();
       }
     });
 
-    PDFModel.on("all", function(e, obj) {
+    documentModel.on("all", function(e, obj) {
       switch(e) {
       case "change:raw":
         var fingerprint = obj.changed.raw.pdfInfo.fingerprint;
@@ -91,19 +90,8 @@ define(function (require) {
         });
         break;
       case "change:binary":
+        // FIXME
         marginaliaModel.reset();
-        topologiesModel.fetch("ebm", obj.changed.binary)
-          .then(
-            function(data) {
-              marginaliaModel.reset(marginaliaModel.parse(data.marginalia));
-            },
-            function(error) {
-              marginaliaComponent.setState({error: error});
-            },
-            function(progress) {
-              marginaliaComponent.setState({progress: progress});
-            }
-          );
         break;
       case "annotation:add":
         var model = marginaliaModel.findWhere({"active": true}).get("annotations");

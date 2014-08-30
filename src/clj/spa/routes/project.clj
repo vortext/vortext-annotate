@@ -54,6 +54,7 @@
   (context "/projects" []
            (GET "/" [] (restricted (overview-page)))
            (GET "/:id" [id] (restricted (view id)))
+           (POST "/:id/add-document" [id :as req] (restricted (document/add-to-project id req)))
            (GET "/edit/:id" [id :as req] (restricted (edit-page id req)))
            (POST "/edit/:id" [id :as req] (restricted (handle-edit id req)))))
 
@@ -71,7 +72,5 @@
       true)))
 
 (def project-access
-  [{:uri "/projects/:id" :rules [logged-in? is-owner?]}
-   {:uri "/projects/edit/:id" :rules [logged-in? is-owner?]}
-   {:uri "/projects/*" :rules [logged-in?]}
-   {:uri "/projects" :rules [logged-in?]}])
+  [{:uri "/projects/:id/*" :rules [logged-in? is-owner?]}
+   {:uri "/projects/*" :rules [logged-in?]}])
