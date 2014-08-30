@@ -1,9 +1,6 @@
 * Annotations
 ** IN PROGRESS Database/Persistence (save + load)
 *** Properly serialize the Marginalia to JSON
-** Get rid of the setActiveAnnotations()
-** W3C RDFa / Provenance / Annotations
-** Write to PDF + stand-off markup?
 * Project view
 ** Users with projects
 *** DONE Create user and login
@@ -14,8 +11,10 @@
 **** Show documents in project
 **** Remove documents from project
 **** Breadcrumbs
-** Make extraction categories configurable
 ** Allow hooking up prediction models
+*** Call Svar
+*** Persist results from Svar
+** Make extraction categories configurable
 ** Show results for multiple PDFs
 *** Be able to click to annotation/document (fix backbone routes)
 ** Export in tabulated format
@@ -24,8 +23,18 @@
 ** Dockerfiles and automated deploy
 * Polish
 ** About page
+** Redo the "one off"
 ** More info on home page
 ** Drag&Drop to upload
 ** In place edits
+* PDF information
+** Get more information about PDF
+* Semantic web
+** W3C RDFa / Provenance / Annotations
+** Public projects
+** Establish author identity (Orcid)
+** Javascript RDF parser?
+** Write to PDF + stand-off markup
 * Refactor
 ** Get rid of backbone (use flux + immutable)
+** Get rid of the setActiveAnnotations()
