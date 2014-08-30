@@ -72,5 +72,5 @@
       true)))
 
 (def project-access
-  [{:uri "/projects/:id/*" :rules [logged-in? is-owner?]}
-   {:uri "/projects/*" :rules [logged-in?]}])
+  [{:uris ["/projects/:id" "/projects/edit/:id" "/projects/:id/*"] :rules [logged-in? is-owner?]}
+   {:uris ["/projects" "/projects/*"] :rules [logged-in?]}])
