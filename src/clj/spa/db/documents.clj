@@ -11,6 +11,10 @@
   [fingerprint]
   (first (get-document db-spec fingerprint)))
 
+(defn has?
+  [project-id document-id]
+  (:exists (first (has-document? db-spec document-id project-id))))
+
 (defn add-to-project!
   [project-id fingerprint file name]
   (create-document<! db-spec fingerprint file name project-id))

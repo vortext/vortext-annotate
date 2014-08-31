@@ -45,4 +45,4 @@
 (defn document-routes [project-id]
   (routes
    (POST "/" [:as req] (restricted (add-to-project project-id req)))
-   (GET "/:id" [id :as req] (restricted (get-document project-id id req)))))
+   (GET "/:document-id" [document-id :as req] (restricted (get-document project-id document-id req)))))

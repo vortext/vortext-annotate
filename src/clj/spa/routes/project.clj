@@ -75,6 +75,12 @@
       (projects/has? (current-user) (parse-int project-id))
       true)))
 
+(defn has-document? [req]
+  (let [{project-id :project-id document-id :document-id} (:params req)]
+    (timbre/debug (:params req))
+    (documents/has? (parse-int project-id) document-id)))
+
 (def project-access
-  [{:uris ["/projects/:project-id" "/projects/:project-id/*"] :rules [logged-in? is-owner?]}
+  [{:uris ["/projects/:project-id/documents/:document-id"] :rules [logged-in? is-owner? has-document?]}
+   {:uris ["/projects/:project-id" "/projects/:project-id/*"] :rules [logged-in? is-owner?]}
    {:uris ["/projects" "/projects/*"] :rules [logged-in?]}])

@@ -23,3 +23,7 @@ SELECT marginalis FROM marginalia WHERE documents_id = :document_id AND projects
 SELECT documents.id AS fingerprint, documents.name, documents.last_updated
 FROM documents, documents_projects
 WHERE documents_projects.projects_id = :project_id AND documents_projects.documents_id = documents.id
+
+-- name: has-document?
+-- Returns true if the document_id belongs to the project_id, false otherwise
+SELECT EXISTS(SELECT 1 FROM documents_projects WHERE documents_id = :document_id AND projects_id = :project_id)
