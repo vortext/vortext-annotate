@@ -53,8 +53,8 @@
       {% endblock %}
     </main>
     <script>
-     window.CSRF_TOKEN = "{% csrf-token %}";
-     window.LAST_COMMIT = "{{last-commit}}";
+     CSRF_TOKEN = "{% csrf-token %}";
+     LAST_COMMIT = "{{last-commit}}";
     </script>
   </body>
 </html>
