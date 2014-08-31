@@ -1,6 +1,7 @@
 CREATE TABLE "documents" (
        "id" varchar PRIMARY KEY,
        "file" bytea,
+       "name" varchar,
        "meta" json,
        "last_updated" timestamp DEFAULT current_timestamp
 );

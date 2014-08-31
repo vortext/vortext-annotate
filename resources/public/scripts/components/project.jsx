@@ -6,15 +6,41 @@ define(function (require) {
   var $ = require("jQuery");
   var React = require("react");
 
+  var ProgressBar = require("jsx!components/progressBar");
+
+  var Document = React.createClass({
+    render: function() {
+      var document = this.props.document;
+
+      var progressBar;
+      if(document._progress) {
+        progressBar = <ProgressBar completed={document._progress.completed} />;
+      }
+
+      var uri = window.location.href + "/documents/" + document.fingerprint;
+      return(
+        <tr>
+          <td><a href={uri}>{document.name}</a></td>
+          {progressBar ? <td width="400">{progressBar}</td> : <td></td>}
+        </tr>);
+    }
+  });
+
   var DocumentsTable = React.createClass({
     render: function() {
       var documents = this.props.documents.map(function(document, i) {
-        return <li key={i}>{document.name}{document._progress}</li>;
+        return <Document document={document} key={i} />;
       });
       return (
-          <ul>
+         <table className="large-12 columns">
+          <thead>
+            <th>Title</th>
+            <th></th>
+          </thead>
+          <tbody>
           {documents}
-        </ul>
+          </tbody>
+        </table>
       );
     }
   });

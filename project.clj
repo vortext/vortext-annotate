@@ -26,6 +26,8 @@
                                               com.sun.jmx/jmxri]]
                  [com.taoensso/timbre "3.2.1"]
                  [selmer "0.6.9"]
+                 [commons-io/commons-io "2.4"]
+
 
                  [im.chit/cronj "1.0.1"]
                  [lib-noir "0.8.4"]

@@ -13,8 +13,8 @@ define(function (require) {
     idAttribute: "fingerprint",
     defaults: {
       name: null,
-      _progress: {},
-      _upload: {}
+      _progress: null,
+      _upload: null
     }
   });
 

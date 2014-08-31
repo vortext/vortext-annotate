@@ -8,6 +8,7 @@
             [taoensso.timbre :as timbre]
             [spa.routes.document :as document]
             [spa.db.projects :as projects]
+            [spa.db.documents :as documents]
             [spa.layout :as layout]))
 
 (defn parse-int [s] (Integer. (re-find  #"\d+" s )))
@@ -46,18 +47,21 @@
 
 (defn view
   [id]
-  (layout/render "projects/view.html"
-                 {:bootstrap-script "project"
-                  :project (projects/get (parse-int id))}))
+  (let [project-id (parse-int id)]
+    (layout/render "projects/view.html"
+                   {:bootstrap-script "project"
+                    :documents (documents/get-by-project project-id)
+                    :project (projects/get project-id)})))
 
 (defroutes project-routes
   (context "/projects" []
            (GET "/" [] (restricted (overview-page)))
-           (GET "/:id" [id] (restricted (view id)))
-           (POST "/:id/add-document" [id :as req] (restricted (document/add-to-project id req)))
-           (GET "/edit/:id" [id :as req] (restricted (edit-page id req)))
-           (POST "/edit/:id" [id :as req] (restricted (handle-edit id req)))))
-
+           (context "/:project-id" [project-id]
+                    (GET "/" [] (restricted (view project-id)))
+                    (GET "/edit" [:as req] (restricted (edit-page project-id req)))
+                    (POST "/edit" [:as req] (restricted (handle-edit project-id req)))
+                    (context "/documents" []
+                             (document/document-routes (parse-int project-id))))))
 ;;;;;;;;;;;;;;;
 ;; Access rules
 ;;;;;;;;;;;;;;;
@@ -72,5 +76,5 @@
       true)))
 
 (def project-access
-  [{:uris ["/projects/:id" "/projects/edit/:id" "/projects/:id/*"] :rules [logged-in? is-owner?]}
+  [{:uris ["/projects/:id" "/projects/:id/*"] :rules [logged-in? is-owner?]}
    {:uris ["/projects" "/projects/*"] :rules [logged-in?]}])

@@ -37,7 +37,6 @@ define(function (require) {
   PDFJS.cMapPacked = true;
   PDFJS.disableWebGL = !Modernizr.webgl;
 
-
   var Dispatcher = require("dispatchers/document");
   window.dispatcher = new Dispatcher();
 });

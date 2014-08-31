@@ -5,3 +5,11 @@
             [clojure.java.jdbc :as jdbc]))
 
 (defqueries "sql/documents.sql")
+
+(defn add-to-project!
+  [project-id fingerprint file name]
+  (create-document<! db-spec fingerprint file name project-id))
+
+(defn get-by-project
+  [project-id]
+  (documents-by-project db-spec project-id))

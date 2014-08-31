@@ -10,6 +10,9 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel="stylesheet">
     <link href="{{servlet-context}}/static/css/main.css?{{last-commit}}" rel="stylesheet">
     <script src="{{servlet-context}}/static/scripts/vendor/modernizr.js"></script>
+    <script>
+     window.models = {};
+    </script>
     {% if bootstrap-script %}
     <script data-main="{{servlet-context}}/static/scripts/{{bootstrap-script}}" src="{{servlet-context}}/static/scripts/require.js"></script>
     {% endif %}

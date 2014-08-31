@@ -28,7 +28,7 @@
           <td><a href="{{servlet-context}}/projects/{{project.id}}">{{project.title}}</a></td>
           <td>{{project.description}}</td>
           <td>{{project.last_updated|date:mediumDate}}</td>
-          <td><a href="{{servlet-context}}/projects/edit/{{project.id}}">[edit]</a></td>
+          <td><a href="{{servlet-context}}/projects/{{project.id}}/edit">[edit]</a></td>
         </tr>
         {% endfor %}
       </tbody>

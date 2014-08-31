@@ -27,5 +27,8 @@ define(function (require) {
       projectComponent.setState({project: projectModel.toJSON()});
     });
 
+    // Set initial state
+    projectModel.reset(window.models.documents);
+
   };
 });
