@@ -16,17 +16,7 @@ define(function (require) {
 
     // Components
     var Viewer = require("jsx!components/viewer");
-    var FileLoader = require("jsx!components/fileLoader");
     var Marginalia = require("jsx!components/marginalia");
-
-    var fileLoaderComponent = React.renderComponent(
-      FileLoader({
-        callback: documentModel.loadFromData.bind(documentModel),
-        accept:".pdf",
-		    mimeType: /application\/(x-)?pdf|text\/pdf/
-      }),
-      document.getElementById("file-loader")
-    );
 
     var viewerComponent = React.renderComponent(
       Viewer({pdf: documentModel}),
@@ -41,23 +31,12 @@ define(function (require) {
     // Routes
     var Router = Backbone.Router.extend({
       routes: {
-        "projects/:project/view/:fingerprint":                "view",
-        "projects/:project/view/:fingerprint/a/:annotation":  "view"
+        "projects/:project/documents/:fingerprint":                "view",
+        "projects/:project/documents/:fingerprint/a/:annotation":  "view"
       },
       view: function(project, fingerprint, annotation) {
         marginaliaModel.reset();
-        var request = new XMLHttpRequest();
-        request.open("GET", "/document/" + fingerprint, true);
-        request.responseType = "arraybuffer";
-
-        request.onload = function (e) {
-          var arrayBuffer = request.response;
-          if (arrayBuffer) {
-            var byteArray = new Uint8Array(arrayBuffer);
-            documentModel.loadFromData(byteArray);
-          }
-        };
-        request.send(null);
+        documentModel.loadFromUrl(window.location.href + "?mime=application/pdf");
       }
     });
 

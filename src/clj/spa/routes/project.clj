@@ -70,11 +70,11 @@
   (not (nil? (current-user))))
 
 (defn is-owner? [req]
-  (let [project-id (get-in req [:params :id])]
+  (let [project-id (get-in req [:params :project-id])]
     (if (and project-id (not= project-id "new"))
       (projects/has? (current-user) (parse-int project-id))
       true)))
 
 (def project-access
-  [{:uris ["/projects/:id" "/projects/:id/*"] :rules [logged-in? is-owner?]}
+  [{:uris ["/projects/:project-id" "/projects/:project-id/*"] :rules [logged-in? is-owner?]}
    {:uris ["/projects" "/projects/*"] :rules [logged-in?]}])

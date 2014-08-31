@@ -8,14 +8,14 @@ define(function (require) {
   function updateProgress (deferred, e) {
     if (e.lengthComputable) {
       var percentComplete = e.loaded / e.total;
-      deferred.notify({state: "loading", message: "Uploading file", completed: percentComplete.toPrecision(2)});
+      deferred.notify({message: "Uploading file", completed: percentComplete.toPrecision(2)});
     } else {
-      deferred.notify({state: "loading", message: "Processing…", completed: NaN});
+      deferred.notify({message: "Processing…", completed: NaN});
     }
   }
 
   function transferComplete(deferred, e) {
-    deferred.notify({state: "loading", message: "Processing…", completed: NaN});
+    deferred.notify({message: "Processing…", completed: NaN});
   }
 
   var send = function(uri, data, fields) {
@@ -23,7 +23,7 @@ define(function (require) {
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
 
-    deferred.notify({state: "loading", message: "Processing…", completed: 0.0});
+    deferred.notify({message: "Processing…", completed: 0.0});
     xhr.upload.addEventListener("progress", _.partial(updateProgress, deferred), false);
     xhr.upload.addEventListener("load", _.partial(transferComplete, deferred), false);
 
@@ -32,7 +32,7 @@ define(function (require) {
 
     xhr.onload = function (e) {
       if (xhr.status >= 200 && xhr.status < 400) {
-        deferred.notify({state: "done", message: "Completed", completed: 1.0});
+        deferred.notify({message: "Completed", completed: 1.0});
         deferred.resolve(xhr.responseText);
       } else {
         deferred.reject({status: xhr.status, message: xhr.responseText});
@@ -50,7 +50,6 @@ define(function (require) {
     return deferred.promise;
   };
 
-  // from http://stackoverflow.com/questions/12092633/pdf-js-rendering-a-pdf-file-using-a-base64-file-source-instead-of-url
   var BASE64_MARKER = ';base64,';
   function convertUriToBinary(dataURI) {
     var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;

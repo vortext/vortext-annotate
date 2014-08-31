@@ -2,7 +2,7 @@
 define(function (require) {
   'use strict';
 
-  var UPLOAD_URI = window.location.href + "/add-document";
+  var UPLOAD_URI = window.location.href + "/documents";
 
   var _ = require("underscore");
   var Backbone = require("backbone");

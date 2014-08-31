@@ -4,24 +4,45 @@
             [compojure.route :as route]
             [clojure.java.io :as io]
             [taoensso.timbre :as timbre]
-            [noir.util.route :refer [def-restricted-routes]]
+            [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [spa.db.documents :as documents]
             [spa.layout :as layout]))
 
 (defn add-to-project
   [project-id req]
-  (let [{temp-file :file fingerprint :fingerprint name :name} (:params req)
-        file (with-open [f (io/reader (:tempfile temp-file))]
+  (let [{fingerprint :fingerprint name :name} (:params req)
+        temp-file (get-in req [:multipart-params "file" :tempfile])
+        file (with-open [f (io/input-stream temp-file)]
                (IOUtils/toByteArray f))]
-    (documents/add-to-project! project-id fingerprint file name)
-    "success"))
+    (try
+      (do
+        (documents/add-to-project! project-id fingerprint file name)
+        {:success true})
+      (catch Exception e (timbre/warn e) {:success false}))))
 
 (defn document-page []
-  (layout/render "document.html" {:bootstrap-script "document" :page-type "document"}))
+  (layout/render "document.html" {:bootstrap-script "document" :page-type "view"}))
+
+(defn dispatch [m req]
+  (let [accept  (get (:headers req) "accept")
+        mime    (get (:query-params req) "mime")
+        match?  (fn [pattern expr] (re-find (re-pattern (str "^" pattern)) expr))
+        accept? (fn [expr] (or (match? mime expr) (match? accept expr)))
+        key     (cond
+                 (accept? "text/html")       :html
+                 (accept? "application/pdf") :pdf
+                 :else                       :default)]
+    ((key m))))
+
+(defn get-document
+  [project-id document-id req]
+  (dispatch {:pdf (fn [] (io/input-stream (:file (documents/get document-id))))
+             :html (fn [] (document-page))
+             :default (fn [] "…")} req))
 
 
 (defn document-routes [project-id]
   (routes
-   (POST "/" [:as req] (add-to-project project-id req))
-   (GET "/:id" [id :as req] (document-page))))
+   (POST "/" [:as req] (restricted (add-to-project project-id req)))
+   (GET "/:id" [id :as req] (restricted (get-document project-id id req)))))

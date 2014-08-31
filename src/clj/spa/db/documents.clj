@@ -6,6 +6,11 @@
 
 (defqueries "sql/documents.sql")
 
+
+(defn get
+  [fingerprint]
+  (first (get-document db-spec fingerprint)))
+
 (defn add-to-project!
   [project-id fingerprint file name]
   (create-document<! db-spec fingerprint file name project-id))

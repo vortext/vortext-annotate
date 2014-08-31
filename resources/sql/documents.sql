@@ -1,6 +1,6 @@
 -- name: get-document
 -- Gets the document associated with a specific fingerprint
-SELECT * FROM documents WHERE id = :id
+SELECT * FROM documents WHERE id = :id LIMIT 1
 
 -- name: create-document<!
 -- Creates a document associated with a specific project, no-op if already present

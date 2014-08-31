@@ -192,6 +192,13 @@ define(function (require) {
         page.set({annotations: annotations[pageIndex] || {}});
       });
     },
+    loadFromUrl: function(url) {
+      var self = this;
+      PDFJS.getDocument(url).then(function(pdf) {
+        self.set({binary: null, raw: pdf, fingerprint: pdf.pdfInfo.fingerprint});
+        self.get("pages").populate(pdf);
+      });
+    },
     loadFromData: function(data) {
       var self = this;
       this.set({binary: data});
