@@ -6,7 +6,9 @@
             [taoensso.timbre :as timbre]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
+            [spa.util :refer [breadcrumbs]]
             [spa.db.documents :as documents]
+            [spa.db.projects :as projects]
             [spa.layout :as layout]))
 
 (defn add-to-project
@@ -21,8 +23,10 @@
         {:success true})
       (catch Exception e (timbre/warn e) {:success false}))))
 
-(defn document-page []
-  (layout/render "document.html" {:bootstrap-script "document" :page-type "view"}))
+(defn document-page [document project req]
+  (layout/render "document.html" {:bootstrap-script "document"
+                                  :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) (:name document)])
+                                  :page-type "view"}))
 
 (defn dispatch [m req]
   (let [accept  (get (:headers req) "accept")
@@ -37,9 +41,10 @@
 
 (defn get-document
   [project-id document-id req]
-  (dispatch {:pdf (fn [] (io/input-stream (:file (documents/get document-id))))
-             :html (fn [] (document-page))
-             :default (fn [] "…")} req))
+  (let [document (documents/get document-id)]
+    (dispatch {:pdf (fn [] (io/input-stream (:file document)))
+               :html (fn [] (document-page document (projects/get project-id) req))
+               :default (fn [] "…")} req)))
 
 (defn remove-document
   [project-id document-id]

@@ -34,6 +34,20 @@
       </section>
     </nav>
 
+    {% if breadcrumbs %}
+    <nav class="breadcrumbs">
+      {% for breadcrumb in breadcrumbs %}
+
+      {% if forloop.last %}
+      <span class="current">{{breadcrumb.name}}</span>
+      {% else %}
+      <a href="{{breadcrumb.uri}}">{{breadcrumb.name}}</a>
+      {% endif %}
+
+      {% endfor %}
+    </nav>
+    {% endif %}
+
     <main>
       {% block content %}
       {% endblock %}

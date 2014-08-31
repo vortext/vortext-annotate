@@ -6,6 +6,7 @@
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [taoensso.timbre :as timbre]
+            [spa.util :refer [breadcrumbs]]
             [spa.routes.document :as document]
             [spa.db.projects :as projects]
             [spa.db.documents :as documents]
@@ -15,25 +16,32 @@
 
 (defn current-user [] (session/get :user-id))
 
-(defn overview-page []
+(defn overview-page
+  [req]
   (layout/render "projects/overview.html"
-                 {:projects (projects/for-user (current-user))}))
+                 {:breadcrumbs (breadcrumbs (:uri req) ["Projects"])
+                  :projects (projects/for-user (current-user))}))
 
 (defn edit-existing
-  [project-id]
+  [project-id req]
   (if-let [project (projects/get project-id)]
-    (layout/render "projects/edit.html" {:project-id project-id
-                                         :project project})
+    (layout/render "projects/edit.html"
+                   {:project-id project-id
+                    :project project
+                    :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) "Edit"])})
     (response/not-found (str "could not find project " project-id))))
 
-(defn create-new []
-  (layout/render "projects/edit.html" {:project-id "new"}))
+(defn create-new [req]
+  (layout/render "projects/edit.html"
+                 {:breadcrumbs (breadcrumbs (:uri req) ["Projects"  "Create new"])
+                  :project-id "new"}))
 
 (defn edit-page
   [id req]
+  (timbre/debug (:uri req))
   (if (= id "new")
-    (create-new)
-    (edit-existing (parse-int id))))
+    (create-new req)
+    (edit-existing (parse-int id) req)))
 
 (defn handle-edit
   [id {:keys [params] :as req}]
@@ -46,18 +54,20 @@
         (redirect (str "/projects/" id))))))
 
 (defn view
-  [id]
-  (let [project-id (parse-int id)]
+  [id req]
+  (let [project-id (parse-int id)
+        project (projects/get project-id)]
     (layout/render "projects/view.html"
                    {:bootstrap-script "project"
+                    :breadcrumbs (breadcrumbs (:uri req) ["Projects"  (:title project)])
                     :documents (documents/get-by-project project-id)
-                    :project (projects/get project-id)})))
+                    :project project})))
 
 (defroutes project-routes
   (context "/projects" []
-           (GET "/" [] (restricted (overview-page)))
+           (GET "/" [:as req] (restricted (overview-page req)))
            (context "/:project-id" [project-id]
-                    (GET "/" [] (restricted (view project-id)))
+                    (GET "/" [:as req] (restricted (view project-id req)))
                     (POST "/" [:as req] (restricted (handle-edit project-id req)))
                     (GET "/edit" [:as req] (restricted (edit-page project-id req)))
                     (context "/documents" []

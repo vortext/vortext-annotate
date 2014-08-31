@@ -6,6 +6,13 @@
 
 (def last-commit (string/trim-newline (:out (sh "git" "rev-parse" "HEAD"))))
 
+(defn breadcrumbs
+  "Builds a vector of breadcrumbs from the uri and their associated names"
+  [uri names]
+  (let [uri-parts (drop 1 (clojure.string/split uri #"/"))
+        crumbs (reductions (fn [mem val] (str mem "/" val)) uri-parts)]
+    (map (fn [uri name] {:uri (str "/" uri) :name name}) crumbs names)))
+
 ;; from https://github.com/jeremyheiler/wharf
 ;; A Clojure library for transforming map keys.
 (defn transform-keys
