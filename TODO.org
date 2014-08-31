@@ -1,16 +1,13 @@
-* Annotations
-** IN PROGRESS Database/Persistence (save + load)
-*** Properly serialize the Marginalia to JSON
 * Project view
 ** Users with projects
 *** DONE Create user and login
 *** CRUD projects
 **** DONE Show project page on login
 **** DONE Create/edit project page
-**** Add documents to projects
-**** Show documents in project
-**** Remove documents from project
-**** Breadcrumbs
+**** DONE Add documents to projects
+**** DONE Show documents in project
+**** DONE Remove documents from project
+**** DONE Breadcrumbs
 ** Allow hooking up prediction models
 *** Call Svar
 *** Persist results from Svar
@@ -18,17 +15,19 @@
 ** Show results for multiple PDFs
 *** Be able to click to annotation/document (fix backbone routes)
 ** Export in tabulated format
-* Server side
-** IN PROGRESS Documentation and split-up topology system
-** Dockerfiles and automated deploy
+* Annotations
+** IN PROGRESS Database/Persistence (save + load)
+*** Properly serialize the Marginalia to JSON
+** Make popup properly disappear on click
 * Polish
 ** About page
 ** Redo the "one off"
 ** More info on home page
 ** Drag&Drop to upload
+** Confirm removal of documents
 ** In place edits
 * PDF information
-** Get more information about PDF
+** Get more information about PDF (doi, pmid)
 * Semantic web
 ** W3C RDFa / Provenance / Annotations
 ** Public projects
@@ -38,3 +37,6 @@
 * Refactor
 ** Get rid of backbone (use flux + immutable)
 ** Get rid of the setActiveAnnotations()
+* Server side
+** IN PROGRESS Documentation and split-up topology system
+** Dockerfiles and automated deploy
