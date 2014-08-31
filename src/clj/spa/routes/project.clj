@@ -1,6 +1,5 @@
 (ns spa.routes.project
   (:require [compojure.core :refer :all]
-            [taoensso.timbre :as timbre]
             [ring.util.response :as response]
             [noir.response :refer [redirect]]
             [noir.util.route :refer [restricted]]
@@ -38,7 +37,6 @@
 
 (defn edit-page
   [id req]
-  (timbre/debug (:uri req))
   (if (= id "new")
     (create-new req)
     (edit-existing (parse-int id) req)))
