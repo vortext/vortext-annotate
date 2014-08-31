@@ -8,6 +8,15 @@ define(function (require) {
 
   var ProgressBar = require("jsx!components/progressBar");
 
+  var RemoveButton = React.createClass({
+    remove: function() {
+      this.props.model.remove(this.props.document.fingerprint);
+    },
+    render: function() {
+      return <a onClick={this.remove}>[remove]</a>;
+    }
+  });
+
   var Document = React.createClass({
     render: function() {
       var document = this.props.document;
@@ -17,24 +26,29 @@ define(function (require) {
         progressBar = <ProgressBar completed={document._progress.completed} />;
       }
 
+      var remove = <RemoveButton document={this.props.document} model={this.props.model} />;
+
       var uri = window.location.href + "/documents/" + document.fingerprint;
       return(
         <tr>
           <td><a href={uri}>{document.name}</a></td>
           {progressBar ? <td width="400">{progressBar}</td> : <td></td>}
+          <td>{remove}</td>
         </tr>);
     }
   });
 
   var DocumentsTable = React.createClass({
     render: function() {
+      var self = this;
       var documents = this.props.documents.map(function(document, i) {
-        return <Document document={document} key={i} />;
+        return <Document document={document} key={i} model={self.props.model} />;
       });
       return (
          <table className="large-12 columns">
           <thead>
             <th>Title</th>
+            <th></th>
             <th></th>
           </thead>
           <tbody>
@@ -67,7 +81,7 @@ define(function (require) {
     },
     render: function() {
       return(<div>
-             <DocumentsTable documents={this.state.project || []} />
+             <DocumentsTable documents={this.state.project || []} model={this.props.project} />
              <input accept=".pdf" style={{display:"none"}} multiple="multiple" type="file" ref="file" onChange={this.selectFiles} />
              <button className="small" onClick={this.trigger}>Add documents</button>
              </div>);

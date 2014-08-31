@@ -58,14 +58,13 @@
            (GET "/" [] (restricted (overview-page)))
            (context "/:project-id" [project-id]
                     (GET "/" [] (restricted (view project-id)))
+                    (POST "/" [:as req] (restricted (handle-edit project-id req)))
                     (GET "/edit" [:as req] (restricted (edit-page project-id req)))
-                    (POST "/edit" [:as req] (restricted (handle-edit project-id req)))
                     (context "/documents" []
                              (document/document-routes (parse-int project-id))))))
 ;;;;;;;;;;;;;;;
 ;; Access rules
 ;;;;;;;;;;;;;;;
-
 (defn logged-in? [req]
   (not (nil? (current-user))))
 
@@ -77,7 +76,6 @@
 
 (defn has-document? [req]
   (let [{project-id :project-id document-id :document-id} (:params req)]
-    (timbre/debug (:params req))
     (documents/has? (parse-int project-id) document-id)))
 
 (def project-access

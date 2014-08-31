@@ -39,8 +39,8 @@
       {% endblock %}
     </main>
     <script>
-     window.csrfToken = "{% csrf-token %}";
-     window.lastCommit = "{{last-commit}}";
+     window.CSRF_TOKEN = "{% csrf-token %}";
+     window.LAST_COMMIT = "{{last-commit}}";
     </script>
   </body>
 </html>

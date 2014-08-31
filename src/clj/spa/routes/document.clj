@@ -41,8 +41,14 @@
              :html (fn [] (document-page))
              :default (fn [] "…")} req))
 
+(defn remove-document
+  [project-id document-id]
+  (do
+    (documents/dissoc! document-id project-id)
+    {:deleted document-id}))
 
 (defn document-routes [project-id]
   (routes
    (POST "/" [:as req] (restricted (add-to-project project-id req)))
+   (DELETE "/:document-id" [document-id :as req] (restricted (remove-document project-id document-id)))
    (GET "/:document-id" [document-id :as req] (restricted (get-document project-id document-id req)))))

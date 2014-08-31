@@ -2,7 +2,7 @@
 define(function (require) {
   'use strict';
 
-  var UPLOAD_URI = window.location.href + "/documents";
+  var DOCUMENTS_URI = window.location.href + "/documents";
 
   var _ = require("underscore");
   var Backbone = require("backbone");
@@ -11,6 +11,7 @@ define(function (require) {
 
   var Document = Backbone.Model.extend({
     idAttribute: "fingerprint",
+    urlRoot: DOCUMENTS_URI,
     defaults: {
       name: null,
       _progress: null,
@@ -20,6 +21,10 @@ define(function (require) {
 
   var Project = Backbone.Collection.extend({
     model: Document,
+    remove: function(models, options) {
+      var model = Backbone.Collection.prototype.remove.call(this, models, options);
+      model.destroy();
+    },
     upload: function(files) {
       var self = this;
       var documents = _.map(files, function(file) {
@@ -31,7 +36,7 @@ define(function (require) {
               name: file.name
             };
 
-            var upload = FileUtil.send(UPLOAD_URI, file, document);
+            var upload = FileUtil.send(DOCUMENTS_URI, file, document);
             document._upload = upload;
 
             return document;

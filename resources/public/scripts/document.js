@@ -21,12 +21,13 @@ require.config({
     'underscore': { exports : '_' },
     "backbone": {
       deps: ["jQuery", "underscore"],
-      exports: "Backbone" },
+      exports: "Backbone"
+    },
     'PDFJS': {
       exports: 'PDFJS',
       deps: ['vendor/pdfjs/generic/web/compatibility', 'vendor/ui_utils'] }
   },
-  urlArgs: window.lastCommit
+  urlArgs: LAST_COMMIT
 });
 
 define(function (require) {
@@ -39,4 +40,15 @@ define(function (require) {
 
   var Dispatcher = require("dispatchers/document");
   window.dispatcher = new Dispatcher();
+
+  var Backbone = require("backbone");
+
+  var _sync = Backbone.sync;
+  Backbone.sync = function(method, model, options){
+    options.beforeSend = function(xhr){
+      xhr.setRequestHeader('X-CSRF-Token', CSRF_TOKEN);
+    };
+    return _sync(method, model, options);
+  };
+
 });
