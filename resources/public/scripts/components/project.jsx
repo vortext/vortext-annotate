@@ -13,7 +13,8 @@ define(function (require) {
       this.props.model.remove(this.props.document.fingerprint);
     },
     render: function() {
-      return <a onClick={this.remove}>[remove]</a>;
+      var trashcan = <img className="trashcan icon" src="/static/img/trash-o_777777_14.png" alt="remove" title="Remove from project" />;
+      return <a onClick={this.remove}>{trashcan}</a>;
     }
   });
 
