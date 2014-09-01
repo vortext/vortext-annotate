@@ -8,7 +8,6 @@ define(function (require) {
   var ContentEditable = React.createClass({
     render: function(){
       return <div
-        onInput={this.emitChange}
         onBlur={this.emitChange}
         contentEditable
         dangerouslySetInnerHTML={{__html: this.props.html}}></div>;
