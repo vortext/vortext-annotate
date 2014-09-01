@@ -26,6 +26,7 @@ CREATE TABLE "documents_projects" (
        "projects_id" bigint REFERENCES projects (id),
        PRIMARY KEY ("documents_id", "projects_id")
 );
+CREATE INDEX ON "documents_projects" ("projects_id");
 
 CREATE TABLE "marginalia" (
        "documents_id" varchar REFERENCES documents (id),
