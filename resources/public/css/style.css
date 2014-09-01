@@ -339,3 +339,22 @@ div[contenteditable]:hover {
     text-shadow: 0 0 5px #fff, 0 0 15px #ffff00;
     cursor: pointer;
 }
+
+/* Selectize tweaks */
+.selectize-input input {
+    height: 20px;
+}
+.selectize-input div.item + input {
+    display: inline-block;
+}
+.selectize-input, .selectize-input.dropdown-active, .selectize-dropdown {
+    border-radius: 0;
+}
+.selectize-input > div.item {
+    margin-top: 1px;
+}
+.selectize-input > input {
+    top: 1px;
+    height: auto;
+    display: inline-block;
+}

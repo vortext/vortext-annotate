@@ -12,6 +12,8 @@
             [spa.db.documents :as documents]
             [spa.layout :as layout]))
 
+(timbre/refer-timbre)
+
 (defn parse-int [s] (Integer. (re-find  #"\d+" s )))
 
 (defn current-user [] (session/get :user-id))
@@ -28,12 +30,14 @@
     (layout/render "projects/edit.html"
                    {:project-id project-id
                     :project project
+                    :dispatcher "project"
                     :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) "Edit"])})
     (response/not-found (str "could not find project " project-id))))
 
 (defn create-new [req]
   (layout/render "projects/edit.html"
                  {:breadcrumbs (breadcrumbs (:uri req) ["Projects"  "Create new"])
+                  :dispatcher "project"
                   :project-id "new"}))
 
 (defn edit-page
@@ -44,12 +48,14 @@
 
 (defn handle-edit
   [id {:keys [params] :as req}]
-  (let [{:keys [title description]} params]
+  (let [{:keys [title description]} params
+        categories (clojure.string/split (:categories params) #",")]
+    (debug categories)
     (if (= id "new")
-      (let [new-project (projects/create! (current-user) title description)]
+      (let [new-project (projects/create! (current-user) title description categories)]
         (redirect (str "/projects/" (:projects_id new-project))))
       (do
-        (projects/edit! (parse-int id) title description)
+        (projects/edit! (parse-int id) title description categories)
         (redirect (str "/projects/" id))))))
 
 (defn view

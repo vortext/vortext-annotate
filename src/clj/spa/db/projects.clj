@@ -22,9 +22,15 @@
   (select-projects-by-user db-spec user-id))
 
 (defn create!
-  [user-id title description]
-  (create-project<! db-spec title description user-id))
+  [user-id title description categories]
+  (jdbc/with-db-transaction [connection db-spec]
+    (let [project-id (:projects_id (create-project<! connection title description user-id))]
+      (doall (map #(insert-category! connection project-id %) categories))
+      project-id)))
 
 (defn edit!
-  [id title description]
-  (edit-project! db-spec title description id))
+  [project-id title description categories]
+  (jdbc/with-db-transaction [connection db-spec]
+    (delete-categories! connection project-id)
+    (doall (map #(insert-category! connection project-id %) categories))
+    (edit-project! connection title description project-id)))

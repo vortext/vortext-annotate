@@ -18,7 +18,14 @@
           </label>
         </div>
       </div>
-      {{project.categories|json}}
+      <div class="row">
+        <div class="large-5 columns">
+          <label>Extraction categories
+            <div id="categories"></div>
+          </label>
+        </div>
+      </div>
+      <br>
       <div class="row">
         <div class="large-5 columns">
           <input type="hidden" name="project-id" value="{{project-id}}">
@@ -34,4 +41,8 @@
     </form>
   </div>
 </div>
+
+<script>
+ window.models.project = {{project|json|safe}}
+</script>
 {% endblock %}

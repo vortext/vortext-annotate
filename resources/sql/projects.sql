@@ -20,10 +20,6 @@ DELETE FROM projects WHERE id = :id
 -- Gets the project by id
 SELECT * FROM projects WHERE id = :id LIMIT 1
 
--- name: get-categories
--- Gets the extraction categories by id
-SELECT entity_type, title FROM projects_categories WHERE projects_id = :id
-
 -- name: has-project?
 -- Returns true if the project_id belongs to the user_id, false otherwise
 SELECT EXISTS(SELECT 1 FROM users_projects WHERE users_id = :user_id AND projects_id = :project_id)
@@ -35,3 +31,15 @@ SELECT EXISTS(SELECT 1 FROM projects AND id = :project_id)
 -- name: select-projects-by-user
 -- Returns the projects that are owned by the user with user_id
 SELECT projects.* FROM projects, users_projects WHERE users_projects.users_id = :user_id AND projects.id = users_projects.projects_id
+
+-- name: get-categories
+-- Gets the extraction categories by project_id
+SELECT entity_type, title FROM projects_categories WHERE projects_id = :project_id
+
+-- name: insert-category!
+-- Adds a category to the project
+INSERT INTO projects_categories (projects_id, title) VALUES (:project_id, :title)
+
+-- name: delete-categories!
+-- Deletes all the categories associated with a project
+DELETE FROM projects_categories WHERE projects_id = :project_id

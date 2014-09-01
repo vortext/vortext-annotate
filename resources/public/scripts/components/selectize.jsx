@@ -5,11 +5,19 @@ define(function (require) {
   var React = require("react");
   var $ = require("jQuery");
 
-  var Link = React.createClass({
+  require("selectize");
+
+  var Selectize = React.createClass({
+    componentWillUnmount: function() {
+      $(this.refs.el.getDOMNode()).selectize.destroy();
+    },
+    componentDidMount: function() {
+      $(this.refs.el.getDOMNode()).selectize(this.props.options);
+    },
     render: function() {
-      return(<li><a onClick={this.props.callback}>{this.props.text}</a></li>);
+      return(<input name={this.props.name} type="hidden" ref="el" value={this.props.value} />);
     }
   });
 
-  return Link;
+  return Selectize;
 });

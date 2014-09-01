@@ -9,6 +9,26 @@ define(function (require) {
 
   return function() {
     var self = this;
+
+    var Selectize = require("jsx!components/selectize");
+
+    var project = window.models.project;
+    var categories = _.pluck(project && project.categories, "title").join(",");
+
+    var categoriesComponent = React.renderComponent(
+      Selectize({
+        name: "categories",
+        value: categories,
+        options: {
+          delimiter: ",",
+          persist: false,
+          create: true
+        }
+      }),
+      document.getElementById("categories")
+    );
+
+
     return this;
   };
 });
