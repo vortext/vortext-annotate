@@ -60,7 +60,7 @@ define(function (require) {
     }
   });
 
-  var Project = React.createClass({
+  var Documents = React.createClass({
     getInitialState: function() {
       return {documents: []};
     },
@@ -77,17 +77,17 @@ define(function (require) {
           documents.push(file);
         }
       };
-      this.props.project.upload(documents);
+      this.props.documents.upload(documents);
       return false;
     },
     render: function() {
       return(<div>
-             <DocumentsTable documents={this.state.project || []} model={this.props.project} />
+             <DocumentsTable documents={this.state.documents || []} model={this.props.documents} />
              <input accept=".pdf" style={{display:"none"}} multiple="multiple" type="file" ref="file" onChange={this.selectFiles} />
              <button className="small" onClick={this.trigger}>Add documents</button>
              </div>);
     }
   });
 
-  return Project;
+  return Documents;
 });

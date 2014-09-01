@@ -49,7 +49,7 @@ define(function (require) {
       case "annotations:select":
         var fingerprint = documentModel.get("fingerprint");
         viewerComponent.setState({select: obj});
-        //self.router.navigate("view/" + fingerprint + "/a/" + obj);
+        //self.router.navigate(window.location.href + "/a/" + obj);
         break;
       case "annotations:change":
         break;
@@ -90,6 +90,11 @@ define(function (require) {
     });
 
     Backbone.history.start({pushState: true});
+
+    // Set initial state
+    marginaliaModel.reset(marginaliaModel.parse(window.models.marginalia));
+
+    window.m = marginaliaModel;
 
     return this;
   };

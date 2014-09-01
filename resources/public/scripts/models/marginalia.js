@@ -34,7 +34,7 @@ define(function (require) {
   var Marginalis = Backbone.Model.extend({
     defaults: {
       id: null,
-      description: null,
+      description: "*Click to edit*",
       color: null,
       title: null,
       active: false
@@ -52,13 +52,14 @@ define(function (require) {
   var Marginalia = Backbone.Collection.extend({
     model: Marginalis,
     parse: function(data, options) {
-      _.each(data, function(marginalis, idx) {
+      var marginalia = _.clone(data.marginalia);
+      _.each(marginalia, function(marginalis, idx) {
         var id = marginalis.id || toClassName(marginalis.title);
         marginalis.active = idx === 0;
         marginalis.id = id;
         marginalis.color = colors[idx % colors.length];
       });
-      return data;
+      return marginalia;
     },
     setActive: function(marginalia) {
       this.each(function(marginalis) { marginalis.set("active", false, {silent: true}); });

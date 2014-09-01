@@ -3,7 +3,9 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [clojure.java.io :as io]
+            [cheshire.core :as json]
             [taoensso.timbre :as timbre]
+            [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [spa.util :refer [breadcrumbs]]
@@ -11,20 +13,22 @@
             [spa.db.projects :as projects]
             [spa.layout :as layout]))
 
-(defn add-to-project
+(defn json-response
+  [m]
+  (resp/content-type (resp/response (json/encode m)) "text/json"))
+
+(defn insert-in-project
   [project-id req]
   (let [{fingerprint :fingerprint name :name} (:params req)
         temp-file (get-in req [:multipart-params "file" :tempfile])
         file (with-open [f (io/input-stream temp-file)]
                (IOUtils/toByteArray f))]
-    (try
-      (do
-        (documents/add-to-project! project-id fingerprint file name)
-        {:success true})
-      (catch Exception e (timbre/warn e) {:success false}))))
+    (documents/insert-in-project! project-id fingerprint file name)
+    (json-response {:id fingerprint})))
 
 (defn document-page [document project req]
   (layout/render "document.html" {:dispatcher "document"
+                                  :marginalia (:marginalia document)
                                   :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) (:name document)])
                                   :page-type "view"}))
 
@@ -37,24 +41,21 @@
                  (accept? "text/html")       :html
                  (accept? "application/pdf") :pdf
                  :else                       :default)]
-    (timbre/debug "text" (accept? "text/html") "pdf" (accept? "application/pdf"))
     ((key m))))
 
 (defn get-document
   [project-id document-id req]
-  (let [document (documents/get document-id)]
-    (dispatch {:pdf (fn [] (io/input-stream (:file document)))
-               :html (fn [] (document-page document (projects/get project-id) req))
-               :default (fn [] "…")} req)))
+  (dispatch {:pdf (fn [] (io/input-stream (:file (documents/get document-id))))
+             :html (fn [] (document-page (documents/get document-id project-id) (projects/get project-id) req))
+             :default (fn [] "…")} req))
 
 (defn remove-document
   [project-id document-id]
-  (do
-    (documents/dissoc! document-id project-id)
-    {:deleted document-id}))
+  (documents/dissoc! document-id project-id)
+  (json-response {:id document-id}))
 
 (defn document-routes [project-id]
   (routes
-   (POST "/" [:as req] (restricted (add-to-project project-id req)))
+   (POST "/" [:as req] (restricted (insert-in-project project-id req)))
    (DELETE "/:document-id" [document-id :as req] (restricted (remove-document project-id document-id)))
    (GET "/:document-id" [document-id :as req] (restricted (get-document project-id document-id req)))))

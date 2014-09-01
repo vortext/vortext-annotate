@@ -19,7 +19,7 @@ define(function (require) {
     }
   });
 
-  var Project = Backbone.Collection.extend({
+  var Documents = Backbone.Collection.extend({
     model: Document,
     remove: function(models, options) {
       var model = Backbone.Collection.prototype.remove.call(this, models, options);
@@ -65,5 +65,5 @@ define(function (require) {
     }
   });
 
-  return Project;
+  return Documents;
 });

@@ -20,6 +20,10 @@ DELETE FROM projects WHERE id = :id
 -- Gets the project by id
 SELECT * FROM projects WHERE id = :id LIMIT 1
 
+-- name: get-categories
+-- Gets the extraction categories by id
+SELECT entity_type, title FROM projects_categories WHERE projects_id = :id
+
 -- name: has-project?
 -- Returns true if the project_id belongs to the user_id, false otherwise
 SELECT EXISTS(SELECT 1 FROM users_projects WHERE users_id = :user_id AND projects_id = :project_id)

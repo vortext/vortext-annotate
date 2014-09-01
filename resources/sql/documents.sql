@@ -30,8 +30,8 @@ DELETE FROM documents_projects WHERE documents_id = :document_id AND projects_id
 
 -- name: create-marginalia!
 -- Creates marginalia specified with a specific project and fingerprint
-INSERT INTO marginalia (documents_id, projects_id, marginalis) VALUES (:document_id, :project_id, CAST(:marginalis AS json))
+INSERT INTO marginalia (documents_id, projects_id, marginalia) VALUES (:document_id, :project_id, CAST(:marginalia AS json))
 
 -- name: get-marginalia
 -- Returns the marginalia associated with a specific document and project
-SELECT marginalis FROM marginalia WHERE documents_id = :document_id AND projects_id = :project_id
+SELECT marginalia FROM marginalia WHERE documents_id = :document_id AND projects_id = :project_id LIMIT 1

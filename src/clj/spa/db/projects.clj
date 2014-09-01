@@ -12,7 +12,10 @@
 
 (defn get
   [project-id]
-  (first (get-project db-spec project-id)))
+  (jdbc/with-db-transaction [connection db-spec]
+    (let [project (first (get-project connection project-id))
+          categories (get-categories connection project-id)]
+      (assoc project :categories categories))))
 
 (defn for-user
   [user-id]

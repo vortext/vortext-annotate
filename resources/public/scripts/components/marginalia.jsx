@@ -7,6 +7,8 @@ define(function (require) {
   var React = require("react");
   var Marked = require("marked");
 
+  var ContentEditable = require("jsx!components/contentEditable");
+
   var Annotation = React.createClass({
     destroy: function() {
       this.props.annotation.destroy();
@@ -24,7 +26,7 @@ define(function (require) {
       var isActive = this.props.isActive;
       var content;
       if(isActive) {
-        content = <a href="#" className="wrap" title="Jump to annotation" onClick={this.select}>{text}</a> ;
+        content = <a className="wrap" title="Jump to annotation" onClick={this.select}>{text}</a> ;
       } else {
         content = <span className="wrap">{text}</span>;
       }
@@ -33,7 +35,7 @@ define(function (require) {
       return <li>
                <p className="text-left" onMouseEnter={this.toggleHighlight} onMouseLeave={this.toggleHighlight}>
                  {content}
-                 {isActive ? <a href="#" onClick={this.destroy}>{trashcan}</a> : null}
+                 {isActive ? <a onClick={this.destroy}>{trashcan}</a> : null}
                </p>
              </li>;
     }
@@ -50,6 +52,9 @@ define(function (require) {
     foldAnnotations: function() {
       this.setState({annotationsActive: !this.state.annotationsActive});
     },
+    setDescription: function(e) {
+      this.props.marginalis.set("description", e.target.value);
+    },
     render: function() {
       var marginalis = this.props.marginalis;
       var description = marginalis.get("description");
@@ -64,14 +69,14 @@ define(function (require) {
         return <Annotation annotation={annotation} isActive={isActive} key={idx} />;
       });
 
-      return <div className="block">
+       return <div className="block">
                <h4>
                  <a onClick={this.toggleActivate} style={style}>{marginalis.get("title")} </a>
                </h4>
                <div className="content">
-                 <div className="description" dangerouslySetInnerHTML={{__html: Marked(description)}} />
-                   <div className="divider"><a href="#" onClick={this.foldAnnotations}> {annotationsActive ? "▾" : "▸"}  annotations ({annotations.length})</a></div>
-                   <ul className="no-bullet annotations" style={{"maxHeight": annotationsActive ? 500 : 0}} >{annotations}</ul>
+                 <ContentEditable html={Marked(description)} onChange={this.setDescription} />
+                 <div className="divider"><a onClick={this.foldAnnotations}> {annotationsActive ? "▾" : "▸"}  annotations ({annotations.length})</a></div>
+                 <ul className="no-bullet annotations" style={{"maxHeight": annotationsActive ? 500 : 0}} >{annotations}</ul>
                </div>
              </div>;
     }

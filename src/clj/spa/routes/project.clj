@@ -1,5 +1,6 @@
 (ns spa.routes.project
   (:require [compojure.core :refer :all]
+            [clojure.java.jdbc :as jdbc]
             [ring.util.response :as response]
             [noir.response :refer [redirect]]
             [noir.util.route :refer [restricted]]
@@ -56,7 +57,7 @@
   (let [project-id (parse-int id)
         project (projects/get project-id)]
     (layout/render "projects/view.html"
-                   {:dispatcher "project"
+                   {:dispatcher "documents"
                     :breadcrumbs (breadcrumbs (:uri req) ["Projects"  (:title project)])
                     :documents (documents/get-by-project project-id)
                     :project project})))

@@ -11,24 +11,25 @@ define(function (require) {
     var self = this;
 
     // Models
-    var projectModel = new (require("models/project"))();
+    var documentsModel = new (require("models/documents"))();
 
     // Components
-    var Project = require("jsx!components/project");
+    var Documents = require("jsx!components/documents");
 
-    var projectComponent = React.renderComponent(
-      Project({project: projectModel}),
-      document.getElementById("project")
+    var documentsComponent = React.renderComponent(
+      Documents({documents: documentsModel}),
+      document.getElementById("documents")
     );
 
     // Dispatch logic
     // Listen to model change callbacks -> trigger updates to components
-    projectModel.on("all", function(e, obj) {
-      projectComponent.setState({project: projectModel.toJSON()});
+    documentsModel.on("all", function(e, obj) {
+      documentsComponent.setState({documents: documentsModel.toJSON()});
     });
 
     // Set initial state
-    projectModel.reset(window.models.documents);
+    documentsModel.reset(window.models.documents);
 
+    return this;
   };
 });
