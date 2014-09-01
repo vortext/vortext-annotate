@@ -63,13 +63,14 @@ define(function (require) {
       var $viewer = this.state.$viewer;
       var $popup = this.state.$popup;
 
-      var boxTop = boundingBox.top + $viewer.scrollTop();
+      var offsetFromTop = 45;
+      var boxTop = boundingBox.top + $viewer.scrollTop() - offsetFromTop;
       var boxLeft = boundingBox.left + $viewer.scrollLeft();
       var popupWidth = $popup.outerWidth();
       var popupHeight = $popup.outerHeight();
 
       var left = Math.min(Math.max(e && e.pageX || 0, boxLeft+popupWidth/2), boxLeft+boundingBox.width-popupWidth/2);
-      return { x: left | 0, y: boxTop - 2.25 * popupHeight | 0};
+      return { x: left | 0, y: boxTop - 2.0 * popupHeight | 0};
 
     },
     respondToSelection: function(e) {
