@@ -50,7 +50,6 @@
   [id {:keys [params] :as req}]
   (let [{:keys [title description]} params
         categories (clojure.string/split (:categories params) #",")]
-    (debug categories)
     (if (= id "new")
       (let [new-project (projects/create! (current-user) title description categories)]
         (redirect (str "/projects/" (:projects_id new-project))))
