@@ -31,12 +31,13 @@
 (defn dispatch [m req]
   (let [accept  (get (:headers req) "accept")
         mime    (get (:query-params req) "mime")
-        match?  (fn [pattern expr] (re-find (re-pattern (str "^" pattern)) expr))
-        accept? (fn [expr] (or (match? mime expr) (match? accept expr)))
+        match?  (fn [pattern expr] (not (nil? (re-find (re-pattern (str "^" pattern)) expr))))
+        accept? (fn [pattern] (if mime (match? pattern mime) (match? pattern accept)))
         key     (cond
                  (accept? "text/html")       :html
                  (accept? "application/pdf") :pdf
                  :else                       :default)]
+    (timbre/debug "text" (accept? "text/html") "pdf" (accept? "application/pdf"))
     ((key m))))
 
 (defn get-document
