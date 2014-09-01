@@ -3,6 +3,7 @@ define(function (require) {
   'use strict';
 
   var _ = require("underscore");
+  var $ = require("jQuery");
   var Backbone = require("backbone");
   var Annotation = require('models/annotation');
 
@@ -46,6 +47,15 @@ define(function (require) {
       annotations.on("all", function(e, obj)  {
         self.trigger("annotations:" + e, obj);
       });
+    },
+    toJSON: function() {
+      var json = _.clone(this.attributes);
+      for(var attr in json) {
+        if((json[attr] instanceof Backbone.Model) || (json[attr] instanceof Backbone.Collection)) {
+          json[attr] = json[attr].toJSON();
+        }
+      }
+      return json;
     }
   });
 
@@ -60,6 +70,18 @@ define(function (require) {
         marginalis.color = colors[idx % colors.length];
       });
       return marginalia;
+    },
+    save: function() {
+      var self = this;
+      $.ajax({
+        url: window.location.href,
+        type: "PUT",
+        data: {data: JSON.stringify({marginalia: self.toJSON()})},
+        headers: {"X-CSRF-Token": CSRF_TOKEN},
+        success: function(data) {
+          // FIXME
+        }
+      });
     },
     setActive: function(marginalia) {
       this.each(function(marginalis) { marginalis.set("active", false, {silent: true}); });

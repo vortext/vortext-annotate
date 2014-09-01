@@ -35,3 +35,11 @@ INSERT INTO marginalia (documents_id, projects_id, marginalia) VALUES (:document
 -- name: get-marginalia
 -- Returns the marginalia associated with a specific document and project
 SELECT marginalia FROM marginalia WHERE documents_id = :document_id AND projects_id = :project_id LIMIT 1
+
+-- name: update-marginalia!
+-- Updates the marginalia associated with a document_id
+UPDATE marginalia SET marginalia = CAST(:marginalia AS json) WHERE documents_id = :document_id
+
+-- name: delete-marginalia!
+-- Deletes the marginalia associated with a specific document_id
+DELETE FROM marginalia WHERE documents_id = :document_id

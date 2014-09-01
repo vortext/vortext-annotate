@@ -17,6 +17,7 @@ define(function (require) {
     // Components
     var Viewer = require("jsx!components/viewer");
     var Marginalia = require("jsx!components/marginalia");
+    var Link = require("jsx!components/link");
 
     var viewerComponent = React.renderComponent(
       Viewer({pdf: documentModel}),
@@ -26,6 +27,11 @@ define(function (require) {
     var marginaliaComponent = React.renderComponent(
       Marginalia({marginalia: marginaliaModel}),
       document.getElementById("marginalia")
+    );
+
+    var saveButton = React.renderComponent(
+      Link({text: "Save", callback: marginaliaModel.save.bind(marginaliaModel)}),
+      document.getElementById("save")
     );
 
     // Routes
@@ -84,6 +90,9 @@ define(function (require) {
         var highlighted = _.find(annotations, function(annotation) { return annotation.findWhere({highlighted: true});});
         viewerComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
         break;
+      case "pages:ready":
+        documentModel.setActiveAnnotations(marginaliaModel);
+        marginaliaComponent.forceUpdate();
       default:
         break;
       }
@@ -93,8 +102,6 @@ define(function (require) {
 
     // Set initial state
     marginaliaModel.reset(marginaliaModel.parse(window.models.marginalia));
-
-    window.m = marginaliaModel;
 
     return this;
   };

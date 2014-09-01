@@ -132,7 +132,10 @@ define(function (require) {
       this.reset(pages, {silent: true}); // set a bunch of empty pages
 
       var process = function(arr) {
-        if(arr.length === 0) return;
+        if(arr.length === 0) {
+          self.trigger("ready");
+          return;
+        }
         var pageIndex = _.first(arr);
         var page = pages[pageIndex];
         page.set({state: RenderingStates.RUNNING});

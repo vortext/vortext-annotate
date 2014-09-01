@@ -54,8 +54,15 @@
   (documents/dissoc! document-id project-id)
   (json-response {:id document-id}))
 
+(defn update-marginalia
+  [document-id req]
+  (let [marginalia (get-in req [:params :data])]
+    (documents/update! document-id marginalia)
+    (json-response (:id document-id))))
+
 (defn document-routes [project-id]
   (routes
    (POST "/" [:as req] (restricted (insert-in-project project-id req)))
+   (PUT "/:document-id" [document-id :as req] (restricted (update-marginalia document-id req)))
    (DELETE "/:document-id" [document-id :as req] (restricted (remove-document project-id document-id)))
    (GET "/:document-id" [document-id :as req] (restricted (get-document project-id document-id req)))))

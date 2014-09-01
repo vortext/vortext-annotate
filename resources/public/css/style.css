@@ -334,3 +334,8 @@ a:hover img.icon {
     background-position: -28px -1px;
     width: 15px;
 }
+
+div[contenteditable]:hover {
+    text-shadow: 0 0 5px #fff, 0 0 15px #ffff00;
+    cursor: pointer;
+}
