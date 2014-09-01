@@ -24,7 +24,7 @@
       (catch Exception e (timbre/warn e) {:success false}))))
 
 (defn document-page [document project req]
-  (layout/render "document.html" {:bootstrap-script "document"
+  (layout/render "document.html" {:dispatcher "document"
                                   :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) (:name document)])
                                   :page-type "view"}))
 

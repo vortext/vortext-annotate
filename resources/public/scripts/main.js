@@ -30,18 +30,13 @@ require.config({
   urlArgs: LAST_COMMIT
 });
 
-define(function (require) {
-  require('PDFJS'); // attaches to window
+require(["dispatchers/" + DISPATCHER, "backbone", "PDFJS"], function(Dispatcher, Backbone, PDFJS) {
+  window.dispatcher = new Dispatcher();
 
   PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
   PDFJS.cMapPacked = true;
   PDFJS.disableWebGL = !Modernizr.webgl;
-
-  var Dispatcher = require("dispatchers/document");
-  window.dispatcher = new Dispatcher();
-
-  var Backbone = require("backbone");
 
   var _sync = Backbone.sync;
   Backbone.sync = function(method, model, options){

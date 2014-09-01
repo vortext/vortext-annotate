@@ -56,7 +56,7 @@
   (let [project-id (parse-int id)
         project (projects/get project-id)]
     (layout/render "projects/view.html"
-                   {:bootstrap-script "project"
+                   {:dispatcher "project"
                     :breadcrumbs (breadcrumbs (:uri req) ["Projects"  (:title project)])
                     :documents (documents/get-by-project project-id)
                     :project project})))

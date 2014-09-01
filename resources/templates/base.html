@@ -12,9 +12,12 @@
     <script src="{{servlet-context}}/static/scripts/vendor/modernizr.js"></script>
     <script>
      window.models = {};
+     CSRF_TOKEN = "{% csrf-token %}";
+     LAST_COMMIT = "{{last-commit}}";
+     DISPATCHER = "{{dispatcher}}";
     </script>
-    {% if bootstrap-script %}
-    <script data-main="{{servlet-context}}/static/scripts/{{bootstrap-script}}" src="{{servlet-context}}/static/scripts/require.js"></script>
+    {% if dispatcher %}
+    <script data-main="{{servlet-context}}/static/scripts/main" src="{{servlet-context}}/static/scripts/require.js"></script>
     {% endif %}
   </head>
 
@@ -52,9 +55,5 @@
       {% block content %}
       {% endblock %}
     </main>
-    <script>
-     CSRF_TOKEN = "{% csrf-token %}";
-     LAST_COMMIT = "{{last-commit}}";
-    </script>
   </body>
 </html>
