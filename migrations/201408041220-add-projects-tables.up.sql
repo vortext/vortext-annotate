@@ -17,13 +17,15 @@ CREATE TABLE "projects" (
 CREATE TABLE "users_projects" (
        "users_id" varchar REFERENCES users (id),
        "projects_id" bigint REFERENCES projects (id),
-       PRIMARY KEY ("users_id", "projects_id")
+       PRIMARY KEY ("users_id", "projects_id"),
+       UNIQUE ("projects_id", "users_id")
 );
 CREATE INDEX ON "users_projects" ("users_id");
 
 CREATE TABLE "documents_projects" (
        "documents_id" varchar REFERENCES documents (id),
        "projects_id" bigint REFERENCES projects (id),
+       UNIQUE ("projects_id", "documents_id"),
        PRIMARY KEY ("documents_id", "projects_id")
 );
 CREATE INDEX ON "documents_projects" ("projects_id");
