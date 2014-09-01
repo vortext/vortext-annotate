@@ -6,7 +6,7 @@
   :main spa.core
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
-  :plugins [[lein-environ "0.5.0"]]
+  :plugins [[lein-environ "1.0.0"]]
   :env {:database-spec "//localhost:5432/spa"
         :database-user "spa"
         :database-password "develop"
@@ -29,17 +29,20 @@
                  [commons-io/commons-io "2.4"]
 
 
-                 [im.chit/cronj "1.0.1"]
-                 [lib-noir "0.8.4"]
+                 [im.chit/cronj "1.4.0"]
+                 [lib-noir "0.8.6"]
                  [noir-exception "0.2.2"]
 
-                 [environ "0.5.0"]
+                 [environ "1.0.0"]
                  [org.blancas/kern "0.7.0"]
 
                  [http-kit "2.1.18"]
                  [compojure "1.1.5"]
-                 [ring/ring-devel "1.3.0"]
+                 [ring/ring-devel "1.3.1"]
                  [ring/ring-anti-forgery "1.0.0"]
+
+                 [com.netflix.hystrix/hystrix-clj "1.4.0-RC4"]
+                 [clj-http "1.0.0"]
 
                  ;; Database connectivity
                  [yesql "0.4.0"]
