@@ -22,7 +22,7 @@ define(function (require) {
       var document = this.props.document;
 
       var progressBar;
-      if(document._progress) {
+      if(document._progress && document._progress.completed < 1.0) {
         progressBar = <ProgressBar completed={document._progress.completed} />;
       }
 
@@ -31,7 +31,7 @@ define(function (require) {
       var uri = window.location.href + "/documents/" + document.fingerprint;
       return(
         <tr>
-          <td><a href={uri}>{document.name}</a></td>
+          <td>{!progressBar ? <a href={uri}>{document.name}</a> : document.name}</td>
           {progressBar ? <td width="400">{progressBar}</td> : <td></td>}
           <td>{remove}</td>
         </tr>);
