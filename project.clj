@@ -34,7 +34,6 @@
                  [noir-exception "0.2.2"]
 
                  [environ "1.0.0"]
-                 [org.blancas/kern "0.7.0"]
 
                  [http-kit "2.1.18"]
                  [compojure "1.1.5"]
