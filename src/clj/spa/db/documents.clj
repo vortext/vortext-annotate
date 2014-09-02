@@ -25,7 +25,7 @@
   [document-id project-id]
   (jdbc/with-db-transaction [connection db-spec]
     (dissoc-document! connection document-id project-id)
-    (delete-marginalia! connection document-id)))
+    (delete-marginalia! connection document-id project-id)))
 
 (defn has?
   [project-id document-id]
@@ -49,5 +49,5 @@
   (documents-by-project db-spec project-id))
 
 (defn update!
-  [document-id marginalia]
-  (update-marginalia! db-spec marginalia document-id))
+  [project-id document-id marginalia]
+  (update-marginalia! db-spec marginalia document-id project-id))
