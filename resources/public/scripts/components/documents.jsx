@@ -53,7 +53,7 @@ define(function (require) {
             <th></th>
           </thead>
           <tbody>
-          {documents}
+          {!_.isEmpty(documents) ? documents : <tr><td colSpan="3" className="text-center">No documents in project</td></tr>}
           </tbody>
         </table>
       );

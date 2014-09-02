@@ -18,7 +18,7 @@
         {% if projects|length = 0 %}
         <tr><td colspan="4" class="text-center">You have no projects yet.</td></tr>
         {% endif %}
-        {% for project in projects|sort-by:last_updated %}
+        {% for project in projects|sort-by:title %}
         <tr>
           <td><a href="{{servlet-context}}/projects/{{project.id}}">{{project.title}}</a></td>
           <td>{{project.description}}</td>
