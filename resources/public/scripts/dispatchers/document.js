@@ -17,7 +17,7 @@ define(function (require) {
     // Components
     var Viewer = require("jsx!components/viewer");
     var Marginalia = require("jsx!components/marginalia");
-    var Link = require("jsx!components/link");
+    var TopBar = require("jsx!components/topBar");
 
     var viewerComponent = React.renderComponent(
       Viewer({pdf: documentModel}),
@@ -29,9 +29,9 @@ define(function (require) {
       document.getElementById("marginalia")
     );
 
-    var saveButton = React.renderComponent(
-      Link({text: "Save", callback: marginaliaModel.save.bind(marginaliaModel)}),
-      document.getElementById("save")
+    var topBar = React.renderComponent(
+      TopBar({marginalia: marginaliaModel}),
+      document.getElementById("top-bar")
     );
 
     // Routes
@@ -59,7 +59,15 @@ define(function (require) {
         break;
       case "annotations:change":
         break;
+      case "annotations:add":
+      case "annotations:remove":
+      case "change:description":
+        topBar.setState({isSaving: true});
+        marginaliaModel.save(function() {
+          topBar.setState({isSaving: false});
+        });
       default:
+        console.log(e, obj);
         documentModel.setActiveAnnotations(marginaliaModel);
         marginaliaComponent.forceUpdate();
       }

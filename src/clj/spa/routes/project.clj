@@ -52,7 +52,7 @@
         categories (clojure.string/split (:categories params) #",")]
     (if (= id "new")
       (let [new-project (projects/create! (current-user) title description categories)]
-        (redirect (str "/projects/" (:projects_id new-project))))
+        (redirect (str "/projects/" new-project)))
       (do
         (projects/edit! (parse-int id) title description categories)
         (redirect (str "/projects/" id))))))

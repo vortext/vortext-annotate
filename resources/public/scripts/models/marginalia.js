@@ -71,7 +71,7 @@ define(function (require) {
       });
       return marginalia;
     },
-    save: function() {
+    save: function(successCallback) {
       var self = this;
       $.ajax({
         url: window.location.href,
@@ -79,7 +79,7 @@ define(function (require) {
         data: {data: JSON.stringify({marginalia: self.toJSON()})},
         headers: {"X-CSRF-Token": CSRF_TOKEN},
         success: function(data) {
-          // FIXME
+          successCallback(data);
         }
       });
     },
