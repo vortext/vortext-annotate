@@ -1,42 +1,32 @@
 * Project view
-** Users with projects
-*** DONE Create user and login
-*** CRUD projects
-**** DONE Show project page on login
-**** DONE Create/edit project page
-**** DONE Add documents to projects
-**** DONE Show documents in project
-**** DONE Remove documents from project
-**** DONE Breadcrumbs
-** Allow hooking up prediction models
-*** Call Svar
-*** Persist results from Svar
-** Make extraction categories configurable
+** Delete projects
 ** Show results for multiple PDFs
 *** Be able to click to annotation/document (fix backbone routes)
 ** Export in tabulated format
+** Allow hooking up prediction models
+*** Call Svar
+*** Persist results from Svar
+** Redo the "one off"
 * Annotations
-** IN PROGRESS Database/Persistence (save + load)
-*** Properly serialize the Marginalia to JSON
+** Feedback on save
 ** Make popup properly disappear on click
 * Polish
-** About page
-** Redo the "one off"
-** More info on home page
 ** Drag&Drop to upload
 ** Confirm removal of documents
 ** In place edits
+** About page
+** More info on home page
 * PDF information
-** Get more information about PDF (doi, pmid)
+** Get more information about PDF (title, authors, doi, pmid)
 * Semantic web
 ** W3C RDFa / Provenance / Annotations
 ** Public projects
 ** Establish author identity (Orcid)
-** Javascript RDF parser?
+** Javascript RDF parser? (XML / turtle?)
 ** Write to PDF + stand-off markup
 * Refactor
 ** Get rid of backbone (use flux + immutable)
 ** Get rid of the setActiveAnnotations()
 * Server side
-** IN PROGRESS Documentation and split-up topology system
+** Deploy
 ** Dockerfiles and automated deploy
