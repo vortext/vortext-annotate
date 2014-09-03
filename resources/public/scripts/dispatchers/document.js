@@ -67,7 +67,6 @@ define(function (require) {
           topBar.setState({isSaving: false});
         });
       default:
-        console.log(e, obj);
         documentModel.setActiveAnnotations(marginaliaModel);
         marginaliaComponent.forceUpdate();
       }
