@@ -62,10 +62,10 @@ define(function (require) {
       case "annotations:add":
       case "annotations:remove":
       case "change:description":
-        topBar.setState({isSaving: true});
-        marginaliaModel.save(function() {
-          topBar.setState({isSaving: false});
-        });
+        marginaliaModel.save(
+          function() {topBar.setState({isSaving: true});},
+          function() {topBar.setState({isSaving: false});}
+        );
       default:
         documentModel.setActiveAnnotations(marginaliaModel);
         marginaliaComponent.forceUpdate();
