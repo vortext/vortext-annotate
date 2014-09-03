@@ -14,6 +14,11 @@ define(function (require) {
     setHidden: function() {
       this.setState({visible: false});
     },
+    action: function(e) {
+      var action = this.props.options.action || this.props.action;
+      action(e);
+      this.setHidden();
+    },
     render: function() {
       var options = this.props.options;
       var style = {
@@ -21,9 +26,8 @@ define(function (require) {
 	      top: options.y,
 	      left: options.x
       };
-      var action = options.action || this.props.action;
       var title = options.title || this.props.title;
-      return <span onMouseEnter={this.setVisible} onMouseLeave={this.setHidden} className="tooltip tip-top annotate" onClick={action} style={style} title={title}>
+      return <span onMouseEnter={this.setVisible} onMouseLeave={this.setHidden} className="tooltip tip-top annotate" onClick={this.action} style={style} title={title}>
         <div className={options.sprite} />
 	      <span className="nub"></span></span>;
     }
