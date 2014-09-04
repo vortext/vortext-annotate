@@ -71,8 +71,9 @@ define(function (require) {
       });
       return marginalia;
     },
-    save: function(successCallback) {
+    save: _.throttle(function(beforeSend, successCallback) {
       var self = this;
+      beforeSend();
       $.ajax({
         url: window.location.href,
         type: "PUT",
@@ -82,7 +83,7 @@ define(function (require) {
           successCallback(data);
         }
       });
-    },
+    }, 1000),
     setActive: function(marginalia) {
       this.each(function(marginalis) { marginalis.set("active", false, {silent: true}); });
       this.get(marginalia.cid).set("active", true);
