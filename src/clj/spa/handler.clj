@@ -26,12 +26,12 @@
   []
   (timbre/set-config!
    [:appenders :rotor]
-   {:enabled? true,
-    :async? false,
+   {:enabled? true
+    :async? false
     :fn rotor/appender-fn})
   (timbre/set-config!
    [:shared-appender-config :rotor]
-   {:path "spa.log", :max-size (* 512 1024), :backlog 10})
+   {:path "spa.log", :max-size (* 512 1024) :backlog 10})
   (if (env :dev) (selmer.parser/cache-off!))
   (selmer.parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)
