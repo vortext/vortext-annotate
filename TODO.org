@@ -1,15 +1,21 @@
+* Semantic web
+** W3C Open Annotations
+*** Set-up Fuseki
+*** Save annotations as RDF (Open Annotation spec)
+*** Query triple store for data
+*** Make front-end consume RDF
+** Establish author identity (Orcid) (W3C PROV)
+** Public projects
+** Write to PDF (embed RDF file, show as comments)
 * Project view
 ** Delete projects
 ** Show results for multiple PDFs
 *** Be able to click to annotation/document (fix backbone routes)
-** Export in tabulated format
 ** Allow hooking up prediction models
 *** Call Svar
 *** Persist results from Svar
 ** Redo the "one off"
-* Annotations
-** Feedback on save
-** Make popup properly disappear on click
+** Export in tabulated format
 * Polish
 ** Drag&Drop to upload
 ** Confirm removal of documents
@@ -18,12 +24,6 @@
 ** More info on home page
 * PDF information
 ** Get more information about PDF (title, authors, doi, pmid)
-* Semantic web
-** W3C RDFa / Provenance / Annotations
-** Public projects
-** Establish author identity (Orcid)
-** Javascript RDF parser? (XML / turtle?)
-** Write to PDF + stand-off markup
 * Refactor
 ** Get rid of backbone (use flux + immutable)
 ** Get rid of the setActiveAnnotations()
