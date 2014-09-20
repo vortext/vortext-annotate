@@ -19,26 +19,32 @@
             "rollback" ["trampoline" "run" "-m" "spa.db.migrations" "rollback"]}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.cli "0.3.1"]
+                 [org.clojure/core.async "0.1.303.0-886421-alpha"]
 
                  [log4j "1.2.17" :exclusions [javax.mail/mail
                                               javax.jms/jms
                                               com.sun.jdmk/jmxtools
                                               com.sun.jmx/jmxri]]
-                 [com.taoensso/timbre "3.2.1"]
-                 [selmer "0.6.9"]
+                 [com.taoensso/timbre "3.3.1"]
+                 [selmer "0.7.1"]
                  [commons-io/commons-io "2.4"]
 
-
-                 [im.chit/cronj "1.4.0"]
-                 [lib-noir "0.8.6"]
+                 [im.chit/cronj "1.4.2"]
+                 [lib-noir "0.8.9"]
                  [noir-exception "0.2.2"]
 
                  [environ "1.0.0"]
 
-                 [http-kit "2.1.18"]
-                 [compojure "1.1.5"]
+                 [http-kit "2.1.19"]
+                 [compojure "1.1.9"]
                  [ring/ring-devel "1.3.1"]
                  [ring/ring-anti-forgery "1.0.0"]
+
+                 ;; JSON
+                 [cheshire "5.3.1"]
+
+                 ;; PDF
+                 [org.apache.pdfbox/pdfbox "1.8.7"]
 
                  [com.netflix.hystrix/hystrix-clj "1.4.0-RC4"]
                  [clj-http "1.0.0"]
