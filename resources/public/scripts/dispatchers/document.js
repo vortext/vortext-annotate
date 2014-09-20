@@ -82,7 +82,6 @@ define(function (require) {
         });
         break;
       case "change:binary":
-        // FIXME
         marginaliaModel.reset();
         break;
       case "annotation:add":

@@ -66,59 +66,61 @@ define(function (require) {
       var items = pageContent.items;
       for (var j = 0; j < items.length; j++) {
         var item = items[j];
-        var nextOffset = offset + item.str.length;
+
+        var str = item.str;
+        var normalizedStr = str.replace(/(\r\n|\n|\r|\s{2,})/g," ").trim();
+        var nextOffset = offset + normalizedStr.length;
         var node = { pageIndex: pageIndex,
 		                 nodeIndex: j,
 		                 interval: { lower: totalLength + offset,
 			                           upper: totalLength + nextOffset }};
-        this._cache.text += item.str;
-        offset = nextOffset;
+        this._cache.text += (normalizedStr + " ");
+        offset = nextOffset + 1;
         this._cache.nodes.push(node);
       }
       this._cache.pages.push({ offset: totalLength, length: offset });
       this._cache.totalLength += offset;
     },
     getAnnotation: function(str) {
+      var self = this;
       function escapeRegExp(str) {
-        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gm, "\\$&");
       }
+      var pattern = new RegExp(escapeRegExp(str), "g");
 
-      var pattern = str.replace(/(\r\n|\n|\r)/gm,"");
+      var matches = [];
 
-      var match = this._cache.text.match(new RegExp(escapeRegExp(pattern)));
-      if(!match) return null;
+      var match;
+      while((match = pattern.exec(self._cache.text)) !== null) {
+        var lower = match.index;
+        var upper = lower + match[0].length;
 
-      var lower = match.index;
-      var upper = lower + pattern.length;
+        var mapping = [];
 
-      var mapping = [];
-
-      var nodes =  this._cache.nodes;
-      var pages = this._cache.pages;
-      var nrNodes = nodes.length;
-      for(var i = 0; i < nrNodes; ++i) {
-        var node = _.clone(nodes[i]);
-        if(node.interval.lower < upper && lower < node.interval.upper) {
-          var pageOffset = pages[node.pageIndex].offset;
-          var interval = {lower: node.interval.lower - pageOffset,
-                          upper: node.interval.upper - pageOffset};
-          mapping.push(_.extend(node, {range: _.clone(interval),
-                                       interval: _.clone(interval)}));
+        var nodes =  self._cache.nodes;
+        var pages = self._cache.pages;
+        var nrNodes = nodes.length;
+        for(var i = 0; i < nrNodes; ++i) {
+          var node = _.clone(nodes[i]);
+          if(node.interval.lower < upper && lower < node.interval.upper) {
+            var pageOffset = pages[node.pageIndex].offset;
+            var interval = {lower: node.interval.lower - pageOffset,
+                            upper: node.interval.upper - pageOffset};
+            mapping.push(_.extend(node, {range: _.clone(interval),
+                                         interval: _.clone(interval)}));
+          }
         }
-      }
-      if(!_.isEmpty(mapping)) {
-        mapping[0].range.lower = lower - pages[mapping[0].pageIndex].offset;
-        mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
-
-        var displayString = str.replace(/(\r\n|\n|\r)/gm, " ");
-
-        return new Annotation({
-          content: displayString,
+        if(!_.isEmpty(mapping)) {
+          mapping[0].range.lower = lower - pages[mapping[0].pageIndex].offset;
+          mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
+        }
+        matches.push(new Annotation({
+          content: match[0],
           mapping: mapping,
           uuid: pseudoUUID()
-        });
-      }
-      return null;
+        }));
+      };
+      return matches;
     },
     populate: function(pdf) {
       var self  = this;

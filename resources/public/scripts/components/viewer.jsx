@@ -57,7 +57,16 @@ define(function (require) {
     },
     getSelection: function() {
       var selection = window.getSelection();
-      return (selection.type !== "None" && selection.getRangeAt(0)) || null;
+      if(selection.type === "None" || !selection.getRangeAt(0)) return "";
+
+      var range = selection.getRangeAt(0);
+      var str = "";
+
+      var childNodes = range.cloneContents().childNodes;
+      for (var i = 0, len = childNodes.length; i < len; i++) {
+        str += (childNodes[i].textContent + " ");
+      }
+      return str.replace(/(\r\n|\n|\r|\s{2,})/g," ").trim();
     },
     calculatePopupCoordinates: function(boundingBox, e) {
       var $viewer = this.state.$viewer;
@@ -76,9 +85,8 @@ define(function (require) {
     respondToSelection: function(e) {
       var selection = this.getSelection();
       // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
-      if(selection && /(\w{2,}\W{1,6}){3}/.test(selection.toString())) {
-
-        var selectionBox = selection.getBoundingClientRect();
+      if(/(\w{2,}\W{1,6}){3}/.test(selection)) {
+        var selectionBox = window.getSelection().getRangeAt(0).getBoundingClientRect();
         var position = this.calculatePopupCoordinates(selectionBox, e);
 
         this.setState({
@@ -89,7 +97,7 @@ define(function (require) {
             x: position.x,
             y: position.y,
             visible: true },
-          selection: selection.toString()
+          selection: selection
         });
       }
     },
@@ -107,13 +115,10 @@ define(function (require) {
     },
     emitAnnotation: function() {
       var selection = this.state.selection;
-      if(selection) {
-        this.props.pdf.emitAnnotation(this.state.selection);
-        // Clear text selection
-        window.getSelection().removeAllRanges();
-        this.setState({popup: _.extend(this.state.popup, {visible: false}),
-                       selection: null});
-      }
+      this.props.pdf.emitAnnotation(this.state.selection);
+      // Clear text selection
+      window.getSelection().removeAllRanges();
+      this.setState({selection: null});
     },
     render: function() {
       var self = this;
