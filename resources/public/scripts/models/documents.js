@@ -25,6 +25,7 @@ define(function (require) {
       var model = Backbone.Collection.prototype.remove.call(this, models, options);
       model.destroy();
     },
+    comparator: "name",
     upload: function(files) {
       var self = this;
       var documents = _.map(files, function(file) {
