@@ -197,6 +197,10 @@ h1, h2, h3, h4, h5, h6, h7 {
     border-top: none;
 }
 
+.block .content .editable {
+    height: 57px;
+}
+
 canvas {
     -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select: none; /* Firefox */
@@ -335,7 +339,7 @@ a:hover img.icon {
     width: 15px;
 }
 
-div[contenteditable]:hover {
+div.editable:hover {
     text-shadow: 0 0 5px #fff, 0 0 15px #ffff00;
     cursor: pointer;
 }

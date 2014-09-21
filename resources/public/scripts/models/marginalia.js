@@ -35,7 +35,7 @@ define(function (require) {
   var Marginalis = Backbone.Model.extend({
     defaults: {
       id: null,
-      description: "*Click to edit*",
+      description: "",
       color: null,
       title: null,
       active: false

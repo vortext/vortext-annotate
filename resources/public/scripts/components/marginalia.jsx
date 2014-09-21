@@ -5,9 +5,8 @@ define(function (require) {
   var _ = require("underscore");
   var $ = require("jQuery");
   var React = require("react");
-  var Marked = require("marked");
 
-  var ContentEditable = require("jsx!components/contentEditable");
+  var Editable = require("jsx!components/editable");
 
   var Annotation = React.createClass({
     destroy: function() {
@@ -52,8 +51,8 @@ define(function (require) {
     foldAnnotations: function() {
       this.setState({annotationsActive: !this.state.annotationsActive});
     },
-    setDescription: function(e) {
-      this.props.marginalis.set("description", e.target.value);
+    setDescription: function(val) {
+      this.props.marginalis.set("description", val);
     },
     render: function() {
       var marginalis = this.props.marginalis;
@@ -74,7 +73,7 @@ define(function (require) {
                  <a onClick={this.toggleActivate} style={style}>{marginalis.get("title")} </a>
                </h4>
                <div className="content">
-                 <ContentEditable html={Marked(description)} onChange={this.setDescription} />
+                 <Editable content={description} callback={this.setDescription} />
                  <div className="divider"><a onClick={this.foldAnnotations}> {annotationsActive ? "▾" : "▸"}  annotations ({annotations.length})</a></div>
                  <ul className="no-bullet annotations" style={{"maxHeight": annotationsActive ? 500 : 0}} >{annotations}</ul>
                </div>
