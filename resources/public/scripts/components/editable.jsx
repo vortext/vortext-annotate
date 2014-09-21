@@ -13,7 +13,7 @@ define(function (require) {
     edit: function() {
       this.setState({ editable: true});
     },
-    submit: function() {
+    submit: function(e) {
       this.setState({ editable: false });
       this.props.callback(this.refs.input.getDOMNode().value);
     },
@@ -26,14 +26,14 @@ define(function (require) {
       var content = this.props.content || "*Click to edit*";
       if(this.state.editable) {
         return (
-            <div className="row collapse">
+            <form className="row collapse">
               <div className="small-10 columns">
                 <input type="text" ref="input" defaultValue={this.props.content}></input>
               </div>
               <div className="small-2 columns">
-                <a href="#" className="button postfix" onClick={this.submit}>Edit</a>
+                <button href="#" className="button postfix" onClick={this.submit}>Edit</button>
               </div>
-            </div>
+            </form>
         );
       } else {
         return (
