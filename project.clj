@@ -46,6 +46,7 @@
                  ;; PDF
                  [org.apache.pdfbox/pdfbox "1.8.7"]
 
+                 ;; Remote connectivity
                  [com.netflix.hystrix/hystrix-clj "1.4.0-RC4"]
                  [clj-http "1.0.0"]
 

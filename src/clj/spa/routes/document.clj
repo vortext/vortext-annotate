@@ -72,7 +72,7 @@
   (map-indexed (fn [idx psi] (map (fn [omega] (merge (nth beta idx) omega)) psi)) alpha))
 
 (defn export-document
-  [project-id document-id req]
+  [project-id document-id]
   (let [document (documents/get document-id project-id)
         marginalia (clojure.walk/keywordize-keys (get-in document [:marginalia "marginalia"]))
         annotations (map :annotations marginalia)
@@ -100,4 +100,4 @@
    (GET "/:document-id" [document-id :as req]
         (restricted (get-document project-id document-id req)))
    (GET "/:document-id/export" [document-id :as req]
-        (restricted (export-document project-id document-id req)))))
+        (restricted (export-document project-id document-id)))))

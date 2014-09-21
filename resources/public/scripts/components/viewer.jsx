@@ -55,19 +55,6 @@ define(function (require) {
         }, 750, this);
       }
     },
-    getSelection: function() {
-      var selection = window.getSelection();
-      if(selection.type === "None" || !selection.getRangeAt(0)) return "";
-
-      var range = selection.getRangeAt(0);
-      var str = "";
-
-      var childNodes = range.cloneContents().childNodes;
-      for (var i = 0, len = childNodes.length; i < len; i++) {
-        str += (childNodes[i].textContent + " ");
-      }
-      return str.replace(/(\r\n|\n|\r|\s{2,})/g," ").trim();
-    },
     calculatePopupCoordinates: function(boundingBox, e) {
       var $viewer = this.state.$viewer;
       var $popup = this.state.$popup;
@@ -82,10 +69,23 @@ define(function (require) {
       return { x: left | 0, y: boxTop - 2.0 * popupHeight | 0};
 
     },
+    getSelection: function() {
+      var selection = window.getSelection();
+      if(selection.type === "None" || !selection.getRangeAt(0)) return "";
+
+      var range = selection.getRangeAt(0);
+      var str = "";
+
+      var childNodes = range.cloneContents().childNodes;
+      for (var i = 0, len = childNodes.length; i < len; i++) {
+        str += (childNodes[i].textContent + " ");
+      }
+      return str.replace(/(\r\n|\n|\r|\s{2,})/g," ").trim();
+    },
     respondToSelection: function(e) {
       var selection = this.getSelection();
-      // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
-      if(/(\w{2,}\W{1,6}){3}/.test(selection)) {
+      // At least a word of at least 2 characters
+      if(/(\w{2,})+/.test(selection)) {
         var selectionBox = window.getSelection().getRangeAt(0).getBoundingClientRect();
         var position = this.calculatePopupCoordinates(selectionBox, e);
 
