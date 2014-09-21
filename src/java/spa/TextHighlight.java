@@ -126,9 +126,16 @@ public class TextHighlight extends PDFTextStripper
             final ArrayList<TextPosition> positions = obtainTextPositions(currentPage);
             final StringBuilder sb = obtainStringBuilder(currentPage);
 
-            for (int i = 0; i < str.length(); i++)
-            {
-                sb.append(str.charAt(i));
+            for (int i = 0; i < str.length(); i++) {
+                char nextChar = str.charAt(i);
+                if(sb.length() >= 1) {
+                    char previousChar = sb.charAt(sb.length() - 1);
+
+                    if(Character.isWhitespace(nextChar) && Character.isWhitespace(previousChar)) {
+                        continue;
+                    }
+                }
+                sb.append(nextChar);
                 positions.add(pos);
             }
         }

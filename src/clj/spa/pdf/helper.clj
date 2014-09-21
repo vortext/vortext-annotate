@@ -46,6 +46,7 @@
                       (.setArticleEnd " ")
                       (.setArticleStart " ")
                       (.setParagraphStart " ")
+                      (.setSpacingTolerance (float 0.4))
                       (.setParagraphEnd " ")
                       (.initialize document))]
     (doall (map (fn [h] (highlight highlighter h)) highlights))
