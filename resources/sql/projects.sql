@@ -18,7 +18,7 @@ DELETE FROM projects WHERE id = :id
 
 -- name: get-project
 -- Gets the project by id
-SELECT * FROM projects WHERE id = :id LIMIT 1
+SELECT id, title FROM projects WHERE id = :id LIMIT 1
 
 -- name: has-project?
 -- Returns true if the project_id belongs to the user_id, false otherwise

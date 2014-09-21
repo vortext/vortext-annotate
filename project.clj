@@ -14,7 +14,7 @@
         :port 8080
         :dev true}
   :profiles {:production {:env {:dev false}}}
-  :jvm-opts ["-server"]
+  :jvm-opts ["-server" "-Djava.awt.headless=true"]
   :aliases {"migrate" ["trampoline" "run" "-m" "spa.db.migrations" "migrate"]
             "rollback" ["trampoline" "run" "-m" "spa.db.migrations" "rollback"]}
   :dependencies [[org.clojure/clojure "1.6.0"]

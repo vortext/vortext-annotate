@@ -14,7 +14,12 @@ define(function (require) {
         display: this.state.isSaving ? "block" : "none",
         marginTop: "1.125em"
       };
-      return(<li><span style={style} className="label secondary">saving …</span></li>);
+      return(
+          <div>
+            <li><a href={window.location.href + "/export"}>Export</a></li>
+            <li><span style={style} className="label secondary">saving …</span></li>
+          </div>
+      );
     }
   });
 
