@@ -7,108 +7,112 @@ define(function (require) {
   var React = require("react");
   var _ = require("underscore");
 
-  return function() {
-    var self = this;
+  require("PDFJS");
 
-    // Models
-    var documentModel = new (require("models/document"))();
-    var marginaliaModel = new (require("models/marginalia"))();
+  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
+  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
+  PDFJS.cMapPacked = true;
+  PDFJS.disableWebGL = !Modernizr.webgl;
 
-    // Components
-    var Viewer = require("jsx!components/viewer");
-    var Marginalia = require("jsx!components/marginalia");
-    var TopBar = require("jsx!components/topBar");
+  var self = this;
 
-    var viewerComponent = React.renderComponent(
-      Viewer({pdf: documentModel}),
-      document.getElementById("viewer")
-    );
+  // Models
+  var documentModel = new (require("models/document"))();
+  var marginaliaModel = new (require("models/marginalia"))();
 
-    var marginaliaComponent = React.renderComponent(
-      Marginalia({marginalia: marginaliaModel}),
-      document.getElementById("marginalia")
-    );
+  // Components
+  var Viewer = require("jsx!components/viewer");
+  var Marginalia = require("jsx!components/marginalia");
+  var TopBar = require("jsx!components/topBar");
 
-    var topBar = React.renderComponent(
-      TopBar({marginalia: marginaliaModel}),
-      document.getElementById("top-bar")
-    );
+  var viewerComponent = React.renderComponent(
+    Viewer({pdf: documentModel}),
+    document.getElementById("viewer")
+  );
 
-    // Routes
-    var Router = Backbone.Router.extend({
-      routes: {
-        "projects/:project/documents/:fingerprint":                "view",
-        "projects/:project/documents/:fingerprint/a/:annotation":  "view"
-      },
-      view: function(project, fingerprint, annotation) {
-        marginaliaModel.reset();
-        documentModel.loadFromUrl(window.location.href + "?mime=application/pdf");
-      }
-    });
+  var marginaliaComponent = React.renderComponent(
+    Marginalia({marginalia: marginaliaModel}),
+    document.getElementById("marginalia")
+  );
 
-    this.router = new Router();
+  var topBar = React.renderComponent(
+    TopBar({marginalia: marginaliaModel}),
+    document.getElementById("top-bar")
+  );
 
-    // Dispatch logic
-    // Listen to model change callbacks -> trigger updates to components
-    marginaliaModel.on("all", function(e, obj) {
-      switch(e) {
-      case "annotations:select":
-        var fingerprint = documentModel.get("fingerprint");
-        viewerComponent.setState({select: obj});
-        //self.router.navigate(window.location.href + "/a/" + obj);
-        break;
-      case "annotations:change":
-        break;
-      case "annotations:add":
-      case "annotations:remove":
-      case "change:description":
-        marginaliaModel.save(
-          function() {topBar.setState({isSaving: true});},
-          function() {topBar.setState({isSaving: false});}
-        );
-      default:
-        documentModel.setActiveAnnotations(marginaliaModel);
-        marginaliaComponent.forceUpdate();
-      }
-    });
+  // Routes
+  var Router = Backbone.Router.extend({
+    routes: {
+      "projects/:project/documents/:fingerprint":                "view",
+      "projects/:project/documents/:fingerprint/a/:annotation":  "view"
+    },
+    view: function(project, fingerprint, annotation) {
+      marginaliaModel.reset();
+      documentModel.loadFromUrl(window.location.href + "?mime=application/pdf");
+    }
+  });
 
-    documentModel.on("all", function(e, obj) {
-      switch(e) {
-      case "change:raw":
-        var fingerprint = obj.changed.raw.pdfInfo.fingerprint;
-        //self.router.navigate("view/" + fingerprint);
-        viewerComponent.setState({
-          fingerprint: fingerprint
-        });
-        break;
-      case "change:binary":
-        marginaliaModel.reset();
-        break;
-      case "annotation:add":
-        var model = marginaliaModel.findWhere({"active": true}).get("annotations");
-        model.add(obj);
-        break;
-      case "pages:change:state":
-        viewerComponent.forceUpdate();
-        break;
-      case "pages:change:annotations":
-        var annotations = marginaliaModel.pluck("annotations");
-        var highlighted = _.find(annotations, function(annotation) { return annotation.findWhere({highlighted: true});});
-        viewerComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
-        break;
-      case "pages:ready":
-        documentModel.setActiveAnnotations(marginaliaModel);
-        marginaliaComponent.forceUpdate();
-      default:
-        break;
-      }
-    });
+  new Router();
 
-    Backbone.history.start({pushState: true});
+  // Dispatch logic
+  // Listen to model change callbacks -> trigger updates to components
+  marginaliaModel.on("all", function(e, obj) {
+    switch(e) {
+    case "annotations:select":
+      var fingerprint = documentModel.get("fingerprint");
+      viewerComponent.setState({select: obj});
+      //self.router.navigate(window.location.href + "/a/" + obj);
+      break;
+    case "annotations:change":
+      break;
+    case "annotations:add":
+    case "annotations:remove":
+    case "change:description":
+      marginaliaModel.save(
+        function() {topBar.setState({isSaving: true});},
+        function() {topBar.setState({isSaving: false});}
+      );
+    default:
+      documentModel.setActiveAnnotations(marginaliaModel);
+      marginaliaComponent.forceUpdate();
+    }
+  });
 
-    // Set initial state
-    marginaliaModel.reset(marginaliaModel.parse(window.models.marginalia));
+  documentModel.on("all", function(e, obj) {
+    switch(e) {
+    case "change:raw":
+      var fingerprint = obj.changed.raw.pdfInfo.fingerprint;
+      //self.router.navigate("view/" + fingerprint);
+      viewerComponent.setState({
+        fingerprint: fingerprint
+      });
+      break;
+    case "change:binary":
+      marginaliaModel.reset();
+      break;
+    case "annotation:add":
+      var model = marginaliaModel.findWhere({"active": true}).get("annotations");
+      model.add(obj);
+      break;
+    case "pages:change:state":
+      viewerComponent.forceUpdate();
+      break;
+    case "pages:change:annotations":
+      var annotations = marginaliaModel.pluck("annotations");
+      var highlighted = _.find(annotations, function(annotation) { return annotation.findWhere({highlighted: true});});
+      viewerComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
+      break;
+    case "pages:ready":
+      documentModel.setActiveAnnotations(marginaliaModel);
+      marginaliaComponent.forceUpdate();
+    default:
+      break;
+    }
+  });
 
-    return this;
-  };
+  Backbone.history.start({pushState: true});
+
+  // Set initial state
+  marginaliaModel.reset(marginaliaModel.parse(window.models.marginalia));
+
 });

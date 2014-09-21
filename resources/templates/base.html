@@ -14,10 +14,9 @@
      window.models = {};
      CSRF_TOKEN = "{% csrf-token %}";
      LAST_COMMIT = "{{last-commit}}";
-     DISPATCHER = "{{dispatcher}}";
     </script>
     {% if dispatcher %}
-    <script data-main="{{servlet-context}}/static/scripts/main" src="{{servlet-context}}/static/scripts/require.js"></script>
+    <script data-main="{{servlet-context}}/static/scripts/{{dispatcher}}" src="{{servlet-context}}/static/scripts/require.js"></script>
     {% endif %}
   </head>
 

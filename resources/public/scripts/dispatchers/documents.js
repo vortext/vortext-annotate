@@ -7,29 +7,31 @@ define(function (require) {
   var React = require("react");
   var _ = require("underscore");
 
-  return function() {
-    var self = this;
+  require("PDFJS");
 
-    // Models
-    var documentsModel = new (require("models/documents"))();
+  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
+  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
+  PDFJS.cMapPacked = true;
+  PDFJS.disableWebGL = !Modernizr.webgl;
 
-    // Components
-    var Documents = require("jsx!components/documents");
+  // Models
+  var documentsModel = new (require("models/documents"))();
 
-    var documentsComponent = React.renderComponent(
-      Documents({documents: documentsModel}),
-      document.getElementById("documents")
-    );
+  // Components
+  var Documents = require("jsx!components/documents");
 
-    // Dispatch logic
-    // Listen to model change callbacks -> trigger updates to components
-    documentsModel.on("all", function(e, obj) {
-      documentsComponent.setState({documents: documentsModel.toJSON()});
-    });
+  var documentsComponent = React.renderComponent(
+    Documents({documents: documentsModel}),
+    document.getElementById("documents")
+  );
 
-    // Set initial state
-    documentsModel.reset(window.models.documents);
+  // Dispatch logic
+  // Listen to model change callbacks -> trigger updates to components
+  documentsModel.on("all", function(e, obj) {
+    documentsComponent.setState({documents: documentsModel.toJSON()});
+  });
 
-    return this;
-  };
+  // Set initial state
+  documentsModel.reset(window.models.documents);
+
 });

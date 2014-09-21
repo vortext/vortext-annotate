@@ -28,18 +28,14 @@ require.config({
     'PDFJS': {
       exports: 'PDFJS',
       deps: ['vendor/pdfjs/generic/web/compatibility', 'vendor/ui_utils'] }
-  },
+  }
+});
+
+require.config({
   urlArgs: LAST_COMMIT
 });
 
-require(["dispatchers/" + DISPATCHER, "backbone", "PDFJS"], function(Dispatcher, Backbone, PDFJS) {
-  window.dispatcher = new Dispatcher();
-
-  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
-  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
-  PDFJS.cMapPacked = true;
-  PDFJS.disableWebGL = !Modernizr.webgl;
-
+require(["backbone"], function(Backbone) {
   var _sync = Backbone.sync;
   Backbone.sync = function(method, model, options){
     options.beforeSend = function(xhr){
@@ -47,5 +43,4 @@ require(["dispatchers/" + DISPATCHER, "backbone", "PDFJS"], function(Dispatcher,
     };
     return _sync(method, model, options);
   };
-
 });
