@@ -24,18 +24,18 @@ define(function (require) {
       this.setState({ confirm: false });
     },
     render: function() {
-      var modal = (<Modal>
-                     <p className="lead">
-                       Are you sure you want to remove {this.props.document.name}?
-                     </p>
-                     <p>This cannot be undone.</p>
-                     <a onClick={this.destroy}></a>
-                     <br /><br />
-                     <ul className="button-group">
-                       <li><a onClick={this.cancel} className="button small secondary">Cancel</a></li>
-                       <li><a onClick={this.destroy} className="button small alert">Remove</a></li>
-                     </ul>
-                   </Modal>);
+      var modal =
+            (<Modal>
+               <p className="lead">
+               Are you sure you want to remove {this.props.document.name}?
+               </p>
+               <p>This cannot be undone.</p>
+               <a onClick={this.destroy}></a>
+               <br /><br />
+               <input type="button" onClick={this.cancel} className="button small secondary" value="Cancel"></input>
+               &nbsp;
+               <input type="button" onClick={this.destroy} className="button small alert" value="Remove"></input>
+             </Modal>);
       var confirm = this.state.confirm ? modal : null;
       var trashcan = <img className="trashcan icon" src="/static/img/trash-o_777777_14.png" alt="remove" />;
       return <div>{confirm}<a onClick={this.remove}>{trashcan}</a></div>;
