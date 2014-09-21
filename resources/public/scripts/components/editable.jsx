@@ -22,7 +22,7 @@ define(function (require) {
         this.refs.input.getDOMNode().focus();
       }
     },
-    render: function(){
+    render: function() {
       var content = this.props.content || "*Click to edit*";
       if(this.state.editable) {
         return (
