@@ -19,7 +19,7 @@
   modules: [
     {
       name: "common",
-      exclude: ["jsx", "react", "PDFJS", "JSXTransformer", "text"]
+      exclude: ["jsx", "react"]
     },
     {
       name: 'project',
