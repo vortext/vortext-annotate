@@ -10,19 +10,17 @@
         <tr>
           <th width="200">Title</th>
           <th>Description</th>
-          <th>Last updated</th>
           <th width="150">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
         {% if projects|length = 0 %}
-        <tr><td colspan="4" class="text-center">You have no projects yet.</td></tr>
+        <tr><td colspan="3" class="text-center">You have no projects yet.</td></tr>
         {% endif %}
         {% for project in projects|sort-by:title %}
         <tr>
           <td><a href="{{servlet-context}}/projects/{{project.id}}">{{project.title}}</a></td>
           <td>{{project.description}}</td>
-          <td>{{project.last_updated|date:mediumDate}}</td>
           <td><a href="{{servlet-context}}/projects/{{project.id}}/edit">[edit]</a></td>
         </tr>
         {% endfor %}
