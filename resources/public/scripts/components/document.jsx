@@ -9,7 +9,7 @@ define(function (require) {
   var Minimap = require("jsx!components/minimap");
   var Page = require("jsx!components/page");
 
-  var Display = React.createClass({
+  var Document = React.createClass({
     getInitialState: function() {
       return {fingerprint: null,
               $viewer: null,
@@ -142,5 +142,5 @@ define(function (require) {
     }
   });
 
-  return Display;
+  return Document;
 });

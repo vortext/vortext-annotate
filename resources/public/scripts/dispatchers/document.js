@@ -1,5 +1,4 @@
 /* -*- tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2; js-indent-level: 2; -*- */
-
 define(function (require) {
   'use strict';
 
@@ -21,12 +20,12 @@ define(function (require) {
   var marginaliaModel = new (require("models/marginalia"))();
 
   // Components
-  var Viewer = require("jsx!components/viewer");
+  var Document = require("jsx!components/document");
   var Marginalia = require("jsx!components/marginalia");
   var TopBar = require("jsx!components/topBar");
 
-  var viewerComponent = React.renderComponent(
-    Viewer({pdf: documentModel}),
+  var documentComponent = React.renderComponent(
+    Document({pdf: documentModel}),
     document.getElementById("viewer")
   );
 
@@ -60,7 +59,7 @@ define(function (require) {
     switch(e) {
     case "annotations:select":
       var fingerprint = documentModel.get("fingerprint");
-      viewerComponent.setState({select: obj});
+      documentComponent.setState({select: obj});
       //self.router.navigate(window.location.href + "/a/" + obj);
       break;
     case "annotations:change":
@@ -83,7 +82,7 @@ define(function (require) {
     case "change:raw":
       var fingerprint = obj.changed.raw.pdfInfo.fingerprint;
       //self.router.navigate("view/" + fingerprint);
-      viewerComponent.setState({
+      documentComponent.setState({
         fingerprint: fingerprint
       });
       break;
@@ -95,12 +94,12 @@ define(function (require) {
       model.add(obj);
       break;
     case "pages:change:state":
-      viewerComponent.forceUpdate();
+      documentComponent.forceUpdate();
       break;
     case "pages:change:annotations":
       var annotations = marginaliaModel.pluck("annotations");
       var highlighted = _.find(annotations, function(annotation) { return annotation.findWhere({highlighted: true});});
-      viewerComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
+      documentComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
       break;
     case "pages:ready":
       documentModel.setActiveAnnotations(marginaliaModel);

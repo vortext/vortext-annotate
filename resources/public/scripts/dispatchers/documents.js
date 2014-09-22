@@ -10,9 +10,6 @@ define(function (require) {
   require("PDFJS");
 
   PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
-  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
-  PDFJS.cMapPacked = true;
-  PDFJS.disableWebGL = !Modernizr.webgl;
 
   // Models
   var documentsModel = new (require("models/documents"))();
