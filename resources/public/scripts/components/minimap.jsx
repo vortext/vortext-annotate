@@ -5,7 +5,7 @@ define(function (require) {
   var _ = require("underscore");
   var $ = require("jQuery");
   var React = require("react");
-  var TextLayerBuilder = require("helpers/textlayerbuilder");
+  var TextLayerBuilder = require("helpers/textLayerBuilder");
 
   var VisibleArea = React.createClass({
     getInitialState: function() {
