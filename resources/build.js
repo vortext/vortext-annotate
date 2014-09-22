@@ -14,11 +14,12 @@
   },
 
   optimizeCss: 'standard',
+  stubModules: ['jsx'],
 
   modules: [
     {
       name: "common",
-      exclude: ["jsx", "react", "PDFJS"]
+      exclude: ["jsx", "react", "PDFJS", "JSXTransformer", "text"]
     },
     {
       name: 'project',
