@@ -1,5 +1,6 @@
 (ns spa.pdf.helper
   (:require
+   [clojure.string :as s]
    [taoensso.timbre :as timbre])
   (:import
    spa.TextHighlight
@@ -31,7 +32,7 @@
 (defn ^:private highlight
   "Creates a highlight with {color, description, pattern}"
   [^TextHighlight highlighter highlight]
-  (let [pattern (Pattern/quote (:pattern highlight))
+  (let [pattern (Pattern/quote (s/replace (:pattern highlight) #"\s+" ""))
         annotations (.highlightDefault highlighter pattern)]
     (doall (map (fn [^PDAnnotationTextMarkup a]
                   (.setConstantOpacity a (float 0.4))
@@ -42,12 +43,16 @@
   [input output highlights]
   (let [document (parse-document input)
         highlighter (doto (TextHighlight. "UTF-8")
-                      (.setLineSeparator " ")
-                      (.setArticleEnd " ")
-                      (.setArticleStart " ")
-                      (.setParagraphStart " ")
-                      (.setSpacingTolerance (float 0.4))
-                      (.setParagraphEnd " ")
+                      ;; Because whitespace screws up the matching
+                      (.setLineSeparator "")
+                      (.setArticleEnd "")
+                      (.setArticleStart "")
+                      (.setWordSeparator "")
+                      (.setParagraphStart "")
+                      (.setParagraphEnd "")
+                      (.setPageSeparator "")
+                      (.setPageEnd "")
+                      (.setPageStart "")
                       (.initialize document))]
     (doall (map (fn [h] (highlight highlighter h)) highlights))
     (.save document output)
