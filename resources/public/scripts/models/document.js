@@ -68,14 +68,14 @@ define(function (require) {
         var item = items[j];
 
         var str = item.str;
-        var normalizedStr = str.replace(/(\r\n|\n|\r|\s{2,})/g," ").trim();
+        var normalizedStr = str.replace(/\s+/g,"");
         var nextOffset = offset + normalizedStr.length;
         var node = { pageIndex: pageIndex,
 		                 nodeIndex: j,
 		                 interval: { lower: totalLength + offset,
 			                           upper: totalLength + nextOffset }};
-        this._cache.text += (normalizedStr + " ");
-        offset = nextOffset + 1;
+        this._cache.text += normalizedStr;
+        offset = nextOffset;
         this._cache.nodes.push(node);
       }
       this._cache.pages.push({ offset: totalLength, length: offset });
@@ -86,7 +86,7 @@ define(function (require) {
       function escapeRegExp(str) {
         return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gm, "\\$&");
       }
-      var pattern = new RegExp(escapeRegExp(str), "g");
+      var pattern = new RegExp(escapeRegExp(str.replace(/\s+/g, "")), "g");
 
       var matches = [];
 
@@ -115,7 +115,7 @@ define(function (require) {
           mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
         }
         matches.push(new Annotation({
-          content: match[0],
+          content: str.trim(),
           mapping: mapping,
           uuid: pseudoUUID()
         }));
