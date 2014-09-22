@@ -1,8 +1,8 @@
 ({
-  appDir: "public",
-  baseUrl: "scripts",
+  appDir: "./public",
+  baseUrl: "./scripts",
   mainConfigFile: './public/scripts/common.js',
-  dir: "build",
+  dir: "./build",
   optimize: "uglify2",
   useStrict: true,
 
@@ -19,7 +19,7 @@
   modules: [
     {
       name: "common",
-      exclude: ["jsx", "react"]
+      exclude: ["react", "JSXTransformer", "text"]
     },
     {
       name: 'project',
