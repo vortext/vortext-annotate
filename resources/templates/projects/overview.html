@@ -5,12 +5,12 @@
     <h2>Welcome to Spá.</h2>
     <hr>
     <h3>Projects</h3>
-    <table>
+    <table width="100%">
       <thead>
         <tr>
-          <th width="200">Title</th>
+          <th>Title</th>
           <th>Description</th>
-          <th width="150">&nbsp;</th>
+          <th>&nbsp;</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,9 @@
         <tr>
           <td><a href="{{servlet-context}}/projects/{{project.id}}">{{project.title}}</a></td>
           <td>{{project.description}}</td>
-          <td><a href="{{servlet-context}}/projects/{{project.id}}/edit">[edit]</a></td>
+          <td><a href="{{servlet-context}}/projects/{{project.id}}/edit">
+            <img src="/static/img/edit_000000_16.png" class="icon" alt="edit" title="edit">
+          </a></td>
         </tr>
         {% endfor %}
       </tbody>
