@@ -55,7 +55,7 @@ define(function (require) {
 
       var uri = window.location.href + "/documents/" + document.fingerprint;
       var title = !progressBar ? <a href={uri}>{document.name}</a> : document.name;
-      var progress = progressBar ? <td>{progressBar}</td> : <td></td>;
+      var progress = progressBar ? <td width="280">{progressBar}</td> : <td></td>;
       return(
         <tr>
           <td>{title}</td>

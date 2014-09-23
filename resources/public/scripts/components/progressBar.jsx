@@ -7,7 +7,7 @@ define(function (require) {
   var ProgressBar = React.createClass({
     render: function() {
       var completed = this.props.completed;
-      var style = { width: completed + "%" };
+      var style = { width: (completed * 100) + "%" };
       if(completed < 1.0) {
         return(<div className="progress"> <span className="meter" style={style}></span></div>);
       } else {
