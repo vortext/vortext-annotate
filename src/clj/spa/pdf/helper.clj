@@ -34,7 +34,7 @@
   [^TextHighlight highlighter highlight]
   (let [annotations (.highlightDefault highlighter (:pattern highlight))]
     (doall (map (fn [^PDAnnotationTextMarkup a]
-                  (.setConstantOpacity a (float 0.4))
+                  (.setConstantOpacity a (float 0.3))
                   (.setColour a (rgb-to-gamma (:color highlight)))
                   (.setContents a (:content highlight))) annotations))))
 
@@ -44,7 +44,10 @@
         highlighter (doto (TextHighlight. "UTF-8")
                       (.setSkipAllWhitespace true)
                       (.initialize document))]
-    (doall (map (fn [h] (highlight highlighter h)) highlights))
-    (.save document output)
-    (.close document)
-    output))
+    (try (do
+           (doall (map (fn [h] (highlight highlighter h)) highlights))
+           (.setAllSecurityToBeRemoved document true)
+           (.save document output))
+         (catch Exception e (warn e))
+         (finally (.close document))))
+  output)

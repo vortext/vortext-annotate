@@ -15,9 +15,11 @@
             [spa.db.projects :as projects]
             [spa.layout :as layout]))
 
-(defn json-response
+(timbre/refer-timbre)
+
+(defn ^:private json-response
   [m]
-  (resp/content-type (resp/response (json/encode m)) "text/plain"))
+  (resp/content-type (resp/response (json/encode m)) "text/json"))
 
 (defn insert-in-project
   [project-id req]
@@ -48,7 +50,7 @@
                  :else                       :default)]
     ((key m))))
 
-(defn get-document
+(defn display
   [project-id document-id req]
   (dispatch {:pdf (fn [] (io/input-stream (:file (documents/get document-id))))
              :html (fn [] (document-page
@@ -56,24 +58,24 @@
                           (projects/get project-id) req))
              :default (fn [] "…")} req))
 
-(defn remove-document
+(defn delete
   [project-id document-id]
   (documents/dissoc! document-id project-id)
   (json-response {:id document-id}))
 
-(defn update-marginalia
+(defn update
   [project-id document-id req]
   (let [marginalia (get-in req [:params :data])]
     (documents/update! project-id document-id marginalia)
     (json-response (:id document-id))))
 
-(defn extend-deeply-with
+(defn ^:private extend-deeply-with
   "Extends the maps in seq alpha of the form [[{} ...] [{} ...] ...]
    with the keys from beta of the form [{} ... {}]. alpha and beta must have the same length."
   [alpha beta]
   (map-indexed (fn [idx psi] (map (fn [omega] (merge (nth beta idx) omega)) psi)) alpha))
 
-(defn highlight-document
+(defn highlight
   "Highlights the annotations directly within the pdf.
    Requires a document map with both the :file and the :marginalia present.
    Returns a closed inputStream with the highlighted PDF"
@@ -86,26 +88,31 @@
                            (let [highlight (clojure.set/rename-keys
                                             (select-keys h [:color :content])
                                             {:content :pattern})]
-                             (assoc highlight :content (str (:title h) "\n" (:description h)))))]
+                             (assoc highlight :content (str (:title h) "\n\n" (:description h)))))]
     (with-open
         [input (io/input-stream (:file document))
          output (ByteArrayOutputStream.)]
       (pdf-helper/highlight-document input output (map format-highlight highlights))
-      (io/input-stream (.toByteArray output)))))
+      (if (not= (.size output) 0) ; just return the document if the input failed
+        (io/input-stream (.toByteArray output))
+        input))))
 
-(defn export-document
+(defn export
   [project-id document-id]
-  (highlight-document (documents/get document-id project-id)))
+  (highlight (documents/get document-id project-id)))
 
+;;;;;;;;;;;;;;;
+;; Routes
+;;;;;;;;;;;;;;;
 (defn document-routes [project-id]
   (routes
    (POST "/" [:as req]
          (restricted (insert-in-project project-id req)))
    (PUT "/:document-id" [document-id :as req]
-        (restricted (update-marginalia project-id document-id req)))
+        (restricted (update project-id document-id req)))
    (DELETE "/:document-id" [document-id :as req]
-           (restricted (remove-document project-id document-id)))
+           (restricted (delete project-id document-id)))
    (GET "/:document-id" [document-id :as req]
-        (restricted (get-document project-id document-id req)))
+        (restricted (display project-id document-id req)))
    (GET "/:document-id/export" [document-id :as req]
-        (restricted (export-document project-id document-id)))))
+        (restricted (export project-id document-id)))))

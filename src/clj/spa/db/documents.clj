@@ -9,13 +9,17 @@
 
 (defqueries "sql/documents.sql")
 
+(defn json-decode
+  "Decodes a JSON org.postgresql.util.PGobject to a Clojure map"
+  [^:org.postgresql.util.PGobject obj]
+  (json/decode (.getValue obj)))
+
 (defn get
-  ([fingerprint] (first (get-document db-spec fingerprint)))
+  ([fingerprint]
+     (first (get-document db-spec fingerprint)))
   ([fingerprint project-id]
-     (jdbc/with-db-transaction [connection db-spec]
-       (let [document (first (get-document connection fingerprint))
-             marginalia (:marginalia (first (get-marginalia connection fingerprint project-id)))]
-         (assoc document :marginalia (json/decode (.getValue marginalia)))))))
+     (let [document (first (get-document-with-marginalia db-spec fingerprint project-id))]
+       (assoc document :marginalia (json-decode (:marginalia document))))))
 
 (defn assoc!
   [document-id project-id]
@@ -45,8 +49,11 @@
       id)))
 
 (defn get-by-project
-  [project-id]
-  (documents-by-project db-spec project-id))
+  [project-id & {:keys [marginalia] :or {marginalia false}}]
+  (if marginalia
+    (let [documents (documents-by-project-with-marginalia db-spec project-id)]
+      (map #(assoc % :marginalia (json-decode (:marginalia %))) documents))
+    (documents-by-project db-spec project-id)))
 
 (defn update!
   [project-id document-id marginalia]

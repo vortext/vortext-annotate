@@ -45,6 +45,7 @@
 
                  ;; PDF
                  [org.apache.pdfbox/pdfbox "1.8.7"]
+                 [org.bouncycastle/bcprov-jdk16 "1.46"] ; crypto
 
                  ;; Remote connectivity
                  [com.netflix.hystrix/hystrix-clj "1.4.0-RC4"]
