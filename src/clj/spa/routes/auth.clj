@@ -68,13 +68,10 @@
 (defroutes auth-routes
   (POST "/register" [id pass pass1]
         (handle-registration id pass pass1))
-
   (GET "/profile" [] (profile))
-
-  (POST "/update-profile" {params :params} (update-profile params))
-
+  (POST "/update-profile" {params :params}
+        (update-profile params))
   (POST "/login" [id pass]
         (handle-login id pass))
-
   (GET "/logout" []
        (logout)))

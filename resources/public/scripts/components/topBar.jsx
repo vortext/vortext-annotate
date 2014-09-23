@@ -16,7 +16,7 @@ define(function (require) {
       };
       return(
           <div>
-            <li><a href={window.location.href + "/export"}>Export</a></li>
+            <li><a href={window.location.href + "/export"} download={window.models.filename}>Export</a></li>
             <li><span style={style} className="label secondary">saving …</span></li>
           </div>
       );

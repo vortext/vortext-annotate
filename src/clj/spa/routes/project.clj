@@ -69,11 +69,15 @@
 
 (defroutes project-routes
   (context "/projects" []
-           (GET "/" [:as req] (restricted (overview-page req)))
+           (GET "/" [:as req]
+                (restricted (overview-page req)))
            (context "/:project-id" [project-id]
-                    (GET "/" [:as req] (restricted (view project-id req)))
-                    (POST "/" [:as req] (restricted (handle-edit project-id req)))
-                    (GET "/edit" [:as req] (restricted (edit-page project-id req)))
+                    (GET "/" [:as req]
+                         (restricted (view project-id req)))
+                    (POST "/" [:as req]
+                          (restricted (handle-edit project-id req)))
+                    (GET "/edit" [:as req]
+                         (restricted (edit-page project-id req)))
                     (context "/documents" []
                              (document/document-routes (parse-int project-id))))))
 ;;;;;;;;;;;;;;;
