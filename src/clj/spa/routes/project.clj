@@ -49,7 +49,7 @@
   [id req]
   (if (= id "new")
     (create-new req)
-    (edit-existing id req)))
+    (edit-existing (parse-int id) req)))
 
 (defn handle-edit
   [id {:keys [params] :as req}]
@@ -59,7 +59,7 @@
       (let [new-project (projects/create! (current-user) title description categories)]
         (redirect (str "/projects/" new-project)))
       (do
-        (projects/edit! id title description categories)
+        (projects/edit! (parse-int id) title description categories)
         (redirect (str "/projects/" id))))))
 
 (defn view
@@ -102,9 +102,9 @@
                     (GET "/" [:as req]
                          (restricted (view (parse-int project-id) req)))
                     (POST "/" [:as req]
-                          (restricted (handle-edit (parse-int project-id) req)))
+                          (restricted (handle-edit project-id req)))
                     (GET "/edit" [:as req]
-                         (restricted (edit-page (parse-int project-id) req)))
+                         (restricted (edit-page project-id req)))
                     (GET "/export" [:as req]
                          (restricted (export (parse-int project-id) req)))
                     (context "/documents" []
