@@ -92,10 +92,11 @@
     (with-open
         [input (io/input-stream (:file document))
          output (ByteArrayOutputStream.)]
-      (pdf-helper/highlight-document input output (map format-highlight highlights))
-      (if (not= (.size output) 0) ; just return the document if the input failed
-        (io/input-stream (.toByteArray output))
-        input))))
+      (try
+        (do
+          (pdf-helper/highlight-document input output (map format-highlight highlights))
+          (io/input-stream (.toByteArray output)))
+        (catch Exception e (do (warn e) input)))))) ;; just return the document on fail
 
 (defn export
   [project-id document-id]

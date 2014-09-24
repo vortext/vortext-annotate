@@ -44,10 +44,8 @@
         highlighter (doto (TextHighlight. "UTF-8")
                       (.setSkipAllWhitespace true)
                       (.initialize document))]
-    (try (do
-           (doall (map (fn [h] (highlight highlighter h)) highlights))
-           (.setAllSecurityToBeRemoved document true)
-           (.save document output))
-         (catch Exception e (warn e))
-         (finally (.close document))))
-  output)
+    (doall (map (fn [h] (highlight highlighter h)) highlights))
+    (.setAllSecurityToBeRemoved document true)
+    (.save document output)
+    (.close document)
+    output))
