@@ -58,7 +58,7 @@ define(function (require) {
     render: function() {
       var style = { height: this.props.height,
                     top: this.state.offset };
-      return <div className="visible-area" style={style}></div>;
+      return (<div className="visible-area" style={style}></div>);
     }
   });
 

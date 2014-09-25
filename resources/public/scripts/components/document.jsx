@@ -8,6 +8,7 @@ define(function (require) {
   var Popup = require("jsx!components/popup");
   var Minimap = require("jsx!components/minimap");
   var Page = require("jsx!components/page");
+  var TextUtil = require("helpers/textUtil");
 
   var Document = React.createClass({
     getInitialState: function() {
@@ -80,7 +81,7 @@ define(function (require) {
       for (var i = 0, len = childNodes.length; i < len; i++) {
         str += (childNodes[i].textContent + " ");
       }
-      return str.replace(/(\r\n|\n|\r|\s{2,})/g," ").trim();
+      return TextUtil.normalize(str);
     },
     respondToSelection: function(e) {
       var selection = this.getSelection();
@@ -126,7 +127,7 @@ define(function (require) {
 
       var pagesElements = pdf.get("pages").map(function(page, pageIndex) {
         var fingerprint = self.state.fingerprint;
-        return <Page page={page} key={fingerprint + pageIndex} />;
+        return (<Page page={page} key={fingerprint + pageIndex} />);
       });
 
       return(

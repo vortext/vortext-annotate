@@ -139,7 +139,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 .block ul.annotations li .wrap {
     display: inline-block;
-    width: 95%;
+    width: 90%;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: middle;

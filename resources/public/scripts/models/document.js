@@ -7,7 +7,8 @@ define(function (require) {
   var Q = require("Q");
   var _ = require("underscore");
   var Backbone = require("backbone");
-  var Annotation = require('models/annotation');
+  var Annotation = require("models/annotation");
+  var TextUtil = require("helpers/textUtil");
 
   PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
@@ -68,7 +69,7 @@ define(function (require) {
         var item = items[j];
 
         var str = item.str;
-        var normalizedStr = str.replace(/(\r\n|\n|\r|\s{2,})/g," ").trim();
+        var normalizedStr = TextUtil.normalize(str);
         var nextOffset = offset + normalizedStr.length;
         var node = { pageIndex: pageIndex,
 		                 nodeIndex: j,
@@ -89,16 +90,17 @@ define(function (require) {
       var pattern = new RegExp(escapeRegExp(str), "g");
 
       var matches = [];
+      var cache =  self._cache;
 
       var match;
-      while((match = pattern.exec(self._cache.text)) !== null) {
+      while((match = pattern.exec(cache.text)) !== null) {
         var lower = match.index;
         var upper = lower + match[0].length;
 
         var mapping = [];
 
-        var nodes =  self._cache.nodes;
-        var pages = self._cache.pages;
+        var nodes =  cache.nodes;
+        var pages = cache.pages;
         var nrNodes = nodes.length;
         for(var i = 0; i < nrNodes; ++i) {
           var node = _.clone(nodes[i]);
@@ -147,7 +149,7 @@ define(function (require) {
           self._appendCache(pageIndex, content);
         });
       };
-      var partitions = _.partition(pageQueue, function(pageIndex) { return pageIndex % 2 == 0; });
+      var partitions = _.partition(pageQueue, function(pageIndex) { return pageIndex % 2 === 0; });
       _.each(partitions, function(partition) {
         process(partition);
       });

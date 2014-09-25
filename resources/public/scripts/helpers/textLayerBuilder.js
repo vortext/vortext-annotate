@@ -3,6 +3,7 @@ define(function (require) {
   'use strict';
 
   var _ = require("underscore");
+  var TextUtil = require("helpers/textUtil");
   require("PDFJS");
 
   var TextLayerBuilder = function textLayerBuilder(options) {
@@ -38,6 +39,7 @@ define(function (require) {
     };
 
     this.createElement = function(geom, styles) {
+      geom.str = TextUtil.normalize(geom.str);
       var style = this.calculateStyles(geom, styles[geom.fontName]);
       ctx.font = style.fontSize + ' ' + style.fontFamily;
 
