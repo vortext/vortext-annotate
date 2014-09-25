@@ -4,29 +4,24 @@
 *** Save annotations as RDF (Open Annotation spec)
 *** Query triple store for data
 *** Make front-end consume RDF
-** Establish author identity (Orcid) (W3C PROV)
-** Public projects
-** Write to PDF (embed RDF file, show as comments)
+** Embed RDF in PDFs, write destinations
+* Pluggable predictors
+** Remember URLs, call URLs
+** JSON -> RDF
+** Persist results
+** Query results
+** Service discovery
+** Write documentation
 * Project view
 ** Delete projects
+** DONE Write to PDF
 ** Show results for multiple PDFs
 *** Be able to click to annotation/document (fix backbone routes)
-** Allow hooking up prediction models
-*** Call Svar
-*** Persist results from Svar
 ** Redo the "one off"
-** Export in tabulated format
+** Export to other formats (XML, CSV)
 * Polish
-** Drag&Drop to upload
-** Confirm removal of documents
-** In place edits
 ** About page
 ** More info on home page
-* PDF information
-** Get more information about PDF (title, authors, doi, pmid)
 * Refactor
 ** Get rid of backbone (use flux + immutable)
 ** Get rid of the setActiveAnnotations()
-* Server side
-** Deploy
-** Dockerfiles and automated deploy
