@@ -4,6 +4,7 @@
 require.config({
   baseUrl: '/static/scripts',
   jsx: {
+    harmony: true,
     fileExtension: '.jsx'
   },
   paths: {
