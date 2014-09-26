@@ -39,7 +39,8 @@
                     :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) "Edit"])})
     (response/not-found (str "could not find project " id))))
 
-(defn create-new [req]
+(defn create-new
+  [req]
   (layout/render "projects/edit.html"
                  {:breadcrumbs (breadcrumbs (:uri req) ["Projects"  "Create new"])
                   :dispatcher "project"
@@ -71,7 +72,7 @@
                     :documents (documents/get-by-project id)
                     :project project})))
 
-;; Export project to ZIP
+;; Export project to ZIP Archive
 (defmacro ^:private with-entry
   [zip entry-name & body]
   `(let [^ZipOutputStream zip# ~zip]

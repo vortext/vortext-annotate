@@ -78,7 +78,7 @@
 (defn highlight
   "Highlights the annotations directly within the pdf.
    Requires a document map with both the :file and the :marginalia present.
-   Returns a closed inputStream with the highlighted PDF"
+   Returns a closed InputStream with the highlighted PDF"
   [document]
   (let [marginalia (clojure.walk/keywordize-keys (get-in document [:marginalia "marginalia"]))
         annotations (map :annotations marginalia)

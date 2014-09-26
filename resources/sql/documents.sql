@@ -37,8 +37,10 @@ AND marginalia.documents_id = documents.id AND marginalia.projects_id = :project
 
 -- name: has-document?
 -- Returns true if the document_id belongs to the project_id, false otherwise
-SELECT EXISTS(SELECT 1 FROM documents_projects
-WHERE documents_id = :document_id AND projects_id = :project_id)
+SELECT EXISTS(
+SELECT 1 FROM documents_projects
+WHERE documents_id = :document_id
+AND projects_id = :project_id)
 
 -- name: assoc-document!
 -- Associates a document_id with a specific project_id, errors if already present
@@ -69,4 +71,6 @@ WHERE documents_id = :document_id AND projects_id = :project_id
 
 -- name: delete-marginalia!
 -- Deletes the marginalia associated with a specific document_id
-DELETE FROM marginalia WHERE documents_id = :document_id AND projects_id = :project_id
+DELETE FROM marginalia
+WHERE documents_id = :document_id
+AND projects_id = :project_id
