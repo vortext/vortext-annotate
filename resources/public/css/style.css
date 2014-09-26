@@ -224,7 +224,7 @@ canvas {
     top: 0;
     right: 0;
     bottom: 0;
-    color: #000;
+    opacity: 0.3;
     overflow: hidden;
 }
 
@@ -235,6 +235,11 @@ canvas {
     white-space: pre;
     cursor: text;
     background-color: transparent !important;
+    -webkit-transform-origin: 0% 0%;
+    -moz-transform-origin: 0% 0%;
+    -o-transform-origin: 0% 0%;
+    -ms-transform-origin: 0% 0%;
+    transform-origin: 0% 0%;
 }
 
 .textLayer .annotated {
@@ -242,7 +247,6 @@ canvas {
     margin: -1px;
     padding: 1px;
 }
-
 
 .loading {
     width: 100%;
@@ -265,10 +269,19 @@ canvas {
 }
 
 ::selection {
-    background-color: rgba(0,0,255,0.2);
+    background: rgba(0,0,255,0.3);
 }
+
 ::-moz-selection {
-    background-color: rgba(0,0,255,0.2);
+    background: rgba(0,0,255,0.3);
+}
+
+.textLayer ::selection {
+    background: rgb(0,0,255);
+}
+
+.textLayer ::-moz-selection {
+    background: rgb(0,0,255);
 }
 
 a img.icon {

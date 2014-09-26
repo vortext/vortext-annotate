@@ -66,7 +66,6 @@ define(function (require) {
       transform = 'rotate(' + rotation + 'deg) ' + transform;
 
       CustomStyle.setProp('transform', textElement, transform);
-      CustomStyle.setProp('transformOrigin', textElement, "0% 0%");
 
       return textElement;
     };
@@ -97,7 +96,7 @@ define(function (require) {
               right = text.length + (ann.range.upper - ann.interval.upper),
               end = next ?  right : text.length,
               style = {
-                "backgroundColor": "rgba(" + ann.color.join(",") + "," + (ann.highlighted ? 0.350 : 0.175) + ")"
+                "backgroundColor": "rgba(" + ann.color.join(",") + "," + (ann.highlighted ? 1.0 : 0.6) + ")"
               };
 
           return {
