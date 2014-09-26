@@ -149,10 +149,7 @@ define(function (require) {
           self._appendCache(pageIndex, content);
         });
       };
-      var partitions = _.partition(pageQueue, function(pageIndex) { return pageIndex % 2 === 0; });
-      _.each(partitions, function(partition) {
-        process(partition);
-      });
+      process(pageQueue);
     }
   });
 
