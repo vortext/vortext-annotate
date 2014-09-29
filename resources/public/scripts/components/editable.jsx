@@ -16,6 +16,8 @@ define(function (require) {
     submit: function(e) {
       this.setState({ editable: false });
       this.props.callback(this.refs.input.getDOMNode().value);
+      e.preventDefault();
+      return false;
     },
     componentDidUpdate: function() {
       if(this.state.editable) {
