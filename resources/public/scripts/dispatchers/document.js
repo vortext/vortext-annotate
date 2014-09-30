@@ -94,6 +94,9 @@ define(function (require) {
       model.add(obj);
       break;
     case "pages:change:state":
+      if(obj.get("state") > window.RenderingStates.HAS_PAGE) {
+        documentModel.setActiveAnnotations(marginaliaModel);
+      }
       documentComponent.forceUpdate();
       break;
     case "pages:change:annotations":
@@ -101,9 +104,6 @@ define(function (require) {
       var highlighted = _.find(annotations, function(annotation) { return annotation.findWhere({highlighted: true});});
       documentComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
       break;
-    case "pages:ready":
-      documentModel.setActiveAnnotations(marginaliaModel);
-      marginaliaComponent.forceUpdate();
     default:
       break;
     }
