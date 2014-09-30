@@ -75,18 +75,19 @@ define(function (require) {
       if(selection.type === "None" || !selection.getRangeAt(0)) return "";
 
       var range = selection.getRangeAt(0);
-      var str = "";
+      var strArr = [];
 
       var childNodes = range.cloneContents().childNodes;
       for (var i = 0, len = childNodes.length; i < len; i++) {
-        str += (childNodes[i].textContent + " ");
+        strArr.push(childNodes[i].textContent);
       }
-      return TextUtil.normalize(str);
+      return strArr;
     },
     respondToSelection: function(e) {
       var selection = this.getSelection();
-      // At least a word of at least 2 characters
-      if(/(\w{2,})+/.test(selection)) {
+      var pattern = selection.join("");
+      // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
+      if(/(\w{2,}\W{1,6}){3}/.test(pattern)) {
         var selectionBox = window.getSelection().getRangeAt(0).getBoundingClientRect();
         var position = this.calculatePopupCoordinates(selectionBox, e);
 
@@ -98,7 +99,9 @@ define(function (require) {
             x: position.x,
             y: position.y,
             visible: true },
-          selection: selection
+          selection: { pattern: pattern,
+                       display: TextUtil.normalize(selection.join(" "))
+                     }
         });
       }
     },
@@ -115,7 +118,6 @@ define(function (require) {
       this.setState({$viewer: $viewer, $popup: $popup});
     },
     emitAnnotation: function() {
-      var selection = this.state.selection;
       this.props.pdf.emitAnnotation(this.state.selection);
       // Clear text selection
       window.getSelection().removeAllRanges();

@@ -8,7 +8,6 @@ define(function (require) {
   var _ = require("underscore");
   var Backbone = require("backbone");
   var Annotation = require("models/annotation");
-  var TextUtil = require("helpers/textUtil");
 
   PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
   PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
@@ -20,6 +19,10 @@ define(function (require) {
       var r = Math.random() * 16|0, v = c == 'x' ? r : (r&0x3|0x8);
       return v.toString(16);
     });
+  };
+
+  var escapeRegExp = function(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gm, "\\$&");
   };
 
   var RenderingStates = window.RenderingStates = {
@@ -69,27 +72,23 @@ define(function (require) {
         var item = items[j];
 
         var str = item.str;
-        var normalizedStr = TextUtil.normalize(str);
-        var nextOffset = offset + normalizedStr.length;
+        var nextOffset = offset + str.length;
         var node = { pageIndex: pageIndex,
 		                 nodeIndex: j,
 		                 interval: { lower: totalLength + offset,
 			                           upper: totalLength + nextOffset }};
-        this._cache.text += (normalizedStr + " ");
-        offset = nextOffset + 1;
+        this._cache.text += str;
+        offset = nextOffset;
         this._cache.nodes.push(node);
       }
       this._cache.pages.push({ offset: totalLength, length: offset });
       this._cache.totalLength += offset;
     },
-    getAnnotation: function(str) {
+    getAnnotation: function(matchStr, displayStr) {
       var self = this;
-      function escapeRegExp(str) {
-        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gm, "\\$&");
-      }
-      var pattern = new RegExp(escapeRegExp(str), "g");
+      var pattern = new RegExp(escapeRegExp(matchStr), "g");
 
-      var matches = [];
+      var annotations = [];
       var cache =  self._cache;
 
       var match;
@@ -106,23 +105,23 @@ define(function (require) {
           var node = _.clone(nodes[i]);
           if(node.interval.lower < upper && lower < node.interval.upper) {
             var pageOffset = pages[node.pageIndex].offset;
-            var interval = {lower: node.interval.lower - pageOffset,
-                            upper: node.interval.upper - pageOffset};
-            mapping.push(_.extend(node, {range: _.clone(interval),
-                                         interval: _.clone(interval)}));
+            var interval = { lower: node.interval.lower - pageOffset,
+                             upper: node.interval.upper - pageOffset};
+            mapping.push(_.extend(node, { range: _.clone(interval),
+                                          interval: _.clone(interval)}));
           }
         }
         if(!_.isEmpty(mapping)) {
           mapping[0].range.lower = lower - pages[mapping[0].pageIndex].offset;
           mapping[mapping.length - 1].range.upper = upper - pages[mapping[mapping.length - 1].pageIndex].offset;
         }
-        matches.push(new Annotation({
-          content: match[0],
+        annotations.push(new Annotation({
+          content: displayStr,
           mapping: mapping,
           uuid: pseudoUUID()
         }));
-      };
-      return matches;
+      }
+      return annotations;
     },
     populate: function(pdf) {
       var self  = this;
@@ -167,8 +166,8 @@ define(function (require) {
         self.trigger("pages:" + e, obj);
       });
     },
-    emitAnnotation: function(str) {
-      var annotation = this.get("pages").getAnnotation(str);
+    emitAnnotation: function(selection) {
+      var annotation = this.get("pages").getAnnotation(selection.pattern, selection.display);
       this.trigger("annotation:add", annotation);
     },
     setActiveAnnotations: function(marginalia) {

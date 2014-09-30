@@ -6,7 +6,7 @@ define(function (require) {
     var NORMALIZE_PATTERN = /(\r\n|\n|\r|\s{2,})/g;
 
     this.normalize = function(str) {
-      return str.replace(NORMALIZE_PATTERN," ").trim();
+      return str.trim().replace(NORMALIZE_PATTERN," ");
     };
   };
 
