@@ -43,6 +43,7 @@
   (let [document (parse-document input)
         highlighter (doto (TextHighlight. "UTF-8")
                       (.setSkipAllWhitespace true)
+                      (.setNormalizeText true)
                       (.initialize document))]
     (doall (map (fn [h] (highlight highlighter h)) highlights))
     (.setAllSecurityToBeRemoved document true)

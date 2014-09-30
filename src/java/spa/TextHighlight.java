@@ -27,6 +27,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.lang.RuntimeException;
+import java.text.Normalizer;
 
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
@@ -83,9 +84,11 @@ public class TextHighlight extends PDFTextStripper {
         private final Map<Integer, StringBuilder> texts = new TreeMap<Integer, StringBuilder>();
         private final Map<Integer, ArrayList<TextPosition>> positions = new TreeMap<Integer, ArrayList<TextPosition>>();
         private final boolean skipAllWhitespace;
+        private final boolean normalizeText;
 
-        public TextCache(boolean skipAllWhitespace) {
+        public TextCache(boolean skipAllWhitespace, boolean normalizeText) {
             this.skipAllWhitespace = skipAllWhitespace;
+            this.normalizeText = normalizeText;
         }
 
         private StringBuilder obtainStringBuilder(final Integer pageNo) {
@@ -115,7 +118,11 @@ public class TextHighlight extends PDFTextStripper {
             for (StringBuilder sb : texts.values()) {
                 text.append(sb.toString());
             }
-            return text.toString();
+            if(this.normalizeText) {
+                return Normalizer.normalize(text, Normalizer.Form.NFKD);
+            } else {
+                return text.toString();
+            }
         }
 
         public List<TextPosition> getTextPositions(final Integer pageNo) {
@@ -160,6 +167,7 @@ public class TextHighlight extends PDFTextStripper {
     private TextCache textCache;
     private PDGamma defaultColor;
     private boolean skipAllWhitespace = false; // Whether to skip all the whitespace when extracting the text
+    private boolean normalizeText = false; // Whether to normalize UTF-8 to ASCII, more robust but less accurate
 
     /**
      * Instantiate a new object. This object will load properties from
@@ -249,6 +257,9 @@ public class TextHighlight extends PDFTextStripper {
      * @throws IOException
      */
     public List<PDAnnotationTextMarkup> highlightDefault(String pattern) throws IOException {
+        if(this.normalizeText) {
+            pattern = Normalizer.normalize(pattern, Normalizer.Form.NFKD);
+        }
         if(this.skipAllWhitespace) {
             pattern = pattern.replaceAll("\\s+", "");
         }
@@ -423,7 +434,7 @@ public class TextHighlight extends PDFTextStripper {
             }
         }
 
-        textCache = new TextCache(this.isSkipAllWhitespace());
+        textCache = new TextCache(this.isSkipAllWhitespace(), this.isNormalizeText());
 
         if (getAddMoreFormatting()) {
             setParagraphEnd(getLineSeparator());
@@ -725,5 +736,13 @@ public class TextHighlight extends PDFTextStripper {
 
     public void setSkipAllWhitespace(boolean skipAllWhitespace) {
         this.skipAllWhitespace = skipAllWhitespace;
+    }
+
+    public boolean isNormalizeText() {
+        return normalizeText;
+    }
+
+    public void setNormalizeText(boolean normalizeText) {
+        this.normalizeText = normalizeText;
     }
 }
