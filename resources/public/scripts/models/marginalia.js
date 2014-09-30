@@ -71,7 +71,7 @@ define(function (require) {
       });
       return marginalia;
     },
-    save: _.throttle(function(beforeSend, successCallback) {
+    save: _.throttle(function(beforeSend, successCallback, errorCallback) {
       var self = this;
       beforeSend();
       $.ajax({
@@ -81,9 +81,12 @@ define(function (require) {
         headers: {"X-CSRF-Token": CSRF_TOKEN},
         success: function(data) {
           successCallback(data);
+        },
+        error: function(err) {
+          errorCallback(err);
         }
       });
-    }, 1000),
+    }, 2500),
     setActive: function(marginalia) {
       this.each(function(marginalis) { marginalis.set("active", false, {silent: true}); });
       this.get(marginalia.cid).set("active", true);
