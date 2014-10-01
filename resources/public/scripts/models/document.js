@@ -14,7 +14,8 @@ define(function (require) {
   PDFJS.cMapPacked = true;
   PDFJS.disableWebGL = !Modernizr.webgl;
 
-  var pseudoUUID = function() {
+  var guid = function() {
+    // RFC4122 version 4 compliant
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16|0, v = c == 'x' ? r : (r&0x3|0x8);
       return v.toString(16);
@@ -61,11 +62,11 @@ define(function (require) {
           return content;
         });
     },
-    _buildCache: function() {
-      this._cache = { totalLength: 0, nodes: [], pages: [], text: "" };
+    _buildAggregate: function() {
+      this._aggregate = { totalLength: 0, nodes: [], pages: [], text: "" };
     },
-    _appendCache: function(pageIndex, pageContent) {
-      var totalLength = this._cache.totalLength;
+    _appendAggregate: function(pageIndex, pageContent) {
+      var totalLength = this._aggregate.totalLength;
       var offset = 0;
       var items = pageContent.items;
       for (var j = 0; j < items.length; j++) {
@@ -77,29 +78,29 @@ define(function (require) {
 		                 nodeIndex: j,
 		                 interval: { lower: totalLength + offset,
 			                           upper: totalLength + nextOffset }};
-        this._cache.text += str;
+        this._aggregate.text += str;
         offset = nextOffset;
-        this._cache.nodes.push(node);
+        this._aggregate.nodes.push(node);
       }
-      this._cache.pages.push({ offset: totalLength, length: offset });
-      this._cache.totalLength += offset;
+      this._aggregate.pages.push({ offset: totalLength, length: offset });
+      this._aggregate.totalLength += offset;
     },
-    getAnnotation: function(matchStr, displayStr) {
+    getAnnotations: function(matchStr, displayStr) {
       var self = this;
       var pattern = new RegExp(escapeRegExp(matchStr), "g");
 
       var annotations = [];
-      var cache =  self._cache;
+      var aggregate =  self._aggregate;
 
       var match;
-      while((match = pattern.exec(cache.text)) !== null) {
+      while((match = pattern.exec(aggregate.text)) !== null) {
         var lower = match.index;
         var upper = lower + match[0].length;
 
         var mapping = [];
 
-        var nodes =  cache.nodes;
-        var pages = cache.pages;
+        var nodes =  aggregate.nodes;
+        var pages = aggregate.pages;
         var nrNodes = nodes.length;
         for(var i = 0; i < nrNodes; ++i) {
           var node = _.clone(nodes[i]);
@@ -118,7 +119,7 @@ define(function (require) {
         annotations.push(new Annotation({
           content: displayStr,
           mapping: mapping,
-          uuid: pseudoUUID()
+          uuid: guid()
         }));
       }
       return annotations;
@@ -126,7 +127,7 @@ define(function (require) {
     populate: function(pdf) {
       var self  = this;
 
-      this._buildCache();
+      this._buildAggregate();
 
       var pageQueue = _.range(0, pdf.numPages);
       var pages = _.map(pageQueue, function(pageNr) {
@@ -145,7 +146,7 @@ define(function (require) {
         var p = self._requestPage(page, pdf.getPage(pageIndex + 1));
         p.then(function(content) {
           process(_.rest(arr));
-          self._appendCache(pageIndex, content);
+          self._appendAggregate(pageIndex, content);
         });
       };
       process(pageQueue);
@@ -167,8 +168,8 @@ define(function (require) {
       });
     },
     emitAnnotation: function(selection) {
-      var annotation = this.get("pages").getAnnotation(selection.pattern, selection.display);
-      this.trigger("annotation:add", annotation);
+      var annotations = this.get("pages").getAnnotations(selection.pattern, selection.display);
+      this.trigger("annotation:add", annotations);
     },
     setActiveAnnotations: function(marginalia) {
       // FIXME: UGLY HACK to set the active nodes based on the response JSON and selection

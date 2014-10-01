@@ -12,6 +12,7 @@ define(function (require) {
       type: "",
       highlighted: false,
       content: "",
+      pageNumber: "",
       mapping: {}
     },
     highlight: function() {

@@ -1,27 +1,29 @@
 * Semantic web
+** Preperation
+*** Fix setActiveAnnotations (per page, proper loading order)
 ** W3C Open Annotations
 *** Set-up Fuseki
-*** Save annotations as RDF (Open Annotation spec)
+*** Save annotations and update as RDF (Open Annotation spec)
 *** Query triple store for data
-*** Make front-end consume RDF
-** Embed RDF in PDFs, write destinations
+*** Make front-end create and consume RDF
+** Embed RDF in PDF, write destinations
 * Pluggable predictors
-** Remember URLs, call URLs
+** Remember URLs, call URLs (show client-side progress over WebSockets)
 ** JSON -> RDF
 ** Persist results
 ** Query results
-** Service discovery
+** Make Risk of Bias work
 ** Write documentation
 * Project view
 ** Delete projects
 ** DONE Write to PDF
 ** Show results for multiple PDFs
-*** Be able to click to annotation/document (fix backbone routes)
+*** Tree-like view
+*** Be able to click to annotation with named destinations
 ** Redo the "one off"
 ** Export to other formats (XML, CSV)
 * Polish
-** About page
+** About, FAQ pages
 ** More info on home page
 * Refactor
-** Get rid of backbone (use flux + immutable)
-** Get rid of the setActiveAnnotations()
+** Get rid of backbone (use flux like system + immutable)
