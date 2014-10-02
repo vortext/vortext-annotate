@@ -20,16 +20,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.lang.RuntimeException;
-import java.text.Normalizer;
 
 import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.exceptions.CryptographyException;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -37,10 +37,6 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.color.PDGamma;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup;
-
-import org.apache.pdfbox.exceptions.CryptographyException;
-import org.apache.pdfbox.exceptions.WrappedIOException;
-
 import org.apache.pdfbox.util.Matrix;
 import org.apache.pdfbox.util.PDFTextStripper;
 import org.apache.pdfbox.util.TextPosition;
@@ -81,8 +77,8 @@ public class TextHighlight extends PDFTextStripper {
      * on a per-page basis (keyed on the 1-based pageNo)
      */
     private class TextCache {
-        private final Map<Integer, StringBuilder> texts = new TreeMap<Integer, StringBuilder>();
-        private final Map<Integer, ArrayList<TextPosition>> positions = new TreeMap<Integer, ArrayList<TextPosition>>();
+        private final TreeMap<Integer, StringBuilder> texts = new TreeMap<Integer, StringBuilder>();
+        private final TreeMap<Integer, ArrayList<TextPosition>> positions = new TreeMap<Integer, ArrayList<TextPosition>>();
         private final boolean skipAllWhitespace;
         private final boolean normalizeText;
 
@@ -115,24 +111,24 @@ public class TextHighlight extends PDFTextStripper {
 
         public String getText() {
             StringBuilder text = new StringBuilder();
-            for (StringBuilder sb : texts.values()) {
-                text.append(sb.toString());
+            for (Entry<Integer, StringBuilder> entry : texts.entrySet()) {
+                text.append(this.getText(entry.getKey()).toString());
             }
-            if(this.normalizeText) {
-                return Normalizer.normalize(text, Normalizer.Form.NFKD);
-            } else {
-                return text.toString();
-            }
+            return text.toString();
         }
 
         public List<TextPosition> getTextPositions(final Integer pageNo) {
             return obtainTextPositions(pageNo);
         }
 
-        public void append(final String str, final TextPosition pos) {
+        public void append(String str, final TextPosition pos) {
             final int currentPage = getCurrentPageNo();
             final ArrayList<TextPosition> positions = obtainTextPositions(currentPage);
             final StringBuilder sb = obtainStringBuilder(currentPage);
+
+            if (normalizeText) {
+                str = Normalizer.normalize(str, Normalizer.Form.NFKD);
+            }
 
             for (int i = 0; i < str.length(); i++) {
                 char nextChar = str.charAt(i);
@@ -155,7 +151,6 @@ public class TextHighlight extends PDFTextStripper {
         public List<Match> match(final Integer pageNo, final Pattern pattern) {
             final Matcher matcher = pattern.matcher(this.getText(pageNo));
             final List<Match> matches = new ArrayList<Match>();
-
             while (matcher.find()) {
                 final List<TextPosition> elements = getTextPositions(pageNo).subList(matcher.start(), matcher.end());
                 matches.add(new Match(matcher.group(), elements));
@@ -166,8 +161,11 @@ public class TextHighlight extends PDFTextStripper {
 
     private TextCache textCache;
     private PDGamma defaultColor;
-    private boolean skipAllWhitespace = false; // Whether to skip all the whitespace when extracting the text
-    private boolean normalizeText = false; // Whether to normalize UTF-8 to ASCII, more robust but less accurate
+    private boolean skipAllWhitespace = false; // Whether to skip all the
+    // whitespace when extracting the
+    // text
+    private boolean normalizeText = false; // Whether to normalize UTF-8 to ASCII,
+    // more robust but less accurate
 
     /**
      * Instantiate a new object. This object will load properties from
@@ -236,8 +234,7 @@ public class TextHighlight extends PDFTextStripper {
         return boundingBoxes;
     }
 
-    private PDRectangle boundingBox(final float lowerLeftX, final float lowerLeftY, final float upperRightX,
-                                    final float upperRightY) {
+    private PDRectangle boundingBox(final float lowerLeftX, final float lowerLeftY, final float upperRightX, final float upperRightY) {
         final PDRectangle boundingBox = new PDRectangle();
         boundingBox.setLowerLeftX(lowerLeftX);
         boundingBox.setLowerLeftY(lowerLeftY);
@@ -257,12 +254,13 @@ public class TextHighlight extends PDFTextStripper {
      * @throws IOException
      */
     public List<PDAnnotationTextMarkup> highlightDefault(String pattern) throws IOException {
-        if(this.normalizeText) {
+        if (this.normalizeText) {
             pattern = Normalizer.normalize(pattern, Normalizer.Form.NFKD);
         }
-        if(this.skipAllWhitespace) {
+        if (this.skipAllWhitespace) {
             pattern = pattern.replaceAll("\\s+", "");
         }
+
         String p = Pattern.quote(pattern);
         return this.highlightDefault(Pattern.compile(p));
     }
@@ -419,7 +417,7 @@ public class TextHighlight extends PDFTextStripper {
     public void initialize(final PDDocument pdf) throws IOException {
         resetEngine();
         document = pdf;
-        if(document.isEncrypted()) {
+        if (document.isEncrypted()) {
             // We are expecting non-encrypted documents here, but it is common
             // for users to pass in a document that is encrypted with an empty
             // password (such a document appears to not be encrypted by
@@ -428,8 +426,7 @@ public class TextHighlight extends PDFTextStripper {
             //
             try {
                 document.decrypt("");
-            }
-            catch (CryptographyException e) {
+            } catch (CryptographyException e) {
                 throw new IllegalArgumentException("Error decrypting document, details: ", e);
             }
         }
@@ -674,6 +671,21 @@ public class TextHighlight extends PDFTextStripper {
     public String getText() throws IOException {
         return textCache.getText();
     }
+    public boolean isSkipAllWhitespace() {
+        return skipAllWhitespace;
+    }
+
+    public void setSkipAllWhitespace(boolean skipAllWhitespace) {
+        this.skipAllWhitespace = skipAllWhitespace;
+    }
+
+    public boolean isNormalizeText() {
+        return normalizeText;
+    }
+
+    public void setNormalizeText(boolean normalizeText) {
+        this.normalizeText = normalizeText;
+    }
 
     /* main */
     public static void main(final String args[]) throws Exception {
@@ -696,22 +708,11 @@ public class TextHighlight extends PDFTextStripper {
         final TextHighlight pdfHighlight = new TextHighlight("UTF-8");
         // depends on what you want to match, but this creates a long string
         // without newlines
-        pdfHighlight.setLineSeparator("");
-        pdfHighlight.setArticleEnd("");
-        pdfHighlight.setArticleStart("");
-        pdfHighlight.setWordSeparator("");
-        pdfHighlight.setParagraphEnd("");
-        pdfHighlight.setParagraphStart("");
-        pdfHighlight.setPageSeparator("");
-        pdfHighlight.setPageStart("");
-        pdfHighlight.setPageEnd("");
-
-
+        pdfHighlight.setSkipAllWhitespace(true);
+        pdfHighlight.setNormalizeText(true);
         pdfHighlight.initialize(pdDoc);
 
-        List<PDAnnotationTextMarkup> highlightDefault = pdfHighlight.highlightDefault(Pattern.quote(args[2].replaceAll("\\s+","")));
-
-        System.out.println(pdfHighlight.getText());
+        List<PDAnnotationTextMarkup> highlightDefault = pdfHighlight.highlightDefault(args[2]);
 
         pdDoc.save(args[1]);
         try {
@@ -730,19 +731,5 @@ public class TextHighlight extends PDFTextStripper {
         System.err.println("Usage: <input-pdf> <output-pdf> <pattern>");
     }
 
-    public boolean isSkipAllWhitespace() {
-        return skipAllWhitespace;
-    }
 
-    public void setSkipAllWhitespace(boolean skipAllWhitespace) {
-        this.skipAllWhitespace = skipAllWhitespace;
-    }
-
-    public boolean isNormalizeText() {
-        return normalizeText;
-    }
-
-    public void setNormalizeText(boolean normalizeText) {
-        this.normalizeText = normalizeText;
-    }
 }
