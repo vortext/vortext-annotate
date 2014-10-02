@@ -85,9 +85,8 @@ define(function (require) {
     },
     respondToSelection: function(e) {
       var selection = this.getSelection();
-      var pattern = selection.join("");
       // At least 3 words of at least 2 characters, separated by at most 6 non-letter chars
-      if(/(\w{2,}\W{1,6}){3}/.test(pattern)) {
+      if(/(\w{2,}\W{1,6}){3}/.test(selection.join(" "))) {
         var selectionBox = window.getSelection().getRangeAt(0).getBoundingClientRect();
         var position = this.calculatePopupCoordinates(selectionBox, e);
 
@@ -99,7 +98,7 @@ define(function (require) {
             x: position.x,
             y: position.y,
             visible: true },
-          selection: { pattern: pattern,
+          selection: { pattern: selection.join(""),
                        display: TextUtil.normalize(selection.join(" "))
                      }
         });

@@ -7,7 +7,10 @@
             [yesql.core :refer [defquery defqueries]]
             [clojure.java.jdbc :as jdbc]))
 
-(defqueries "sql/documents.sql")
+(timbre/refer-timbre)
+
+(defqueries "sql/documents.sql"
+  {:connection db-spec})
 
 (defn json-decode
   "Decodes a JSON org.postgresql.util.PGobject to a Clojure map"
@@ -15,46 +18,60 @@
   (json/decode (.getValue obj)))
 
 (defn get
-  ([fingerprint]
-     (first (get-document db-spec fingerprint)))
-  ([fingerprint project-id]
-     (let [document (first (get-document-with-marginalia db-spec fingerprint project-id))]
+  ([document-id]
+     (first (get-document {:document document-id})))
+  ([document-id project-id]
+     (let [document (first (get-document-with-marginalia
+                            {:document document-id
+                             :project project-id}))]
        (assoc document :marginalia (json-decode (:marginalia document))))))
 
 (defn assoc!
   [document-id project-id]
-  (assoc-document! db-spec document-id project-id))
+  (assoc-document! {:document document-id
+                    :project project-id}))
 
 (defn dissoc!
   [document-id project-id]
-  (jdbc/with-db-transaction [connection db-spec]
-    (dissoc-document! connection document-id project-id)
-    (delete-marginalia! connection document-id project-id)))
+  (let [args {:document document-id
+              :project project-id}]
+    (jdbc/with-db-transaction [tx db-spec]
+      (dissoc-document! args {:connection tx})
+      (delete-marginalia! args {:connection tx}))))
 
 (defn has?
   [project-id document-id]
-  (:exists (first (has-document? db-spec document-id project-id))))
+  (:exists (first (has-document? {:document document-id
+                                  :project project-id}))))
 
 (defn ^:private populate-marginalia
-  [db project-id fingerprint]
-  (let [categories (projects/get-categories db project-id)
+  [db project-id document-id]
+  (let [categories (projects/get-categories {:project project-id} db)
         marginalia {:marginalia (map (fn [c] {:title (:title c)}) categories)}]
-    (create-marginalia! db fingerprint project-id (json/encode marginalia))))
+    (create-marginalia! {:document document-id
+                         :project project-id
+                         :marginalia (json/encode marginalia)}
+                        db)))
 
 (defn insert-in-project!
-  [project-id fingerprint file name]
-  (jdbc/with-db-transaction [connection db-spec]
-    (let [id (create-document<! connection fingerprint file name project-id)]
-      (populate-marginalia connection project-id fingerprint)
+  [project-id document-id file name]
+  (jdbc/with-db-transaction [tx db-spec]
+    (let [id (create-document<! {:document document-id
+                                 :file file
+                                 :name name
+                                 :project project-id} {:connection tx})]
+      (populate-marginalia {:connection tx} project-id document-id)
       id)))
 
 (defn get-by-project
   [project-id & {:keys [marginalia] :or {marginalia false}}]
   (if marginalia
-    (let [documents (documents-by-project-with-marginalia db-spec project-id)]
+    (let [documents (documents-by-project-with-marginalia {:project project-id})]
       (map #(assoc % :marginalia (json-decode (:marginalia %))) documents))
-    (documents-by-project db-spec project-id)))
+    (documents-by-project {:project project-id})))
 
 (defn update!
   [project-id document-id marginalia]
-  (update-marginalia! db-spec marginalia document-id project-id))
+  (update-marginalia! {:marginalia marginalia
+                       :document document-id
+                       :project project-id}))

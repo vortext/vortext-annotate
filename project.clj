@@ -52,7 +52,7 @@
                  [clj-http "1.0.0"]
 
                  ;; Database connectivity
-                 [yesql "0.4.0"]
+                 [yesql "0.5.0-beta2"]
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
                  [ragtime "0.3.6"] ; migrations
                  ])
