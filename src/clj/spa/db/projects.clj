@@ -4,33 +4,45 @@
             [yesql.core :refer [defquery defqueries]]
             [clojure.java.jdbc :as jdbc]))
 
-(defqueries "sql/projects.sql")
+(defqueries "sql/projects.sql"
+  {:connection db-spec})
 
 (defn has?
   [user-id project-id]
-  (:exists (first (has-project? db-spec user-id project-id))))
+  (:exists (first (has-project? {:user user-id :project project-id}))))
 
 (defn get
   [project-id]
-  (jdbc/with-db-transaction [connection db-spec]
-    (let [project (first (get-project connection project-id))
-          categories (get-categories connection project-id)]
+  (jdbc/with-db-transaction [tx db-spec]
+    (let [project (first (get-project {:project project-id} {:connection tx}))
+          categories (get-categories {:project project-id} {:conncetion tx})]
       (assoc project :categories categories))))
 
 (defn for-user
   [user-id]
-  (select-projects-by-user db-spec user-id))
+  (select-projects-by-user {:user user-id}))
+
+(defn insert-categories!
+  [db project-id categories]
+  (doall (map #(insert-category!
+                (assoc {:project project-id} :title %) db) categories)))
 
 (defn create!
   [user-id title description categories]
-  (jdbc/with-db-transaction [connection db-spec]
-    (let [project-id (:projects_id (create-project<! connection title description user-id))]
-      (doall (map #(insert-category! connection project-id %) categories))
+  (jdbc/with-db-transaction [tx db-spec]
+    (let [project-id (:projects_id (create-project<!
+                                    {:title title
+                                     :description description
+                                     :user user-id} {:connection tx}))]
+      (insert-categories! {:connection tx} project-id categories)
       project-id)))
 
 (defn edit!
   [project-id title description categories]
-  (jdbc/with-db-transaction [connection db-spec]
-    (delete-categories! connection project-id)
-    (doall (map #(insert-category! connection project-id %) categories))
-    (edit-project! connection title description project-id)))
+  (jdbc/with-db-transaction [tx db-spec]
+    (let [c {:connection tx}]
+      (delete-categories! {:project project-id} c)
+      (insert-categories! c project-id categories)
+      (edit-project! {:title title
+                      :description description
+                      :project project-id} c))))

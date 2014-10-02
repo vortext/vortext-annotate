@@ -10,7 +10,7 @@ SELECT * FROM users WHERE id = :id LIMIT 1
 -- Updates the users' personal details
 UPDATE users
 SET
-  first_name = :first_name,
-  last_name = :last_name,
+  first_name = :first,
+  last_name = :last,
   email = :email
 WHERE id = :id
