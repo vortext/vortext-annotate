@@ -45,7 +45,7 @@ import org.apache.pdfbox.util.TextPosition;
  * This class implements the methods highlight and highlightDefault which will
  * add a highlight to the PDF based on a Pattern or String. The idea is to
  * extend the PDFTextStripper and override the methods that write to the Output
- * to instead write to a TextCache that keeps data on the position of the
+ * to instead write to a TextAggregate that keeps data on the position of the
  * TextPositions. From this information we can then derive bounding boxes (and
  * quads) that can be used to write the annotations. See the main method for
  * example usage.
@@ -76,13 +76,13 @@ public class TextHighlight extends PDFTextStripper {
      * TextPositions. This is needed to compute bounding boxes. The data is stored
      * on a per-page basis (keyed on the 1-based pageNo)
      */
-    private class TextCache {
+    private class TextAggregate {
         private final TreeMap<Integer, StringBuilder> texts = new TreeMap<Integer, StringBuilder>();
         private final TreeMap<Integer, ArrayList<TextPosition>> positions = new TreeMap<Integer, ArrayList<TextPosition>>();
         private final boolean skipAllWhitespace;
         private final boolean normalizeText;
 
-        public TextCache(boolean skipAllWhitespace, boolean normalizeText) {
+        public TextAggregate(boolean skipAllWhitespace, boolean normalizeText) {
             this.skipAllWhitespace = skipAllWhitespace;
             this.normalizeText = normalizeText;
         }
@@ -159,7 +159,7 @@ public class TextHighlight extends PDFTextStripper {
         }
     }
 
-    private TextCache textCache;
+    private TextAggregate textAggregate;
     private PDGamma defaultColor;
     private boolean skipAllWhitespace = false; // Whether to skip all the
     // whitespace when extracting the
@@ -291,8 +291,8 @@ public class TextHighlight extends PDFTextStripper {
 
     @SuppressWarnings("unchecked")
     public List<PDAnnotationTextMarkup> highlight(final Pattern pattern, final String subType) throws IOException {
-        if (textCache == null || document == null) {
-            throw new IllegalArgumentException("TextCache was not initilized");
+        if (textAggregate == null || document == null) {
+            throw new IllegalArgumentException("TextAggregate was not initilized");
         }
 
         final List<PDPage> pages = document.getDocumentCatalog().getAllPages();
@@ -303,7 +303,7 @@ public class TextHighlight extends PDFTextStripper {
             final PDPage page = pages.get(pageIndex);
             final List<PDAnnotation> annotations = page.getAnnotations();
 
-            final List<Match> matches = textCache.match(pageIndex + 1, pattern);
+            final List<Match> matches = textAggregate.match(pageIndex + 1, pattern);
 
             for (final Match match : matches) {
                 final List<PDRectangle> textBoundingBoxes = getTextBoundingBoxes(match.positions);
@@ -431,7 +431,7 @@ public class TextHighlight extends PDFTextStripper {
             }
         }
 
-        textCache = new TextCache(this.isSkipAllWhitespace(), this.isNormalizeText());
+        textAggregate = new TextAggregate(this.isSkipAllWhitespace(), this.isNormalizeText());
 
         if (getAddMoreFormatting()) {
             setParagraphEnd(getLineSeparator());
@@ -450,7 +450,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     public void resetEngine() {
         super.resetEngine();
-        textCache = null;
+        textAggregate = null;
     }
 
     /**
@@ -466,7 +466,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void startArticle(final boolean isltr) throws IOException {
         final String articleStart = getArticleStart();
-        textCache.append(articleStart, null);
+        textAggregate.append(articleStart, null);
     }
 
     /**
@@ -479,7 +479,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void endArticle() throws IOException {
         final String articleEnd = getArticleEnd();
-        textCache.append(articleEnd, null);
+        textAggregate.append(articleEnd, null);
     }
 
     /**
@@ -522,7 +522,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void writePageSeperator() {
         final String pageSeparator = getPageSeparator();
-        textCache.append(pageSeparator, null);
+        textAggregate.append(pageSeparator, null);
     }
 
     /**
@@ -535,7 +535,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void writeLineSeparator() {
         final String lineSeparator = getLineSeparator();
-        textCache.append(lineSeparator, null);
+        textAggregate.append(lineSeparator, null);
     }
 
     /**
@@ -548,7 +548,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void writeWordSeparator() {
         final String wordSeparator = getWordSeparator();
-        textCache.append(wordSeparator, null);
+        textAggregate.append(wordSeparator, null);
     }
 
     /**
@@ -560,7 +560,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void writeCharacters(final TextPosition text) {
         final String character = text.getCharacter();
-        textCache.append(character, text);
+        textAggregate.append(character, text);
 
     }
 
@@ -607,7 +607,7 @@ public class TextHighlight extends PDFTextStripper {
         }
 
         final String paragraphStart = getParagraphStart();
-        textCache.append(paragraphStart, null);
+        textAggregate.append(paragraphStart, null);
         inParagraph = true;
     }
 
@@ -619,7 +619,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void writeParagraphEnd() {
         final String paragraphEnd = getParagraphEnd();
-        textCache.append(paragraphEnd, null);
+        textAggregate.append(paragraphEnd, null);
 
         inParagraph = false;
     }
@@ -632,7 +632,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void writePageStart() {
         final String pageStart = getPageStart();
-        textCache.append(pageStart, null);
+        textAggregate.append(pageStart, null);
     }
 
     /**
@@ -643,7 +643,7 @@ public class TextHighlight extends PDFTextStripper {
     @Override
     protected void writePageEnd() {
         final String pageEnd = getPageEnd();
-        textCache.append(pageEnd, null);
+        textAggregate.append(pageEnd, null);
     }
 
     @Override
@@ -669,7 +669,7 @@ public class TextHighlight extends PDFTextStripper {
     }
 
     public String getText() throws IOException {
-        return textCache.getText();
+        return textAggregate.getText();
     }
     public boolean isSkipAllWhitespace() {
         return skipAllWhitespace;
