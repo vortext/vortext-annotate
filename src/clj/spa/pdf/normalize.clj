@@ -21,6 +21,8 @@
     (sh "gs"
         "-q"
         "-dPARANOIDSAFER" ; do not allow access to the filesystem
+        "-dSAFER"
+        "-dNOOUTERSAVE"
         "-dPDFA=2" ; convert to PDF/A-2
         "-sPDFACompatibilityPolicy=1"
         "-dFastWebView" ; linearize document (although to-be ignored by PDF/A compliant viewers)
