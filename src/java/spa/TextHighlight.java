@@ -161,9 +161,8 @@ public class TextHighlight extends PDFTextStripper {
 
     private TextAggregate textAggregate;
     private PDGamma defaultColor;
-    private boolean skipAllWhitespace = false; // Whether to skip all the
-    // whitespace when extracting the
-    // text
+    // Whether to skip all the whitespace when extracting the text, may be more robust
+    private boolean skipAllWhitespace = false;
     private boolean normalizeText = false; // Whether to normalize UTF-8 to ASCII,
     // more robust but less accurate
 
