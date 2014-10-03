@@ -53,9 +53,11 @@ define(function (require) {
             _upload.then(
               function(data) {
                 document.unset("_upload");
+                document.unset("_progress");
               },
               function(error) {
                 document.unset("_upload");
+                document.unset("_progress");
               },
               function(progress) {
                 document.set("_progress", progress);

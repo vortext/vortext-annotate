@@ -47,7 +47,7 @@ define(function (require) {
       var document = this.props.document;
 
       var progressBar;
-      if(document._progress && document._progress.completed < 1.0) {
+      if(document._progress) {
         progressBar = <ProgressBar completed={document._progress.completed} />;
       }
 

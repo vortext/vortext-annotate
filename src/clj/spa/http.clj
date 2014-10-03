@@ -1,7 +1,12 @@
 (ns spa.http
   (:require [compojure.core :refer :all]
+            [taoensso.timbre :as timbre]
             [clojure.core.async :as async :refer [close! chan go <! >!]]
             [org.httpkit.server :as http]))
+
+
+
+(timbre/refer-timbre)
 
 (defn async
   "Long-polling/Comet handler.

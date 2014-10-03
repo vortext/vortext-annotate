@@ -23,7 +23,6 @@ define(function (require) {
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
 
-    deferred.notify({message: "Processing…", completed: 0.0});
     xhr.upload.addEventListener("progress", _.partial(updateProgress, deferred), false);
     xhr.upload.addEventListener("load", _.partial(transferComplete, deferred), false);
 
@@ -46,6 +45,7 @@ define(function (require) {
         fd.append(key, fields[key]);
       }
     }
+    deferred.notify({message: "Processing…", completed: 0.0});
     xhr.send(fd);
     return deferred.promise;
   };

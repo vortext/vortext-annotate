@@ -4,12 +4,14 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [clojure.java.io :as io]
+            [clojure.core.async :as async :refer [go chan <!! >!!]]
             [cheshire.core :as json]
             [taoensso.timbre :as timbre]
             [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [spa.util :refer [breadcrumbs]]
+            [spa.http :as http]
             [spa.pdf.highlight :refer [highlight-document]]
             [spa.pdf.normalize :refer [normalize-document]]
             [spa.db.documents :as documents]
@@ -19,12 +21,19 @@
 
 (timbre/refer-timbre)
 
-(defn insert-in-project
+(defn insert!
   [project-id req]
   (let [{fingerprint :fingerprint name :name} (:params req)
         temp-file (get-in req [:multipart-params "file" :tempfile])
-        pdf (normalize-document temp-file)]
-    {:document (documents/insert-in-project! project-id fingerprint pdf name)}))
+        response (chan)]
+    (go
+      (documents/insert-in-project! project-id fingerprint (<! (normalize-document temp-file)) name)
+      (>! response {:document fingerprint}))
+    response))
+
+(defn insert-in-project
+  [project-id req]
+  (http/async req (insert! project-id req)))
 
 (defn document-page [document project req]
   (layout/render "document.html"

@@ -48,10 +48,11 @@
   [db project-id document-id]
   (let [categories (projects/get-categories {:project project-id} db)
         marginalia {:marginalia (map (fn [c] {:title (:title c)}) categories)}]
-    (create-marginalia! {:document document-id
-                         :project project-id
-                         :marginalia (json/encode marginalia)}
-                        db)))
+    (when (empty? (get-marginalia {:document document-id :project project-id} db))
+      (create-marginalia! {:document document-id
+                           :project project-id
+                           :marginalia (json/encode marginalia)}
+                          db))))
 
 (defn insert-in-project!
   [project-id document-id file name]

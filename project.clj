@@ -39,7 +39,6 @@
                  [http-kit "2.1.19"]
                  [compojure "1.2.0"]
                  [ring/ring-devel "1.3.1"]
-                 [ring-middleware-format "0.4.0"]
                  [ring/ring-anti-forgery "1.0.0"]
 
                  ;; JSON
