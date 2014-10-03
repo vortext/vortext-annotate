@@ -25,10 +25,9 @@
      "-dSAFER"
      "-dNOOUTERSAVE"
      "-dPDFA=2" ; convert to PDF/A-2
-     "-sPDFACompatibilityPolicy=1"
+     "-dPDFACompatibilityPolicy=1"
      "-dFastWebView" ; linearize document (although to-be ignored by PDF/A compliant viewers)
-     "-dUseCIEColor"
-     "-sProcessColorModel=DeviceCMYK"
+     "-sColorConversionStrategy=CMYK"
      "-dBATCH" "-dNOPAUSE"
      "-sDEVICE=pdfwrite" out in]))
 
