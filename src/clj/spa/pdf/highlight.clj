@@ -1,16 +1,14 @@
-(ns spa.pdf.helper
-  (:require
-   [clojure.string :as s]
-   [taoensso.timbre :as timbre])
-  (:import
-   spa.TextHighlight
-   java.util.regex.Pattern
-   org.apache.commons.io.IOUtils
-   org.apache.pdfbox.pdmodel.PDDocument
-   org.apache.pdfbox.pdfparser.PDFParser
-   org.apache.pdfbox.pdmodel.graphics.color.PDGamma
-   org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation
-   org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup))
+(ns spa.pdf.highlight
+  (:require [clojure.string :as s]
+            [taoensso.timbre :as timbre])
+  (:import spa.TextHighlight
+           java.util.regex.Pattern
+           org.apache.commons.io.IOUtils
+           org.apache.pdfbox.pdmodel.PDDocument
+           org.apache.pdfbox.pdfparser.PDFParser
+           org.apache.pdfbox.pdmodel.graphics.color.PDGamma
+           org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation
+           org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup))
 
 (timbre/refer-timbre)
 

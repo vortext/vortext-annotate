@@ -10,25 +10,29 @@
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [spa.util :refer [breadcrumbs]]
-            [spa.pdf.helper :as pdf-helper]
+            [spa.pdf.highlight :refer [highlight-document]]
+            [spa.pdf.normalize :refer [normalize-document]]
             [spa.db.documents :as documents]
             [spa.db.projects :as projects]
+            [clojure.core.async :as async :refer [chan go <! >!]]
+            [spa.http :as http]
             [spa.layout :as layout]))
 
 (timbre/refer-timbre)
 
-(defn ^:private json-response
-  [m]
-  (resp/content-type (resp/response (json/encode m)) "text/json"))
-
-(defn insert-in-project
+(defn insert!
   [project-id req]
   (let [{fingerprint :fingerprint name :name} (:params req)
         temp-file (get-in req [:multipart-params "file" :tempfile])
-        file (with-open [f (io/input-stream temp-file)]
-               (IOUtils/toByteArray f))]
-    (documents/insert-in-project! project-id fingerprint file name)
-    (json-response {:id fingerprint})))
+        pdf (normalize-document temp-file)]
+    {:document (documents/insert-in-project! project-id fingerprint pdf name)}))
+
+(defn insert-in-project
+  [project-id req]
+  (let [c (chan)]
+    (go
+      (>! c (insert! project-id req)))
+    (http/async req c)))
 
 (defn document-page [document project req]
   (layout/render "document.html"
@@ -60,14 +64,12 @@
 
 (defn delete
   [project-id document-id]
-  (documents/dissoc! document-id project-id)
-  (json-response {:id document-id}))
+  {:document (documents/dissoc! document-id project-id)})
 
 (defn update
   [project-id document-id req]
   (let [marginalia (get-in req [:params :data])]
-    (documents/update! project-id document-id marginalia)
-    (json-response (:id document-id))))
+    {:document (documents/update! project-id document-id marginalia)}))
 
 (defn ^:private extend-deeply-with
   "Extends the maps in seq alpha of the form [[{} ...] [{} ...] ...]
@@ -94,7 +96,7 @@
          output (ByteArrayOutputStream.)]
       (try
         (do
-          (pdf-helper/highlight-document input output (map format-highlight highlights))
+          (highlight-document input output (map format-highlight highlights))
           (io/input-stream (.toByteArray output)))
         (catch Exception e (do (warn e) input)))))) ;; just return the document on fail
 

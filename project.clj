@@ -13,7 +13,8 @@
 
         :port 8080
         :dev true}
-  :profiles {:production {:env {:dev false}}}
+  :profiles {:production {:env {:dev false}}
+             :uberjar {:aot :all}}
   :jvm-opts ["-server" "-Djava.awt.headless=true"]
   :aliases {"migrate" ["trampoline" "run" "-m" "spa.db.migrations" "migrate"]
             "rollback" ["trampoline" "run" "-m" "spa.db.migrations" "rollback"]}
@@ -30,14 +31,15 @@
                  [commons-io/commons-io "2.4"]
 
                  [im.chit/cronj "1.4.2"]
-                 [lib-noir "0.8.9"]
+                 [lib-noir "0.9.0"]
                  [noir-exception "0.2.2"]
 
                  [environ "1.0.0"]
 
                  [http-kit "2.1.19"]
-                 [compojure "1.1.9"]
+                 [compojure "1.2.0"]
                  [ring/ring-devel "1.3.1"]
+                 [ring-middleware-format "0.4.0"]
                  [ring/ring-anti-forgery "1.0.0"]
 
                  ;; JSON
