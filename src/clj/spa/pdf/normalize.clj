@@ -23,6 +23,9 @@
         "-dPARANOIDSAFER" ; do not allow access to the filesystem
         "-dPDFA=2" ; convert to PDF/A-2
         "-dFastWebView" ; linearize document
+        "-dUseCIEColor"
+        "-sProcessColorModel=DeviceCMYK"
+        "-sPDFACompatibilityPolicy=1"
         "-dBATCH" "-dNOPAUSE"
         "-sDEVICE=pdfwrite" out in)))
 

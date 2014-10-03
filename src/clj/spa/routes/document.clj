@@ -15,24 +15,16 @@
             [spa.db.documents :as documents]
             [spa.db.projects :as projects]
             [clojure.core.async :as async :refer [chan go <! >!]]
-            [spa.http :as http]
             [spa.layout :as layout]))
 
 (timbre/refer-timbre)
 
-(defn insert!
+(defn insert-in-project
   [project-id req]
   (let [{fingerprint :fingerprint name :name} (:params req)
         temp-file (get-in req [:multipart-params "file" :tempfile])
         pdf (normalize-document temp-file)]
     {:document (documents/insert-in-project! project-id fingerprint pdf name)}))
-
-(defn insert-in-project
-  [project-id req]
-  (let [c (chan)]
-    (go
-      (>! c (insert! project-id req)))
-    (http/async req c)))
 
 (defn document-page [document project req]
   (layout/render "document.html"
