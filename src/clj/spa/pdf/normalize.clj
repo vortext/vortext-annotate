@@ -22,15 +22,15 @@
         "-q"
         "-dPARANOIDSAFER" ; do not allow access to the filesystem
         "-dPDFA=2" ; convert to PDF/A-2
+        "-sPDFACompatibilityPolicy=1"
         "-dFastWebView" ; linearize document
         "-dUseCIEColor"
         "-sProcessColorModel=DeviceCMYK"
-        "-sPDFACompatibilityPolicy=1"
         "-dBATCH" "-dNOPAUSE"
         "-sDEVICE=pdfwrite" out in)))
 
 (defn normalize-document
-  "Normalizes a PDF document to PDF/A-2 compatbible using GhostScript.
+  "Normalizes a PDF document to PDF/A-2 compliant using GhostScript.
    Returns a byte array with the normalized PDF."
   [^InputStream input]
   (let [^java.io.File in-file (temp-file)
