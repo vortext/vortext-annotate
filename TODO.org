@@ -1,6 +1,8 @@
 * Semantic web
-** Preperation
-*** Fix setActiveAnnotations (per page, proper loading order)
+** Preparation
+*** Fix setActiveAnnotations to be per page, without mapping
+*** Fuzzy matching (bitap)
+*** Fix saving of documents (use BLOBs)
 ** W3C Open Annotations
 *** Set-up Fuseki
 *** Save annotations and update as RDF (Open Annotation spec)
@@ -20,10 +22,11 @@
 ** Show results for multiple PDFs
 *** Tree-like view
 *** Be able to click to annotation with named destinations
+*** Make publicly dereference-able URIs
 ** Redo the "one off"
 ** Export to other formats (XML, CSV)
 * Polish
-** About, FAQ pages
+** About, FAQ, TOS, Developer pages
 ** More info on home page
 * Refactor
 ** Get rid of backbone (use flux like system + immutable)
