@@ -68,7 +68,6 @@ define(function (require) {
 
       var left = Math.min(Math.max(e && e.pageX || 0, boxLeft+popupWidth/2), boxLeft+boundingBox.width-popupWidth/2);
       return { x: left | 0, y: boxTop - 2.0 * popupHeight | 0};
-
     },
     getSelection: function() {
       var selection = window.getSelection();
