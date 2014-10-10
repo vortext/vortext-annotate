@@ -56,7 +56,7 @@ import org.apache.pdfbox.util.TextPosition;
 public class TextHighlight extends PDFTextStripper {
 
     private float verticalTolerance = 0;
-    private float heightModifier = (float) 1.50;
+    private float heightModifier = (float) 1.125;
 
     /**
      * Internal utility class

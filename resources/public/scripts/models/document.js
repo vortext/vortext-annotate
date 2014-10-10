@@ -172,7 +172,7 @@ define(function (require) {
       this.trigger("annotation:add", annotations);
     },
     setActiveAnnotations: function(marginalia) {
-      // FIXME: UGLY HACK to set the active nodes based on the response JSON and selection
+      // FIXME: UGLY HACK to set the active nodes based on the marginalia
       var annotations = {};
       var self = this;
       marginalia.each(function(marginalis) {
@@ -186,8 +186,10 @@ define(function (require) {
             element.destroy = annotation.destroy.bind(annotation);
             element.select = annotation.select.bind(annotation);
 
-            annotations[node.pageIndex] = annotations[node.pageIndex] || {};
-            annotations[node.pageIndex][node.nodeIndex] = _.union(annotations[node.pageIndex][node.nodeIndex] || [], element);
+            annotations[node.pageIndex] =
+              annotations[node.pageIndex] || {};
+            annotations[node.pageIndex][node.nodeIndex] =
+              _.union(annotations[node.pageIndex][node.nodeIndex] || [], element);
           });
         });
       });
