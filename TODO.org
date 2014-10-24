@@ -2,31 +2,30 @@
 ** Preparation
 *** Fix setActiveAnnotations to be per page, without mapping
 *** Fuzzy matching (bitap)
-*** Fix saving of documents (use BLOBs)
+*** Fix saving of document PDFs (use BLOBs)
 ** W3C Open Annotations
 *** Set-up Fuseki
 *** Save annotations and update as RDF (Open Annotation spec)
 *** Query triple store for data
-*** Make front-end create and consume RDF
+*** Make front-end create and consume RDF (or SPARQL results)
 ** Embed RDF in PDF, write destinations
 * Pluggable predictors
 ** Remember URLs, call URLs (show client-side progress over WebSockets)
-** JSON -> RDF
+** JSON -> RDF (write simple scheme / spec)
 ** Persist results
-** Query results
 ** Make Risk of Bias work
 ** Write documentation
 * Project view
 ** Delete projects
-** DONE Write to PDF
 ** Show results for multiple PDFs
 *** Tree-like view
 *** Be able to click to annotation with named destinations
-*** Make publicly dereference-able URIs
+*** Make publicly dereference-able URIs (set-up Terms of Service)
 ** Redo the "one off"
 ** Export to other formats (XML, CSV)
 * Polish
 ** About, FAQ, TOS, Developer pages
 ** More info on home page
-* Refactor
+* Refactor Ideas
+** Rewrite client-side in ClojureScript
 ** Get rid of backbone (use flux like system + immutable)
