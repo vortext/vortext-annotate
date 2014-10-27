@@ -32,7 +32,7 @@
      "-sDEVICE=pdfwrite" out in]))
 
 (defn normalize-document
-  "Normalizes a PDF document to PDF/A-2 compliant using GhostScript.
+  "Normalizes a PDF document to be PDF/A-2 compliant using GhostScript.
   Returns a temporary file with the converted document"
   [^java.io.File in-file]
   (let [^java.io.File out-file (temp-file)]

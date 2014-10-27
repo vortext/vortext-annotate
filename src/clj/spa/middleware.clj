@@ -19,5 +19,5 @@
 
 (defn load-middleware []
   (concat common-middleware
-          (when (env :dev) development-middleware)
-          production-middleware))
+          production-middleware
+          (when (env :dev) development-middleware)))

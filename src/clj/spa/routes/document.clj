@@ -1,23 +1,22 @@
 (ns spa.routes.document
   (:import org.apache.commons.io.IOUtils
-           java.io.ByteArrayOutputStream)
+           java.io.ByteArrayInputStream)
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [clojure.java.io :as io]
-            [clojure.core.async :as async :refer [go chan <!! >!!]]
             [cheshire.core :as json]
             [taoensso.timbre :as timbre]
             [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
+            [spa.layout :as layout]
             [spa.util :refer [breadcrumbs]]
             [spa.http :as http]
             [spa.pdf.highlight :refer [highlight-document]]
             [spa.pdf.normalize :refer [normalize-document]]
             [spa.db.documents :as documents]
             [spa.db.projects :as projects]
-            [clojure.core.async :as async :refer [chan go <! >!]]
-            [spa.layout :as layout]))
+            [clojure.core.async :as async :refer [chan go <! >!]]))
 
 (timbre/refer-timbre)
 
@@ -35,14 +34,14 @@
 (defn insert!
   [project-id req]
   (let [{fingerprint :fingerprint name :name} (:params req)
-        temp-file (get-in req [:multipart-params "file" :tempfile])
-        document (normalize-document temp-file)
         response (chan)]
     (go
-      (documents/insert-in-project! project-id fingerprint document name)
-      (.delete document)
-      (.delete temp-file)
-      (>! response {:document fingerprint}))
+      (let [temp-file (get-in req [:multipart-params "file" :tempfile])
+            document (normalize-document temp-file)]
+        (>! response {:document
+                      (documents/insert-in-project! project-id fingerprint document name)})
+        (.delete document)
+        (.delete temp-file)))
     response))
 
 (defn insert-in-project
@@ -59,7 +58,7 @@
 
 (defn display
   [project-id document-id req]
-  (dispatch {:pdf (fn [] (documents/get document-id))
+  (dispatch {:pdf (fn [] (ByteArrayInputStream. (documents/get document-id)))
              :html (fn [] (document-page
                           (documents/get document-id project-id)
                           (projects/get project-id) req))

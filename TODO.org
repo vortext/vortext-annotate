@@ -2,7 +2,7 @@
 ** Preparation
 *** Fix setActiveAnnotations to be per page, without mapping
 *** Fuzzy matching (bitap)
-*** Fix saving of document PDFs (use BLOBs)
+*** IN PROGRESS Fix saving of document PDFs (use BLOBs)
 ** W3C Open Annotations
 *** Set-up Fuseki
 *** Save annotations and update as RDF (Open Annotation spec)
@@ -23,9 +23,10 @@
 *** Make publicly dereference-able URIs (set-up Terms of Service)
 ** Redo the "one off"
 ** Export to other formats (XML, CSV)
+* Users
+** Allow ORCID login
 * Polish
 ** About, FAQ, TOS, Developer pages
 ** More info on home page
 * Refactor Ideas
-** Rewrite client-side in ClojureScript
-** Get rid of backbone (use flux like system + immutable)
+** Rewrite client-side in ClojureScript (with Om)

@@ -58,4 +58,5 @@
                  [ragtime "0.3.6"] ; migrations
 
                  ;; Jena (RDF)
-                 [org.apache.jena/jena "2.12.1"]])
+                 [org.apache.jena/jena-arq "2.12.1"]
+                 [org.apache.jena/jena-core "2.12.1"]])
