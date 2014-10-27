@@ -27,17 +27,17 @@
                                               com.sun.jdmk/jmxtools
                                               com.sun.jmx/jmxri]]
                  [com.taoensso/timbre "3.3.1"]
-                 [selmer "0.7.1"]
+                 [selmer "0.7.2"]
                  [commons-io/commons-io "2.4"]
 
-                 [im.chit/cronj "1.4.2"]
-                 [lib-noir "0.9.0"]
+                 [im.chit/cronj "1.4.3"]
+                 [lib-noir "0.9.4"]
                  [noir-exception "0.2.2"]
 
                  [environ "1.0.0"]
 
                  [http-kit "2.1.19"]
-                 [compojure "1.2.0"]
+                 [compojure "1.2.1"]
                  [ring/ring-devel "1.3.1"]
                  [ring/ring-anti-forgery "1.0.0"]
 
@@ -46,7 +46,7 @@
 
                  ;; PDF
                  [org.apache.pdfbox/pdfbox "1.8.7"]
-                 [org.bouncycastle/bcprov-jdk16 "1.46"] ; crypto
+                 [org.bouncycastle/bcprov-jdk16 "1.46"] ;; crypto
 
                  ;; Remote connectivity
                  [com.netflix.hystrix/hystrix-clj "1.4.0-RC4"]
@@ -56,4 +56,6 @@
                  [yesql "0.5.0-beta2"]
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
                  [ragtime "0.3.6"] ; migrations
-                 ])
+
+                 ;; Jena (RDF)
+                 [org.apache.jena/jena "2.12.1"]])
