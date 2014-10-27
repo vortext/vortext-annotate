@@ -43,7 +43,6 @@
   []
   (timbre/info "spa is shutting down...")
   (cronj/shutdown! session-manager/cleanup-job)
-  (shutdown-agents)
   (timbre/info "shutdown complete!"))
 
 (def web-routes

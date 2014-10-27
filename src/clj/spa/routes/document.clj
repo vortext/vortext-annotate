@@ -21,29 +21,6 @@
 
 (timbre/refer-timbre)
 
-(defn insert!
-  [project-id req]
-  (let [{fingerprint :fingerprint name :name} (:params req)
-        temp-file (get-in req [:multipart-params "file" :tempfile])
-        response (chan)]
-    (go
-      (documents/insert-in-project! project-id fingerprint (<! (normalize-document temp-file)) name)
-      (>! response {:document fingerprint}))
-    response))
-
-(defn insert-in-project
-  [project-id req]
-  (http/async req (insert! project-id req)))
-
-(defn document-page [document project req]
-  (layout/render "document.html"
-                 {:dispatcher "document"
-                  :marginalia (:marginalia document)
-                  :name (:name document)
-                  :breadcrumbs (breadcrumbs (:uri req)
-                                            ["Projects" (:title project) (:name document)])
-                  :page-type "view"}))
-
 (defn dispatch [m req]
   (let [accept  (get (:headers req) "accept")
         mime    (get (:query-params req) "mime")
@@ -55,9 +32,34 @@
                  :else                       :default)]
     ((key m))))
 
+(defn insert!
+  [project-id req]
+  (let [{fingerprint :fingerprint name :name} (:params req)
+        temp-file (get-in req [:multipart-params "file" :tempfile])
+        document (normalize-document temp-file)
+        response (chan)]
+    (go
+      (documents/insert-in-project! project-id fingerprint document name)
+      (.delete document)
+      (.delete temp-file)
+      (>! response {:document fingerprint}))
+    response))
+
+(defn insert-in-project
+  [project-id req]
+  (http/async req (insert! project-id req)))
+
+(defn document-page [document project req]
+  (layout/render "document.html"
+                 {:dispatcher "document"
+                  :name (:name document)
+                  :breadcrumbs (breadcrumbs (:uri req)
+                                            ["Projects" (:title project) (:name document)])
+                  :page-type "view"}))
+
 (defn display
   [project-id document-id req]
-  (dispatch {:pdf (fn [] (io/input-stream (:file (documents/get document-id))))
+  (dispatch {:pdf (fn [] (documents/get document-id))
              :html (fn [] (document-page
                           (documents/get document-id project-id)
                           (projects/get project-id) req))
@@ -68,42 +70,13 @@
   {:document (documents/dissoc! document-id project-id)})
 
 (defn update
-  [project-id document-id req]
-  (let [marginalia (get-in req [:params :data])]
-    {:document (documents/update! project-id document-id marginalia)}))
-
-(defn ^:private extend-deeply-with
-  "Extends the maps in seq alpha of the form [[{} ...] [{} ...] ...]
-   with the keys from beta of the form [{} ... {}]. alpha and beta must have the same length."
-  [alpha beta]
-  (map-indexed (fn [idx psi] (map (fn [omega] (merge (nth beta idx) omega)) psi)) alpha))
+  [project-id document-id req])
 
 (defn highlight
-  "Highlights the annotations directly within the pdf.
-   Requires a document map with both the :file and the :marginalia present.
-   Returns a closed InputStream with the highlighted PDF"
-  [document]
-  (let [marginalia (clojure.walk/keywordize-keys (get-in document [:marginalia "marginalia"]))
-        annotations (map :annotations marginalia)
-        meta (map #(select-keys % [:title :description :color]) marginalia)
-        highlights (flatten (extend-deeply-with annotations meta))
-        format-highlight (fn [h]
-                           (let [highlight (clojure.set/rename-keys
-                                            (select-keys h [:color :content])
-                                            {:content :pattern})]
-                             (assoc highlight :content (str (:title h) "\n\n" (:description h)))))]
-    (with-open
-        [input (io/input-stream (:file document))
-         output (ByteArrayOutputStream.)]
-      (try
-        (do
-          (highlight-document input output (map format-highlight highlights))
-          (io/input-stream (.toByteArray output)))
-        (catch Exception e (do (warn e) input)))))) ;; just return the document on fail
+  [document])
 
 (defn export
-  [project-id document-id]
-  (highlight (documents/get document-id project-id)))
+  [project-id document-id])
 
 ;;;;;;;;;;;;;;;
 ;; Routes
@@ -112,11 +85,7 @@
   (routes
    (POST "/" [:as req]
          (restricted (insert-in-project project-id req)))
-   (PUT "/:document-id" [document-id :as req]
-        (restricted (update project-id document-id req)))
    (DELETE "/:document-id" [document-id :as req]
            (restricted (delete project-id document-id)))
    (GET "/:document-id" [document-id :as req]
-        (restricted (display project-id document-id req)))
-   (GET "/:document-id/export" [document-id :as req]
-        (restricted (export project-id document-id)))))
+        (restricted (display project-id document-id req)))))

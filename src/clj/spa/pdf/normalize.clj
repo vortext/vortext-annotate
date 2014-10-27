@@ -33,17 +33,9 @@
 
 (defn normalize-document
   "Normalizes a PDF document to PDF/A-2 compliant using GhostScript.
-   Returns a core.async channel with a byte array of the normalized document when done"
-  [^InputStream input]
-  (let [^java.io.File in-file (temp-file)
-        ^java.io.File out-file (temp-file)
-        pdf (chan)]
-    (io/copy input in-file)
+  Returns a temporary file with the converted document"
+  [^java.io.File in-file]
+  (let [^java.io.File out-file (temp-file)]
     (pdf->pdf-a in-file out-file)
-    (go
-      (apply sh (pdf->pdf-a in-file out-file))
-      (with-open [f (io/input-stream out-file)]
-        (>! pdf (IOUtils/toByteArray f)))
-      (.delete in-file)
-      (.delete out-file))
-    pdf))
+    (apply sh (pdf->pdf-a in-file out-file))
+    out-file))
