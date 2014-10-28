@@ -40,8 +40,9 @@
                  {:dispatcher "document"
                   :marginalia (:marginalia document)
                   :name (:name document)
-                  :breadcrumbs (breadcrumbs (:uri req)
-                                            ["Projects" (:title project) (:name document)])
+                  :breadcrumbs (breadcrumbs
+                                (:uri req)
+                                ["Projects" (:title project) (:name document)])
                   :page-type "view"}))
 
 (defn dispatch [m req]

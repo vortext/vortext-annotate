@@ -20,16 +20,19 @@
   (let [in (.getAbsolutePath input-file)
         out (str "-sOutputFile=" (.getAbsolutePath output-file))]
     ["gs"
-     "-q"
-     "-dPARANOIDSAFER" ; do not allow access to the filesystem
+     "-dQUIET"
      "-dSAFER"
      "-dNOOUTERSAVE"
      "-dPDFA=2" ; convert to PDF/A-2
      "-dPDFACompatibilityPolicy=1"
+     "-dUseCIEColor"
+     "-sProcessColorModel=DeviceCMYK"
      "-dFastWebView" ; linearize document (although to-be ignored by PDF/A compliant viewers)
-     "-sColorConversionStrategy=CMYK"
-     "-dBATCH" "-dNOPAUSE"
-     "-sDEVICE=pdfwrite" out in]))
+     "-dBATCH"
+     "-dNOPAUSE"
+     "-sDEVICE=pdfwrite"
+     out
+     in]))
 
 (defn normalize-document
   "Normalizes a PDF document to PDF/A-2 compliant using GhostScript.
