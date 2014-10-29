@@ -39,7 +39,7 @@ AND projects_id = :project
 LIMIT 1)
 
 -- name: assoc-document!
--- Associates a document_id with a specific project_id, errors if already present
+-- Associates a document_id with a specific project_id
 INSERT INTO documents_projects (documents_id, projects_id, name)
 VALUES (:document, :project, :name)
 

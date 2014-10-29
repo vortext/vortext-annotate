@@ -1,0 +1,47 @@
+PREFIX dc:  <http://purl.org/dc/elements/1.1/>
+PREFIX oa:  <http://www.w3.org/ns/oa#>
+PREFIX cnt: <http://www.w3.org/2011/content#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dctypes: <http://purl.org/dc/dcmitype/>
+PREFIX prism: <http://prismstandard.org/namespaces/1.2/basic/>
+
+PREFIX spa: <http://spa.clinici.co#>
+
+INSERT DATA {
+GRAPH <http://spa.clinici.co/projects/1> {
+
+  <http://spa.clinici.co/annotations/7b020a97-cf56-89dd-e51a-a54a854c40a7> a oa:Annotation ;
+    oa:hasBody <http://spa.clinici.co/documents/87168e2bacfa7fb217bfb32293f6354#0aa3cabf-e199-e63a-e620-b3d9ffb7b24f> ;
+    oa:hasBody <http://spa.clinici.co/documents/87168e2bacfa7fb217bfb32293f6354#ad60b3fe-970f-cef2-ac6a-b7d2bcc80cc3> ;
+    oa:motivatedBy oa:highlighting ;
+    oa:hasTarget <http://spa.clinici.co/documents/87168e2bacfa7fb217bfb32293f635> ;
+    spa:marginalia "population" .
+
+  <http://spa.clinici.co/documents/87168e2bacfa7fb217bfb32293f6354#0aa3cabf-e199-e63a-e620-b3d9ffb7b24f> a oa:SpecificResource ;
+    oa:hasSource <http://spa.clinici.co> ;
+    oa:hasSelector <http://spa.clinici.co/selectors/b4b48894-d0ac-950d-c72e-b9a7514a2a12> .
+
+  <http://spa.clinici.co/selectors/b4b48894-d0ac-950d-c72e-b9a7514a2a12> a oa:TextQuoteSelector ;
+    oa:exact "efaggagagagg" ;
+    oa:prefix "sfsfsghwhw4hnf" ;
+    oa:suffix "hij" .
+
+  <http://spa.clinici.co/documents/87168e2bacfa7fb217bfb32293f6354#ad60b3fe-970f-cef2-ac6a-b7d2bcc80cc3> a oa:SpecificResource ;
+    oa:hasSource <http://spa.clinici.co> ;
+    oa:hasSelector <http://spa.clinici.co/selectors/ad60b3fe-970f-cef2-ac6a-b7d2bcc80cc3> .
+
+  <http://spa.clinici.co/selectors/ad60b3fe-970f-cef2-ac6a-b7d2bcc80cc3> a oa:TextQuoteSelector ;
+    oa:exact "efg" ;
+    oa:prefix "abcd" ;
+    oa:suffix "hij" .
+
+  <http://spa.clinici.co/annotations/b393beeb-a340-ceca-784d-4599cbd71e7b7> a oa:Annotation ;
+    oa:hasBody <http://spa.clinici.co/annotations/479b3de9-d3f8-5856-0253-73679cfdf312> ;
+    spa:marginalia "population" ;
+    oa:motivatedBy oa:describing ;
+    oa:hasTarget <http://spa.clinici.co/documents/87168e2bacfa7fb217bfb32293f635> .
+
+  <http://spa.clinici.co/annotations/479b3de9-d3f8-5856-0253-73679cfdf312> a cnt:ContentAsText, dctypes:Text ;
+    cnt:chars "content" ;
+    dc:format "text/x-markdown" .
+}}
