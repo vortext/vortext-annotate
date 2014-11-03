@@ -1,6 +1,7 @@
 (ns spa.semantic.sparql
   (:require [cheshire.core :as json])
   (:import
+   [java.net URL URI]
    [com.hp.hpl.jena.graph Node]
    [com.hp.hpl.jena.update
     Update UpdateAction
@@ -21,7 +22,8 @@
      (map
       (fn [[name resource]]
         (condp instance? resource
-          java.net.URL (.setIri pq ^String name ^java.net.URL resource)
+          URL (.setIri pq ^String name ^URL resource)
+          URI (.setIri pq ^String name ^String (str resource))
           Node (.setParam pq ^String name ^Node resource)
           RDFNode (.setParam pq ^String name ^RDFNode resource)
           (.setLiteral pq name resource)))

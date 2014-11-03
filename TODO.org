@@ -4,10 +4,9 @@
 *** Fuzzy matching (bitap)
 *** IN PROGRESS Fix saving of document PDFs (use BLOBs)
 ** W3C Open Annotations
-*** Set-up Fuseki
-*** Save annotations and update as RDF (Open Annotation spec)
+*** IN PROGRESS Set-up Fuseki
+*** IN PROGRESS Save annotations and update as RDF (Open Annotation spec)
 *** Query triple store for data
-*** Make front-end create and consume RDF (or SPARQL results)
 ** Embed RDF in PDF, write destinations
 * Pluggable predictors
 ** Remember URLs, call URLs (show client-side progress over WebSockets)

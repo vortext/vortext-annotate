@@ -36,6 +36,7 @@ GRAPH <http://spa.clinici.co/projects/1> {
     oa:suffix "hij" .
 
   <http://spa.clinici.co/annotations/b393beeb-a340-ceca-784d-4599cbd71e7b7> a oa:Annotation ;
+
     oa:hasBody <http://spa.clinici.co/annotations/479b3de9-d3f8-5856-0253-73679cfdf312> ;
     spa:marginalia "population" ;
     oa:motivatedBy oa:describing ;

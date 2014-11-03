@@ -12,6 +12,7 @@
         :database-user "spa"
         :database-password "develop"
 
+        :base-uri "http://spa.clinici.co/"
         :sparql-update "http://localhost:3030/ds/update"
         :sparql-query  "http://localhost:3030/ds/query"
 
