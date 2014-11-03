@@ -1,4 +1,4 @@
-(ns spa.semantic.util
+(ns spa.semantic.sparql
   (:require [cheshire.core :as json])
   (:import
    [com.hp.hpl.jena.graph Node]
@@ -14,7 +14,7 @@
     ParameterizedSparqlString
     ResultSetFactory ResultSet ResultSetFormatter]))
 
-(defn- query-with-bindings
+(defn query-with-bindings
   [query bindings]
   (let [pq (ParameterizedSparqlString. ^String query)]
     (doall
@@ -61,22 +61,25 @@
         ^UpdateProcessor processor (UpdateExecutionFactory/createRemote update endpoint)]
     (.execute processor)))
 
+(defn output-stream []
+  (java.io.ByteArrayOutputStream.))
+
 ;; Convert ResultSet
 (defn result->json
   [^ResultSet result]
-  (let [out (java.io.ByteArrayOutputStream.)]
+  (let [^java.io.OutputStream out (output-stream)]
     (ResultSetFormatter/outputAsJSON out result)
     (str out)))
 
 (defn result->csv
   [^ResultSet result]
-  (let [out (java.io.ByteArrayOutputStream.)]
+  (let [^java.io.OutputStream out (output-stream)]
     (ResultSetFormatter/outputAsCSV out result)
     (str out)))
 
 (defn result->xml
   [^ResultSet result]
-  (let [out (java.io.ByteArrayOutputStream.)]
+  (let [^java.io.OutputStream out (output-stream)]
     (ResultSetFormatter/outputAsXML out result)
     (str out)))
 
