@@ -1,13 +1,20 @@
 (ns spa.semantic.util
   (:require [cheshire.core :as json])
-  (:import [com.hp.hpl.jena.rdf.model Model
-            RDFNode Resource Literal]
-           [com.hp.hpl.jena.query
-            Query QuerySolution QueryExecution QueryExecutionFactory QueryFactory QuerySolutionMap
-            ParameterizedSparqlString
-            ResultSetFactory ResultSet ResultSetFormatter]))
+  (:import
+   [com.hp.hpl.jena.graph Node]
+   [com.hp.hpl.jena.update
+    Update UpdateAction
+    UpdateFactory UpdateProcessor
+    UpdateRequest UpdateExecutionFactory]
+   [com.hp.hpl.jena.rdf.model Model
+    RDFNode Resource Literal]
+   [com.hp.hpl.jena.query
+    Query QuerySolution QueryExecution
+    QueryExecutionFactory QueryFactory QuerySolutionMap
+    ParameterizedSparqlString
+    ResultSetFactory ResultSet ResultSetFormatter]))
 
-(defn- ^String query-with-bindings
+(defn- query-with-bindings
   [query bindings]
   (let [pq (ParameterizedSparqlString. ^String query)]
     (doall
@@ -15,11 +22,13 @@
       (fn [[name resource]]
         (condp instance? resource
           java.net.URL (.setIri pq ^String name ^java.net.URL resource)
+          Node (.setParam pq ^String name ^Node resource)
+          RDFNode (.setParam pq ^String name ^RDFNode resource)
           (.setLiteral pq name resource)))
       bindings))
     (.toString pq)))
 
-(defn- ^QueryExecution query-exec
+(defn- query-exec
   [^String endpoint ^String query bindings]
   (QueryExecutionFactory/sparqlService
    endpoint
@@ -35,12 +44,24 @@
   (with-open [q ^QueryExecution (query-exec endpoint query bindings)]
     (.execConstruct q)))
 
+(defn describe
+  [^String endpoint ^String query bindings]
+  (with-open [q ^QueryExecution (query-exec endpoint query bindings)]
+    (.execDescribe q)))
+
 (defn ask
   [^String endpoint ^String query bindings]
   (with-open [q ^QueryExecution (query-exec endpoint query bindings)]
     (.execAsk q)))
 
-;; Convert ResultSet and Model
+(defn update
+  [^String endpoint ^String query bindings]
+  (let [q (query-with-bindings query bindings)
+        ^UpdateRequest update (UpdateFactory/create q)
+        ^UpdateProcessor processor (UpdateExecutionFactory/createRemote update endpoint)]
+    (.execute processor)))
+
+;; Convert ResultSet
 (defn result->json
   [^ResultSet result]
   (let [out (java.io.ByteArrayOutputStream.)]
@@ -63,20 +84,17 @@
   [^ResultSet result]
   (json/decode (result->json result) true))
 
+(defn result->model
+  [^ResultSet result]
+  (ResultSetFormatter/toModel result))
+
+;; Convert model
 (defn serialize-model
   [^Model model ^String lang]
   (with-open [w (java.io.StringWriter.)]
     (.write model w lang)
     (str w)))
 
-(defn model->rdf+xml
-  [model]
-  (serialize-model model "RDF/XML"))
-
-(defn model->ttl
-  [model]
-  (serialize-model model "TTL"))
-
-(defn model->json-ld
-  [model]
-  (serialize-model model "JSONLD"))
+(defn model->rdf+xml [^Model model] (serialize-model model "RDF/XML"))
+(defn model->ttl [^Model model] (serialize-model model "TTL"))
+(defn model->json-ld [^Model model] (serialize-model model "JSONLD"))

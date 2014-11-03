@@ -6,7 +6,7 @@ PREFIX dctypes: <http://purl.org/dc/dcmitype/>
 
 PREFIX spa: <http://spa.clinici.co/>
 
-SELECT ?document ?body ?marginalia ?motivated ?highlight ?description {
+SELECT ?body ?marginalia ?motivated ?highlight ?description {
 GRAPH <http://spa.clinici.co/projects/1> {
       ?anno oa:hasTarget ?document .
       ?anno oa:hasBody ?body .
