@@ -12,6 +12,9 @@
         :database-user "spa"
         :database-password "develop"
 
+        :sparql-update "http://localhost:3030/ds/update"
+        :sparql-query  "http://localhost:3030/ds/query"
+
         :port 8080
         :dev true}
   :profiles {:production {:env {:dev false}}
