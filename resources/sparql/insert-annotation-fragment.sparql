@@ -1,0 +1,25 @@
+PREFIX dc:  <http://purl.org/dc/elements/1.1/>
+PREFIX oa:  <http://www.w3.org/ns/oa#>
+PREFIX cnt: <http://www.w3.org/2011/content#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+PREFIX spa: <http://spa.clinici.co/>
+
+INSERT DATA {
+  GRAPH ?project {
+
+    ?annotation a oa:Annotation ;
+    oa:hasBody ?annotationBody ;
+    oa:annotatedBy ?annotationSource ;
+    oa:motivatedBy ?motivation ;
+    oa:hasTarget  ?document ;
+
+    ?annotationBody a oa:SpecificResource ;
+    oa:hasSelector ?selector .
+
+    ?selector a oa:TextQuoteSelector ;
+    oa:exact ?quote ;
+    oa:prefix  ?prefix;
+    oa:suffix ?suffix .
+  }
+}

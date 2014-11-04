@@ -7,20 +7,20 @@ PREFIX dctypes: <http://purl.org/dc/dcmitype/>
 PREFIX spa: <http://spa.clinici.co/>
 
 SELECT ?document ?marginalia ?motivated ?highlight ?description {
-GRAPH ?documentGraphIri {
-      ?anno oa:hasTarget ?document .
-      ?anno oa:hasTarget ?documentIri .
-      ?anno oa:hasBody ?body .
-      ?anno spa:marginalia ?marginalia .
-      ?anno oa:motivatedBy ?motivated .
-      OPTIONAL {
-               ?body  oa:hasSelector  ?selector .
-               ?selector a oa:TextQuoteSelector .
-               ?selector oa:exact ?highlight
-               } .
-      OPTIONAL {
-               ?annot oa:motivatedBy oa:describing .
-               ?body cnt:chars ?description
-               }
+  GRAPH ?project {
+    ?anno oa:hasTarget ?document .
+    ?anno oa:hasTarget ?_document .
+    ?anno oa:hasBody ?body .
+    ?anno spa:marginalia ?marginalia .
+    ?anno oa:motivatedBy ?motivated .
+    OPTIONAL {
+      ?body  oa:hasSelector  ?selector .
+      ?selector a oa:TextQuoteSelector .
+      ?selector oa:exact ?highlight
+      } .
+    OPTIONAL {
+      ?annot oa:motivatedBy oa:describing .
+      ?body cnt:chars ?description
+      }
     }
 }
