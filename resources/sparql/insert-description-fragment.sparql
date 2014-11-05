@@ -3,19 +3,18 @@ PREFIX oa:  <http://www.w3.org/ns/oa#>
 PREFIX cnt: <http://www.w3.org/2011/content#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dctypes: <http://purl.org/dc/dcmitype/>
-PREFIX prism: <http://prismstandard.org/namespaces/1.2/basic/>
-
 PREFIX spa: <http://spa.clinici.co/>
 
 INSERT DATA {
   GRAPH ?project {
     ?annotation a oa:Annotation ;
-    oa:hasBody ?annotationBody ;
-    oa:motivatedBy ?motivation ;
-    oa:hasTarget ?document .
+      oa:hasBody ?descriptionBody ;
+      oa:hasBody ?concept ;
+      oa:motivatedBy oa:commenting ;
+      oa:hasTarget ?document .
 
-    ?annotationBody a cnt:ContentAsText, dctypes:Text ;
-    cnt:chars ?description ;
-    dc:format "text/x-markdown" .
+    ?descriptionBody a cnt:ContentAsText, dctypes:Text ;
+      cnt:chars ?description ;
+      dc:format "text/x-markdown" .
     }
 }

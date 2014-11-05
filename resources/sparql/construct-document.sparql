@@ -1,17 +1,11 @@
-PREFIX dc:  <http://purl.org/dc/elements/1.1/>
 PREFIX oa:  <http://www.w3.org/ns/oa#>
-PREFIX cnt: <http://www.w3.org/2011/content#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX dctypes: <http://purl.org/dc/dcmitype/>
-
 PREFIX spa: <http://spa.clinici.co/>
-PREFIX : <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 CONSTRUCT { ?s ?p ?o }
 WHERE {
   GRAPH ?project {
-    ?x oa:hasTarget ?document .
-    ?x (:_|!:_)* ?s .
+    ?x oa:hasTarget ?target . FILTER ( regex(str(?target), ?documentRegex))
+    ?x (spa:_|!spa:_)* ?s .
     ?s ?p ?o .
     } .
 }
