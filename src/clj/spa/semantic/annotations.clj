@@ -15,12 +15,8 @@
 (def insert-annotation-fragment (get-query "insert-annotation-fragment"))
 (def insert-description-fragment (get-query "insert-description-fragment"))
 
-(defn uuid-iri []
-  (URI. (str "urn:uuid:" (uuid))))
-
-(defn iri-with-base
-  [type]
-  (URI. (str (:base-uri env) type "/" document-id)))
+(defn uuid-iri [] (URI. (str "urn:uuid:" (uuid))))
+(defn iri-with-base [type] (URI. (str (:base-uri env) type "/" document-id)))
 
 (defn document-iri [document-id] (iri-with-base "documents"))
 (defn project-iri [document-id] (iri-with-base "projects"))
@@ -31,7 +27,8 @@
         project-iri (project-iri project-id)
         bindings {"project" project-iri
                   "_document" document-iri}]
-    (sparql/result->clj (sparql/select (:sparql-query env) select-query bindings))))
+    (sparql/result->clj
+     (sparql/select (:sparql-query env) select-query bindings))))
 
 (defn insert-document
   [project-id document-id marginalia])

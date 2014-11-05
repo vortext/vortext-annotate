@@ -31,12 +31,12 @@ define(function (require) {
       }
       var trashcan = <img className="trashcan icon" src="/static/img/trash-o_777777_14.png" alt="delete" title="Delete" />;
 
-      return <li>
-               <p className="text-left" onMouseEnter={this.toggleHighlight} onMouseLeave={this.toggleHighlight}>
+      return (<li>
+                <p className="text-left" onMouseEnter={this.toggleHighlight} onMouseLeave={this.toggleHighlight}>
                  {content}
                  {isActive ? <a onClick={this.destroy}>{trashcan}</a> : null}
-               </p>
-             </li>;
+                </p>
+              </li>);
     }
   });
 
@@ -68,16 +68,16 @@ define(function (require) {
         return <Annotation annotation={annotation} isActive={isActive} key={idx} />;
       });
 
-       return <div className="block">
-               <h4>
-                 <a onClick={this.toggleActivate} style={style}>{marginalis.get("title")} </a>
-               </h4>
-               <div className="content">
-                 <Editable content={description} callback={this.setDescription} />
-                 <div className="divider"><a onClick={this.foldAnnotations}> {annotationsActive ? "▾" : "▸"}  annotations ({annotations.length})</a></div>
-                 <ul className="no-bullet annotations" style={{"maxHeight": annotationsActive ? 500 : 0}} >{annotations}</ul>
-               </div>
-             </div>;
+      return (<div className="block">
+                <h4>
+                  <a onClick={this.toggleActivate} style={style}>{marginalis.get("title")} </a>
+                </h4>
+                <div className="content">
+                  <Editable content={description} callback={this.setDescription} />
+                  <div className="divider"><a onClick={this.foldAnnotations}> {annotationsActive ? "▾" : "▸"}  annotations ({annotations.length})</a></div>
+                  <ul className="no-bullet annotations" style={{"maxHeight": annotationsActive ? 500 : 0}} >{annotations}</ul>
+                </div>
+              </div>);
     }
   });
 

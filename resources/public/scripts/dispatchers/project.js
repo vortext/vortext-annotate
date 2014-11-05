@@ -24,6 +24,4 @@ define(function (require) {
     }),
     document.getElementById("categories")
   );
-
-
 });
