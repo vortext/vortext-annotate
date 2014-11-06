@@ -7,17 +7,17 @@ PREFIX dctypes: <http://purl.org/dc/dcmitype/>
 
 PREFIX spa: <http://spa.clinici.co/>
 
-SELECT ?target ?concept ?conceptLabel ?highlight ?description {
+SELECT ?target ?concept ?conceptLabel ?quote ?description {
   GRAPH ?project {
     ?concept a spa:Concept .
-    ?concept rdfs:label ?conceptLabel ;
+    ?concept spa:label ?conceptLabel ;
     OPTIONAL {
       ?anno oa:hasBody ?concept .
       ?anno oa:hasTarget ?target . FILTER ( regex(str(?target), ?documentRegex))
       OPTIONAL {
         ?target  oa:hasSelector ?selector .
         ?selector a oa:TextQuoteSelector .
-        ?selector oa:exact ?highlight ;
+        ?selector oa:exact ?quote ;
       } .
       OPTIONAL {
         ?anno oa:hasBody ?descriptionBody .

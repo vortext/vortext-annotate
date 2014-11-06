@@ -4,7 +4,6 @@
             :url "https://www.gnu.org/copyleft/gpl.html"}
   :url "https://github.com/joelkuiper/spa"
   :main spa.core
-  :warn-on-reflection true
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
   :plugins [[lein-environ "1.0.0"]]

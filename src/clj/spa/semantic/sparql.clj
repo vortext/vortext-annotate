@@ -57,11 +57,17 @@
     (.execAsk q)))
 
 (defn update
-  [^String endpoint ^String query bindings]
-  (let [q (query-with-bindings query bindings)
-        ^UpdateRequest update (UpdateFactory/create q)
-        ^UpdateProcessor processor (UpdateExecutionFactory/createRemote update endpoint)]
-    (.execute processor)))
+  ([^String endpoint updates]
+     (let [^UpdateRequest update-request (UpdateFactory/create)]
+       (doseq [update updates]
+         (.add update-request ^String update))
+       (print update-request)
+       (.execute (UpdateExecutionFactory/createRemote update-request endpoint))))
+  ([^String endpoint ^String query bindings]
+     (let [q (query-with-bindings query bindings)
+           ^UpdateRequest update (UpdateFactory/create q)
+           ^UpdateProcessor processor (UpdateExecutionFactory/createRemote update endpoint)]
+       (.execute processor))))
 
 (defn output-stream []
   (java.io.ByteArrayOutputStream.))
