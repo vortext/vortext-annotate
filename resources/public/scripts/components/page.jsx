@@ -133,8 +133,8 @@ define(function (require) {
       // Store a refer to the renderer
       var pageRendering = page.render(renderContext);
       // Hook into the pdf render complete event
-      var completeCallback = pageRendering.internalRenderTask.callback;
-      pageRendering.internalRenderTask.callback = function (error) {
+      var completeCallback = pageRendering._internalRenderTask.callback;
+      pageRendering._internalRenderTask.callback = function (error) {
         completeCallback.call(this, error);
         self.setState({isRendered: true});
       };

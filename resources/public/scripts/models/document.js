@@ -2,17 +2,10 @@
 define(function (require) {
   'use strict';
 
-  require('PDFJS'); // attaches to window
-
   var Q = require("Q");
   var _ = require("underscore");
   var Backbone = require("backbone");
   var Annotation = require("models/annotation");
-
-  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
-  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
-  PDFJS.cMapPacked = true;
-  PDFJS.disableWebGL = !Modernizr.webgl;
 
   var guid = function() {
     // RFC4122 version 4 compliant
@@ -186,10 +179,8 @@ define(function (require) {
             element.destroy = annotation.destroy.bind(annotation);
             element.select = annotation.select.bind(annotation);
 
-            annotations[node.pageIndex] =
-              annotations[node.pageIndex] || {};
-            annotations[node.pageIndex][node.nodeIndex] =
-              _.union(annotations[node.pageIndex][node.nodeIndex] || [], element);
+            annotations[node.pageIndex] = annotations[node.pageIndex] || {};
+            annotations[node.pageIndex][node.nodeIndex] = _.union(annotations[node.pageIndex][node.nodeIndex] || [], element);
           });
         });
       });
