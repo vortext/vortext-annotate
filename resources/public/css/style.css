@@ -1,3 +1,8 @@
+html, body {
+    color: #505050;
+    background-color: transparent;
+}
+
 html.view, html.view body {
     overflow: hidden;
 }
