@@ -63,9 +63,6 @@ define(function (require) {
         function() {topBar.setState({isSaving: "done"});},
         function(err) {topBar.setState({isSaving: "error"});}
       );
-      documentModel.annotate(marginaliaModel.getActive());
-      marginaliaComponent.forceUpdate();
-      break;
     default:
       documentModel.annotate(marginaliaModel.getActive());
       marginaliaComponent.forceUpdate();
