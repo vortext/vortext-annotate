@@ -53,9 +53,7 @@ define(function (require) {
   marginaliaModel.on("all", function(e, obj) {
     switch(e) {
     case "annotations:change":
-      break;
     case "annotations:select":
-      documentComponent.setState({select: obj});
       break;
     case "annotations:add":
     case "annotations:remove":
