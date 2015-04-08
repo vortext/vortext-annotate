@@ -6,22 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
     <meta name="last-commit" content={{last-commit}}>
-
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel="stylesheet">
-    <link href="{{servlet-context}}/static/css/main.css?{{last-commit}}" rel="stylesheet">
-    <script src="{{servlet-context}}/static/scripts/vendor/modernizr.js"></script>
     <script>
      window.models = {};
      CSRF_TOKEN = "{% csrf-token %}";
      LAST_COMMIT = "{{last-commit}}";
     </script>
+
+    <link href="{{servlet-context}}/static/css/main.css?{{last-commit}}" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    {% ifequal dispatcher "document" %}
+    <link href="{{servlet-context}}/static/scripts/spa/css/style.css" rel="stylesheet">
+    {% endifequal %}
+
+    <script src="{{servlet-context}}/static/scripts/modernizr.js"></script>
     {% if dispatcher %}
     <script data-main="{{servlet-context}}/static/scripts/{{dispatcher}}" src="{{servlet-context}}/static/scripts/require.js"></script>
     {% endif %}
   </head>
 
   <body class="antialiased">
-    <nav class="top-bar">
+    <nav class="top-bar" data-topbar role="navigation">
       <ul class="title-area">
         <li class="name">
           <h1><a href="{{servlet-context}}/">Spá</a></h1>

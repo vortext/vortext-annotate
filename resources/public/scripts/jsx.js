@@ -28,18 +28,19 @@ define(['JSXTransformer', 'text'], function (JSXTransformer, text) {
   var buildMap = {};
 
   var jsx = {
-    version: '0.3.0',
+    version: '0.6.0',
 
     load: function (name, req, onLoadNative, config) {
-      var fileExtension = config.jsx && config.jsx.fileExtension || '.js';
+      var jsxOptions = config.jsx || {};
+      var fileExtension = jsxOptions.fileExtension || '.js';
 
-      var transformOptions = (config.jsx && config.jsx.harmony) ? {harmony: true} : null;
+      var transformOptions = {
+        harmony: !!jsxOptions.harmony,
+        stripTypes: !!jsxOptions.stripTypes
+      };
 
       var onLoad = function(content) {
         try {
-          if (-1 === content.indexOf('@jsx React.DOM')) {
-            content = "/** @jsx React.DOM */\n" + content;
-          }
           content = JSXTransformer.transform(content, transformOptions).code;
         } catch (err) {
           onLoadNative.error(err);
@@ -48,11 +49,15 @@ define(['JSXTransformer', 'text'], function (JSXTransformer, text) {
         if (config.isBuild) {
           buildMap[name] = content;
         } else if (typeof location !== 'undefined') { // Do not create sourcemap when loaded in Node
-          content += "\n//# sourceURL=" + location.protocol + "//" + location.hostname +
+          content += '\n//# sourceURL=' + location.protocol + '//' + location.hostname +
             config.baseUrl + name + fileExtension;
         }
 
         onLoadNative.fromText(content);
+      };
+
+      onLoad.error = function(err) {
+        onLoadNative.error(err);
       };
 
       text.load(name + fileExtension, req, onLoad, config);
@@ -61,7 +66,7 @@ define(['JSXTransformer', 'text'], function (JSXTransformer, text) {
     write: function (pluginName, moduleName, write) {
       if (buildMap.hasOwnProperty(moduleName)) {
         var content = buildMap[moduleName];
-        write.asModule(pluginName + "!" + moduleName, content);
+        write.asModule(pluginName + '!' + moduleName, content);
       }
     }
   };

@@ -7,13 +7,13 @@ define(function (require) {
   var React = require("react");
   var _ = require("underscore");
 
-  var Selectize = require("jsx!components/selectize");
+  var Selectize = React.createFactory(require("jsx!components/selectize"));
 
   var project = window.models.project;
   var categories = _.pluck(project && project.categories, "title").join(",");
 
-  var categoriesComponent = React.renderComponent(
-    Selectize({
+  var categoriesComponent = React.render(
+    new Selectize({
       name: "categories",
       value: categories,
       options: {

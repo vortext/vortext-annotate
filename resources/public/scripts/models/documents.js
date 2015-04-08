@@ -6,7 +6,7 @@ define(function (require) {
 
   var _ = require("underscore");
   var Backbone = require("backbone");
-  var FileUtil = require("helpers/fileUtil");
+  var FileUtil = require("spa/helpers/fileUtil");
   var Q = require("Q");
 
   var Document = Backbone.Model.extend({

@@ -3,7 +3,7 @@ define(function (require) {
   'use strict';
 
   var _ = require("underscore");
-  var $ = require("jQuery");
+  var $ = require("jquery");
   var React = require("react");
 
   var ProgressBar = require("jsx!components/progressBar");

@@ -7,18 +7,23 @@ define(function (require) {
   var React = require("react");
   var _ = require("underscore");
 
-  require("PDFJS");
+  var PDFJS = require("PDFJS");
+  var PDFJSUrl = require.toUrl('PDFJS');
 
-  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
+  PDFJS.cMapUrl = PDFJSUrl.replace(/\/pdf$/, '') + '/generic/web/cmaps/';
+  PDFJS.cMapPacked = true;
+  PDFJS.disableWebGL = false;
+
+  PDFJS.workerSrc = PDFJSUrl + ".worker.js";
 
   // Models
   var documentsModel = new (require("models/documents"))();
 
   // Components
-  var Documents = require("jsx!components/documents");
+  var Documents = React.createFactory(require("jsx!components/documents"));
 
-  var documentsComponent = React.renderComponent(
-    Documents({documents: documentsModel}),
+  var documentsComponent = React.render(
+    new Documents({documents: documentsModel}),
     document.getElementById("documents")
   );
 

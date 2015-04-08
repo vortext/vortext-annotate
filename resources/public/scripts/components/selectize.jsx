@@ -3,7 +3,7 @@ define(function (require) {
   'use strict';
 
   var React = require("react");
-  var $ = require("jQuery");
+  var $ = require("jquery");
 
   require("selectize");
 

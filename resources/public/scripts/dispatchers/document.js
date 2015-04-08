@@ -8,33 +8,28 @@ define(function (require) {
 
   require("PDFJS");
 
-  PDFJS.workerSrc = '/static/scripts/vendor/pdfjs/pdf.worker.js';
-  PDFJS.cMapUrl = '/static/scripts/vendor/pdfjs/generic/web/cmaps/';
-  PDFJS.cMapPacked = true;
-  PDFJS.disableWebGL = !Modernizr.webgl;
-
   var self = this;
 
   // Models
-  var documentModel = new (require("models/document"))();
-  var marginaliaModel = new (require("models/marginalia"))();
+  var documentModel = new (require("spa/models/document"))();
+  var marginaliaModel = new (require("spa/models/marginalia"))();
 
   // Components
-  var Document = require("jsx!components/document");
-  var Marginalia = require("jsx!components/marginalia");
-  var TopBar = require("jsx!components/topBar");
+  var Document =  React.createFactory(require("jsx!spa/components/document"));
+  var Marginalia =  React.createFactory(require("jsx!spa/components/marginalia"));
+  var TopBar =  React.createFactory(require("jsx!components/topBar"));
 
-  var documentComponent = React.renderComponent(
-    Document({pdf: documentModel}),
+  var documentComponent = React.render(
+    new Document({pdf: documentModel, marginalia: marginaliaModel}),
     document.getElementById("viewer")
   );
 
-  var marginaliaComponent = React.renderComponent(
+  var marginaliaComponent = React.render(
     Marginalia({marginalia: marginaliaModel}),
     document.getElementById("marginalia")
   );
 
-  var topBar = React.renderComponent(
+  var topBar = React.render(
     TopBar({marginalia: marginaliaModel}),
     document.getElementById("top-bar")
   );
@@ -57,12 +52,10 @@ define(function (require) {
   // Listen to model change callbacks -> trigger updates to components
   marginaliaModel.on("all", function(e, obj) {
     switch(e) {
-    case "annotations:select":
-      var fingerprint = documentModel.get("fingerprint");
-      documentComponent.setState({select: obj});
-      //self.router.navigate(window.location.href + "/a/" + obj);
-      break;
     case "annotations:change":
+      break;
+    case "annotations:select":
+      documentComponent.setState({select: obj});
       break;
     case "annotations:add":
     case "annotations:remove":
@@ -72,8 +65,11 @@ define(function (require) {
         function() {topBar.setState({isSaving: "done"});},
         function(err) {topBar.setState({isSaving: "error"});}
       );
+      documentModel.annotate(marginaliaModel.getActive());
+      marginaliaComponent.forceUpdate();
+      break;
     default:
-      documentModel.setActiveAnnotations(marginaliaModel);
+      documentModel.annotate(marginaliaModel.getActive());
       marginaliaComponent.forceUpdate();
     }
   });
@@ -81,29 +77,23 @@ define(function (require) {
   documentModel.on("all", function(e, obj) {
     switch(e) {
     case "change:raw":
-      var fingerprint = obj.changed.raw.pdfInfo.fingerprint;
-      //self.router.navigate("view/" + fingerprint);
       documentComponent.setState({
-        fingerprint: fingerprint
+        fingerprint: documentModel.get("fingerprint")
       });
       break;
     case "change:binary":
       marginaliaModel.reset();
       break;
-    case "annotation:add":
-      var model = marginaliaModel.findWhere({"active": true}).get("annotations");
-      model.add(obj);
-      break;
     case "pages:change:state":
-      if(obj.get("state") > window.RenderingStates.HAS_PAGE) {
-        documentModel.setActiveAnnotations(marginaliaModel);
+      if(obj.get("state") == window.RenderingStates.HAS_CONTENT) {
+        documentModel.annotate(marginaliaModel.getActive());
       }
       documentComponent.forceUpdate();
       break;
+    case "pages:ready":
     case "pages:change:annotations":
-      var annotations = marginaliaModel.pluck("annotations");
-      var highlighted = _.find(annotations, function(annotation) { return annotation.findWhere({highlighted: true});});
-      documentComponent.setProps({highlighted: highlighted && highlighted.findWhere({highlighted: true})});
+      documentModel.annotate(marginaliaModel.getActive());
+      documentComponent.forceUpdate();
       break;
     default:
       break;

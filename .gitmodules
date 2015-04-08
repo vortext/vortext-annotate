@@ -1,3 +1,3 @@
-[submodule "resources/pdfjs"]
-	path = resources/pdfjs
-	url = https://github.com/joelkuiper/pdf.js.git
+[submodule "resources/public/scripts/spa"]
+	path = resources/public/scripts/spa
+	url = git@github.com:vortext/spa.git

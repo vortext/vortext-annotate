@@ -2,38 +2,32 @@
 'use strict';
 
 require.config({
-  baseUrl: '/static/scripts',
   jsx: {
-    harmony: true,
     fileExtension: '.jsx'
   },
   paths: {
-    'jQuery': 'vendor/jquery',
-    'underscore': 'vendor/underscore',
-    'Q': 'vendor/q',
-    'react': 'vendor/react',
-    'marked': 'vendor/marked',
-    'JSXTransformer': 'vendor/JSXTransformer',
-    'backbone': 'vendor/backbone',
-    'PDFJS': 'vendor/pdfjs/pdf',
-    'selectize': 'vendor/selectize'
+    'spa': "spa/scripts",
+
+    'underscore': "spa/scripts/vendor/underscore",
+    'jquery': "spa/scripts/vendor/jquery",
+    'selectize': "vendor/selectize",
+    'Q': 'spa/scripts/vendor/q',
+    'marked': 'spa/scripts/vendor/marked',
+    'backbone': 'spa/scripts/vendor/backbone',
+
+    'react': "spa/scripts/vendor/react-dev",
+    'immutable': "spa/scripts/vendor/immutable",
+
+    'JSXTransformer': "spa/scripts/vendor/JSXTransformer",
+    'PDFJS': "spa/scripts/vendor/pdfjs/pdf"
   },
   shim: {
-    'jQuery': { exports : 'jQuery' },
-    'selectize': [ 'jQuery' ],
-    'underscore': { exports : '_' },
-    "backbone": {
-      deps: ["jQuery", "underscore"],
-      exports: "Backbone"
-    },
+    'selectize': [ 'jquery' ],
     'PDFJS': {
       exports: 'PDFJS',
-      deps: ['vendor/pdfjs/generic/web/compatibility', 'vendor/ui_utils'] }
+      deps: ['spa/vendor/pdfjs/generic/web/compatibility',
+             'spa/vendor/ui_utils'] }
   }
-});
-
-require.config({
-  urlArgs: LAST_COMMIT
 });
 
 require(["backbone"], function(Backbone) {
