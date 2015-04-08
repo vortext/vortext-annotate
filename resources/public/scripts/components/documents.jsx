@@ -37,8 +37,8 @@ define(function (require) {
                <input type="button" onClick={this.destroy} className="button small alert" value="Remove"></input>
              </Modal>);
       var confirm = this.state.confirm ? modal : null;
-      var trashcan = <img className="trashcan icon" src="/static/img/trash-o_777777_14.png" alt="remove" />;
-      return <div>{confirm}<a onClick={this.remove}>{trashcan}</a></div>;
+      var trash = <i className="fa fa-trash icon-button" />;
+      return <div>{confirm}<a onClick={this.remove}>{trash}</a></div>;
     }
   });
 

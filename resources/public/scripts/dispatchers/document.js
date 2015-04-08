@@ -59,9 +59,9 @@ define(function (require) {
     case "annotations:remove":
     case "change:description":
       marginaliaModel.save(
-        function() {topBar.setState({isSaving: "saving"});},
-        function() {topBar.setState({isSaving: "done"});},
-        function(err) {topBar.setState({isSaving: "error"});}
+        function() {topBar.setState({isSaving: "saving"}) ;},
+        function() {topBar.setState({isSaving: "done"}) ;},
+        function() {topBar.setState({isSaving: "error"}) ;}
       );
     default:
       documentModel.annotate(marginaliaModel.getActive());
