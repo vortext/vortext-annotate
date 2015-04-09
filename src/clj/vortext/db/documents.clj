@@ -1,7 +1,7 @@
-(ns spa.db.documents
+(ns vortext.db.documents
   (:refer-clojure :exclude [get assoc! dissoc!])
-  (:require [spa.db.schema :refer [db-spec]]
-            [spa.db.projects :as projects]
+  (:require [vortext.db.schema :refer [db-spec]]
+            [vortext.db.projects :as projects]
             [cheshire.core :as json]
             [taoensso.timbre :as timbre]
             [yesql.core :refer [defquery defqueries]]

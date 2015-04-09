@@ -1,4 +1,4 @@
-(ns spa.util
+(ns vortext.util
   (:require [clojure.string :as string]
             [clojure.walk :as walk]
             [clojure.java.shell :refer [sh]]))

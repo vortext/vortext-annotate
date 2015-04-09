@@ -1,4 +1,4 @@
-(ns spa.db.migrations
+(ns vortext.db.migrations
   (:gen-class)
   (:require [environ.core :refer :all]
             [ragtime.main :as ragtime]))

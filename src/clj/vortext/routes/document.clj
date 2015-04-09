@@ -1,4 +1,4 @@
-(ns spa.routes.document
+(ns vortext.routes.document
   (:import org.apache.commons.io.IOUtils
            java.io.ByteArrayOutputStream)
   (:require [compojure.core :refer :all]
@@ -10,14 +10,14 @@
             [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
-            [spa.util :refer [breadcrumbs]]
-            [spa.http :as http]
-            [spa.pdf.highlight :refer [highlight-document]]
-            [spa.pdf.normalize :refer [normalize-document]]
-            [spa.db.documents :as documents]
-            [spa.db.projects :as projects]
+            [vortext.util :refer [breadcrumbs]]
+            [vortext.http :as http]
+            [vortext.pdf.highlight :refer [highlight-document]]
+            [vortext.pdf.normalize :refer [normalize-document]]
+            [vortext.db.documents :as documents]
+            [vortext.db.projects :as projects]
             [clojure.core.async :as async :refer [chan go <! >!]]
-            [spa.layout :as layout]))
+            [vortext.layout :as layout]))
 
 (timbre/refer-timbre)
 

@@ -1,8 +1,8 @@
-(ns spa.routes.home
+(ns vortext.routes.home
   (:require [compojure.core :refer :all]
             [noir.session :as session]
             [noir.response :as response]
-            [spa.layout :as layout]))
+            [vortext.layout :as layout]))
 
 (def no-cache {"Cache-Control" "no-cache, no-store, must-revalidate"
                "Pragma" "no-cache"

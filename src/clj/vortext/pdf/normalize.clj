@@ -1,4 +1,4 @@
-(ns spa.pdf.normalize
+(ns vortext.pdf.normalize
   (:import java.io.InputStream
            java.io.ByteArrayOutputStream
            org.apache.commons.io.IOUtils)

@@ -1,4 +1,4 @@
-(ns spa.middleware
+(ns vortext.middleware
   (:require [taoensso.timbre :as timbre]
             [environ.core :refer [env]]
             [noir.util.middleware :refer :all]

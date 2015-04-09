@@ -1,7 +1,7 @@
-(ns spa.pdf.highlight
+(ns vortext.pdf.highlight
   (:require [clojure.string :as s]
             [taoensso.timbre :as timbre])
-  (:import spa.TextHighlight
+  (:import vortext.TextHighlight
            java.util.regex.Pattern
            org.apache.commons.io.IOUtils
            org.apache.pdfbox.pdmodel.PDDocument

@@ -1,11 +1,11 @@
-(ns spa.core
+(ns vortext.core
   (:gen-class)
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.string :as str]
             [ring.middleware.reload :as reload]
             [environ.core :refer [env]]
             [org.httpkit.server :as http-kit]
-            [spa.handler :refer [app init! destroy!]]))
+            [vortext.handler :refer [app init! destroy!]]))
 
 (def cli-options
   [["-p" "--port PORT" "Port number"

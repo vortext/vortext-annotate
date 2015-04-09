@@ -1,4 +1,4 @@
-(ns spa.db.schema
+(ns vortext.db.schema
   (:require [environ.core :refer :all]))
 
 (def db-spec

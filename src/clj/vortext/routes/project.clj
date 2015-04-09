@@ -1,4 +1,4 @@
-(ns spa.routes.project
+(ns vortext.routes.project
   (:import org.apache.commons.io.IOUtils
            java.util.zip.ZipOutputStream
            java.util.zip.ZipEntry
@@ -11,11 +11,11 @@
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [taoensso.timbre :as timbre]
-            [spa.util :refer [breadcrumbs]]
-            [spa.routes.document :as document]
-            [spa.db.projects :as projects]
-            [spa.db.documents :as documents]
-            [spa.layout :as layout]))
+            [vortext.util :refer [breadcrumbs]]
+            [vortext.routes.document :as document]
+            [vortext.db.projects :as projects]
+            [vortext.db.documents :as documents]
+            [vortext.layout :as layout]))
 
 (timbre/refer-timbre)
 

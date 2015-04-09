@@ -1,11 +1,11 @@
-(ns spa.layout
+(ns vortext.layout
   (:gen-class)
   (:require [selmer.parser :as parser]
             [clojure.string :as s]
             [ring.util.response :refer [content-type response]]
             [compojure.response :refer [Renderable]]
             [environ.core :refer [env]]
-            [spa.util :refer [last-commit]]
+            [vortext.util :refer [last-commit]]
             [noir.session :as session]))
 
 (def template-path "templates/")

@@ -1,6 +1,6 @@
-(ns spa.db.users
+(ns vortext.db.users
   (:refer-clojure :exclude [get])
-  (:require [spa.db.schema :refer [db-spec]]
+  (:require [vortext.db.schema :refer [db-spec]]
             [clojure.java.io :as io]
             [yesql.core :refer [defquery defqueries]]
             [taoensso.timbre :as timbre]

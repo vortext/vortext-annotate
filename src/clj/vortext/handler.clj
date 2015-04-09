@@ -1,4 +1,4 @@
-(ns spa.handler
+(ns vortext.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [noir.session :as session]
@@ -7,11 +7,11 @@
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.rotor :as rotor]
             [environ.core :refer [env]]
-            [spa.middleware :refer [load-middleware]]
-            [spa.session-manager :as session-manager]
-            [spa.routes.auth :refer [auth-routes]]
-            [spa.routes.home :refer [home-routes]]
-            [spa.routes.project :refer [project-routes project-access]]
+            [vortext.middleware :refer [load-middleware]]
+            [vortext.session-manager :as session-manager]
+            [vortext.routes.auth :refer [auth-routes]]
+            [vortext.routes.home :refer [home-routes]]
+            [vortext.routes.project :refer [project-routes project-access]]
             [cronj.core :as cronj]
             [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]))
 
@@ -31,7 +31,7 @@
     :fn rotor/appender-fn})
   (timbre/set-config!
    [:shared-appender-config :rotor]
-   {:path "spa.log", :max-size (* 512 1024) :backlog 10})
+   {:path "vortext.log", :max-size (* 512 1024) :backlog 10})
   (if (env :dev) (selmer.parser/cache-off!))
   (selmer.parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)

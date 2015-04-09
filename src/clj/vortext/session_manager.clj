@@ -1,4 +1,4 @@
-(ns spa.session-manager
+(ns vortext.session-manager
   (:require [noir.session :refer [mem]]
             [cronj.core :refer [cronj]]))
 

@@ -1,6 +1,6 @@
-(ns spa.db.projects
+(ns vortext.db.projects
   (:refer-clojure :exclude [get])
-  (:require [spa.db.schema :refer [db-spec]]
+  (:require [vortext.db.schema :refer [db-spec]]
             [yesql.core :refer [defquery defqueries]]
             [clojure.java.jdbc :as jdbc]))
 

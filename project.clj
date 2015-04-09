@@ -3,7 +3,7 @@
   :license {:name "GNU General Public License (GPL) v3"
             :url "https://www.gnu.org/copyleft/gpl.html"}
   :url "https://github.com/joelkuiper/spa"
-  :main spa.core
+  :main vortext.core
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
   :plugins [[lein-environ "1.0.0"]]
@@ -16,8 +16,8 @@
   :profiles {:production {:env {:dev false}}
              :uberjar {:aot :all}}
   :jvm-opts ["-server" "-Djava.awt.headless=true"]
-  :aliases {"migrate" ["trampoline" "run" "-m" "spa.db.migrations" "migrate"]
-            "rollback" ["trampoline" "run" "-m" "spa.db.migrations" "rollback"]}
+  :aliases {"migrate" ["trampoline" "run" "-m" "vortext.db.migrations" "migrate"]
+            "rollback" ["trampoline" "run" "-m" "vortext.db.migrations" "rollback"]}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.cli "0.3.1"]
                  [org.clojure/core.async "0.1.303.0-886421-alpha"]

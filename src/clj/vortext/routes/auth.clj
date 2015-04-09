@@ -1,12 +1,12 @@
-(ns spa.routes.auth
-  (:require [spa.layout :as layout]
+(ns vortext.routes.auth
+  (:require [vortext.layout :as layout]
             [taoensso.timbre :as timbre]
             [compojure.core :refer :all]
             [noir.session :as session]
             [noir.response :as resp]
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
-            [spa.db.users :as users]))
+            [vortext.db.users :as users]))
 
 (defn valid? [id pass pass1]
   (vali/rule (vali/has-value? id)
