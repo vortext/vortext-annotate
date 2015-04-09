@@ -13,7 +13,7 @@ define(function (require) {
         opacity: 1.0,
         visibility: "visible"
       };
-      var modalStyle = _.extend({top: "-88px"}, style);
+      var modalStyle = _.extend({top: this.props.top || "-90px"}, style);
       return(
         <div>
           <div className="reveal-modal-bg" style={style} />
@@ -25,5 +25,4 @@ define(function (require) {
   });
 
   return Modal;
-
 });

@@ -9,6 +9,7 @@
             [taoensso.timbre :as timbre]
             [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
+            [noir.response :as response]
             [noir.session :as session]
             [vortext.util :refer [breadcrumbs]]
             [vortext.http :as http]
@@ -81,8 +82,8 @@
 
 (defn highlight
   "Highlights the annotations directly within the pdf.
-   Requires a document map with both the :file and the :marginalia present.
-   Returns a closed InputStream with the highlighted PDF"
+  Requires a document map with both the :file and the :marginalia present.
+  Returns a closed InputStream with the highlighted PDF"
   [document]
   (let [marginalia (clojure.walk/keywordize-keys (get-in document [:marginalia "marginalia"]))
         annotations (map :annotations marginalia)
@@ -94,17 +95,28 @@
                                             {:content :pattern})]
                              (assoc highlight :content (str (:title h) "\n\n" (:description h)))))]
     (with-open
-        [input (io/input-stream (:file document))
-         output (ByteArrayOutputStream.)]
+      [input (io/input-stream (:file document))
+       output (ByteArrayOutputStream.)]
       (try
         (do
           (highlight-document input output (map format-highlight highlights))
           (io/input-stream (.toByteArray output)))
         (catch Exception e (do (warn e) input)))))) ;; just return the document on fail
 
-(defn export
+(defn as-attachment
+  [response file-name]
+  (resp/header response "Content-Disposition" (str "attachment; filename=" file-name)))
+
+(defn export-to-pdf
   [project-id document-id]
-  (highlight (documents/get document-id project-id)))
+  (let [document (documents/get document-id project-id)]
+    (as-attachment (resp/response (highlight document)) (str (:id document) ".pdf"))))
+
+(defn export-marginalia
+  [project-id document-id]
+  (let [document (documents/get document-id project-id)
+        marginalia (:marginalia document)]
+    (as-attachment (response/json marginalia) (str (:id document) ".json"))))
 
 ;;;;;;;;;;;;;;;
 ;; Routes
@@ -119,5 +131,8 @@
            (restricted (delete project-id document-id)))
    (GET "/:document-id" [document-id :as req]
         (restricted (display project-id document-id req)))
-   (GET "/:document-id/export" [document-id :as req]
-        (restricted (export project-id document-id)))))
+   (GET "/:document-id/export/:type" [document-id type :as req]
+        (restricted
+         (case type
+           "pdf"  (export-to-pdf project-id document-id)
+           "json" (export-marginalia project-id document-id))))))
