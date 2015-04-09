@@ -7,8 +7,7 @@
             [noir-exception.core :refer [wrap-internal-error wrap-exceptions]]))
 
 (def common-middleware
-  [wrap-strip-trailing-slash
-   wrap-anti-forgery])
+  [wrap-anti-forgery])
 
 (def development-middleware
   [wrap-error-page
