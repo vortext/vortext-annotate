@@ -48,10 +48,6 @@
                  [org.apache.pdfbox/pdfbox "1.8.9"]
                  [org.bouncycastle/bcprov-jdk16 "1.46"] ; crypto
 
-                 ;; Remote connectivity
-                 [com.netflix.hystrix/hystrix-clj "1.4.4"]
-                 [clj-http "1.1.0"]
-
                  ;; Database connectivity
                  [yesql "0.5.0-beta2"]
                  [postgresql/postgresql "9.3-1102.jdbc41"]
