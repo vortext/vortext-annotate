@@ -2,3 +2,5 @@
 @import url("foundation.css");
 @import url("selectize.css");
 @import url("style.css");
+
+@import url("../scripts/spa/css/style.css");

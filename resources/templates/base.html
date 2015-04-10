@@ -12,12 +12,8 @@
      LAST_COMMIT = "{{last-commit}}";
     </script>
 
-    <link href="{{servlet-context}}/static/css/main.css?{{last-commit}}" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
-    {% ifequal dispatcher "document" %}
-    <link href="{{servlet-context}}/static/scripts/spa/css/style.css" rel="stylesheet">
-    {% endifequal %}
+    <link href="{{servlet-context}}/static/css/main.css" rel="stylesheet">
 
     <script src="{{servlet-context}}/static/scripts/modernizr.js"></script>
     {% if dispatcher %}

@@ -1,9 +1,14 @@
-html, body {
+html.home, html.home body {
     color: #505050;
     background-color: transparent;
 }
 
+html, body {
+    background-color: white !important;
+}
+
 html.view, html.view body {
+    background-color: #f5f5f5 !important;
     overflow: hidden;
 }
 
