@@ -9,7 +9,6 @@
             [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
-            [noir.response :as response]
             [taoensso.timbre :as timbre]
             [vortext.util :refer [breadcrumbs]]
             [vortext.http :as http]
@@ -100,9 +99,10 @@
   [id req]
   (let [project (projects/get id)
         documents (documents/get-by-project id :marginalia true)
-        marginalia (map :marginalia documents)]
+        marginalia (map #(select-keys % [:marginalia :name :fingerprint]) documents)]
+    (timbre/debug documents)
     (http/as-attachment
-     (response/json marginalia)
+     (http/pretty-json marginalia)
      (str (:title project) ".json"))))
 
 ;;;;;;;;;;;;;;;

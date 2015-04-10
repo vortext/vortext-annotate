@@ -9,7 +9,6 @@
             [taoensso.timbre :as timbre]
             [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
-            [noir.response :as response]
             [noir.session :as session]
             [vortext.util :as util]
             [vortext.http :as http]
@@ -111,7 +110,7 @@
   (let [document (documents/get document-id project-id)
         marginalia (:marginalia document)]
     (http/as-attachment
-     (response/json marginalia)
+     (http/pretty-json marginalia)
      (str (:id document) ".json"))))
 
 ;;;;;;;;;;;;;;;

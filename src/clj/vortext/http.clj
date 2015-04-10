@@ -3,6 +3,7 @@
             [taoensso.timbre :as timbre]
             [clojure.core.async :as async :refer [close! chan go <! >!]]
             [ring.util.response :as resp]
+            [cheshire.core :as json]
             [org.httpkit.server :as http]))
 
 
@@ -25,3 +26,12 @@
    response
    "Content-Disposition"
    (str "attachment; filename=\"" file-name "\"")))
+
+
+(defn pretty-json
+  [body]
+  (->
+   body
+   (json/encode {:pretty true})
+   (resp/response)
+   (resp/content-type "application/json")))
