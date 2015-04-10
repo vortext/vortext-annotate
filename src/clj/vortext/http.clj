@@ -2,8 +2,8 @@
   (:require [compojure.core :refer :all]
             [taoensso.timbre :as timbre]
             [clojure.core.async :as async :refer [close! chan go <! >!]]
+            [ring.util.response :as resp]
             [org.httpkit.server :as http]))
-
 
 
 (timbre/refer-timbre)
@@ -17,3 +17,11 @@
       (http/send! channel v)
       (close! c))
     (http/on-close channel (fn [_] (async/close! c)))))
+
+
+(defn as-attachment
+  [response file-name]
+  (resp/header
+   response
+   "Content-Disposition"
+   (str "attachment; filename=\"" file-name "\"")))

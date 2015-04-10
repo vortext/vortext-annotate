@@ -5,42 +5,7 @@ define(function (require) {
   var React = require("react");
   var _ = require("underscore");
 
-  var Modal = require("jsx!components/modal");
-
-  var Export = React.createClass({
-    getInitialState: function() {
-      return { visible: false };
-    },
-    close: function() {
-      this.setState({ visible: false });
-    },
-    open: function() {
-      this.setState({ visible: true });
-    },
-    exportJSON: function() {
-      window.location = window.location + "/export/json";
-      this.close();
-    },
-    exportPDF: function() {
-      window.location = window.location + "/export/pdf";
-      this.close();
-    },
-    render: function() {
-      var modal =
-            (<Modal top="100px">
-               <p className="lead">
-                 Please select the export format
-               </p>
-               <button onClick={this.exportJSON} className="button"><i className="fa fa-file-code-o"></i> JSON</button>
-               &nbsp;
-               <button onClick={this.exportPDF} className="button"><i className="fa fa-file-pdf-o"></i> PDF</button>
-               &nbsp;
-               <button onClick={this.close} className="button secondary">Cancel</button>
-             </Modal>);
-      var dialog = this.state.visible ? modal : null;
-      return <li className="active">{dialog}<a onClick={this.open}>Export</a></li>;
-    }
-  });
+  var ExportButton = require("jsx!components/exportButton");
 
   var TopBar = React.createClass({
     getInitialState: function() {
@@ -66,11 +31,9 @@ define(function (require) {
         break;
       }
 
-      var exportButton = <Export name={window.models.filename} />;
-
       return(
           <div>
-            {exportButton}
+            <li><ExportButton top="100px" class="tiny" /></li>
             <li>{savingBar}</li>
           </div>
       );

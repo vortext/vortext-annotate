@@ -6,12 +6,13 @@
   (:require [compojure.core :refer :all]
             [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]
-            [ring.util.response :as response]
-            [noir.response :refer [redirect]]
+            [ring.util.response :as resp]
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
+            [noir.response :as response]
             [taoensso.timbre :as timbre]
             [vortext.util :refer [breadcrumbs]]
+            [vortext.http :as http]
             [vortext.routes.document :as document]
             [vortext.db.projects :as projects]
             [vortext.db.documents :as documents]
@@ -37,7 +38,7 @@
                     :project project
                     :dispatcher "project"
                     :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) "Edit"])})
-    (response/not-found (str "could not find project " id))))
+    (resp/not-found (str "could not find project " id))))
 
 (defn create-new
   [req]
@@ -58,10 +59,10 @@
         categories (clojure.string/split (:categories params) #",")]
     (if (= id "new")
       (let [new-project (projects/create! (current-user) title description categories)]
-        (redirect (str "/projects/" new-project)))
+        (resp/redirect (str "/projects/" new-project)))
       (do
         (projects/edit! (parse-int id) title description categories)
-        (redirect (str "/projects/" id))))))
+        (resp/redirect (str "/projects/" id))))))
 
 (defn view
   [id req]
@@ -81,16 +82,28 @@
      (flush)
      (.closeEntry zip#)))
 
-(defn export
+(defn export-as-pdf
   [id req]
-  (let [documents (documents/get-by-project id :marginalia true)]
+  (let [project (projects/get id)
+        documents (documents/get-by-project id :marginalia true)]
     (with-open [output (ByteArrayOutputStream.)
                 zip (ZipOutputStream. output)]
       (doall (map (fn [document]
                     (with-entry zip (:name document)
                       (with-open [doc (document/highlight document)]
                         (io/copy doc zip)))) documents))
-      (io/input-stream (.toByteArray output)))))
+      (http/as-attachment
+       (resp/response (io/input-stream (.toByteArray output)))
+       (str (:title project) ".zip")))))
+
+(defn export-marginalia
+  [id req]
+  (let [project (projects/get id)
+        documents (documents/get-by-project id :marginalia true)
+        marginalia (map :marginalia documents)]
+    (http/as-attachment
+     (response/json marginalia)
+     (str (:title project) ".json"))))
 
 ;;;;;;;;;;;;;;;
 ;; Routes
@@ -106,8 +119,12 @@
                           (restricted (handle-edit project-id req)))
                     (GET "/edit" [:as req]
                          (restricted (edit-page project-id req)))
-                    (GET "/export" [:as req]
-                         (restricted (export (parse-int project-id) req)))
+                    (GET "/export/:type" [type :as req]
+                         (restricted
+                          (let [project (parse-int project-id)]
+                            (case type
+                              "pdf"  (export-as-pdf project req)
+                              "json" (export-marginalia project req)))))
                     (context "/documents" []
                              (document/document-routes (parse-int project-id))))))
 ;;;;;;;;;;;;;;;

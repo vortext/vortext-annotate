@@ -5,8 +5,10 @@
     <div class="row">
       <div class="large-12 columns clearfix last">
         <h2 class="left">{{project.title}}</h2>
-        <a style="margin-top: 1.115em" href="{{servlet-context}}/projects/{{project.id}}/export" class="right tiny button" download="{{project.title}}.zip">export</a>
-        <a style="margin-top: 1.115em" href="{{servlet-context}}/projects/{{project.id}}/edit" class="right secondary tiny button">edit</a>&nbsp;
+        <div style="margin-top: 1.125em">
+            <div id="export"></div>
+            <a href="{{servlet-context}}/projects/{{project.id}}/edit" class="right secondary tiny button">Edit</a>&nbsp;
+        </div>
       </div>
     </div>
     <div class="row">

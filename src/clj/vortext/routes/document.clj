@@ -11,7 +11,7 @@
             [noir.util.route :refer [restricted]]
             [noir.response :as response]
             [noir.session :as session]
-            [vortext.util :refer [breadcrumbs]]
+            [vortext.util :as util]
             [vortext.http :as http]
             [vortext.pdf.highlight :refer [highlight-document]]
             [vortext.pdf.normalize :refer [normalize-document]]
@@ -41,7 +41,7 @@
                  {:dispatcher "document"
                   :marginalia (:marginalia document)
                   :name (:name document)
-                  :breadcrumbs (breadcrumbs
+                  :breadcrumbs (util/breadcrumbs
                                 (:uri req)
                                 ["Projects" (:title project) (:name document)])
                   :page-type "view"}))
@@ -52,9 +52,9 @@
         match?  (fn [pattern expr] (not (nil? (re-find (re-pattern (str "^" pattern)) expr))))
         accept? (fn [pattern] (if mime (match? pattern mime) (match? pattern accept)))
         key     (cond
-                 (accept? "text/html")       :html
-                 (accept? "application/pdf") :pdf
-                 :else                       :default)]
+                  (accept? "text/html")       :html
+                  (accept? "application/pdf") :pdf
+                  :else                       :default)]
     ((key m))))
 
 (defn display
@@ -74,11 +74,7 @@
   (let [marginalia (get-in req [:params :data])]
     {:document (documents/update! project-id document-id marginalia)}))
 
-(defn ^:private extend-deeply-with
-  "Extends the maps in seq alpha of the form [[{} ...] [{} ...] ...]
-   with the keys from beta of the form [{} ... {}]. alpha and beta must have the same length."
-  [alpha beta]
-  (map-indexed (fn [idx psi] (map (fn [omega] (merge (nth beta idx) omega)) psi)) alpha))
+
 
 (defn highlight
   "Highlights the annotations directly within the pdf.
@@ -88,7 +84,7 @@
   (let [marginalia (clojure.walk/keywordize-keys (get-in document [:marginalia "marginalia"]))
         annotations (map :annotations marginalia)
         meta (map #(select-keys % [:title :description :color]) marginalia)
-        highlights (flatten (extend-deeply-with annotations meta))
+        highlights (flatten (util/extend-deeply-with annotations meta))
         format-highlight (fn [h]
                            (let [highlight (clojure.set/rename-keys
                                             (select-keys h [:color :content])
@@ -103,20 +99,20 @@
           (io/input-stream (.toByteArray output)))
         (catch Exception e (do (warn e) input)))))) ;; just return the document on fail
 
-(defn as-attachment
-  [response file-name]
-  (resp/header response "Content-Disposition" (str "attachment; filename=" file-name)))
-
 (defn export-to-pdf
   [project-id document-id]
   (let [document (documents/get document-id project-id)]
-    (as-attachment (resp/response (highlight document)) (str (:id document) ".pdf"))))
+    (http/as-attachment
+     (resp/response (highlight document))
+     (str (:id document) ".pdf"))))
 
 (defn export-marginalia
   [project-id document-id]
   (let [document (documents/get document-id project-id)
         marginalia (:marginalia document)]
-    (as-attachment (response/json marginalia) (str (:id document) ".json"))))
+    (http/as-attachment
+     (response/json marginalia)
+     (str (:id document) ".json"))))
 
 ;;;;;;;;;;;;;;;
 ;; Routes

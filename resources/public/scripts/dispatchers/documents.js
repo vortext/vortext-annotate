@@ -21,11 +21,18 @@ define(function (require) {
 
   // Components
   var Documents = React.createFactory(require("jsx!components/documents"));
+  var ExportButton = React.createFactory(require("jsx!components/exportButton"));
 
   var documentsComponent = React.render(
     new Documents({documents: documentsModel}),
     document.getElementById("documents")
   );
+
+  var exportButtonComponent = React.render(
+    new ExportButton({class: "tiny right button", top: "100px"}),
+    document.getElementById("export")
+  );
+
 
   // Dispatch logic
   // Listen to model change callbacks -> trigger updates to components
