@@ -35,7 +35,7 @@
   (if (env :dev) (selmer.parser/cache-off!))
   (selmer.parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)
-  (timbre/info "spa started successfully"))
+  (timbre/info "started successfully"))
 
 (defn destroy!
   "destroy will be called when your application

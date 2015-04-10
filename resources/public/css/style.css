@@ -1,6 +1,6 @@
 html.home, html.home body {
     color: #505050;
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 html, body {
@@ -13,11 +13,11 @@ html.view, html.view body {
 }
 
 html.home {
-    background: url(/static/img/bg.jpg) no-repeat top center fixed black;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background: url(/static/img/bg.jpg) no-repeat top center fixed black !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    background-size: cover !important;
 }
 
 html.home fieldset {
