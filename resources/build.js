@@ -15,11 +15,17 @@
 
   optimizeCss: 'standard',
   stubModules: ['jsx'],
+  removeCombined: true,
+  findNestedDependencies: true,
+
+  paths: {
+    'react': "spa/scripts/vendor/react-prod"
+  },
 
   modules: [
     {
       name: "common",
-      exclude: ["react", "JSXTransformer", "text"]
+      exclude: ["JSXTransformer", "text"]
     },
     {
       name: 'project',
