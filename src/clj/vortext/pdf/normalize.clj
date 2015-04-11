@@ -5,15 +5,10 @@
   (:require [clojure.java.shell :refer [sh]]
             [clojure.java.io :as io]
             [clojure.core.async :as async :refer [go chan <! >!]]
+            [vortext.util :refer [temp-file]]
             [taoensso.timbre :as timbre]))
 
 (timbre/refer-timbre)
-
-(defn- temp-file
-  ([] (temp-file "spa" nil))
-  ([prefix suffix]
-     (doto (java.io.File/createTempFile prefix suffix)
-       (.deleteOnExit))))
 
 (defn- pdf->pdf-a
   [^java.io.File input-file ^java.io.File output-file]

@@ -1,4 +1,8 @@
 (ns vortext.util
+  (:import org.apache.commons.io.IOUtils
+           java.util.zip.ZipOutputStream
+           java.util.zip.ZipEntry
+           java.io.ByteArrayOutputStream)
   (:require [clojure.string :as string]
             [clojure.walk :as walk]
             [clojure.java.shell :refer [sh]]))
@@ -17,3 +21,9 @@
   with the keys from beta of the form [{} ... {}]. alpha and beta must have the same length."
   [alpha beta]
   (map-indexed (fn [idx psi] (map (fn [omega] (merge (nth beta idx) omega)) psi)) alpha))
+
+(defn temp-file
+  ([] (temp-file "vortext" nil))
+  ([prefix suffix]
+   (doto (java.io.File/createTempFile prefix suffix)
+     (.deleteOnExit))))

@@ -10,7 +10,7 @@
             [noir.util.route :refer [restricted]]
             [noir.session :as session]
             [taoensso.timbre :as timbre]
-            [vortext.util :refer [breadcrumbs]]
+            [vortext.util :refer [breadcrumbs temp-file]]
             [vortext.http :as http]
             [vortext.routes.document :as document]
             [vortext.db.projects :as projects]
@@ -73,6 +73,7 @@
                     :project project})))
 
 ;; Export project to ZIP Archive
+
 (defmacro ^:private with-entry
   [zip entry-name & body]
   `(let [^ZipOutputStream zip# ~zip]
@@ -88,9 +89,10 @@
     (with-open [output (ByteArrayOutputStream.)
                 zip (ZipOutputStream. output)]
       (doall (map (fn [document]
-                    (with-entry zip (:name document)
-                      (with-open [doc (document/highlight document)]
+                    (with-open [doc (document/highlight document)]
+                      (with-entry zip (:name document)
                         (io/copy doc zip)))) documents))
+      (.finish zip)
       (http/as-attachment
        (resp/response (io/input-stream (.toByteArray output)))
        (str (:title project) ".zip")))))
