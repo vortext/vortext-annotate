@@ -12,8 +12,7 @@
             [vortext.routes.auth :refer [auth-routes]]
             [vortext.routes.home :refer [home-routes]]
             [vortext.routes.project :refer [project-routes project-access]]
-            [cronj.core :as cronj]
-            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]))
+            [cronj.core :as cronj]))
 
 (defroutes
   app-routes
@@ -33,7 +32,6 @@
    [:shared-appender-config :rotor]
    {:path "vortext.log", :max-size (* 512 1024) :backlog 10})
   (if (env :dev) (selmer.parser/cache-off!))
-  (selmer.parser/add-tag! :csrf-token (fn [_ _] *anti-forgery-token*))
   (cronj/start! session-manager/cleanup-job)
   (timbre/info "started successfully"))
 

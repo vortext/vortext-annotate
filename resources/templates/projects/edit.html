@@ -29,7 +29,7 @@
       <div class="row">
         <div class="large-5 columns">
           <input type="hidden" name="project-id" value="{{project-id}}">
-          <input type="hidden" name="__anti-forgery-token" value="{% csrf-token %}">
+          <input type="hidden" name="__anti-forgery-token" value="{{csrf-token}}">
           {% ifequal project-id "new" %}
           <input type="submit" class="button" value="Create"></input>
           {% else %}

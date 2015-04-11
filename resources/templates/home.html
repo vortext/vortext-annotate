@@ -43,7 +43,7 @@
 		            <input type="password" tabindex="2" name="pass" placeholder="Password">
 	            </div>
 	            <div class="large-3 offset-1 columns fourty">
-                <input type="hidden" name="__anti-forgery-token" value="{% csrf-token %}">
+                <input type="hidden" name="__anti-forgery-token" value="{{csrf-token}}">
 		            <input type="submit" tabindex="3" class="button expand postfix" value="Login">
 	            </div>
 	          </div>
@@ -83,7 +83,7 @@
 	          </div>
 	          <div class="row">
 	            <div class="large-6 large-offset-6 columns fourty">
-                <input type="hidden" name="__anti-forgery-token" value="{% csrf-token %}">
+                <input type="hidden" name="__anti-forgery-token" value="{{csrf-token}}">
 		            <input type="submit" class="button success postfix expand" value="Sign up">
 	            </div>
 	          </div>

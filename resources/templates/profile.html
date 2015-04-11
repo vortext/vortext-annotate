@@ -5,7 +5,7 @@
 
     <h3>User details for {{user.id}}</h3>
     <form action="{{servlet-context}}/update-profile" method="POST">
-      <input type="hidden" name="__anti-forgery-token" value="{% csrf-token %}" />
+      <input type="hidden" name="__anti-forgery-token" value="{{csrf-token}}" />
       <div class="form-group col-lg-3">
 	      <label>First name</label>
 	      <p>
