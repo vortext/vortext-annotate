@@ -37,6 +37,6 @@
    (resp/content-type "application/json")))
 
 (def no-cache
-  {"Cache-Control" "no-cache, no-store, must-revalidate"
+  {"Cache-Control" "no-store, must-revalidate"
    "Pragma" "no-cache"
    "Expires" "0"})
