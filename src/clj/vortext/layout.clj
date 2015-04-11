@@ -13,20 +13,21 @@
 
 (deftype RenderableTemplate [template params]
   Renderable
-  (render
-    [this request]
+  (render [this request]
     (content-type
-     (->> (assoc
-         params (keyword (s/replace template #".html" "-selected"))
-         "active"
-         :dev (env :dev)
-         :csrf-token *anti-forgery-token*
-         :last-commit last-commit
-         :servlet-context (if-let [context (:servlet-context request)]
-                            (try
-                              (.getContextPath context)
-                              (catch IllegalArgumentException _ context)))
-         :user-id (session/get :user-id))
+     (->> (assoc params
+               :page template
+               :dev (env :dev)
+               :user-id (session/get :user-id)
+               :last-commit last-commit
+               :csrf-token *anti-forgery-token*
+               :servlet-context
+               (if-let [context (:servlet-context request)]
+                 ;; If we're not inside a serlvet environment (for
+                 ;; example when using mock requests), then
+                 ;; .getContextPath might not exist
+                 (try (.getContextPath context)
+                      (catch IllegalArgumentException _ context))))
         (parser/render-file (str template-path template))
         response)
      "text/html; charset=utf-8")))
