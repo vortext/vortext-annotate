@@ -31,7 +31,7 @@
                  [commons-io/commons-io "2.4"]
 
                  [im.chit/cronj "1.4.3"]
-                 [lib-noir "0.9.9"]
+                 [lib-noir "0.9.9" :exclusions [ring/ring-defaults]]
                  [noir-exception "0.2.3"]
 
                  [environ "1.0.0"]
@@ -40,6 +40,7 @@
                  [compojure "1.3.3"]
                  [ring/ring-devel "1.3.2"]
                  [ring/ring-anti-forgery "1.0.0"]
+                 [ring/ring-defaults "0.1.4"]
 
                  ;; JSON
                  [cheshire "5.4.0"]
