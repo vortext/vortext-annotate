@@ -30,7 +30,7 @@ require.config({
   }
 });
 
-require(["backbone"], function(Backbone) {
+require(["backbone", "react", "immutable"], function(Backbone) {
   var _sync = Backbone.sync;
   Backbone.sync = function(method, model, options){
     options.beforeSend = function(xhr){

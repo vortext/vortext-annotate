@@ -25,7 +25,7 @@
   modules: [
     {
       name: "common",
-      exclude: ["JSXTransformer", "text"]
+      exclude: ["PDFJS","JSXTransformer", "text"]
     },
     {
       name: 'project',
