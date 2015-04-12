@@ -6,8 +6,8 @@
             [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
             [compojure.response :refer [Renderable]]
             [environ.core :refer [env]]
-            [vortext.util :refer [last-commit]]
-            [noir.session :as session]))
+            [vortext.security :as security]
+            [vortext.util :refer [last-commit]]))
 
 (def template-path "templates/")
 
@@ -18,7 +18,7 @@
      (->> (assoc params
                :page template
                :dev (env :dev)
-               :user-id (session/get :user-id)
+               :user-id (security/current-user request)
                :last-commit last-commit
                :csrf-token *anti-forgery-token*
                :servlet-context
@@ -34,7 +34,3 @@
 
 (defn render [template & [params]]
   (RenderableTemplate. template params))
-
-(defn render-to-response
-  [template & [params]]
-  (.render (render template params) {}))

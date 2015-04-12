@@ -60,24 +60,24 @@
 	          <div class="row">
 	            <div class="large-12 columns">
 		            <input type="text" name="id" value="{{id}}" placeholder="Username" class="{% if id-error %}error{% endif %}">
-		            {% if id-error %}
-		            <small class="error">{{id-error}}</small>
+		            {% if validation.id %}
+		            <small class="error">{{validation.id|first}}</small>
 		            {% endif %}
 	            </div>
 	          </div>
 	          <div class="row">
 	            <div class="large-12 columns">
 		            <input type="password" name="pass" placeholder="Password" class="{% if pass-error %}error{% endif %}">
-		            {% if pass-error %}
-		            <small class="error">{{pass-error}}</small>
+		            {% if validation.pass %}
+		            <small class="error">{{validation.pass|first}}</small>
 		            {% endif %}
 	            </div>
 	          </div>
 	          <div class="row">
 	            <div class="large-12 columns">
 		            <input type="password" name="pass1" placeholder="Retype password" class="{% if pass1-error %}error{% endif %}">
-		            {% if pass1-error %}
-		            <small class="error">{{pass1-error}}</small>
+		            {% if validation.pass1 %}
+		            <small class="error">{{validation.pass1|first}}</small>
 		            {% endif %}
 	            </div>
 	          </div>

@@ -1,22 +1,18 @@
 (ns vortext.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [noir.session :as session]
-            [noir.response :refer [redirect]]
-            [noir.util.middleware :refer [app-handler]]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.rotor :as rotor]
             [environ.core :refer [env]]
-            [vortext.middleware :refer [load-middleware]]
-            [vortext.session-manager :as session-manager]
+            [vortext.session :as session]
+            [vortext.middleware :refer [development-middleware production-middleware]]
             [vortext.routes.auth :refer [auth-routes]]
             [vortext.routes.home :refer [home-routes]]
-            [vortext.routes.project :refer [project-routes project-access]]
+            [vortext.routes.project :refer [project-routes]]
             [cronj.core :as cronj]))
 
 (defroutes
-  app-routes
-  (route/resources "/static")
+  base-routes
   (route/not-found "Page not found"))
 
 (defn init!
@@ -32,7 +28,7 @@
    [:shared-appender-config :rotor]
    {:path "vortext.log", :max-size (* 512 1024) :backlog 10})
   (if (env :dev) (selmer.parser/cache-off!))
-  (cronj/start! session-manager/cleanup-job)
+  (cronj/start! session/cleanup-job)
   (timbre/info "started successfully"))
 
 (defn destroy!
@@ -40,19 +36,15 @@
   shuts down, put any clean up code here"
   []
   (timbre/info "spa is shutting down...")
-  (cronj/shutdown! session-manager/cleanup-job)
+  (cronj/shutdown! session/cleanup-job)
   (shutdown-agents)
   (timbre/info "shutdown complete!"))
 
-(def web-routes
-  [auth-routes
-   project-routes
-   home-routes
-   app-routes])
-
 (def app
-  (app-handler
-   web-routes
-   :middleware (load-middleware)
-   :session-options {:timeout (* 60 30), :timeout-response (redirect "/")}
-   :access-rules (concat project-access)))
+  (-> (routes
+      auth-routes
+      project-routes
+      home-routes
+      base-routes)
+     development-middleware
+     production-middleware))

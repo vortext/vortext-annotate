@@ -7,11 +7,10 @@
             [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]
             [ring.util.response :as resp]
-            [noir.util.route :refer [restricted]]
-            [noir.session :as session]
             [taoensso.timbre :as timbre]
-            [vortext.util :refer [breadcrumbs temp-file]]
+            [vortext.util :refer [breadcrumbs temp-file parse-int]]
             [vortext.http :as http]
+            [vortext.security :refer [current-user]]
             [vortext.routes.document :as document]
             [vortext.db.projects :as projects]
             [vortext.db.documents :as documents]
@@ -19,61 +18,56 @@
 
 (timbre/refer-timbre)
 
-(defn parse-int [s] (Integer. (re-find  #"\d+" s)))
-
-(defn current-user [] (session/get :user-id))
-
 (defn overview-page
-  [req]
+  [request]
   (layout/render "projects/overview.html"
-                 {:breadcrumbs (breadcrumbs (:uri req) ["Projects"])
-                  :projects (projects/for-user (current-user))}))
+                 {:breadcrumbs (breadcrumbs (:uri request) ["Projects"])
+                  :projects (projects/for-user (current-user request))}))
 
 (defn edit-existing
-  [id req]
+  [id request]
   (if-let [project (projects/get id)]
     (layout/render "projects/edit.html"
                    {:project-id id
                     :project project
                     :dispatcher "project"
-                    :breadcrumbs (breadcrumbs (:uri req) ["Projects" (:title project) "Edit"])})
+                    :breadcrumbs (breadcrumbs (:uri request) ["Projects" (:title project) "Edit"])})
     (resp/not-found (str "could not find project " id))))
 
 (defn create-new
-  [req]
+  [request]
   (layout/render "projects/edit.html"
-                 {:breadcrumbs (breadcrumbs (:uri req) ["Projects"  "Create new"])
+                 {:breadcrumbs (breadcrumbs (:uri request) ["Projects"  "Create new"])
                   :dispatcher "project"
                   :project-id "new"}))
 
 (defn edit-page
-  [id req]
+  [id request]
   (if (= id "new")
-    (create-new req)
-    (edit-existing (parse-int id) req)))
+    (create-new request)
+    (edit-existing (parse-int id) request)))
 
 (defn handle-edit
-  [id {:keys [params] :as req}]
+  [id {:keys [params] :as request}]
   (let [{:keys [title description]} params
         categories (clojure.string/split (:categories params) #",")]
     (if (= id "new")
-      (let [new-project (projects/create! (current-user) title description categories)]
+      (let [new-project (projects/create! (current-user request) title description categories)]
         (resp/redirect (str "/projects/" new-project)))
       (do
         (projects/edit! (parse-int id) title description categories)
         (resp/redirect (str "/projects/" id))))))
 
 (defn view
-  [id req]
+  [id request]
   (let [project (projects/get id)]
     (layout/render "projects/view.html"
                    {:dispatcher "documents"
-                    :breadcrumbs (breadcrumbs (:uri req) ["Projects"  (:title project)])
+                    :breadcrumbs (breadcrumbs (:uri request) ["Projects"  (:title project)])
                     :documents (documents/get-by-project id)
                     :project project})))
 
 ;; Export project to ZIP Archive
-
 (defmacro ^:private with-entry
   [zip entry-name & body]
   `(let [^ZipOutputStream zip# ~zip]
@@ -83,7 +77,7 @@
      (.closeEntry zip#)))
 
 (defn export-as-pdf
-  [id req]
+  [id request]
   (let [project (projects/get id)
         documents (documents/get-by-project id :marginalia true)]
     (with-open [output (ByteArrayOutputStream.)
@@ -98,7 +92,7 @@
        (str (:title project) ".zip")))))
 
 (defn export-marginalia
-  [id req]
+  [id request]
   (let [project (projects/get id)
         documents (documents/get-by-project id :marginalia true)
         marginalia (map #(select-keys % [:marginalia :name :fingerprint]) documents)]
@@ -112,46 +106,19 @@
 ;;;;;;;;;;;;;;;
 (defroutes project-routes
   (context "/projects" []
-           (GET "/" [:as req]
-                (restricted (overview-page req)))
+           (GET "/" [:as request]
+                (overview-page request))
            (context "/:project-id" [project-id]
-                    (GET "/" [:as req]
-                         (restricted (view (parse-int project-id) req)))
-                    (POST "/" [:as req]
-                          (restricted (handle-edit project-id req)))
-                    (GET "/edit" [:as req]
-                         (restricted (edit-page project-id req)))
-                    (GET "/export/:type" [type :as req]
-                         (restricted
-                          (let [project (parse-int project-id)]
-                            (case type
-                              "pdf"  (export-as-pdf project req)
-                              "json" (export-marginalia project req)))))
+                    (GET "/" [:as request]
+                         (view (parse-int project-id) request))
+                    (POST "/" [:as request]
+                          (handle-edit project-id request))
+                    (GET "/edit" [:as request]
+                         (edit-page project-id request))
+                    (GET "/export/:type" [type :as request]
+                         (let [project (parse-int project-id)]
+                           (case type
+                             "pdf"  (export-as-pdf project request)
+                             "json" (export-marginalia project request))))
                     (context "/documents" []
                              (document/document-routes (parse-int project-id))))))
-;;;;;;;;;;;;;;;
-;; Access rules
-;;;;;;;;;;;;;;;
-(defn logged-in? [req]
-  (not (nil? (current-user))))
-
-(defn is-owner? [req]
-  (let [project-id (get-in req [:params :project-id])]
-    (if (and project-id (not= project-id "new"))
-      (projects/has? (current-user) (parse-int project-id))
-      true)))
-
-(defn has-document? [req]
-  (let [{project-id :project-id document-id :document-id} (:params req)]
-    (documents/has? (parse-int project-id) document-id)))
-
-(def project-access
-  [{:uris ["/projects/:project-id/documents/:document-id"
-           "/projects/:project-id/documents/:document-id/*"]
-    :rules [logged-in? is-owner? has-document?]}
-   {:uris ["/projects/:project-id"
-           "/projects/:project-id/*"]
-    :rules [logged-in? is-owner?]}
-   {:uris ["/projects"
-           "/projects/*"]
-    :rules [logged-in?]}])

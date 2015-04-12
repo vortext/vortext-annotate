@@ -4,12 +4,9 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [clojure.java.io :as io]
-            [clojure.core.async :as async :refer [go chan <!! >!!]]
             [cheshire.core :as json]
             [taoensso.timbre :as timbre]
             [ring.util.response :as resp]
-            [noir.util.route :refer [restricted]]
-            [noir.session :as session]
             [vortext.util :as util]
             [vortext.http :as http]
             [vortext.pdf.highlight :refer [highlight-document]]
@@ -22,9 +19,9 @@
 (timbre/refer-timbre)
 
 (defn insert!
-  [project-id req]
-  (let [{fingerprint :fingerprint name :name} (:params req)
-        temp-file (get-in req [:multipart-params "file" :tempfile])
+  [project-id request]
+  (let [{fingerprint :fingerprint name :name} (:params request)
+        temp-file (get-in request [:multipart-params "file" :tempfile])
         response (chan)]
     (go
       (documents/insert-in-project! project-id fingerprint (<! (normalize-document temp-file)) name)
@@ -32,22 +29,22 @@
     response))
 
 (defn insert-in-project
-  [project-id req]
-  (http/async req (insert! project-id req)))
+  [project-id request]
+  (http/async request (insert! project-id request)))
 
-(defn document-page [document project req]
+(defn document-page [document project request]
   (layout/render "document.html"
                  {:dispatcher "document"
                   :marginalia (:marginalia document)
                   :name (:name document)
                   :breadcrumbs (util/breadcrumbs
-                                (:uri req)
+                                (:uri request)
                                 ["Projects" (:title project) (:name document)])
                   :page-type "view"}))
 
-(defn dispatch [m req]
-  (let [accept  (get (:headers req) "accept")
-        mime    (get (:query-params req) "mime")
+(defn dispatch [m request]
+  (let [accept  (get (:headers request) "accept")
+        mime    (get (:query-params request) "mime")
         match?  (fn [pattern expr] (not (nil? (re-find (re-pattern (str "^" pattern)) expr))))
         accept? (fn [pattern] (if mime (match? pattern mime) (match? pattern accept)))
         key     (cond
@@ -57,23 +54,21 @@
     ((key m))))
 
 (defn display
-  [project-id document-id req]
+  [project-id document-id request]
   (dispatch {:pdf (fn [] (io/input-stream (:file (documents/get document-id))))
              :html (fn [] (document-page
                           (documents/get document-id project-id)
-                          (projects/get project-id) req))
-             :default (fn [] "…")} req))
+                          (projects/get project-id) request))
+             :default (fn [] "…")} request))
 
 (defn delete
-  [project-id document-id]
+  [project-id document-id request]
   {:document (documents/dissoc! document-id project-id)})
 
 (defn update
-  [project-id document-id req]
-  (let [marginalia (get-in req [:params :data])]
+  [project-id document-id request]
+  (let [marginalia (get-in request [:params :data])]
     {:document (documents/update! project-id document-id marginalia)}))
-
-
 
 (defn highlight
   "Highlights the annotations directly within the pdf.
@@ -99,14 +94,14 @@
         (catch Exception e (do (warn e) input)))))) ;; just return the document on fail
 
 (defn export-to-pdf
-  [project-id document-id]
+  [project-id document-id request]
   (let [document (documents/get document-id project-id)]
     (http/as-attachment
      (resp/response (highlight document))
      (str (:id document) ".pdf"))))
 
 (defn export-marginalia
-  [project-id document-id]
+  [project-id document-id request]
   (let [document (documents/get document-id project-id)
         marginalia (:marginalia document)]
     (http/as-attachment
@@ -118,16 +113,15 @@
 ;;;;;;;;;;;;;;;
 (defn document-routes [project-id]
   (routes
-   (POST "/" [:as req]
-         (restricted (insert-in-project project-id req)))
-   (PUT "/:document-id" [document-id :as req]
-        (restricted (update project-id document-id req)))
-   (DELETE "/:document-id" [document-id :as req]
-           (restricted (delete project-id document-id)))
-   (GET "/:document-id" [document-id :as req]
-        (restricted (display project-id document-id req)))
-   (GET "/:document-id/export/:type" [document-id type :as req]
-        (restricted
-         (case type
-           "pdf"  (export-to-pdf project-id document-id)
-           "json" (export-marginalia project-id document-id))))))
+   (POST "/" [:as request]
+         (insert-in-project project-id request))
+   (PUT "/:document-id" [document-id :as request]
+        (update project-id document-id request))
+   (DELETE "/:document-id" [document-id :as request]
+           (delete project-id document-id request))
+   (GET "/:document-id" [document-id :as request]
+        (display project-id document-id request))
+   (GET "/:document-id/export/:type" [document-id type :as request]
+        (case type
+          "pdf"  (export-to-pdf project-id document-id request)
+          "json" (export-marginalia project-id document-id request)))))

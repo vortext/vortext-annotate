@@ -1,77 +1,94 @@
 (ns vortext.routes.auth
   (:require [vortext.layout :as layout]
             [taoensso.timbre :as timbre]
+            [ring.util.response :refer [response redirect]]
             [compojure.core :refer :all]
-            [noir.session :as session]
-            [noir.response :as resp]
-            [noir.validation :as vali]
-            [noir.util.crypt :as crypt]
+            [vortext.security :as security]
+            [bouncer.core :as b]
+            [bouncer.validators :as v]
             [vortext.db.users :as users]))
 
-(defn valid? [id pass pass1]
-  (vali/rule (vali/has-value? id)
-             [:id "Username is required"])
-  (vali/rule (not (users/get id))
-             [:id "Username already taken"])
-  (vali/rule (vali/min-length? pass 5)
-             [:pass "Password must be at least 5 characters"])
-  (vali/rule (= pass pass1)
-             [:pass1 "Entered passwords do not match"])
-  (not (vali/errors? :id :pass :pass1)))
+(defn not-taken?
+  [id]
+  (not (users/get id)))
 
-(defn register [& [id]]
+(defn same-as?
+  [alpha]
+  (fn [beta]
+    (= alpha beta)))
+
+(defn valid?
+  [user]
+  (b/validate user
+              :id [[v/required :message "Username is required"]
+                   [not-taken? :message "Username already taken"]]
+              :pass1 [[v/required :message "Entered passwords must match"]]
+              :pass [[v/required :message "Password is required"]
+                     [v/min-count 5 :message "Password must be at least 5 characters"]
+                     [(same-as? (:pass1 user)) :message "Entered passwords must match"]]))
+
+(defn register
+  [validation]
   (layout/render
    "home.html"
    {:page-type "home"
-    :id id
-    :id-error (vali/on-error :id first)
-    :pass-error (vali/on-error :pass first)
-    :pass1-error (vali/on-error :pass1 first)}))
+    :validation (first validation)}))
 
-(defn handle-registration [id pass pass1]
-  (if (valid? id pass pass1)
-    (try
-      (do
-        (users/create! id (crypt/encrypt pass))
-        (session/put! :user-id id)
-        (resp/redirect "/"))
-      (catch Exception ex
-        (timbre/error ex)
-        (vali/rule false [:id (.getMessage ex)])
-        (register)))
-    (register id)))
+(defn handle-registration
+  [request]
+  (let [{:keys [id pass pass1]} (:params request)
+        user {:id id :pass pass :pass1 pass1}
+        validation (valid? user)]
+    (if (nil? (first validation))
+      (try
+        (do
+          (users/create! id (security/encrypt pass))
+          (->
+           (redirect "/")
+           (assoc-in [:session :identity] id)))
+        (catch Exception ex
+          (timbre/error ex)
+          (register validation)))
+      (register validation))))
 
-(defn profile []
+(defn profile
+  [request]
   (layout/render
    "profile.html"
-   {:user (users/get (session/get :user-id))}))
+   {:user (users/get (security/current-user request))}))
 
-(defn update-profile [{:keys [first-name last-name email]}]
-  (users/update! (session/get :user-id) first-name last-name email)
-  (profile))
+(defn update-profile
+  [request]
+  (let [{:keys [first-name last-name email]} (:params request)]
+    (users/update! (security/current-user request) first-name last-name email))
+  (profile request))
 
-(defn handle-login [id pass]
-  (let [user (users/get id)]
-    (if (and user (crypt/compare pass (:pass user)))
-      (do
-        (session/put! :user-id id)
-        (resp/redirect "/"))
+(defn handle-login
+  [request]
+  (let [{:keys [id pass]} (:params request)
+        user (users/get id)]
+    (if (and user (security/compare pass (:pass user)))
+      (->
+       (redirect "/")
+       (assoc-in [:session :identity] id))
       (layout/render "home.html"
                      {:page-type "home"
                       :login-error "Invalid username or password"}))))
 
-(defn logout []
-  (session/clear!)
-  (session/flash-put! :logged-out true)
-  (resp/redirect "/"))
+(defn logout
+  [request]
+  (-> (redirect "/")
+     (assoc :session {})
+     (assoc-in [:flash :logged-out] true)))
 
 (defroutes auth-routes
-  (POST "/register" [id pass pass1]
-        (handle-registration id pass pass1))
-  (GET "/profile" [] (profile))
-  (POST "/update-profile" {params :params}
-        (update-profile params))
-  (POST "/login" [id pass]
-        (handle-login id pass))
-  (GET "/logout" []
-       (logout)))
+  (POST "/register" [:as request]
+        (handle-registration request))
+  (GET "/profile" [:as request]
+       (profile request))
+  (POST "/update-profile" [:as request]
+        (update-profile request))
+  (POST "/login" [id pass :as request]
+        (handle-login request))
+  (GET "/logout" [:as request]
+       (logout request)))

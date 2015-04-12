@@ -13,7 +13,7 @@ html.view, html.view body {
 }
 
 html.home {
-    background: url(/static/img/bg.jpg) no-repeat top center fixed black !important;
+    background: url(/img/bg.jpg) no-repeat top center fixed black !important;
     -webkit-background-size: cover !important;
     -moz-background-size: cover !important;
     -o-background-size: cover !important;

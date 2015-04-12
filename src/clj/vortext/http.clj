@@ -6,7 +6,6 @@
             [cheshire.core :as json]
             [org.httpkit.server :as http]))
 
-
 (timbre/refer-timbre)
 
 (defn async
@@ -36,7 +35,9 @@
    (resp/response)
    (resp/content-type "application/json")))
 
-(def no-cache
-  {"Cache-Control" "no-cache, max-age=0, must-revalidate, no-store"
-   "Pragma" "no-cache"
-   "Expires" "0"})
+(defn no-cache
+  [response]
+  (->> response
+     (resp/header "Cache-Control" "no-cache, max-age=0, must-revalidate, no-store")
+     (resp/header "Pragma" "no-cache")
+     (resp/header "Expires" "0")))

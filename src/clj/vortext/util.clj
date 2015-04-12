@@ -27,3 +27,5 @@
   ([prefix suffix]
    (doto (java.io.File/createTempFile prefix suffix)
      (.deleteOnExit))))
+
+(defn parse-int [s] (Integer. (re-find  #"\d+" s)))

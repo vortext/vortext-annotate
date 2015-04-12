@@ -2,7 +2,7 @@
   :description "Mozilla PDF.js based viewer for machine learning and information retrieval on text documents"
   :license {:name "GNU General Public License (GPL) v3"
             :url "https://www.gnu.org/copyleft/gpl.html"}
-  :url "https://github.com/joelkuiper/spa"
+  :url "https://github.com/vortext/"
   :main vortext.core
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
@@ -29,25 +29,30 @@
                  [com.taoensso/timbre "3.4.0"]
                  [selmer "0.8.2"]
                  [commons-io/commons-io "2.4"]
+                 [prone "0.8.1"]
+                 [bouncer "0.3.2"]
 
                  [im.chit/cronj "1.4.3"]
-                 [lib-noir "0.9.9" :exclusions [ring/ring-defaults]]
-                 [noir-exception "0.2.3"]
 
                  [environ "1.0.0"]
 
                  [http-kit "2.1.19"]
                  [compojure "1.3.3"]
-                 [ring/ring-devel "1.3.2"]
-                 [ring/ring-anti-forgery "1.0.0"]
-                 [ring/ring-defaults "0.1.4"]
 
                  ;; JSON
                  [cheshire "5.4.0"]
 
+                 [buddy "0.5.1"]
+                 [ring/ring-defaults "0.1.4"]
+                 [ring/ring-session-timeout "0.1.0"]
+                 [ring-middleware-format "0.5.0"]
+                 [noir-exception "0.2.3"]
+                 [clojurewerkz/scrypt "1.2.0"]
+
                  ;; PDF
                  [org.apache.pdfbox/pdfbox "1.8.9"]
                  [org.bouncycastle/bcprov-jdk16 "1.46"] ; crypto
+
 
                  ;; Database connectivity
                  [yesql "0.5.0-beta2"]
