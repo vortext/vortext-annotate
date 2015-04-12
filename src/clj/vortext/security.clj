@@ -47,7 +47,7 @@
   (get-in request [:session :identity]))
 
 (defn match
-  [routes request]
+  [request routes]
   (into {} (map #(clout/route-matches % request) routes)))
 
 (def restricted-routes
@@ -62,8 +62,8 @@
    "/projects/:project-id/*"])
 (defn is-owner?
   [request]
-  (let [params (match project-routes request)
-        project-id (get params :project-id "-1")]
+  (let [uri-params (match request project-routes)
+        project-id (get uri-params :project-id "-1")]
     (cond (= project-id "new") true
           :else (projects/has? (current-user request) (parse-int project-id)))))
 
@@ -72,8 +72,8 @@
    "/projects/:project-id/documents/:document-id"])
 (defn has-document?
   [request]
-  (let [params (match document-routes request)
-        {project-id :project-id document-id :document-id} params]
+  (let [uri-params (match request document-routes)
+        {project-id :project-id document-id :document-id} uri-params]
     (documents/has? (parse-int project-id) document-id)))
 
 (def rules
