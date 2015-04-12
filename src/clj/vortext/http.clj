@@ -37,7 +37,7 @@
 
 (defn no-cache
   [response]
-  (->> response
+  (-> response
      (resp/header "Cache-Control" "no-cache, max-age=0, must-revalidate, no-store")
      (resp/header "Pragma" "no-cache")
      (resp/header "Expires" "0")))

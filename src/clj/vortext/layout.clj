@@ -34,3 +34,7 @@
 
 (defn render [template & [params]]
   (RenderableTemplate. template params))
+
+(defn render-to-response
+  [template & [params]]
+  (.render (render template params) {}))
