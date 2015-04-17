@@ -1,12 +1,15 @@
 (defproject spa "0.1.0-SNAPSHOT"
   :description "Mozilla PDF.js based viewer for machine learning and information retrieval on text documents"
-  :license {:name "GNU General Public License (GPL) v3"
-            :url "https://www.gnu.org/copyleft/gpl.html"}
+  :license {:name "GNU General Public License v3.0"
+            :url "http://www.gnu.org/licenses/gpl-3.0.txt"
+            :year 2015
+            :key "gpl-3.0"}
   :url "https://github.com/vortext/"
   :main vortext.core
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
-  :plugins [[lein-environ "1.0.0"]]
+  :plugins [[lein-license "0.1.3"]
+            [lein-environ "1.0.0"]]
   :env {:database-spec "//localhost:5432/spa"
         :database-user "spa"
         :database-password "develop"
