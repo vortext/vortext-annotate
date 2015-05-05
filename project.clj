@@ -16,8 +16,13 @@
 
         :port 8080
         :dev true}
+
+  :uberjar-name "vortext.jar"
   :profiles {:production {:env {:dev false}}
-             :uberjar {:aot :all}}
+             :uberjar {:omit-source true
+                       :env {:production true}
+
+                       :aot :all}}
   :jvm-opts ["-server" "-Djava.awt.headless=true"]
   :aliases {"migrate" ["trampoline" "run" "-m" "vortext.db.migrations" "migrate"]
             "rollback" ["trampoline" "run" "-m" "vortext.db.migrations" "rollback"]}
@@ -58,7 +63,7 @@
 
 
                  ;; Database connectivity
-                 [yesql "0.5.0-beta2"]
+                 [yesql "0.5.0-rc2"]
                  [postgresql/postgresql "9.3-1102.jdbc41"]
                  [ragtime "0.3.8"] ; migrations
                  ])

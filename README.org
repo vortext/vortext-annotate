@@ -26,12 +26,12 @@ We use [[http://www.luminusweb.net/][Luminus]] as a basis for many parts, so we 
 To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
 We require at least Java JVM/JDK 1.8 and Leiningen 2.4.
 
-   #+BEGIN_SRC
+#+BEGIN_SRC
  brew update # make sure you have recent versions
  brew install leiningen # install via Homebrew
-   #+END_SRC
+#+END_SRC
 
-   #+BEGIN_SRC
+#+BEGIN_SRC
  git clone <this repo>
  cd <your folder>
  lein deps # retrieve project dependencies
@@ -52,22 +52,28 @@ The database settings can be configured with the environment variables specified
 The default database is =spa= with user/pass =spa/develop=.
 You'll obviously need to change this in production.
 
-   #+BEGIN_SRC
+#+BEGIN_SRC
  CREATE DATABASE spa;
  CREATE USER spa WITH PASSWORD 'develop';
  GRANT ALL PRIVILEGES ON DATABASE spa TO spa;
-   #+END_SRC
+#+END_SRC
 
 To populate the database tables run =lein migrate=.
 If you're running OS X and are looking for a easy way to run PostgreSQL, we recommend [[http://postgresapp.com/][Postgres.app]].
 
 ** Run
 The run the server use
- #+BEGIN_SRC
+#+BEGIN_SRC
  lein trampoline run start # will run the server
  DEV=true lein trampoline run start # will run in development mode
- #+END_SRC
+#+END_SRC
 
+It will run on port 8000 by default.
+
+* To deploy
+The easiest way is to create an =uberjar= or =uberwar= and deploy that.
+Run =lein uberjar= to create a stand-alone version that you can call with =java -jar vortext.jar=.
+This jar can then be run with things like upstart, systemd or whatever your taste is.
 * Future work
   See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
