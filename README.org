@@ -1,76 +1,72 @@
-#+BEGIN_HTML
-<img src="https://raw.githubusercontent.com/joelkuiper/spa/master/doc/images/logo.jpg" alt="logo" align="right" height="175" />
-#+END_HTML
+* Background
+Vortext is a system that allows you to upload PDF documents, and annotate them with various extractions.
+In essence it's a very simple web-based document management system.
 
-#+BEGIN_QUOTE
-From the Old Norse word spá or spæ referring to prophesying and which is cognate with the present English word "spy," continuing Proto-Germanic *spah- and the Proto-Indo-European root *(s)peḱ (to see, to observe) --- [[http://en.wikipedia.org/wiki/V%C3%B6lva][vǫlva (wikipedia)]]
-#+END_QUOTE
+It relies on [[https://github.com/vortext/spa][Spá]] for its client-side functionality.
 
-* Introduction
-  Unstructured PDF documents remain the main vehicle for dissemination of scientific findings.
-  Those interested in gathering and assimilating data must therefore manually peruse published articles and extract from these the elements of interest.
-  Evidence-based medicine provides a compelling illustration of this: many person-hours are spent each year extracting summary information from articles that describe clinical trials.
-  Machine learning provides a potential means of mitigating this burden by automating extraction.
-
-  But, for automated approaches to be useful to end-users, we need tools that allow domain experts to interact with, and benefit from, model predictions.
-  To this end, we present an web-based tool called Spá that accepts as input an article and provides as output an automatically visually annotated rendering of this article.
-  More generally, Spá provides a framework for visualizing predictions, both at the document and sentence level, for full-text PDFs.
-
-* Example
-  You can it at [[http://spa.clinici.co]] and use one of the Randomized Clinical Trials from the [[https://github.com/joelkuiper/spa/tree/master/examples][examples]] folder.
+Vortext is under heavy development; the idea is to ultimately pair the management of extractions from documents with customizable machine learning predictors.
+This way we hope to ease the burden of extracting data from literature, as is often the case in the biomedical sciences and law.
+At this point, however, Vortext does not do any predictions.
+See the [[https://github.com/vortext/vortext-demo][Vortext Demo]] repository for a system that does.
+If you are interested in helping us with these ideas, drop us a line at [[http://vortext.systems][vortext.systems]].
 
 * Technical overview
 ** Server side
-   The server side is written in [[http://clojure.org/][Clojure]] and requires PostgreSQL as the database.
-   None of the machine learning is done within this project.
-   To handle the machine learning we send a simple HTTP request with the binary PDF.
-   In our case that request gets handled with [[https://github.com/joelkuiper/svar][Svar]], which allows us to succinctly use various programming languages.
-   The response of these HTTP requests contains the side notes (called [[http://en.wikipedia.org/wiki/Marginalia][marginalia]]) and their accompanying annotations as JSON.
-   Any server that knows how to generate the appropriate response can be used instead of Svar.
-   The Spá client-side knows how to deal with this JSON and renders it appropriately, the server side merely caches the responses in the database.
-** Client side
-   Spá relies on [[http://mozilla.github.io/pdf.js][Mozilla PDF.js]] for visualization of the document and text extraction.
-   The results of the text extraction are processed server-side.
-   Results are communicated back to the browser and displayed using [[http://facebook.github.io/react][React]].
+The server side is written in [[http://clojure.org/][Clojure]] and uses PostgreSQL as the database.
+If you are new to Clojure the code might look unfamiliar.
+But, Clojure is a wonderful language, and if you are interested in learning more we recommend the following resources:
+- [[https://yogthos.github.io/ClojureDistilled.html][Clojure Distilled]]
+- [[http://www.braveclojure.com/][Clojure for the brave and true]]
+- [[https://aphyr.com/tags/Clojure-from-the-ground-up][Clojure from the ground up]]
 
-   For each of the annotations the relevant nodes in the document are highlighted and a custom scrollbar, inspired by [[http://substance.io/beta/][substance.io]], that acts as a mini-map is projected to show where it resides within the document.
+We use [[http://www.luminusweb.net/][Luminus]] as a basis for many parts, so we recommended reading their documentation as well.
 
 * Development prerequisites
-** Database
-   We're using PostgreSQL as the database.
-   The database settings can be configured with the environment variables specified by environ in project.clj.
-   The default database is =spa= with user/pass =spa/develop=. You'll obviously need to change this in production.
+** Mac OS X
+To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
+We require at least Java JVM/JDK 1.8 and Leiningen 2.4.
 
    #+BEGIN_SRC
-  CREATE DATABASE spa;
-  GRANT ALL PRIVILEGES ON DATABASE spa TO spa;
+ brew update # make sure you have recent versions
+ brew install leiningen # install via Homebrew
    #+END_SRC
-
-   To populate the database tables run =lein migrate=.
-** Mac OS X
-   To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
-   Spa requires at least Java JVM/JDK 1.7 and Leiningen 2.2.
-   PDF.js is included as a git submodule.
 
    #+BEGIN_SRC
  git clone <this repo>
  cd <your folder>
- git submodule init
- git submodule update
- cd resources/pdfjs
+ lein deps # retrieve project dependencies
+ git submodule update --init --recursive
 
- brew update # make sure you have recent versions
- brew install node # install nodejs via Homebrew
  # Compile the PDF.js files
- node make generic dist
+ cd resources/public/scripts/spa/pdfjs
+ brew install node # install nodejs via Homebrew
+ npm install
+ node make generic
    #+END_SRC
+
+To prevent some bugs and ensure future compatibility we convert the PDF documents to [[https://en.wikipedia.org/wiki/PDF/A][PDF/A-2]] (PDF archive) before storing them. To do this we use GhostScript. If you have not yet installed [[http://www.ghostscript.com/][GhostScript]] run =brew install ghostscript=.
+
+** Database
+We're using PostgreSQL as the database.
+The database settings can be configured with the environment variables specified by [[https://github.com/weavejester/environ][environ]] in project.clj.
+The default database is =spa= with user/pass =spa/develop=.
+You'll obviously need to change this in production.
 
    #+BEGIN_SRC
- brew install leiningen # install via Homebrew
- lein deps # retrieve project dependencies
+ CREATE DATABASE spa;
+ CREATE USER spa WITH PASSWORD 'develop';
+ GRANT ALL PRIVILEGES ON DATABASE spa TO spa;
+   #+END_SRC
+
+To populate the database tables run =lein migrate=.
+If you're running OS X and are looking for a easy way to run PostgreSQL, we recommend [[http://postgresapp.com/][Postgres.app]].
+
+** Run
+The run the server use
+ #+BEGIN_SRC
  lein trampoline run start # will run the server
  DEV=true lein trampoline run start # will run in development mode
-   #+END_SRC
+ #+END_SRC
 
 * Future work
   See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
