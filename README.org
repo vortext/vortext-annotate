@@ -68,7 +68,7 @@ The run the server use
  DEV=true lein trampoline run start # will run in development mode
 #+END_SRC
 
-It will run on port 8000 by default.
+It will run on port 8080 by default.
 
 * To deploy
 The easiest way to deploy Vortext is to create an =uberjar= and deploy that.
