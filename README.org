@@ -71,15 +71,15 @@ The run the server use
 It will run on port 8000 by default.
 
 * To deploy
-The easiest way is to create an =uberjar= or =uberwar= and deploy that.
+The easiest way to deploy Vortext is to create an =uberjar= and deploy that.
 Run =lein uberjar= to create a stand-alone version that you can call with =java -jar vortext.jar start=.
-This jar can then be run with things like upstart, systemd or whatever your taste is.
+This jar can then be run as a service with things like upstart, systemd or whatever your taste is.
 
 It is also recommended to minify the assets in production.
 We use [[http://requirejs.org/][RequireJS]] [[http://requirejs.org/docs/optimization.html][r.js]] for this.
 
 To install r.js run =npm install -g requirejs=.
-Then run
+Then run before building the uberjar.
 #+BEGIN_SRC
  cd resources
  r.js -o build.js
