@@ -79,7 +79,7 @@ It is also recommended to minify the assets in production.
 We use [[http://requirejs.org/][RequireJS]] [[http://requirejs.org/docs/optimization.html][r.js]] for this.
 
 To install r.js run =npm install -g requirejs=.
-Then run before building the uberjar.
+Run the following before building the uberjar.
 #+BEGIN_SRC
  cd resources
  r.js -o build.js
