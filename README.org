@@ -21,6 +21,9 @@ But, Clojure is a wonderful language, and if you are interested in learning more
 
 We use [[http://www.luminusweb.net/][Luminus]] as a basis for many parts, so we recommended reading their documentation as well.
 
+** Client side
+See the [[https://github.com/vortext/spa][Spá repository]] for an overview of used technology.
+
 * Development prerequisites
 ** Mac OS X
 To develop the server we require [[%20http://leiningen.org/][leiningen]] which can be installed with [[http://brew.sh/][Homebrew]].
