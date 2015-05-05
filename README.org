@@ -100,4 +100,4 @@ Comments and suggestions are much appreciated.
 For code contributions: fork, branch, and send a pull request.
 
 * License
-Spa is open source, and licensed under [[http://gplv3.fsf.org/][GPLv3]]. See [[https://github.com/joelkuiper/spa/blob/master/LICENSE.md][LICENSE.md]] for more information.
+Vortext is open source, and licensed under [[http://gplv3.fsf.org/][GPLv3]]. See [[https://github.com/joelkuiper/spa/blob/master/LICENSE.md][LICENSE.md]] for more information.
