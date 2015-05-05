@@ -1,8 +1,8 @@
 (ns vortext.middleware
   (:require [vortext.session :as session]
             [vortext.security :as security]
+            [vortext.util :refer [in-dev?]]
             [taoensso.timbre :as timbre]
-            [environ.core :refer [env]]
             [selmer.middleware :refer [wrap-error-page]]
             [prone.middleware :refer [wrap-exceptions]]
             [ring.util.response :refer [redirect]]
@@ -16,7 +16,7 @@
             [buddy.auth.backends.session :refer [session-backend]]))
 
 (defn development-middleware [handler]
-  (if (env :dev)
+  (if in-dev?
     (-> handler
        wrap-error-page
        wrap-exceptions)
@@ -37,6 +37,6 @@
      (wrap-defaults
       (->
        site-defaults
-       (assoc-in [:static :resources] "public")
+       (assoc-in [:static :resources] (if in-dev? "public" "build"))
        (assoc-in [:session :store] (memory-store session/mem))))
      (wrap-internal-error :log #(timbre/error %))))

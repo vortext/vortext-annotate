@@ -20,7 +20,8 @@
   :uberjar-name "vortext.jar"
   :profiles {:production {:env {:dev false}}
              :uberjar {:omit-source true
-                       :env {:production true}
+                       :env {:dev false
+                             :production true}
 
                        :aot :all}}
   :jvm-opts ["-server" "-Djava.awt.headless=true"]

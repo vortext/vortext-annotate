@@ -5,6 +5,7 @@
            java.io.ByteArrayOutputStream)
   (:require [clojure.string :as string]
             [clojure.walk :as walk]
+            [environ.core :refer [env]]
             [clojure.java.shell :refer [sh]]))
 
 (def last-commit (string/trim-newline (:out (sh "git" "rev-parse" "HEAD"))))
@@ -29,3 +30,6 @@
      (.deleteOnExit))))
 
 (defn parse-int [s] (Integer. (re-find  #"\d+" s)))
+
+(def truthy?  #{"true" "TRUE" "True" "yes" "YES" "y" "1"})
+(def in-dev? (truthy? (str (or (:dev env) false))))

@@ -72,16 +72,29 @@ It will run on port 8000 by default.
 
 * To deploy
 The easiest way is to create an =uberjar= or =uberwar= and deploy that.
-Run =lein uberjar= to create a stand-alone version that you can call with =java -jar vortext.jar=.
+Run =lein uberjar= to create a stand-alone version that you can call with =java -jar vortext.jar start=.
 This jar can then be run with things like upstart, systemd or whatever your taste is.
+
+It is also recommended to minify the assets in production.
+We use [[http://requirejs.org/][RequireJS]] [[http://requirejs.org/docs/optimization.html][r.js]] for this.
+
+To install r.js run =npm install -g requirejs=.
+Then run
+#+BEGIN_SRC
+ cd resources
+ r.js -o build.js
+#+END_SRC
+
+By default the production jar will serve the assets from the =build= folder, in the development it will serve from =public=. To prevent the production jar from serving the =build= folder (because you haven't minified the assets) run the server with =DEV=1 java -jar vortext.jar start=, this is NOT recommended.
+
 * Future work
-  See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
+See [[https://github.com/joelkuiper/spa/issues?labels=idea&state=open][ideas]] or the other issues.
 
 * Contributing
-  Currently this is a research object.
-  The API and organizational structure are subject to change.
-  Comments and suggestions are much appreciated.
-  For code contributions: fork, branch, and send a pull request.
+Currently this is a research object.
+The API and organizational structure are subject to change.
+Comments and suggestions are much appreciated.
+For code contributions: fork, branch, and send a pull request.
 
 * License
-  Spa is open source, and licensed under [[http://gplv3.fsf.org/][GPLv3]]. See [[https://github.com/joelkuiper/spa/blob/master/LICENSE.md][LICENSE.md]] for more information.
+Spa is open source, and licensed under [[http://gplv3.fsf.org/][GPLv3]]. See [[https://github.com/joelkuiper/spa/blob/master/LICENSE.md][LICENSE.md]] for more information.
