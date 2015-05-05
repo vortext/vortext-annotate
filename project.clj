@@ -45,11 +45,11 @@
                  ;; JSON
                  [cheshire "5.4.0"]
 
-                 [buddy "0.5.1"]
+                 [buddy "0.5.2"]
                  [ring/ring-defaults "0.1.4"]
                  [ring/ring-session-timeout "0.1.0"]
                  [ring-middleware-format "0.5.0"]
-                 [noir-exception "0.2.4"]
+                 [noir-exception "0.2.5"]
                  [clojurewerkz/scrypt "1.2.0"]
 
                  ;; PDF
