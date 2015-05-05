@@ -62,7 +62,7 @@ To populate the database tables run =lein migrate=.
 If you're running OS X and are looking for a easy way to run PostgreSQL, we recommend [[http://postgresapp.com/][Postgres.app]].
 
 ** Run
-The run the server use
+To run the server use
 #+BEGIN_SRC
  lein trampoline run start # will run the server
  DEV=true lein trampoline run start # will run in development mode
